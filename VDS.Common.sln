@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common", "src\net40\VDS.Common.csproj", "{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common", "src\net40-client\VDS.Common.csproj", "{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Test", "test\VDS.Common.Test.csproj", "{5091A75F-7EF2-4813-A2F0-2E106507AED3}"
 EndProject
@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+		vds-common.build = vds-common.build
 		VDS.Common.vsmdi = VDS.Common.vsmdi
 	EndProjectSection
 EndProject
