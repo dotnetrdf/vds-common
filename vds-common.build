@@ -4,10 +4,10 @@
     
   <!-- Licensing Properties -->
   <property name="common.License.exclude.exts" 
-            value="dll,pdb,exe,xml,xaml,xsd,dtd,xshd,config,xslt,ttl,rdf,out,rq,trig,trix,ru,nt,n3,nq,srx,owl,srj,json,txt,csv,tsv,csproj,user,template,cache,pfx,sql,resources,resx,properties,settings,html,xhtml,css,js,sparql,bak,ico,png,jpg,tiff,bmp,orig" />
+            value="dll,pdb,exe,xml,csproj,user,template,cache,orig" />
   <property name="common.License.exclude.regex" value="hg|svn|obj|bin" />
   <property name="common.License.search" value="Copyright (c) 2012 Robert Vesse" />
-  <property name="common.License.replace" value="License.txt" />
+  <property name="common.License.replace" value="License" />
   <property name="common.License.overwrite" value="-overwrite" /> <!-- Alternative is -preserve which does not change existing Licenses -->
   
   <!-- Signing Properties -->
@@ -21,53 +21,6 @@
   <property name="common.libzip" value="VDS.Common.${common.version}.zip" />
   <property name="commin.srczip" value="VDS.Common.${common.version}.Source.zip" />
     
-  <!-- Project Generation Targets which generate some Project Files from others -->
-
-  <target name="projectsync-core-net35" description="Syncs the dotNetRDF .Net 3.5 build project file" depends="compile-buildtools" unless="${dotnetrdf.nocompile}">
-    <!-- This exec task syncs the Core .Net 3.5 project file with the Core Library -->
-    <exec program="Build/SyncProjects/bin/Debug/SyncProjects.exe">
-      <arg value="sync" />
-      <arg value="Libraries/core/net40/dotNetRDF.csproj" />
-      <arg value="Libraries/core/net35/dotNetRDF.Net35.csproj" />
-    </exec>
-  </target>
-
-  <target name="projectsync-core-silverlight" description="Syncs the dotNetRDF Silverlight build project file" depends="compile-buildtools" unless="${dotnetrdf.nosilverlight == 'true' or dotnetrdf.nocompile == 'true'}">
-    <!-- This exec task syncs the Silverlight project file with the Core Library -->
-    <exec program="Build/SyncProjects/bin/Debug/SyncProjects.exe">
-      <arg value="sync" />
-      <arg value="Libraries/core/net40/dotNetRDF.csproj" />
-      <arg value="Libraries/core/sl4/dotNetRDF.Silverlight.2010.csproj" />
-    </exec>    
-  </target>
-
-  <target name="projectsync-core-windowsphone" description="Syncs the dotNetRDF Windows Phone build project file" depends="compile-buildtools" unless="${dotnetrdf.nowindowsphone == 'true' or dotnetrdf.nocompile == 'true'}">
-    <!-- This exec task syncs the Windows Phone project file with the Core Library -->
-    <exec program="Build/SyncProjects/bin/Debug/SyncProjects.exe">
-      <arg value="sync" />
-      <arg value="Libraries/core/net40/dotNetRDF.csproj" />
-      <arg value="Libraries/core/sl4-wp/dotNetRDF.WindowsPhone.2010.csproj" />
-    </exec>
-  </target>
-
-  <target name="projectsync-core-clientprofile" description="Syncs the dotNetRDF Client Profile build project file" depends="compile-buildtools" unless="${dotnetrdf.nocompile}">
-    <!-- This exec task syncs the Client Profile project file with the Core Library -->
-    <exec program="Build/SyncProjects/bin/Debug/SyncProjects.exe">
-      <arg value="sync" />
-      <arg value="Libraries/core/net40/dotNetRDF.csproj" />
-      <arg value="Libraries/core/net40-client/dotNetRDF.ClientProfile.csproj" />
-    </exec>
-  </target>
-
-  <target name="projectsync-core-clientprofile-net35" description="Syncs the dotNetRDF Client Profile .Net 3.5 build project file" depends="compile-buildtools" unless="${dotnetrdf.nocompile}">
-    <!-- This exec task syncs the Client Profile project file with the Core Library -->    
-    <exec program="Build/SyncProjects/bin/Debug/SyncProjects.exe">
-      <arg value="sync" />
-      <arg value="Libraries/core/net40/dotNetRDF.csproj" />
-      <arg value="Libraries/core/net35-client/dotNetRDF.ClientProfile.Net35.csproj" />
-    </exec>
-  </target>
-
   <!-- License Targets which enforce License headers on the code -->
 
   <target name="License" description="Applies License headers to all targets" depends="license-lib,license-test />
