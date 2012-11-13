@@ -53,7 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\net40\VDS.Common.csproj">
+    <ProjectReference Include="..\src\net40-client\VDS.Common.csproj">
       <Project>{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8}</Project>
       <Name>VDS.Common</Name>
     </ProjectReference>
