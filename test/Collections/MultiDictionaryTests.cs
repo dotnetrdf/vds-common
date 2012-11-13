@@ -31,9 +31,55 @@ namespace VDS.Common.Collections
     public class MultiDictionaryTests
     {
         [TestMethod]
-        public void MultiDictionary1()
+        public void MultiDictionaryVsDictionary1()
         {
-            MultiDictionary<Double, Int32> dict = new MultiDictionary<Double, Int32>();
+            Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>();
+            MultiDictionary<TestKey<String>, int> mDict = new MultiDictionary<TestKey<String>, int>(new TestKeyComparer<String>());
+
+            TestKey<String> a = new TestKey<String>(1, "a");
+            TestKey<String> b = new TestKey<String>(1, "b");
+
+            dict.Add(a, 1);
+            try
+            {
+                dict.Add(b, 2);
+                Assert.Fail("ArgumentException not thrown");
+            }
+            catch (ArgumentException)
+            {
+                //Ignore and continue
+            }
+            mDict.Add(a, 1);
+            mDict.Add(b, 2);
+
+            Assert.AreEqual(1, dict.Count);
+            Assert.AreEqual(1, dict[a]);
+            Assert.AreEqual(1, dict[b]);
+            Assert.AreEqual(2, mDict.Count);
+            Assert.AreEqual(1, mDict[a]);
+            Assert.AreEqual(2, mDict[b]);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionary2()
+        {
+            Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>(new TestKeyComparer<String>());
+            MultiDictionary<TestKey<String>, int> mDict = new MultiDictionary<TestKey<String>, int>(new TestKeyComparer<String>());
+
+            TestKey<String> a = new TestKey<String>(1, "a");
+            TestKey<String> b = new TestKey<String>(1, "b");
+
+            dict.Add(a, 1);
+            dict.Add(b, 2);
+            mDict.Add(a, 1);
+            mDict.Add(b, 2);
+
+            Assert.AreEqual(2, dict.Count);
+            Assert.AreEqual(1, dict[a]);
+            Assert.AreEqual(2, dict[b]);
+            Assert.AreEqual(2, mDict.Count);
+            Assert.AreEqual(1, mDict[a]);
+            Assert.AreEqual(2, mDict[b]);
         }
     }
 }
