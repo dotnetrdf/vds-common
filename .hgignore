@@ -1,3 +1,9 @@
 syntax: glob
+
+# File types to ignore
 *.cache
 *.suo
+
+# Build artifacts to ignore
+bin/
+obj/
