@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 		Build\vds-common.build = Build\vds-common.build
-		Build\VDS.Common.nuspec = Build\VDS.Common.nuspec
 		VDS.Common.vsmdi = VDS.Common.vsmdi
 	EndProjectSection
 EndProject
