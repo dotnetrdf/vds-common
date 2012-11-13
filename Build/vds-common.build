@@ -76,17 +76,17 @@
     
   <target name="build" description="Create the latest build" depends="compile">
     <!-- .Net 4.0 Client Profile -->
-    <copy overwrite="true" todir="Build/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.dll" />
-    <copy overwrite="true" todir="Build/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.xml" />
     <!-- .Net 3.5 Client Profile -->
-    <copy overwrite="true" todir="Build/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.dll" />
-    <copy overwrite="true" todir="Build/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.xml" />
     <!-- Silverlight 4 -->
-    <copy overwrite="true" todir="Build/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.dll" />
-    <copy overwrite="true" todir="Build/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.xml" />
     <!-- Silverlight 4 for Windows Phone -->
-    <copy overwrite="true" todir="Build/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.dll" />
-    <copy overwrite="true" todir="Build/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.xml" />
   </target>
   
   <!-- Clean Targets -->
@@ -109,7 +109,7 @@
       <fileset>
         <include name="**/bin/**/*" />
         <include name="**/obj/**/*" />
-        <include name="Build/lib/" />
+        <include name="Build/NuGet/lib/" />
       </fileset>
     </delete>
   </target>
@@ -131,7 +131,7 @@
         <include name="ReadMe.md" />
         <include name="ChangeLog.txt" />
       </fileset>
-      <fileset basedir="bin/stable/Libraries/" failonempty="true">
+      <fileset basedir="Build/NuGet/lib/" failonempty="true">
         <include name="**/*" />
       </fileset>
     </zip>
@@ -141,19 +141,19 @@
         <exclude name=".hg/*" />
         <exclude name="**/bin/**/*" />
         <exclude name="**/obj/**/*" />
-	<exclude name="**/*.dll" />
+        <exclude name="**/*.dll" />
         <exclude name="**/*.exe" />
         <exclude name="**/*.pdb" />
         <exclude name="TestResults/" />
-	<exclude name="*.zip" />
-	<exclude name="Build/lib/**/*" />
+        <exclude name="*.zip" />
+        <exclude name="Build/lib/**/*" />
       </fileset>
     </zip>
   </target>
 
   <target name="dist-nuget" description="Creates the NuGet packages" depends="build">
     <!-- Finally invoke nuget on the package -->
-    <exec workingdir="Build/" program="nuget.exe">
+    <exec workingdir="Build/NuGet/" program="nuget.exe">
       <arg value="pack" />
       <arg value="VDS.Common.nuspec" />
       <arg value="-verbose" />

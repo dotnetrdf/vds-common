@@ -4,10 +4,11 @@ syntax: glob
 *.cache
 *.suo
 *.user
+*.nupkg
 
 # Build artifacts to ignore
 bin/
 Bin/
 obj/
 TestResults/
-Build/lib/
+Build/NuGet/lib/
