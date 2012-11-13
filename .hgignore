@@ -10,3 +10,4 @@ bin/
 Bin/
 obj/
 TestResults/
+Build/lib/

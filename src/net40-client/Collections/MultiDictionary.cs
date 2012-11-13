@@ -42,7 +42,7 @@ using VDS.Common.Trees;
 namespace VDS.Common
 {
     /// <summary>
-    /// Possible modes to use for the binary search tree based buckets of the <see cref="MultiDictionary"/>
+    /// Possible modes to use for the binary search tree based buckets of the <see cref="MultiDictionary{TKey,TValue}"/>
     /// </summary>
     public enum MultiDictionaryMode
     {

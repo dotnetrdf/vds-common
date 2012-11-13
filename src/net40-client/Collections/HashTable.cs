@@ -38,7 +38,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VDS.Common
+namespace VDS.Common.Collections
 {
     /// <summary>
     /// Controls the bias of the hash table
@@ -74,7 +74,7 @@ namespace VDS.Common
     /// <typeparam name="TValue">Type of Values</typeparam>
     /// <remarks>
     /// <para>
-    /// Essentially a Dictionary which allows multiple values for each key, unlike the newer <see cref="MultiDictionary"/> this implementation is lossy since it does not store unique keys so if you have colliding keys all values associated with them are mushed together under a single key.  However the advantage of the HashTable is that it transparently maps a key to an arbitrary list of values where a MultiDictionary requires the user to manage that if that want to map multiple values to a single key
+    /// Essentially a Dictionary which allows multiple values for each key, unlike the newer <see cref="MultiDictionary{TKey, TValue}"/> this implementation is lossy since it does not store unique keys so if you have colliding keys all values associated with them are mushed together under a single key.  However the advantage of the HashTable is that it transparently maps a key to an arbitrary list of values where a MultiDictionary requires the user to manage that if that want to map multiple values to a single key
     /// </para>
     /// </remarks>
     [Obsolete("The HashTable class has known deficiencies in hash code collision behaviour and has been superceded by MultiDictionary which should be used instead, HashTable will be removed in subsequent releases", false)]

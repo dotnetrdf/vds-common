@@ -184,7 +184,7 @@ namespace VDS.Common
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Value associated with the given Key, may be null if no value is associated</returns>
-        /// <exception cref="KeyNotFoundException">Thrown if you try to get a value for a key that is not in the Trie, consider using <see cref="TryGetValue()">TryGetValue()</see> instead to avoid this</exception>
+        /// <exception cref="KeyNotFoundException">Thrown if you try to get a value for a key that is not in the Trie</exception>
         public TValue this[TKey key]
         {
             get

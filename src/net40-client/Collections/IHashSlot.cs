@@ -38,7 +38,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VDS.Common
+namespace VDS.Common.Collections
 {
     /// <summary>
     /// Interface for internal data structure of Hash Table

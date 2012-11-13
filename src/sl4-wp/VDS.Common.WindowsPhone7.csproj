@@ -29,6 +29,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Debug\VDS.Common.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,7 +48,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
   </ItemGroup>
-<ItemGroup>
+  <ItemGroup>
     <Compile Include="..\net40-client\Collections\HashSlot.cs">
       <Link>Collections\HashSlot.cs</Link>
     </Compile>
