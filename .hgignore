@@ -3,8 +3,10 @@ syntax: glob
 # File types to ignore
 *.cache
 *.suo
+*.user
 
 # Build artifacts to ignore
 bin/
+Bin/
 obj/
 TestResults/
