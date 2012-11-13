@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="VDS.Common Library" default="build">
+<project name="VDS.Common Library" default="build" basedir="..\">
   <description>Generates the VDS.Common Library Builds</description>
     
   <!-- Licensing Properties -->
@@ -26,7 +26,7 @@
   <target name="License" description="Applies License headers to all targets" depends="license-lib,license-test />
 
   <target name="license-lib" description="Applies License headers to the Library" depends="compile-buildtools" unless="${dotnetrdf.nocompile}">
-    <exec program="Build/LicenseChecker/bin/Debug/LicenseChecker.exe" failonerror="true">
+    <exec program="Build/LicenseChecker.exe" failonerror="true">
       <arg value="-directory" />
       <arg value="src/net40/" />
       <arg value="-exclude-exts" />
