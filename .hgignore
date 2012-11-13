@@ -7,3 +7,4 @@ syntax: glob
 # Build artifacts to ignore
 bin/
 obj/
+TestResults/
