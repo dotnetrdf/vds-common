@@ -1,0 +1,9 @@
+Change Log
+==========
+
+This is the Change Log for VDS.Common
+
+0.9.0
+-----
+
+- Split out of original location in dotNetRDF
