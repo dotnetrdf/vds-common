@@ -12,3 +12,4 @@ Bin/
 obj/
 TestResults/
 Build/NuGet/lib/
+*.zip
