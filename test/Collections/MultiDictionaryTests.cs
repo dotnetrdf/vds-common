@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,7 +32,7 @@ namespace VDS.Common.Collections
     public class MultiDictionaryTests
     {
         [TestMethod]
-        public void MultiDictionaryVsDictionary1()
+        public void MultiDictionaryVsDictionaryInsertBasic1()
         {
             Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>();
             MultiDictionary<TestKey<String>, int> mDict = new MultiDictionary<TestKey<String>, int>(new TestKeyComparer<String>());
@@ -61,7 +62,7 @@ namespace VDS.Common.Collections
         }
 
         [TestMethod]
-        public void MultiDictionaryVsDictionary2()
+        public void MultiDictionaryVsDictionaryInsertBasic2()
         {
             Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>(new TestKeyComparer<String>());
             MultiDictionary<TestKey<String>, int> mDict = new MultiDictionary<TestKey<String>, int>(new TestKeyComparer<String>());
@@ -80,6 +81,401 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, mDict.Count);
             Assert.AreEqual(1, mDict[a]);
             Assert.AreEqual(2, mDict[b]);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryLookupPathological1()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Build dictionaries with 10000 keys in them
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(0, i);
+                keys.Add(key);
+                dict.Add(key, i);
+                mDict.Add(key, i);
+            }
+
+            Stopwatch timer = new Stopwatch();
+            
+            //Lookup all keys in dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+            timer.Reset();
+
+            //Lookup all keys in multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime < dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryLookupPathological2()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Build dictionaries with 10000 keys in them
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(0, i);
+                keys.Add(key);
+                dict.Add(key, i);
+                mDict.Add(key, i);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Lookup all keys in multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
+
+            timer.Reset();
+
+            //Lookup all keys in dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime < dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryInsertPathological1()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Generate 10000 keys
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(0, i);
+                keys.Add(key);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Add to dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.Add(key, key.Value);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+
+            timer.Reset();
+
+            //Add to multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.Add(key, key.Value);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MutliDictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime < dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryLookupNormal1()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Build dictionaries with 10000 keys in them
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(i, i);
+                keys.Add(key);
+                dict.Add(key, i);
+                mDict.Add(key, i);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Lookup all keys in dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+            timer.Reset();
+
+            //Lookup all keys in multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime > dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryLookupNormal2()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Build dictionaries with 10000 keys in them
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(i, i);
+                keys.Add(key);
+                dict.Add(key, i);
+                mDict.Add(key, i);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Lookup all keys in multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
+
+            timer.Reset();
+
+            //Lookup all keys in dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime > dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryInsertNormal1()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Generate 10000 keys
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(i, i);
+                keys.Add(key);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Add to dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.Add(key, key.Value);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+
+            timer.Reset();
+
+            //Add to multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.Add(key, key.Value);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MutliDictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime > dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryLookupPool1()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Build dictionaries with 10000 keys in them
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(i % 100, i);
+                keys.Add(key);
+                dict.Add(key, i);
+                mDict.Add(key, i);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Lookup all keys in dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+            timer.Reset();
+
+            //Lookup all keys in multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime < dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryLookupPool2()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Build dictionaries with 10000 keys in them
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(i % 100, i);
+                keys.Add(key);
+                dict.Add(key, i);
+                mDict.Add(key, i);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Lookup all keys in multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
+
+            timer.Reset();
+
+            //Lookup all keys in dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.ContainsKey(key);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+
+            Assert.IsTrue(mDictTime < dictTime);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryVsDictionaryInsertPool1()
+        {
+            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+
+            //Generate 10000 keys
+            List<TestKey<int>> keys = new List<TestKey<int>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                TestKey<int> key = new TestKey<int>(i % 100, i);
+                keys.Add(key);
+            }
+
+            Stopwatch timer = new Stopwatch();
+
+            //Add to dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                dict.Add(key, key.Value);
+            }
+            timer.Stop();
+
+            TimeSpan dictTime = timer.Elapsed;
+            Console.WriteLine("Dictionary took " + timer.Elapsed);
+
+            timer.Reset();
+
+            //Add to multi-dictionary
+            timer.Start();
+            foreach (TestKey<int> key in keys)
+            {
+                mDict.Add(key, key.Value);
+            }
+            timer.Stop();
+
+            TimeSpan mDictTime = timer.Elapsed;
+            Console.WriteLine("MutliDictionary took " + timer.Elapsed);
+            Assert.IsTrue(mDictTime - dictTime < new TimeSpan(0, 0, 0, 0, 100));
         }
     }
 }
