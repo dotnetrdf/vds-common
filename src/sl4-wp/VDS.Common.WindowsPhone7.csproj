@@ -49,15 +49,6 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\net40-client\Collections\HashSlot.cs">
-      <Link>Collections\HashSlot.cs</Link>
-    </Compile>
-    <Compile Include="..\net40-client\Collections\HashTable.cs">
-      <Link>Collections\HashTable.cs</Link>
-    </Compile>
-    <Compile Include="..\net40-client\Collections\IHashSlot.cs">
-      <Link>Collections\IHashSlot.cs</Link>
-    </Compile>
     <Compile Include="..\net40-client\Collections\MultiDictionary.cs">
       <Link>Collections\MultiDictionary.cs</Link>
     </Compile>
