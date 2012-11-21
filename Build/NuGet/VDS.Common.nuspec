@@ -3,13 +3,13 @@
   <metadata>
     <id>VDS.Common</id>
     <title>VDS.Common</title>
-    <version>0.9.0</version>
+    <version>1.0.0</version>
     <authors>RobVesse</authors>
     <owners>RobVesse</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bitbucket.org/rvesse/vds-common</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A library containing useful data structures like Trees, Tries and collision resistant dictionaries.</description>
+    <description>A library containing useful data structures like Trees, Tries and fast dictionaries.</description>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>
 </package>
