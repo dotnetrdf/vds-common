@@ -6,14 +6,15 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("sl4_wp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("VDS.Common")]
+[assembly: AssemblyDescription("Common data structures for .Net projects (Silverlight 4 for Windows Phone 7 Build)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IDS")]
-[assembly: AssemblyProduct("sl4_wp")]
-[assembly: AssemblyCopyright("Copyright © IDS 2012")]
+[assembly: AssemblyCompany("Visual Design Studios")]
+[assembly: AssemblyProduct("VDS.Common")]
+[assembly: AssemblyCopyright("Copyright © Robert Vesse 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("en")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -34,4 +35,3 @@ using System.Resources;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("en-US")]
