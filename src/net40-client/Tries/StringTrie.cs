@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common
+namespace VDS.Common.Tries
 {
     /// <summary>
     /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node

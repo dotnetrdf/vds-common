@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VDS.Common
+namespace VDS.Common.Tries
 {
     /// <summary>
     /// Node of a Trie

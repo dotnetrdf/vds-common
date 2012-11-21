@@ -26,7 +26,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
-namespace VDS.Common
+namespace VDS.Common.References
 {
     /// <summary>
     /// Provides a thread isolated reference to some reference type

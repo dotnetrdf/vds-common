@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VDS.Common
+namespace VDS.Common.References
 {
     /// <summary>
     /// Represents a reference whose value may change based on nesting level

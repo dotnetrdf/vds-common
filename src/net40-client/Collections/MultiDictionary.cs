@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using VDS.Common.Trees;
 
-namespace VDS.Common
+namespace VDS.Common.Collections
 {
     /// <summary>
     /// Possible modes to use for the binary search tree based buckets of the <see cref="MultiDictionary{TKey,TValue}"/>
