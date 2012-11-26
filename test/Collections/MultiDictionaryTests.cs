@@ -31,6 +31,70 @@ namespace VDS.Common.Collections
     [TestClass]
     public class MultiDictionaryTests
     {
+        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling1()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict.Add(null, 1);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling2()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            int i = dict[null];
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling3()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            int i;
+            dict.TryGetValue(null, out i);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling4()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict[null] = 1;
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling5()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict.Add(new KeyValuePair<Object, int>(null, 1));
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling6()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict.Remove(null);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling7()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict.Remove(new KeyValuePair<Object, int>(null, 1));
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling8()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict.ContainsKey(null);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void MultiDictionaryNullKeyHandling9()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            dict.Contains(new KeyValuePair<Object, int>(null, 1));
+        }
+
         [TestMethod]
         public void MultiDictionaryVsDictionaryInsertBasic1()
         {

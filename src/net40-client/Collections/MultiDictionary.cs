@@ -159,6 +159,8 @@ namespace VDS.Common.Collections
         /// <param name="value">Value</param>
         public void Add(TKey key, TValue value)
         {
+            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
             if (this._dict.TryGetValue(hash, out tree))
@@ -182,6 +184,8 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public bool ContainsKey(TKey key)
         {
+            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
             if (this._dict.TryGetValue(hash, out tree))
@@ -214,6 +218,8 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public bool Remove(TKey key)
         {
+            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
             if (this._dict.TryGetValue(hash, out tree))
@@ -234,6 +240,8 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
+            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
             if (this._dict.TryGetValue(hash, out tree))
@@ -301,6 +309,8 @@ namespace VDS.Common.Collections
         {
             get
             {
+                if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+
                 TValue value;
                 if (this.TryGetValue(key, out value))
                 {
