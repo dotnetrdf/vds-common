@@ -30,7 +30,7 @@ namespace VDS.Common.References
     /// Represents a reference whose value may change based on nesting level
     /// </summary>
     /// <typeparam name="T">Reference Type</typeparam>
-    internal class NestedReference<T> 
+    public class NestedReference<T> 
         where T : class
     {
         private Dictionary<int, T> _values = new Dictionary<int, T>();
