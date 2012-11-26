@@ -138,7 +138,7 @@ namespace VDS.Common.References
         }
     }
 
-    class ThreadIsolatedValue<T>
+    public class ThreadIsolatedValue<T>
         : IDisposable
         where T : struct
     {
