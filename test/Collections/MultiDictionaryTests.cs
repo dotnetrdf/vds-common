@@ -88,10 +88,74 @@ namespace VDS.Common.Collections
             dict.ContainsKey(null);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void MultiDictionaryNullKeyHandling9()
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling10()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict.Contains(new KeyValuePair<Object, int>(null, 1));
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling11()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict.Add(null, 1);
+        }
+
+        [TestMethod,ExpectedException(typeof(KeyNotFoundException))]
+        public void MultiDictionaryNullKeyHandling12()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            int i = dict[null];
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling13()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            int i;
+            dict.TryGetValue(null, out i);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling14()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict[null] = 1;
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling15()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict.Add(new KeyValuePair<Object, int>(null, 1));
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling16()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict.Remove(null);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling17()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict.Remove(new KeyValuePair<Object, int>(null, 1));
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling18()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
+            dict.ContainsKey(null);
+        }
+
+        [TestMethod]
+        public void MultiDictionaryNullKeyHandling19()
+        {
+            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()));
             dict.Contains(new KeyValuePair<Object, int>(null, 1));
         }
 

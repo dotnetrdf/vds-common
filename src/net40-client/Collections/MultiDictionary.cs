@@ -46,18 +46,20 @@ namespace VDS.Common.Collections
         AVL   
     }
 
-
     /// <summary>
-    /// A multi dictionary implementation
+    /// An advanced dictionary implementation
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TKey">Key Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
     /// <remarks>
     /// <para>
-    /// A multi-dictionary is essentially just a dictionary which deals properly with key collisions, with a normal .Net dictionary if two keys had colliding hash codes then their values would overwrite each other.
+    /// A multi-dictionary is essentially just a dictionary which deals more efficiently with key collisions, with a normal .Net dictionary colliding hash codes cause performance degradation which makes them less than ideal for certain use cases such as indexes.  A multi-dictionary can also handle null keys provided that the hash function in use can cope with these.
     /// </para>
     /// <para>
     /// With this implementation the keys are used to split the values into buckets and then each bucket uses a binary search tree to maintain full information about the keys and values.  This means that all keys and values are properly preserved and keys cannot interfer with each other in most cases.  In the case where keys have the same hash code and compare to be equal then they will interfere with each other but that is the correct behaviour.  The implementation is designed to be flexible in that it allows you to specify the hash function, the comparer used and the form of tree used for the buckets.
+    /// </para>
+    /// <para>
+    /// This means the multi-dictionary gives slightly worse performance than a dictionary for well distributed data with minimal key collisions but provides order of magnitude better performance for data with lots of hash collisions.  This makes it ideal as a use for an indexing structure since you can index using partial properties of the keys (thus giving hash code collisions) while still preserving all the keys.
     /// </para>
     /// </remarks>
     public class MultiDictionary<TKey, TValue>
@@ -72,6 +74,7 @@ namespace VDS.Common.Collections
         private IComparer<TKey> _comparer = Comparer<TKey>.Default;
         private Func<TKey, int> _hashFunc = (k => k.GetHashCode());
         private MultiDictionaryMode _mode = DefaultMode;
+        private bool _allowNullKeys = false;
 
         /// <summary>
         /// Creates a new multi-dictionary
@@ -129,12 +132,22 @@ namespace VDS.Common.Collections
             this._hashFunc = (hashFunction != null ? hashFunction : this._hashFunc);
             this._dict = new Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>>();
             this._mode = mode;
+
+            try
+            {
+                this._hashFunc(default(TKey));
+                this._allowNullKeys = true;
+            }
+            catch
+            {
+                //Ignore, use default behaviour of forbidding null keys
+            }
         }
 
         /// <summary>
         /// Creates a new Tree to be used as a key/value bucket
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Tree to use as the bucket</returns>
         private ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> CreateTree()
         {
             switch (this._mode)
@@ -159,7 +172,7 @@ namespace VDS.Common.Collections
         /// <param name="value">Value</param>
         public void Add(TKey key, TValue value)
         {
-            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -181,10 +194,10 @@ namespace VDS.Common.Collections
         /// Gets whether the dictionary contains the given key
         /// </summary>
         /// <param name="key">Key</param>
-        /// <returns></returns>
+        /// <returns>True if the given key exists in the dictionary, false otherwise</returns>
         public bool ContainsKey(TKey key)
         {
-            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -215,10 +228,10 @@ namespace VDS.Common.Collections
         /// Removes a key value pair from the dictionary based on the key
         /// </summary>
         /// <param name="key">Key</param>
-        /// <returns></returns>
+        /// <returns>True if a key value pair was removed, false otherwise</returns>
         public bool Remove(TKey key)
         {
-            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -237,10 +250,10 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
-        /// <returns></returns>
+        /// <returns>True if the key exists in the dictionary and a value can be returned, false otherwise</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -260,7 +273,8 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="key">Key</param>
         /// <param name="actualKey">Actual Key</param>
-        /// <returns></returns>
+        /// <returns>True if the key exists in the dictionary and the instance was returned, false otherwise</returns>
+        [Obsolete("TryGetKey() is included for historical reasons and will be removed in future versions")]
         public bool TryGetKey(TKey key, out TKey actualKey)
         {
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
@@ -303,13 +317,13 @@ namespace VDS.Common.Collections
         /// Gets/Sets a Value in the dictionary
         /// </summary>
         /// <param name="key">Key</param>
-        /// <returns></returns>
+        /// <returns>The value associated with the given key</returns>
         /// <exception cref="KeyNotFoundException">Thrown if the given key does not exist in the dictionary</exception>
         public TValue this[TKey key]
         {
             get
             {
-                if (key == null) throw new ArgumentNullException("key", "Key cannot be null");
+                if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
 
                 TValue value;
                 if (this.TryGetValue(key, out value))
@@ -318,7 +332,7 @@ namespace VDS.Common.Collections
                 }
                 else
                 {
-                    throw new KeyNotFoundException(key.ToString() + " not found");
+                    throw new KeyNotFoundException(key.ToSafeString() + " not found");
                 }
             }
             set
@@ -353,10 +367,12 @@ namespace VDS.Common.Collections
         /// Gets whether the dictionary contains a given key value pair
         /// </summary>
         /// <param name="item">Key value pair</param>
-        /// <returns></returns>
+        /// <returns>True if the given key value pair exists in the dictionary</returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             TValue value;
+
+            if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
             if (this.TryGetValue(item.Key, out value))
             {
                 if (value != null) return value.Equals(item.Value);
@@ -413,10 +429,22 @@ namespace VDS.Common.Collections
         /// Removes a key value pair from the dictionary
         /// </summary>
         /// <param name="item">Key value pair</param>
-        /// <returns></returns>
+        /// <returns>True if the key value pair was removed from the dictionary</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            return this.Remove(item.Key);
+            TValue value;
+
+            if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (this.TryGetValue(item.Key, out value))
+            {
+                if (value != null && value.Equals(item.Value)) return this.Remove(item.Key);
+                if (item.Value == null) return this.Remove(item.Key);
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion
@@ -426,7 +454,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets an enumerator for the key value pairs in the dictionary
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Enumerator over key value pairs</returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return (from t in this._dict.Values
@@ -441,7 +469,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the enumerator for the dictionary
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Enumerator</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -454,7 +482,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the enumeration of values in the dictionary
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Enumerator over values</returns>
         IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
         {
             return (from hashKey in this._dict.Keys
