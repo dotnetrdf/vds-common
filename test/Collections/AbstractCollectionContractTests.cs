@@ -12,8 +12,15 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Method to be implemented by deriving classes to provide the instance to test
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Instance to test</returns>
         protected abstract ICollection<String> GetInstance();
+
+        /// <summary>
+        /// Method to be implemented by deriving classes to provide the instance to test
+        /// </summary>
+        /// <param name="contents">Contents for the collection</param>
+        /// <returns>Instance to test</returns>
+        protected abstract ICollection<String> GetInstance(IEnumerable<String> contents);
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         public void CollectionContractCopyTo1()
@@ -45,6 +52,30 @@ namespace VDS.Common.Collections
             ICollection<String> c = this.GetInstance();
 
             c.CopyTo(new String[1], 0);
+        }
+
+        [TestMethod]
+        public void CollectionContractEnumerate1()
+        {
+            ICollection<String> c = this.GetInstance();
+
+            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            {
+                Assert.IsFalse(enumerator.MoveNext());
+            }
+        }
+
+        [TestMethod]
+        public void CollectionContractEnumerate2()
+        {
+            ICollection<String> c = this.GetInstance(new String[] { "test" });
+
+            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual("test", enumerator.Current);
+                Assert.IsFalse(enumerator.MoveNext());
+            }
         }
     }
 
@@ -92,6 +123,11 @@ namespace VDS.Common.Collections
         {
             return new List<String>();
         }
+
+        protected override ICollection<string> GetInstance(IEnumerable<string> contents)
+        {
+            return new List<String>(contents);
+        }
     }
 
     [TestClass]
@@ -101,6 +137,26 @@ namespace VDS.Common.Collections
         protected override ICollection<string> GetInstance()
         {
             return new ImmutableView<String>();
+        }
+
+        protected override ICollection<string> GetInstance(IEnumerable<string> contents)
+        {
+            return new ImmutableView<String>(contents);
+        }
+    }
+
+    [TestClass]
+    public class MaterializedImmutableViewContractTests
+        : AbstractImmutableCollectionContractTests
+    {
+        protected override ICollection<string> GetInstance()
+        {
+            return new MaterializedImmutableView<String>();
+        }
+
+        protected override ICollection<string> GetInstance(IEnumerable<string> contents)
+        {
+            return new MaterializedImmutableView<String>(contents);
         }
     }
 }

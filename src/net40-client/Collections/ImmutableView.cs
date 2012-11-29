@@ -154,6 +154,19 @@ namespace VDS.Common.Collections
     public class MaterializedImmutableView<T>
         : ImmutableView<T>
     {
+         /// <summary>
+        /// Creates a new immutable view over an empty collection
+        /// </summary>
+        public MaterializedImmutableView()
+            : base(new List<T>()) { }
+
+        /// <summary>
+        /// Creates a new immutable view over an empty collection
+        /// </summary>
+        /// <param name="message">Error message to throw when mutation actions are attempted</param>
+        public MaterializedImmutableView(String message)
+            : base(new List<T>(), message) { }
+
         /// <summary>
         /// Creates a new immutable view
         /// </summary>
