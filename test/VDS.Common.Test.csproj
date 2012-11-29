@@ -45,6 +45,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\AbstractCollectionContractTests.cs" />
     <Compile Include="Collections\AbstractDictionaryContractTests.cs" />
     <Compile Include="Collections\TestKey.cs" />
     <Compile Include="TestTools.cs" />

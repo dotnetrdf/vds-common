@@ -18,6 +18,19 @@ namespace VDS.Common.Collections
         private String _errMsg;
 
         /// <summary>
+        /// Creates a new immutable view over an empty collection
+        /// </summary>
+        public ImmutableView()
+            : this(Enumerable.Empty<T>(), DefaultErrorMessage) { }
+
+        /// <summary>
+        /// Creates a new immutable view over an empty collection
+        /// </summary>
+        /// <param name="message">Error message to throw when mutation actions are attempted</param>
+        public ImmutableView(String message)
+            : this(Enumerable.Empty<T>(), message) { }
+
+        /// <summary>
         /// Creates a new immutable view
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
