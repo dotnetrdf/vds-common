@@ -55,6 +55,16 @@ namespace VDS.Common.Collections
         }
 
         [TestMethod]
+        public void CollectionContractCopyTo5()
+        {
+            ICollection<String> c = this.GetInstance(new String[] { "test" });
+
+            String[] dest = new String[1];
+            c.CopyTo(dest, 0);
+            Assert.AreEqual("test", dest[0]);
+        }
+
+        [TestMethod]
         public void CollectionContractEnumerate1()
         {
             ICollection<String> c = this.GetInstance();
@@ -76,6 +86,34 @@ namespace VDS.Common.Collections
                 Assert.AreEqual("test", enumerator.Current);
                 Assert.IsFalse(enumerator.MoveNext());
             }
+        }
+
+        [TestMethod]
+        public void CollectionContractCount1()
+        {
+            ICollection<String> c = this.GetInstance();
+            Assert.AreEqual(0, c.Count);
+        }
+
+        [TestMethod]
+        public void CollectionContractCount2()
+        {
+            ICollection<String> c = this.GetInstance(new String[] { "test" });
+            Assert.AreEqual(1, c.Count);
+        }
+
+        [TestMethod]
+        public void CollectionContractContains1()
+        {
+            ICollection<String> c = this.GetInstance();
+            Assert.IsFalse(c.Contains("test"));
+        }
+
+        [TestMethod]
+        public void CollectionContractContains2()
+        {
+            ICollection<String> c = this.GetInstance(new String[] { "test" });
+            Assert.IsTrue(c.Contains("test"));
         }
     }
 
@@ -109,9 +147,75 @@ namespace VDS.Common.Collections
     public abstract class AbstractMutableCollectionContractTests
         : AbstractCollectionContractTests
     {
+        [TestMethod]
         public void CollectionContractAdd1()
         {
+            ICollection<String> c = this.GetInstance();
 
+            c.Add("test");
+            Assert.IsTrue(c.Contains("test"));
+            Assert.AreEqual(1, c.Count);
+        }
+
+        [TestMethod]
+        public void CollectionContractAdd2()
+        {
+            ICollection<String> c = this.GetInstance();
+
+            for (int i = 0; i < 100; i++)
+            {
+                c.Add("test" + i);
+                Assert.IsTrue(c.Contains("test" + i));
+                Assert.AreEqual(i + 1, c.Count);
+            }
+        }
+
+        [TestMethod]
+        public void CollectionContractRemove1()
+        {
+            ICollection<String> c = this.GetInstance();
+
+            c.Add("test");
+            Assert.IsTrue(c.Contains("test"));
+            c.Remove("test");
+            Assert.IsFalse(c.Contains("test"));
+        }
+
+        [TestMethod]
+        public void CollectionContractRemove2()
+        {
+            ICollection<String> c = this.GetInstance();
+
+            c.Add("test");
+            c.Add("test");
+            Assert.IsTrue(c.Contains("test"));
+            c.Remove("test");
+
+            //True because only one instance should get removed
+            Assert.IsTrue(c.Contains("test"));
+        }
+
+        [TestMethod]
+        public void CollectionContractClear1()
+        {
+            ICollection<String> c = this.GetInstance();
+
+            Assert.AreEqual(0, c.Count);
+            c.Clear();
+            Assert.AreEqual(0, c.Count);
+        }
+
+        [TestMethod]
+        public void CollectionContractClear2()
+        {
+            ICollection<String> c = this.GetInstance();
+
+            c.Add("test");
+            Assert.IsTrue(c.Contains("test"));
+            Assert.AreEqual(1, c.Count);
+            c.Clear();
+            Assert.IsFalse(c.Contains("test"));
+            Assert.AreEqual(0, c.Count);
         }
     }
 
