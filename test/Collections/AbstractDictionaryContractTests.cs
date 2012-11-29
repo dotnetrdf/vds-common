@@ -23,6 +23,23 @@ namespace VDS.Common.Collections
             dict.Add("key", 1);
             dict.Add("key", 2);
         }
+        
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void DictionaryContractAdd2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add(new KeyValuePair<String, int>("key", 1));
+            dict.Add(new KeyValuePair<String, int>("key", 2));
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractAdd3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add(null, 1);
+        }
 
         [TestMethod]
         public void DictionaryContractRemove1()
@@ -57,6 +74,14 @@ namespace VDS.Common.Collections
 
             dict.Add("key", 1);
             Assert.IsFalse(dict.Remove(new KeyValuePair<String, int>("key", 2)));
+        }
+
+        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractRemove5()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Remove(null);
         }
     }
 
