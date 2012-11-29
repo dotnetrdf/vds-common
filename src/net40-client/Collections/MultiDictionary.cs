@@ -337,8 +337,24 @@ namespace VDS.Common.Collections
             }
             set
             {
-                //Just call Add() since it overwrites an existing value associated with the given key which is the expected behaviour
-                this.Add(key, value);
+                if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+
+                ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
+                int hash = this._hashFunc(key);
+                bool created = false;
+                if (this._dict.TryGetValue(hash, out tree))
+                {
+                    //Move to appropriate node
+                    IBinaryTreeNode<TKey, TValue> node = tree.MoveToNode(key, out created);
+                    node.Value = value;
+                }
+                else
+                {
+                    //Add new tree
+                    tree = this.CreateTree();
+                    tree.Add(key, value);
+                    this._dict.Add(hash, tree);
+                }
             }
         }
 

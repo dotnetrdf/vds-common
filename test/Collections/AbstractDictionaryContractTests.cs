@@ -145,6 +145,33 @@ namespace VDS.Common.Collections
             dict.Remove("key");
             int value = dict["key"];
         }
+
+        [TestMethod]
+        public void DictionaryContractItemSet1()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict["key"] = 1;
+            Assert.AreEqual(1, dict["key"]);
+        }
+
+        [TestMethod]
+        public void DictionaryContractItemSet2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            dict["key"] = 2;
+            Assert.AreEqual(2, dict["key"]);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractItemSet3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict[null] = 1;
+        }
     }
 
     [TestClass]
