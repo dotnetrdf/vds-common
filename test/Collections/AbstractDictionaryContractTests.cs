@@ -83,6 +83,68 @@ namespace VDS.Common.Collections
 
             dict.Remove(null);
         }
+
+        [TestMethod]
+        public void DictionaryContractContains1()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            Assert.IsFalse(dict.ContainsKey("key"));
+        }
+
+        [TestMethod]
+        public void DictionaryContractContains2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            Assert.IsTrue(dict.ContainsKey("key"));
+        }
+
+        [TestMethod]
+        public void DictionaryContractContains3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            Assert.IsTrue(dict.Contains(new KeyValuePair<String, int>("key", 1)));
+        }
+
+        [TestMethod]
+        public void DictionaryContractContains4()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            Assert.IsFalse(dict.Contains(new KeyValuePair<String, int>("key", 2)));
+        }
+
+        [TestMethod, ExpectedException(typeof(KeyNotFoundException))]
+        public void DictionaryContractItemGet1()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            int value = dict["key"];
+        }
+
+        [TestMethod]
+        public void DictionaryContractItemGet2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            Assert.AreEqual(1, dict["key"]);
+        }
+
+        [TestMethod,ExpectedException(typeof(KeyNotFoundException))]
+        public void DictionaryContractItemGet3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            dict.Remove("key");
+            int value = dict["key"];
+        }
     }
 
     [TestClass]
