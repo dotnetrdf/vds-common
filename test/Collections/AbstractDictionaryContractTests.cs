@@ -119,6 +119,14 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Contains(new KeyValuePair<String, int>("key", 2)));
         }
 
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractContains5()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.ContainsKey(null);
+        }
+
         [TestMethod, ExpectedException(typeof(KeyNotFoundException))]
         public void DictionaryContractItemGet1()
         {
@@ -146,6 +154,14 @@ namespace VDS.Common.Collections
             int value = dict["key"];
         }
 
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractItemGet4()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            int value = dict[null];
+        }
+
         [TestMethod]
         public void DictionaryContractItemSet1()
         {
@@ -165,12 +181,52 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, dict["key"]);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod]
         public void DictionaryContractItemSet3()
         {
             IDictionary<String, int> dict = this.GetInstance();
 
+            dict["key"] = 1;
+            dict.Remove("key");
+            dict["key"] = 2;
+            Assert.AreEqual(2, dict["key"]);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractItemSet4()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
             dict[null] = 1;
+        }
+
+        [TestMethod]
+        public void DictionaryContractTryGetValue1()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            int value;
+            Assert.IsFalse(dict.TryGetValue("key", out value));
+        }
+
+        [TestMethod]
+        public void DictionaryContractTryGetValue2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            int value;
+            dict.Add("key", 1);
+            Assert.IsTrue(dict.TryGetValue("key", out value));
+            Assert.AreEqual(1, value);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void DictionaryContractTryGetValue3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            int value;
+            dict.TryGetValue(null, out value);
         }
     }
 
