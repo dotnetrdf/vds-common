@@ -29,6 +29,9 @@ namespace VDS.Common.Trees
     /// <typeparam name="TNode">Node Type</typeparam>
     /// <typeparam name="TKey">Key Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
+    /// <remarks>
+    /// A Tree is a mapping from keys to values stored in a tree structure, individual implementations control how the tree is stored and navigated
+    /// </remarks>
     public interface ITree<TNode, TKey, TValue>
         where TNode : class, ITreeNode<TKey, TValue>
     {
@@ -46,7 +49,8 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
-        /// <returns>True if a new node was created, false otherwise.  In the case false is returned the existing value will still be updated to the given value</returns>
+        /// <returns>True if a new node was created, false otherwise.</returns>
+        /// <exception cref="ArgumentException">Thrown if a duplicate key is added</exception>
         bool Add(TKey key, TValue value);
 
         /// <summary>

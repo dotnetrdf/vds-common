@@ -71,6 +71,7 @@ namespace VDS.Common.Trees
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentException">Thrown if a duplicate key is used</exception>
         public virtual bool Add(TKey key, TValue value)
         {
             if (this.Root == null)
@@ -84,6 +85,7 @@ namespace VDS.Common.Trees
                 //Move to the node
                 bool created = false;
                 IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out created);
+                if (!created) throw new ArgumentException("Duplicate keys are not permitted");
                 node.Value = value;
                 return created;
             }

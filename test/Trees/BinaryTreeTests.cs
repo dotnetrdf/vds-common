@@ -438,7 +438,7 @@ namespace VDS.Common.Trees
                 Assert.AreEqual(count, tree.Nodes.Count(), "Incorrect count after Insert of " + i);
             }
 
-            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(input.OrderBy(i => i, Comparer<int>.Default), tree);
+            this.TestOrderStructs<int>(input.OrderBy(i => i, Comparer<int>.Default).ToList(), tree.Values.ToList());
         }
 
         [TestMethod]
