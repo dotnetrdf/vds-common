@@ -228,6 +228,52 @@ namespace VDS.Common.Collections
             int value;
             dict.TryGetValue(null, out value);
         }
+
+        [TestMethod]
+        public void DictionaryContractKeys1()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            Assert.IsFalse(dict.Keys.Any());
+        }
+
+        [TestMethod]
+        public void DictionaryContractKeys2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            Assert.IsTrue(dict.Keys.Any());
+            Assert.IsTrue(dict.Keys.Contains("key"));
+        }
+
+        [TestMethod,ExpectedException(typeof(NotSupportedException))]
+        public void DictionaryContractKeys3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            Assert.IsFalse(dict.Keys.Any());
+            dict.Keys.Add("key");
+            Assert.IsFalse(dict.ContainsKey("key"));
+        }
+
+        [TestMethod]
+        public void DictionaryContractValues1()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            Assert.IsFalse(dict.Values.Any());
+        }
+
+        [TestMethod]
+        public void DictionaryContractValues2()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            dict.Add("key", 1);
+            Assert.IsTrue(dict.Values.Any());
+            Assert.IsTrue(dict.Values.Contains(1));
+        }
     }
 
     [TestClass]
