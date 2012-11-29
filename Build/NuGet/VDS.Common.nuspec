@@ -10,6 +10,12 @@
     <projectUrl>http://bitbucket.org/rvesse/vds-common</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries and fast dictionaries.</description>
+    <releaseNotes>
+      - Fixes to MultiDictionary to align behaviour with standard .Net dictionary
+      - Added ImmutableView
+      - Changed behaviour of Add() on ITree to throw an error if duplicate key is added
+      - Fixes to BinaryTree to reflect ITree contract changes
+    </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>
 </package>
