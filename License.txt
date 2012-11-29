@@ -1,4 +1,3 @@
-/*
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2009-2012 Rob Vesse
@@ -17,35 +16,3 @@ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR P
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-using System;
-using System.Collections.Generic;
-
-namespace VDS.Common.Tries
-{
-    /// <summary>
-    /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
-    /// </summary>
-    /// <typeparam name="T">Type of values to be stored</typeparam>
-    public class StringTrie<T>
-        : Trie<String, char, T>
-        where T : class
-    {
-        /// <summary>
-        /// Creates a new String Trie
-        /// </summary>
-        public StringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
-
-        /// <summary>
-        /// Key Mapper function for String Trie
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Array of characters</returns>
-        public static IEnumerable<char> KeyMapper(String key)
-        {
-            return key.ToCharArray();
-        }
-    }
-}
