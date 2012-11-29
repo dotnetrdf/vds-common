@@ -3,6 +3,31 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+1.1.0
+-----
+
+- Fixes to MultiDictionary to align behaviour with standard .Net dictionary
+- Added ImmutableView
+- Changed behaviour of Add() on ITree to throw an error if duplicate key is added
+- Fixes to BinaryTree to reflect ITree contract changes
+
+1.0.2
+-----
+
+- Change how MultiDictionary handles null keys, disables null keys if hash function does not support them
+- Make more classes public
+
+1.0.1
+-----
+
+- Make some classes public which were previously internal
+
+1.0.0
+-----
+
+- Corrected Namespaces
+- Removed defunct HashTable code
+
 0.9.0
 -----
 
