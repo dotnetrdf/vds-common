@@ -127,7 +127,7 @@
   <target name="dist" description="Creates the Distribution ZIP Files" depends="build">
     <zip zipfile="${common.zip}" ziplevel="9">
       <fileset>
-        <include name="License" />
+        <include name="License.txt" />
         <include name="ReadMe.md" />
         <include name="ChangeLog.txt" />
       </fileset>
