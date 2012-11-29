@@ -138,7 +138,7 @@
     <zip zipfile="${common.srczip}" ziplevel="9"> 
       <fileset failonempty="true">
         <include name="**/*" />
-        <exclude name=".hg/*" />
+        <exclude name=".hg/" />
         <exclude name="**/bin/**/*" />
         <exclude name="**/obj/**/*" />
         <exclude name="**/*.dll" />
@@ -146,7 +146,7 @@
         <exclude name="**/*.pdb" />
         <exclude name="TestResults/" />
         <exclude name="*.zip" />
-        <exclude name="Build/lib/**/*" />
+        <exclude name="Build/NuGet/lib/" />
       </fileset>
     </zip>
   </target>
