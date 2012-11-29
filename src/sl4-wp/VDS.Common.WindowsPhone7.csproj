@@ -49,6 +49,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\net40-client\Collections\ImmutableView.cs">
+      <Link>Collections\ImmutableView.cs</Link>
+    </Compile>
     <Compile Include="..\net40-client\Collections\MultiDictionary.cs">
       <Link>Collections\MultiDictionary.cs</Link>
     </Compile>

@@ -218,9 +218,9 @@ namespace VDS.Common.Collections
         {
             get 
             {
-                return (from hashKey in this._dict.Keys
+                return new ImmutableView<TKey>(from hashKey in this._dict.Keys
                         from k in this._dict[hashKey].Keys
-                        select k).ToList();
+                        select k, "Modifying the Keys collection of a MultiDictionary directly is not supported");
             }
         }
 
@@ -307,9 +307,9 @@ namespace VDS.Common.Collections
         {
             get
             {
-                return (from hashKey in this._dict.Keys
+                return new ImmutableView<TValue>(from hashKey in this._dict.Keys
                         from v in this._dict[hashKey].Values
-                        select v).ToList();
+                        select v, "Modiying the values collection of a MultiDictionary directly is not supported");
             }
         }
 
@@ -408,6 +408,10 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start copying at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
+            if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Cannot start copying at index < 0");
+            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
+
             int i = arrayIndex;
             foreach (ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree in this._dict.Values)
             {

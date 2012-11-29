@@ -43,6 +43,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ImmutableView.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="References\NestedReference.cs" />

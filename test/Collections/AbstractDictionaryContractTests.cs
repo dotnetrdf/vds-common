@@ -258,6 +258,18 @@ namespace VDS.Common.Collections
         }
 
         [TestMethod]
+        public void DictionaryContractKeys4()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            ICollection<String> keys = dict.Keys;
+            Assert.AreEqual(0, keys.Count);
+            dict.Add("key", 1);
+            Assert.AreEqual(1, keys.Count);
+            Assert.AreEqual(1, dict.Count);
+        }
+
+        [TestMethod]
         public void DictionaryContractValues1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -273,6 +285,28 @@ namespace VDS.Common.Collections
             dict.Add("key", 1);
             Assert.IsTrue(dict.Values.Any());
             Assert.IsTrue(dict.Values.Contains(1));
+        }
+
+        [TestMethod, ExpectedException(typeof(NotSupportedException))]
+        public void DictionaryContractValues3()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            Assert.IsFalse(dict.Values.Any());
+            dict.Values.Add(1);
+            Assert.IsFalse(dict.Values.Contains(1));
+        }
+
+        [TestMethod]
+        public void DictionaryContractValues4()
+        {
+            IDictionary<String, int> dict = this.GetInstance();
+
+            ICollection<int> values = dict.Values;
+            Assert.AreEqual(0, values.Count);
+            dict.Add("key", 1);
+            Assert.AreEqual(1, values.Count);
+            Assert.AreEqual(1, dict.Count);
         }
     }
 
