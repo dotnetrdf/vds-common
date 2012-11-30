@@ -156,7 +156,8 @@
     <exec workingdir="Build/NuGet/" program="nuget.exe">
       <arg value="pack" />
       <arg value="VDS.Common.nuspec" />
-      <arg value="-verbose" />
+      <arg value="-Verbosity" />
+      <arg value="detailed" />
     </exec>
   </target>
 
