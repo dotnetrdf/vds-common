@@ -31,6 +31,12 @@ namespace VDS.Common.Collections
     [TestClass]
     public class MultiDictionaryTests
     {
+        [TestMethod]
+        public void MultiDictionaryInstantiation1()
+        {
+            MultiDictionary<String, int> dict = new MultiDictionary<string, int>();
+        }
+
         [TestMethod,ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling1()
         {
