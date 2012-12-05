@@ -6,7 +6,7 @@
   <property name="common.License.exclude.exts" 
             value="dll,pdb,exe,xml,csproj,user,template,cache,orig" />
   <property name="common.License.exclude.regex" value="hg|svn|obj|bin" />
-  <property name="common.License.search" value="Copyright (c) 2012 Robert Vesse" />
+  <property name="common.License.search" value="Copyright (c) 2009-2012 Robert Vesse" />
   <property name="common.License.replace" value="License.txt" />
   <property name="common.License.overwrite" value="-overwrite" /> <!-- Alternative is -preserve which does not change existing Licenses -->
   
@@ -78,15 +78,19 @@
     <!-- .Net 4.0 Client Profile -->
     <copy overwrite="true" todir="Build/NuGet/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.dll" />
     <copy overwrite="true" todir="Build/NuGet/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/net40-client" file="src/net40-client/bin/Debug/VDS.Common.pdb" />
     <!-- .Net 3.5 Client Profile -->
     <copy overwrite="true" todir="Build/NuGet/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.dll" />
     <copy overwrite="true" todir="Build/NuGet/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/net35-client" file="src/net35-client/bin/Debug/VDS.Common.pdb" />
     <!-- Silverlight 4 -->
     <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.dll" />
     <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.dll" />
     <!-- Silverlight 4 for Windows Phone -->
     <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.dll" />
     <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.dll" />
   </target>
   
   <!-- Clean Targets -->
