@@ -125,6 +125,11 @@ namespace VDS.Common.Trees
         {
             get;
         }
+
+        /// <summary>
+        /// Empty the tree
+        /// </summary>
+        void Clear();
     }
 
     /// <summary>

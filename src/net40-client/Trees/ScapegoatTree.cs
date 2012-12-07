@@ -309,5 +309,14 @@ namespace VDS.Common.Trees
                 this.RebalanceAfterDelete(node);
             }
         }
+
+        /// <summary>
+        /// Resets node counts after a clear
+        /// </summary>
+        protected sealed override void AfterClear()
+        {
+            this._nodeCount = 0;
+            this._maxNodeCount = 0;
+        }
     }
 }

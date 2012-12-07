@@ -106,4 +106,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\TreeSortedDictionary.cs">
+      <Link>Collections\TreeSortedDictionary.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

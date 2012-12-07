@@ -553,5 +553,22 @@ namespace VDS.Common.Trees
             }
         }
 
+        /// <summary>
+        /// Clears the tree
+        /// </summary>
+        public void Clear()
+        {
+            this.Root = null;
+            this.AfterClear();
+        }
+
+        /// <summary>
+        /// Virtual method that can be used by derived implementations to perform clean up after a clear
+        /// </summary>
+        protected virtual void AfterClear()
+        {
+
+        }
+
     }
 }
