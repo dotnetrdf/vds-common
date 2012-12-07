@@ -522,14 +522,16 @@ namespace VDS.Common.Trees
         {
             get
             {
-                if (this.Root == null)
-                {
-                    return Enumerable.Empty<TNode>();
-                }
-                else
-                {
-                    return (this.Root.LeftChild != null ? this.Root.LeftChild.Nodes.OfType<TNode>() : Enumerable.Empty<TNode>()).Concat(this.Root.AsEnumerable()).Concat(this.Root.RightChild != null ? this.Root.RightChild.Nodes.OfType<TNode>() : Enumerable.Empty<TNode>());
-                }
+                return (IEnumerable<TNode>)new NodesEnumerable<TNode, TKey, TValue>(this);
+                //if (this.Root == null)
+                //{
+                //    return Enumerable.Empty<TNode>();
+                //}
+                //else
+                //{
+                //    //return (this.Root.LeftChild != null ? this.Root.LeftChild.Nodes.OfType<TNode>() : Enumerable.Empty<TNode>()).Concat(this.Root.AsEnumerable()).Concat(this.Root.RightChild != null ? this.Root.RightChild.Nodes.OfType<TNode>() : Enumerable.Empty<TNode>());
+                //    return new LeftChildNodeEnumerable<TKey, TValue>(this.Root).OfType<TNode>().Concat(this.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this.Root).OfType<TNode>());
+                //}
             }
         }
 

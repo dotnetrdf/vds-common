@@ -52,6 +52,7 @@
     <Compile Include="Trees\AVLTree.cs" />
     <Compile Include="Trees\BinaryTree.cs" />
     <Compile Include="Trees\BinaryTreeNode.cs" />
+    <Compile Include="Trees\ChildNodesEnumerable.cs" />
     <Compile Include="Trees\ITree.cs" />
     <Compile Include="Trees\ScapegoatTree.cs" />
     <Compile Include="Trees\TreeExtensions.cs" />
