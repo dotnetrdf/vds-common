@@ -30,7 +30,7 @@
       <arg value="sync" />
       <arg value="src/net40-client/VDS.Common.Net40.csproj" />
       <arg value="src/net35-client/VDS.Common.Net35.csproj" />
-      <arg value="../net40-client/" />
+      <arg value="..\net40-client\" />
     </exec>
   </target>
 
@@ -39,7 +39,7 @@
       <arg value="sync" />
       <arg value="src/net40-client/VDS.Common.Net40.csproj" />
       <arg value="src/sl4/VDS.Common.Silverlight4.csproj" />
-      <arg value="../net40-client/" />
+      <arg value="..\net40-client\" />
     </exec>
   </target>
 
@@ -48,7 +48,7 @@
       <arg value="sync" />
       <arg value="src/net40-client/VDS.Common.Net40.csproj" />
       <arg value="src/sl4-wp/VDS.Common.WindowsPhone7.csproj" />
-      <arg value="../net40-client/" />
+      <arg value="..\net40-client\" />
     </exec>
   </target>
     
