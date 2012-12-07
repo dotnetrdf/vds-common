@@ -3,6 +3,17 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+1.1.2
+-----
+
+- Add TreeSortedDictionary
+- Bug fix to problem where enumerable on BinaryTree would not reflect latest state of tree
+
+1.1.1
+-----
+
+- Include PDBs in NuGet packages
+
 1.1.0
 -----
 
