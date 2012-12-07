@@ -35,11 +35,19 @@ namespace VDS.Common.Trees
         {
             if (this._tree.Root == null)
             {
+#if NET40
                 return Enumerable.Empty<TNode>().GetEnumerator();
+#else
+                return Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator();
+#endif
             }
             else
             {
+#if NET40
                 return new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>().Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>()).GetEnumerator();
+#else
+                return (IEnumerator<IBinaryTreeNode<TKey, TValue>>)new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>().Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>()).GetEnumerator();
+#endif
             }
         }
 

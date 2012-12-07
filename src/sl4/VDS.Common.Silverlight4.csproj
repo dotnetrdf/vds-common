@@ -122,4 +122,9 @@
       <Link>Collections\TreeSortedDictionary.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Trees\ChildNodesEnumerable.cs">
+      <Link>Trees\ChildNodesEnumerable.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
