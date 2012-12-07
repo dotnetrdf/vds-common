@@ -107,6 +107,9 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)Build\SyncProjects.exe" sync "$(SolutionDir)src\net40-client\VDS.Common.Net40.csproj" "$(ProjectPath)" "..\net40-client\\"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
