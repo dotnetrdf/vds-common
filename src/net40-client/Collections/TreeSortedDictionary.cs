@@ -45,7 +45,7 @@ namespace VDS.Common.Collections
         {
             get 
             {
-                return new ImmutableView<TKey>(this._tree.Keys);
+                return new ImmutableView<TKey>(this._tree.Keys, "Modifying the Keys collection of a TreeSortedDictionary directly is not supported");
             }
         }
 

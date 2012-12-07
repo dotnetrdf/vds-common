@@ -216,6 +216,9 @@ namespace VDS.Common.Trees
         /// <returns>True if a Node was removed</returns>
         public virtual bool Remove(TKey key)
         {
+            //If empty tree any remove always returns false
+            if (this.Root == null) return false;
+
             //Iteratively binary search for the key
             TNode current = this.Root;
             int c;
@@ -478,7 +481,8 @@ namespace VDS.Common.Trees
             }
             set
             {
-                TNode n = this.Find(key);
+                bool created = false;
+                TNode n = this.MoveToNode(key, out created);
                 if (n != null)
                 {
                     n.Value = value;
