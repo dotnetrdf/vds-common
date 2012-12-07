@@ -17,6 +17,9 @@ namespace VDS.Common.Collections
         private ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
         private int _count = 0;
 
+        public TreeSortedDictionary()
+            : this(Comparer<TKey>.Default) { }
+
         public TreeSortedDictionary(IComparer<TKey> comparer)
         {
             if (comparer == null) throw new ArgumentNullException("comparer", "Comparer cannot be null");

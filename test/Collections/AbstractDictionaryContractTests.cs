@@ -471,4 +471,14 @@ namespace VDS.Common.Collections
             return new MultiDictionary<string, int>(s => s != null ? s.GetHashCode() : 0);
         }
     }
+
+    [TestClass]
+    public class TreeSortedDictionaryContractTests
+        : AbstractDictionaryWithNullKeysAllowedContractTests
+    {
+        protected override IDictionary<string, int> GetInstance()
+        {
+            return new TreeSortedDictionary<String, int>();
+        }
+    }
 }
