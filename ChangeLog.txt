@@ -8,6 +8,7 @@ This is the Change Log for VDS.Common
 
 - Add TreeSortedDictionary
 - Bug fix to problem where enumerable on BinaryTree would not reflect latest state of tree
+- Bug fix to be more specific in error handling on the null keys check in MultiDictionary
 
 1.1.1
 -----

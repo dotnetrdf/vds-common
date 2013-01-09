@@ -61,6 +61,10 @@ namespace VDS.Common.Collections
     /// <para>
     /// This means the multi-dictionary gives slightly worse performance than a dictionary for well distributed data with minimal key collisions but provides order of magnitude better performance for data with lots of hash collisions.  This makes it ideal as a use for an indexing structure since you can index using partial properties of the keys (thus giving hash code collisions) while still preserving all the keys.
     /// </para>
+    /// <h3>Null Key Handling</h3>
+    /// <para>
+    /// A MultiDictionary is capable of handling null keys when the key type is a nullable type provided that the hash function used supports them.  To determine this it will attempt to apply the hash function to <em>default(TKey)</em> in the constructor, if the hash function supports null keys or the key type is non-nullable this will succeed and it will allow null keys.  If a <see cref="NullReferenceException"/> is thrown it will ignore the error and use the default behaviour of forbidding null keys, any attempt to use a null key in this case will result in an <see cref="ArgumentNullException"/>
+    /// </para>
     /// </remarks>
     public class MultiDictionary<TKey, TValue>
         : IDictionary<TKey, TValue>, IEnumerable<TValue>
@@ -136,11 +140,15 @@ namespace VDS.Common.Collections
             try
             {
                 this._hashFunc(default(TKey));
+                //If the above suceeds then we know that either null keys are supported by the hash function
+                //or we are using a non-nullable type.  Either way it is safe to go ahead and allow null keys
                 this._allowNullKeys = true;
             }
-            catch
+            catch (NullReferenceException)
             {
-                //Ignore, use default behaviour of forbidding null keys
+                //Ignore NPE
+                //This just indicates that the hash function specified does not support null keys
+                //Thus we will use the default behaviour of forbidding null keys
             }
         }
 
