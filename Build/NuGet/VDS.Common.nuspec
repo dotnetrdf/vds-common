@@ -11,7 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries and fast dictionaries.</description>
     <releaseNotes>
-      
+      - Add TreeSortedDictionary
+      - Bug fix to problem where enumerable on BinaryTree would not reflect latest state of tree
+      - Bug fix to be more specific in error handling on the null keys check in MultiDictionary
     </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>
