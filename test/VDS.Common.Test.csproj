@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Collections\AbstractCollectionContractTests.cs" />
     <Compile Include="Collections\AbstractDictionaryContractTests.cs" />
+    <Compile Include="Collections\AbstractSortedDictionaryContractTests.cs" />
     <Compile Include="Collections\TestKey.cs" />
     <Compile Include="TestTools.cs" />
     <Compile Include="Trees\BinaryTreeDeleteTests.cs" />
