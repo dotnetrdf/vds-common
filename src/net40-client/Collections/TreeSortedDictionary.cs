@@ -28,7 +28,7 @@ using VDS.Common.Trees;
 namespace VDS.Common.Collections
 {
     /// <summary>
-    /// An implementation of a dictionary where the sort order of keys is preserved
+    /// An implementation of a dictionary where the sort order of keys is preserved using a binary tree behind the scenes.  This makes all operations on the dictionary O(log n)
     /// </summary>
     /// <typeparam name="TKey">Key Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
@@ -38,9 +38,16 @@ namespace VDS.Common.Collections
         private ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
         private int _count = 0;
 
+        /// <summary>
+        /// Creates a new dictionary using the default comparer for the key type
+        /// </summary>
         public TreeSortedDictionary()
             : this(Comparer<TKey>.Default) { }
 
+        /// <summary>
+        /// Creates a new dictionary using the given comparer for the keys
+        /// </summary>
+        /// <param name="comparer">Comparer</param>
         public TreeSortedDictionary(IComparer<TKey> comparer)
         {
             if (comparer == null) throw new ArgumentNullException("comparer", "Comparer cannot be null");
@@ -49,6 +56,11 @@ namespace VDS.Common.Collections
 
         #region IDictionary<TKey,TValue> Members
 
+        /// <summary>
+        /// Adds a key value pair to the dictionary
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
         public void Add(TKey key, TValue value)
         {
             if (this._tree.Add(key, value))
@@ -57,11 +69,19 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Checks whether the dictionary contains the given key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>True if the dictionary contains the key, false otherwise</returns>
         public bool ContainsKey(TKey key)
         {
             return this._tree.ContainsKey(key);
         }
 
+        /// <summary>
+        /// Gets the collection of keys
+        /// </summary>
         public ICollection<TKey> Keys
         {
             get 
@@ -70,6 +90,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Removes a key from the dictionary
+        /// </summary>
+        /// <param name="key">Key to remove</param>
+        /// <returns>True if a key was removed, false otherwise</returns>
         public bool Remove(TKey key)
         {
             if (this._tree.Remove(key))
@@ -83,11 +108,20 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Tries to get the value associated with the given key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
+        /// <returns>True if a value has been returned</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
             return this._tree.TryGetValue(key, out value);
         }
 
+        /// <summary>
+        /// Gets the collection of values in the dictionary
+        /// </summary>
         public ICollection<TValue> Values
         {
             get
@@ -96,6 +130,12 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets/Sets the value associated with a key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>Value</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if the given key does not exist in the dictionary</exception>
         public TValue this[TKey key]
         {
             get
@@ -112,17 +152,29 @@ namespace VDS.Common.Collections
 
         #region ICollection<KeyValuePair<TKey,TValue>> Members
 
+        /// <summary>
+        /// Adds a key value pair to the dictionary
+        /// </summary>
+        /// <param name="item">Key Value pair</param>
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             this.Add(item.Key, item.Value);
         }
 
+        /// <summary>
+        /// Clears the dictionary
+        /// </summary>
         public void Clear()
         {
             this._tree.Clear();
             this._count = 0;
         }
 
+        /// <summary>
+        /// Checks whether the dictionary contains the given key value pair
+        /// </summary>
+        /// <param name="item">Key Value pair</param>
+        /// <returns></returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             TValue value;
@@ -139,6 +191,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Copies the contents of the dictionary to an array
+        /// </summary>
+        /// <param name="array">Array</param>
+        /// <param name="arrayIndex">Index to start copying elements at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
@@ -153,6 +210,9 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets the number of key value pairs in the dictionary
+        /// </summary>
         public int Count
         {
             get 
@@ -161,6 +221,9 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets whether the dictionary is read-only
+        /// </summary>
         public bool IsReadOnly
         {
             get 
@@ -169,6 +232,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Removes a key value pair from the dictionary
+        /// </summary>
+        /// <param name="item">Key Value pair</param>
+        /// <returns>True if a key value pair was removed, false otherwise</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             TValue value;
@@ -188,6 +256,10 @@ namespace VDS.Common.Collections
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 
+        /// <summary>
+        /// Gets the enumerator of key value pairs
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return (from node in this._tree.Nodes
@@ -198,6 +270,10 @@ namespace VDS.Common.Collections
 
         #region IEnumerable Members
 
+        /// <summary>
+        /// Gets the enumerator of values
+        /// </summary>
+        /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -205,6 +281,10 @@ namespace VDS.Common.Collections
 
         #endregion
 
+        /// <summary>
+        /// Gets the enumerator of values
+        /// </summary>
+        /// <returns></returns>
         IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
         {
             return this._tree.Values.GetEnumerator();
