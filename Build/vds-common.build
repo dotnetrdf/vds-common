@@ -23,7 +23,7 @@
   
   <!-- Project Sync Targets -->
 
-  <target name="projectsync" description="Syncs the project files" depends="projectsync-net35,projectsync-sl4,projectsync-sl4-wp7" />
+  <target name="projectsync" description="Syncs the project files" depends="projectsync-net35,projectsync-sl4,projectsync-sl4-wp7,projectsync-portable" />
 
   <target name="projectsync-net35" description="Syncs the .Net 3.5 Client Profile build project file">
     <exec program="Build/SyncProjects.exe">
