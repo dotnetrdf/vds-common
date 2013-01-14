@@ -40,9 +40,6 @@
     <AssemblyOriginatorKeyFile>..\..\VDS.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -106,4 +103,17 @@
       <Link>Tries\TrieNode.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Collections\" />
+    <Folder Include="References\" />
+    <Folder Include="Trees\" />
+    <Folder Include="Tries\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)Build\SyncProjects.exe" sync "$(SolutionDir)src\net40-client\VDS.Common.Net40.csproj" "$(ProjectPath)" "..\net40-client\\"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

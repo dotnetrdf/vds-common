@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VDS.Common")]
-[assembly: AssemblyDescription("Common data structures for .Net projects (.Net 4.0 Client Profile Build)")]
+[assembly: AssemblyDescription("Common data structures for .Net projects (.Net Portable Library Build)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Visual Design Studios")]
 [assembly: AssemblyProduct("VDS.Common")]

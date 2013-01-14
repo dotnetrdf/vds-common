@@ -51,6 +51,15 @@
       <arg value="..\net40-client\" />
     </exec>
   </target>
+
+  <target name="projectsync-portable" description="Syncs the Portable Library build project file">
+    <exec program="Build/SyncProjects.exe">
+      <arg value="sync" />
+      <arg value="src/net40-client/VDS.Common.Net40.csproj" />
+      <arg value="src/portable/VDS.Common.Portable.csproj" />
+      <arg value="..\net40-client\" />
+    </exec>
+  </target>
     
   <!-- License Targets which enforce License headers on the code -->
 
@@ -117,11 +126,19 @@
     <!-- Silverlight 4 -->
     <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.dll" />
     <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.xml" />
-    <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4" file="src/sl4/bin/Debug/VDS.Common.pdb" />
     <!-- Silverlight 4 for Windows Phone -->
     <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.dll" />
     <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.xml" />
-    <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/sl4-wp" file="src/sl4-wp/bin/Debug/VDS.Common.pdb" />
+    <!-- Portable Library for Windows 8 and .Net 4.5 -->
+    <copy overwrite="true" todir="Build/NuGet/lib/portable-windows8+net45" file="src/portable/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/portable-windows8+net45" file="src/sl4-wp/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/portable-windows8+net45" file="src/sl4-wp/bin/Debug/VDS.Common.pdb" />
+    <!-- Portable Library -->
+    <copy overwrite="true" todir="Build/NuGet/lib/portable-sl4+wp71+windows8" file="src/portable/bin/Debug/VDS.Common.dll" />
+    <copy overwrite="true" todir="Build/NuGet/lib/portable-sl4+wp71+windows8" file="src/sl4-wp/bin/Debug/VDS.Common.xml" />
+    <copy overwrite="true" todir="Build/NuGet/lib/portable-sl4+wp71+windows8" file="src/sl4-wp/bin/Debug/VDS.Common.pdb" />
   </target>
   
   <!-- Clean Targets -->

@@ -11,5 +11,5 @@ bin/
 Bin/
 obj/
 TestResults/
-Build/NuGet/lib/
+Build/NuGet/lib
 *.zip
