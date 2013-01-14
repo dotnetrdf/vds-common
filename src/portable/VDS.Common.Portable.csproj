@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3E259A2C-D877-4ABC-A8ED-4C0AFDAED530}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VDS.Common</RootNamespace>
+    <AssemblyName>VDS.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\VDS.Common.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\VDS.Common.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\ImmutableView.cs">
+      <Link>Collections\ImmutableView.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\MultiDictionary.cs">
+      <Link>Collections\MultiDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\TreeSortedDictionary.cs">
+      <Link>Collections\TreeSortedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\References\NestedReference.cs">
+      <Link>References\NestedReference.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\References\ThreadIsolatedReference.cs">
+      <Link>References\ThreadIsolatedReference.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\AVLTree.cs">
+      <Link>Trees\AVLTree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\BinaryTree.cs">
+      <Link>Trees\BinaryTree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\BinaryTreeNode.cs">
+      <Link>Trees\BinaryTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\ChildNodesEnumerable.cs">
+      <Link>Trees\ChildNodesEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\ITree.cs">
+      <Link>Trees\ITree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\ScapegoatTree.cs">
+      <Link>Trees\ScapegoatTree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\TreeExtensions.cs">
+      <Link>Trees\TreeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\UnbalancedBinaryTree.cs">
+      <Link>Trees\UnbalancedBinaryTree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\StringTrie.cs">
+      <Link>Tries\StringTrie.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\Trie.cs">
+      <Link>Tries\Trie.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\TrieNode.cs">
+      <Link>Tries\TrieNode.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
