@@ -35,6 +35,9 @@ namespace VDS.Common.Collections
     {
         private const String DefaultErrorMessage = "This collection is immutable";
 
+        /// <summary>
+        /// The enumerable being wrapped
+        /// </summary>
         protected IEnumerable<T> _items;
         private String _errMsg;
 
@@ -169,7 +172,7 @@ namespace VDS.Common.Collections
     }
 
     /// <summary>
-    /// A version of <see cref="ImmutableView"/> where the enumerable is materialized as a list
+    /// A version of <see cref="ImmutableView{T}"/> where the enumerable is materialized as a list
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
     public class MaterializedImmutableView<T>

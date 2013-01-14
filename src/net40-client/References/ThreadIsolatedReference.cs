@@ -138,6 +138,10 @@ namespace VDS.Common.References
         }
     }
 
+    /// <summary>
+    /// Provides a thread isolated reference to some value type
+    /// </summary>
+    /// <typeparam name="T">Reference Type</typeparam>
     public class ThreadIsolatedValue<T>
         : IDisposable
         where T : struct
@@ -215,6 +219,9 @@ namespace VDS.Common.References
             }
         }
 
+        /// <summary>
+        /// Disposes of the value
+        /// </summary>
         public void Dispose()
         {
             try
