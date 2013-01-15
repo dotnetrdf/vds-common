@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ChangeLog.txt = ChangeLog.txt
 		License.txt = License.txt
 		Local.testsettings = Local.testsettings
+		ReadMe.md = ReadMe.md
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 		Build\vds-common.build = Build\vds-common.build
 		Build\vds-common.proj = Build\vds-common.proj
