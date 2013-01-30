@@ -35,22 +35,23 @@ namespace VDS.Common.Tries
     /// Original code taken from <a href="http://code.google.com/p/typocalypse/source/browse/#hg/Trie">Typocolypse</a> but has been heavily rewritten to be much more generic and LINQ friendly
     /// </para>
     /// </remarks>
-    public class TrieNode<TKeyBit, TValue>
+    public class TrieNode<TKeyBit, TValue> 
+        : ITrieNode<TKeyBit, TValue>
         where TValue : class
     {
-        private Dictionary<TKeyBit, TrieNode<TKeyBit, TValue>> _children;
+        private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
         /// </summary>
         /// <param name="parent">Parent node of this node</param>
         /// <param name="key">Key Bit</param>
-        public TrieNode(TrieNode<TKeyBit, TValue> parent, TKeyBit key)
+        public TrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
         {
             this.KeyBit = key;
             this.Value = null;
             this.Parent = parent;
-            this._children = new Dictionary<TKeyBit, TrieNode<TKeyBit, TValue>>();
+            this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
         }
 
         /// <summary>
@@ -66,16 +67,16 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Get the parent of this node
         /// </summary>
-        public TrieNode<TKeyBit, TValue> Parent { get; private set; }
+        public ITrieNode<TKeyBit, TValue> Parent { get; private set; }
 
         /// <summary>
         /// Get a child of this node which is associated with a key bit
         /// </summary>
         /// <param name="key">Key associated with the child of interest</param>
         /// <returns>The child or null if no child is associated with the given key</returns>
-        internal TrieNode<TKeyBit, TValue> GetChild(TKeyBit key)
+        internal ITrieNode<TKeyBit, TValue> GetChild(TKeyBit key)
         {
-            TrieNode<TKeyBit, TValue> child;
+            ITrieNode<TKeyBit, TValue> child;
             lock (this._children)
             {
                 if (this._children.TryGetValue(key, out child)) return child;
@@ -89,7 +90,7 @@ namespace VDS.Common.Tries
         /// <param name="key">Key</param>
         /// <param name="child">Child</param>
         /// <returns></returns>
-        internal bool TryGetChild(TKeyBit key, out TrieNode<TKeyBit, TValue> child)
+        public bool TryGetChild(TKeyBit key, out ITrieNode<TKeyBit, TValue> child)
         {
             lock (this._children)
             {
@@ -214,7 +215,7 @@ namespace VDS.Common.Tries
             {
                 lock (this._children)
                 {
-                    foreach (TrieNode<TKeyBit, TValue> node in this._children.Values)
+                    foreach (ITrieNode<TKeyBit, TValue> node in this._children.Values)
                     {
                         node.Trim(depth - 1);
                     }
@@ -231,9 +232,9 @@ namespace VDS.Common.Tries
         /// </summary>
         /// <param name="key">Key to associated with the child node.</param>
         /// <returns>If given key already exists then return the existing child node, else return the new child node.</returns>
-        internal TrieNode<TKeyBit, TValue> AddChild(TKeyBit key)
+        public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
-            TrieNode<TKeyBit, TValue> child;
+            ITrieNode<TKeyBit, TValue> child;
             lock (this._children)
             {
                 if (this._children.TryGetValue(key, out child))
@@ -253,7 +254,7 @@ namespace VDS.Common.Tries
         /// Remove the child of a node associated with a key along with all its descendents.
         /// </summary>
         /// <param name="key">The key associated with the child to remove.</param>
-        internal void RemoveChild(TKeyBit key)
+        public void RemoveChild(TKeyBit key)
         {
             lock (this._children)
             {
@@ -264,7 +265,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the immediate children of this Node
         /// </summary>
-        public IEnumerable<TrieNode<TKeyBit, TValue>> Children
+        public IEnumerable<ITrieNode<TKeyBit, TValue>> Children
         {
             get
             {
@@ -275,19 +276,19 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets all descended children of this Node
         /// </summary>
-        public IEnumerable<TrieNode<TKeyBit, TValue>> AllChildren
+        public IEnumerable<ITrieNode<TKeyBit, TValue>> AllChildren
         {
             get
             {
                 if (this.IsLeaf)
                 {
-                    return Enumerable.Empty<TrieNode<TKeyBit, TValue>>();
+                    return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>();
                 }
                 else
                 {
                     lock (this._children)
                     {
-                        IEnumerable<TrieNode<TKeyBit, TValue>> cs = from n in this._children.Values
+                        IEnumerable<ITrieNode<TKeyBit, TValue>> cs = from n in this._children.Values
                                                                     from c in n.AllChildren
                                                                     select c;
                         cs = this._children.Values.Concat(this._children.Values);

@@ -26,7 +26,7 @@ using System.Linq;
 namespace VDS.Common.Tries
 {
     /// <summary>
-    /// Trie data structure which maps strings to generic values.
+    /// Trie data structure which maps decomposable keys to values
     /// </summary>
     /// <typeparam name="TKey">Type of keys</typeparam>
     /// <typeparam name="TKeyBit">Type of key bits</typeparam>
@@ -40,10 +40,11 @@ namespace VDS.Common.Tries
     /// </para>
     /// </remarks>
     public class Trie<TKey, TKeyBit, TValue>
+        : ITrie<TKey, TKeyBit, TValue>
         where TValue : class
     {
         private Func<TKey, IEnumerable<TKeyBit>> _keyMapper;
-        private TrieNode<TKeyBit, TValue> _root;
+        private ITrieNode<TKeyBit, TValue> _root;
         
         /// <summary>
         /// Create an empty trie with an empty root node.
@@ -52,13 +53,24 @@ namespace VDS.Common.Tries
         {
             if (keyMapper == null) throw new ArgumentNullException("keyMapper", "Key Mapper function cannot be null");
             this._keyMapper = keyMapper;
-            this._root = new TrieNode<TKeyBit, TValue>(null, default(TKeyBit));
+            this._root = this.CreateNewChild(null, default(TKeyBit));
+        }
+
+        /// <summary>
+        /// Method which creates a new child node
+        /// </summary>
+        /// <param name="parent">Parent Node</param>
+        /// <param name="key">Key Bit</param>
+        /// <returns></returns>
+        protected virtual ITrieNode<TKeyBit, TValue> CreateNewChild(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
+        {
+            return new TrieNode<TKeyBit, TValue>(null, key);
         }
 
         /// <summary>
         /// Gets the Root Node of the Trie
         /// </summary>
-        public TrieNode<TKeyBit, TValue> Root
+        public ITrieNode<TKeyBit, TValue> Root
         {
             get
             {
@@ -73,11 +85,11 @@ namespace VDS.Common.Tries
         /// <param name="value">Value associated with key</param>
         public void Add(TKey key, TValue value)
         {
-            TrieNode<TKeyBit, TValue> node = _root;
+            ITrieNode<TKeyBit, TValue> node = _root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
             foreach (TKeyBit b in bs)
             {
-                node = node.AddChild(b);
+                node = node.MoveToChild(b);
             }
             node.Value = value;
         }
@@ -88,7 +100,7 @@ namespace VDS.Common.Tries
         /// <param name="key">Key of the value to remove</param>
         public void Remove(TKey key)
         {
-            TrieNode<TKeyBit, TValue> node = this._root;
+            ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
             foreach (TKeyBit b in bs)
             {
@@ -111,7 +123,7 @@ namespace VDS.Common.Tries
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Null if the Key does not map to a Node</returns>
-        public TrieNode<TKeyBit, TValue> Find(TKey key)
+        public ITrieNode<TKeyBit, TValue> Find(TKey key)
         {
             return this.Find(key, this._keyMapper);
         }
@@ -125,7 +137,7 @@ namespace VDS.Common.Tries
         /// <remarks>
         /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
         /// </remarks>
-        public TrieNode<TKeyBit, TValue> Find(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        public ITrieNode<TKeyBit, TValue> Find(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
             return this.Find(keyMapper(key));
         }
@@ -138,9 +150,9 @@ namespace VDS.Common.Tries
         /// <remarks>
         /// The ability to provide a specific seqeunce of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
         /// </remarks>
-        public TrieNode<TKeyBit, TValue> Find(IEnumerable<TKeyBit> bs)
+        public ITrieNode<TKeyBit, TValue> Find(IEnumerable<TKeyBit> bs)
         {
-            TrieNode<TKeyBit, TValue> node = this._root;
+            ITrieNode<TKeyBit, TValue> node = this._root;
             foreach (TKeyBit b in bs)
             {
                 //Bail out early if key does not exist
@@ -154,13 +166,13 @@ namespace VDS.Common.Tries
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Trie Node</returns>
-        public TrieNode<TKeyBit, TValue> MoveToNode(TKey key)
+        public ITrieNode<TKeyBit, TValue> MoveToNode(TKey key)
         {
-            TrieNode<TKeyBit, TValue> node = _root;
+            ITrieNode<TKeyBit, TValue> node = _root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
             foreach (TKeyBit b in bs)
             {
-                node = node.AddChild(b);
+                node = node.MoveToChild(b);
             }
             return node;
         }
@@ -175,7 +187,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                TrieNode<TKeyBit, TValue> node = this.Find(key);
+                ITrieNode<TKeyBit, TValue> node = this.Find(key);
                 if (node == null) throw new KeyNotFoundException();
                 return node.Value;
             }
@@ -193,7 +205,7 @@ namespace VDS.Common.Tries
         /// <returns>True if the Key exists in the Trie, False if it does not</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            TrieNode<TKeyBit, TValue> node = this._root;
+            ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
             foreach (TKeyBit b in bs)
             {
