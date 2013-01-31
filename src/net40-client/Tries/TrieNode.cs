@@ -135,13 +135,13 @@ namespace VDS.Common.Tries
         }
 
         /// <summary>
-        /// Gets the number of descendant child nodes this node has
+        /// Gets the number of descendant nodes this node has
         /// </summary>
         public int CountAll
         {
             get
             {
-                return this.AllChildren.Count();
+                return this.Descendants.Count();
             }
         }
 
@@ -198,7 +198,7 @@ namespace VDS.Common.Tries
         }
 
         /// <summary>
-        /// Removes all ancestor nodes which are at the given depth below the current node
+        /// Removes all descendant nodes which are at the given depth below the current node
         /// </summary>
         /// <param name="depth">Depth</param>
         /// <exception cref="ArgumentException">Thrown if depth is less than zero</exception>
@@ -276,7 +276,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets all descended children of this Node
         /// </summary>
-        public IEnumerable<ITrieNode<TKeyBit, TValue>> AllChildren
+        public IEnumerable<ITrieNode<TKeyBit, TValue>> Descendants
         {
             get
             {
@@ -289,7 +289,7 @@ namespace VDS.Common.Tries
                     lock (this._children)
                     {
                         IEnumerable<ITrieNode<TKeyBit, TValue>> cs = from n in this._children.Values
-                                                                    from c in n.AllChildren
+                                                                    from c in n.Descendants
                                                                     select c;
                         cs = this._children.Values.Concat(this._children.Values);
                         return cs.ToList();

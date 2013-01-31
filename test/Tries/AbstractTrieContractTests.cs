@@ -21,6 +21,17 @@ namespace VDS.Common.Tries
         }
 
         [TestMethod]
+        public void TrieContractAdd2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+            trie.Add("test", "a");
+            trie.Add("testing", "b");
+
+            Assert.AreEqual("a", trie["test"]);
+            Assert.AreEqual("b", trie["testing"]);
+        }
+
+        [TestMethod]
         public void TrieContractRemove1()
         {
             ITrie<String, char, String> trie = this.GetInstance();
@@ -33,6 +44,23 @@ namespace VDS.Common.Tries
             trie.Remove("test");
 
             Assert.AreEqual("b", trie["testing"]);
+            Assert.IsNotNull(trie.Find("test"));
+        }
+
+        [TestMethod]
+        public void TrieContractRemove2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+            trie.Add("test", "a");
+            trie.Add("testing", "b");
+
+            Assert.AreEqual("a", trie["test"]);
+            Assert.AreEqual("b", trie["testing"]);
+
+            trie.Remove("testing");
+
+            Assert.AreEqual("a", trie["test"]);
+            Assert.IsNull(trie.Find("testing"));
         }
     }
 
