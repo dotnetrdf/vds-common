@@ -6,6 +6,8 @@ This is the Change Log for VDS.Common
 1.2.0
 -----
 
+- Extract ITrie and ITrieNode interfaces
+- Add SparseValueTrie and SparseReferenceTrie as alternative implementations of these
 
 
 1.1.2
