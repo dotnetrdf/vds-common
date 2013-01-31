@@ -49,7 +49,7 @@ namespace VDS.Common.Tries
         /// <param name="parent">Parent Node</param>
         /// <param name="key">Key Bit</param>
         /// <returns></returns>
-        protected override ITrieNode<TKeyBit, TValue> CreateNewChild(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
+        protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
         {
             return new TrieNode<TKeyBit, TValue>(null, key);
         }

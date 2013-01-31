@@ -53,7 +53,7 @@ namespace VDS.Common.Tries
         {
             if (keyMapper == null) throw new ArgumentNullException("keyMapper", "Key Mapper function cannot be null");
             this._keyMapper = keyMapper;
-            this._root = this.CreateNewChild(null, default(TKeyBit));
+            this._root = this.CreateRoot(default(TKeyBit));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace VDS.Common.Tries
         /// <param name="parent">Parent Node</param>
         /// <param name="key">Key Bit</param>
         /// <returns></returns>
-        protected abstract ITrieNode<TKeyBit, TValue> CreateNewChild(ITrieNode<TKeyBit, TValue> parent, TKeyBit key);
+        protected abstract ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key);
 
         /// <summary>
         /// Gets the Root Node of the Trie

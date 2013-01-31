@@ -54,7 +54,7 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="T">Type of values to be stored</typeparam>
     public class SparseStringTrie<T>
-        : SparseTrie<String, char, T>
+        : SparseValueTrie<String, char, T>
         where T : class
     {
         /// <summary>
