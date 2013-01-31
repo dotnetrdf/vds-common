@@ -21,46 +21,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VDS.Common.Tries
 {
     /// <summary>
-    /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
+    /// Sparse implementation of a Trie data structure
     /// </summary>
-    /// <typeparam name="T">Type of values to be stored</typeparam>
-    public class StringTrie<T>
-        : Trie<String, char, T>
-        where T : class
-    {
+    /// <typeparam name="TKey">Type of keys</typeparam>
+    /// <typeparam name="TKeyBit">Type of key bits</typeparam>
+    /// <typeparam name="TValue">Type of values to map to</typeparam>
+    /// <remarks>
+    /// </remarks>
+    public class SparseTrie<TKey, TKeyBit, TValue>
+        : AbstractTrie<TKey, TKeyBit, TValue>
+        where TKeyBit : struct, IEquatable<TKeyBit>
+        where TValue : class
+    {   
         /// <summary>
-        /// Creates a new String Trie
+        /// Create an empty trie with an empty root node.
         /// </summary>
-        public StringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
+        public SparseTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+            : base(keyMapper) { }
 
         /// <summary>
-        /// Key Mapper function for String Trie
+        /// Method which creates a new child node
         /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Array of characters</returns>
-        public static IEnumerable<char> KeyMapper(String key)
+        /// <param name="parent">Parent Node</param>
+        /// <param name="key">Key Bit</param>
+        /// <returns></returns>
+        protected override ITrieNode<TKeyBit, TValue> CreateNewChild(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
         {
-            return key.ToCharArray();
+            return new SparseTrieNode<TKeyBit, TValue>(null, key);
         }
-    }
-
-    /// <summary>
-    /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
-    /// </summary>
-    /// <typeparam name="T">Type of values to be stored</typeparam>
-    public class SparseStringTrie<T>
-        : SparseTrie<String, char, T>
-        where T : class
-    {
-        /// <summary>
-        /// Creates a new sparse String Trie
-        /// </summary>
-        public SparseStringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
     }
 }

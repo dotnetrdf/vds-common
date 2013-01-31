@@ -73,4 +73,14 @@ namespace VDS.Common.Tries
             return new StringTrie<String>();
         }
     }
+
+    [TestClass]
+    public class SparseTrieContractTests
+        : AbstractTrieContractTests
+    {
+        protected override ITrie<string, char, string> GetInstance()
+        {
+            return new SparseStringTrie<String>();
+        }
+    }
 }
