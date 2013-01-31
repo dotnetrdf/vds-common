@@ -116,4 +116,24 @@
       <Link>Trees\ChildNodesEnumerable.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Tries\AbstractSparseTrieNode.cs">
+      <Link>Tries\AbstractSparseTrieNode.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\AbstractTrie.cs">
+      <Link>Tries\AbstractTrie.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\ITrie.cs">
+      <Link>Tries\ITrie.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\ITrieNode.cs">
+      <Link>Tries\ITrieNode.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\SparseTrie.cs">
+      <Link>Tries\SparseTrie.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\SparseTrieNode.cs">
+      <Link>Tries\SparseTrieNode.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
