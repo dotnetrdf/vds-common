@@ -14,7 +14,7 @@ VDS.Common is licensed under the MIT License
 
 To use VDS.Common simply add a reference to the DLL for the appropriate .Net version to your project.  If you are using NuGet simply search for VDS.Common and install it that way.
 
-For documentation on the features this library provides please see the [Wiki][4] - note that this documentation is a work in progress and currently incomplete
+For documentation on the features this library provides please see the [Wiki][4]
 
 [1]: http://www.dotnetrdf.org
 [2]: https://bitbucket.org/dotnetrdf/dotnetrdf/src/4365cd7d087158b72c2e4053879bede2e194cdec/Libraries/core/net40/Common?at=default
