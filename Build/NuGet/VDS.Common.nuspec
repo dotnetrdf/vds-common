@@ -3,7 +3,7 @@
   <metadata>
     <id>VDS.Common</id>
     <title>VDS.Common</title>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
     <authors>RobVesse</authors>
     <owners>RobVesse</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -11,10 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries and fast dictionaries.</description>
     <releaseNotes>
-      - Add TreeSortedDictionary
-      - Bug fix to problem where enumerable on BinaryTree would not reflect latest state of tree
-      - Bug fix to be more specific in error handling on the null keys check in MultiDictionary
-      - Add Portable Class Library Builds
+
     </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>

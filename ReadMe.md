@@ -10,7 +10,7 @@ VDS.Common is built for a variety of .Net versions and profiles.
 
 VDS.Common is licensed under the MIT License
 
-# Usage
+# Usage and Documentation
 
 To use VDS.Common simply add a reference to the DLL for the appropriate .Net version to your project.  If you are using NuGet simply search for VDS.Common and install it that way.
 
