@@ -58,6 +58,12 @@
     <Compile Include="Trees\TreeExtensions.cs" />
     <Compile Include="Trees\UnbalancedBinaryTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tries\AbstractSparseTrieNode.cs" />
+    <Compile Include="Tries\AbstractTrie.cs" />
+    <Compile Include="Tries\ITrie.cs" />
+    <Compile Include="Tries\ITrieNode.cs" />
+    <Compile Include="Tries\SparseTrie.cs" />
+    <Compile Include="Tries\SparseTrieNode.cs" />
     <Compile Include="Tries\StringTrie.cs" />
     <Compile Include="Tries\Trie.cs" />
     <Compile Include="Tries\TrieNode.cs" />

@@ -26,17 +26,15 @@ using System.Linq;
 namespace VDS.Common.Tries
 {
     /// <summary>
-    /// Node of a Trie
+    /// Node of a Sparse Trie
     /// </summary>
     /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
     /// <remarks>
-    /// <para>
-    /// Original code taken from <a href="http://code.google.com/p/typocalypse/source/browse/#hg/Trie">Typocolypse</a> but has been heavily rewritten to be much more generic and LINQ friendly
-    /// </para>
     /// </remarks>
-    public class TrieNode<TKeyBit, TValue> 
+    public abstract class AbstractSparseTrieNode<TKeyBit, TValue> 
         : ITrieNode<TKeyBit, TValue>
+        where TKeyBit : IEquatable<TKeyBit>
         where TValue : class
     {
         private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
@@ -46,13 +44,37 @@ namespace VDS.Common.Tries
         /// </summary>
         /// <param name="parent">Parent node of this node</param>
         /// <param name="key">Key Bit</param>
-        public TrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
+        public AbstractSparseTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
         {
             this.KeyBit = key;
             this.Value = null;
             this.Parent = parent;
-            this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
         }
+
+        /// <summary>
+        /// Gets whether the given key bit matches the current singleton
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>True if it matches, false otherwise</returns>
+        protected abstract bool MatchesSingleton(TKeyBit key);
+
+        /// <summary>
+        /// Creates a new child
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns></returns>
+        protected abstract ITrieNode<TKeyBit, TValue> CreateNewChild(TKeyBit key);
+
+        /// <summary>
+        /// Gets/Sets the singleton child node
+        /// </summary>
+        protected abstract ITrieNode<TKeyBit, TValue> SingletonChild
+        {
+            get;
+            set;
+        }
+
+        protected abstract void ClearSingleton();
 
         /// <summary>
         /// Gets/Sets value stored by this node
@@ -70,21 +92,6 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> Parent { get; private set; }
 
         /// <summary>
-        /// Get a child of this node which is associated with a key bit
-        /// </summary>
-        /// <param name="key">Key associated with the child of interest</param>
-        /// <returns>The child or null if no child is associated with the given key</returns>
-        internal ITrieNode<TKeyBit, TValue> GetChild(TKeyBit key)
-        {
-            ITrieNode<TKeyBit, TValue> child;
-            lock (this._children)
-            {
-                if (this._children.TryGetValue(key, out child)) return child;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Tries to get a child of this node which is associated with a key bit
         /// </summary>
         /// <param name="key">Key</param>
@@ -92,10 +99,20 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public bool TryGetChild(TKeyBit key, out ITrieNode<TKeyBit, TValue> child)
         {
-            lock (this._children)
+            lock (this)
             {
-                return this._children.TryGetValue(key, out child);
+                if (this._children != null)
+                {
+                    return this._children.TryGetValue(key, out child);
+                }
+                else if (this.MatchesSingleton(key))
+                {
+                    child = this.SingletonChild;
+                    return true;
+                }
             }
+            child = null;
+            return false;
         }
 
         /// <summary>
@@ -127,9 +144,20 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this._children)
+                lock (this)
                 {
-                    return this._children.Count;
+                    if (this._children != null)
+                    {
+                        return this._children.Count;
+                    }
+                    else if (this.SingletonChild != null)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
             }
         }
@@ -152,23 +180,17 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this._children)
+                lock (this)
                 {
-                    return this._children.Count == 0;
+                    if (this._children != null)
+                    {
+                        return this._children.Count == 0;
+                    }
+                    else
+                    {
+                        return this.SingletonChild == null;
+                    }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Check whether or not one of the children of this node uses the given key bit
-        /// </summary>
-        /// <param name="key">The key bit to check for</param>
-        /// <returns>True if a child with given key exists, false otherwise</returns>
-        internal bool ContainsKey(TKeyBit key)
-        {
-            lock (this._children)
-            {
-                return this._children.ContainsKey(key);
             }
         }
 
@@ -206,16 +228,17 @@ namespace VDS.Common.Tries
         {
             if (depth == 0)
             {
-                lock (this._children)
+                lock (this)
                 {
-                    this._children.Clear();
+                    if (this._children != null) this._children.Clear();
+                    this.ClearSingleton();
                 }
             }
             else if (depth > 0)
             {
-                lock (this._children)
+                lock (this)
                 {
-                    foreach (ITrieNode<TKeyBit, TValue> node in this._children.Values)
+                    foreach (ITrieNode<TKeyBit, TValue> node in this.Children)
                     {
                         node.Trim(depth - 1);
                     }
@@ -235,17 +258,41 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
             ITrieNode<TKeyBit, TValue> child;
-            lock (this._children)
+            lock (this)
             {
-                if (this._children.TryGetValue(key, out child))
+                if (this._children != null)
                 {
+                    // Get from existing children adding new child if necessary
+                    if (this._children.TryGetValue(key, out child))
+                    {
+                        return child;
+                    }
+                    else
+                    {
+                        child = this.CreateNewChild(key);
+                        this._children.Add(key, child);
+                        return child;
+                    }
+                }
+                else if (this.MatchesSingleton(key))
+                {
+                    // Can use existing singleton
+                    return this.SingletonChild;
+                }
+                else if (this.SingletonChild != null)
+                {
+                    // Make non-singleton
+                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
+                    this._children.Add(this.SingletonChild.KeyBit, this.SingletonChild);
+                    child = this.CreateNewChild(key);
+                    this._children.Add(key, child);
                     return child;
                 }
                 else
                 {
-                    child = new TrieNode<TKeyBit, TValue>(this, key);
-                    this._children.Add(key, child);
-                    return child;
+                    // Make singleton
+                    this.SingletonChild = this.CreateNewChild(key);
+                    return this.SingletonChild;
                 }
             }
         }
@@ -256,9 +303,16 @@ namespace VDS.Common.Tries
         /// <param name="key">The key associated with the child to remove.</param>
         public void RemoveChild(TKeyBit key)
         {
-            lock (this._children)
+            lock (this)
             {
-                this._children.Remove(key);
+                if (this._children != null)
+                {
+                    this._children.Remove(key);
+                }
+                else if (this.MatchesSingleton(key))
+                {
+                    this.ClearSingleton();
+                }
             }
         }
 
@@ -269,7 +323,21 @@ namespace VDS.Common.Tries
         {
             get
             {
-                return this._children.Values.ToList();
+                lock (this)
+                {
+                    if (this._children != null)
+                    {
+                        return this._children.Values.ToList();
+                    }
+                    else if (this.SingletonChild != null)
+                    {
+                        return this.SingletonChild.AsEnumerable();
+                    }
+                    else
+                    {
+                        return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>();
+                    }
+                }
             }
         }
 
@@ -280,20 +348,12 @@ namespace VDS.Common.Tries
         {
             get
             {
-                if (this.IsLeaf)
+                lock (this)
                 {
-                    return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>();
-                }
-                else
-                {
-                    lock (this._children)
-                    {
-                        IEnumerable<ITrieNode<TKeyBit, TValue>> cs = from n in this._children.Values
-                                                                    from c in n.Descendants
-                                                                    select c;
-                        cs = this._children.Values.Concat(this._children.Values);
-                        return cs.ToList();
-                    }
+                    IEnumerable<ITrieNode<TKeyBit, TValue>> cs = this.Children;
+                    return cs.Concat(from c in cs
+                                     from d in c.Children
+                                     select d); 
                 }
             }
         }
@@ -301,32 +361,11 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Get an enumerable of values contained in this node and all its descendants
         /// </summary>
-        public virtual IEnumerable<TValue> Values
+        public IEnumerable<TValue> Values
         {
             get
             {
-                if (this.IsLeaf)
-                {
-                    if (this.HasValue)
-                    {
-                        return new TValue[] { this.Value };
-                    }
-                    else
-                    {
-                        return Enumerable.Empty<TValue>();
-                    }
-                }
-                else
-                {
-                    lock (this._children)
-                    {
-                        IEnumerable<TValue> vs = from n in this._children.Values
-                                                 from v in n.Values
-                                                 select v;
-                        if (this.Value != null && !this.IsRoot) vs = vs.Concat(new TValue[] { this.Value });
-                        return vs.ToList();
-                    }
-                }
+                return this.Descendants.Select(d => d.Value);
             }
         }
     }
