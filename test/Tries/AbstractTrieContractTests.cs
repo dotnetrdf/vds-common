@@ -140,6 +140,46 @@ namespace VDS.Common.Tries
         }
 
         [TestMethod]
+        public void TrieContractTryGetValue1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            String value;
+            Assert.IsFalse(trie.TryGetValue("test", out value));
+        }
+
+        [TestMethod]
+        public void TrieContractTryGetValue2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+            trie.Add("test", "a");
+            trie.Add("testing", "b");
+
+            String value;
+            Assert.IsTrue(trie.TryGetValue("test", out value));
+            Assert.AreEqual("a", value);
+            Assert.IsTrue(trie.TryGetValue("testing", out value));
+            Assert.AreEqual("b", value);
+        }
+
+        [TestMethod]
+        public void TrieContractTryGetValue3()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+            String key = "test";
+            trie.Add(key, "a");
+
+            String value;
+            Assert.IsTrue(trie.TryGetValue(key, out value));
+            Assert.AreEqual("a", value);
+            for (int i = 1; i < key.Length; i++)
+            {
+                Assert.IsFalse(trie.TryGetValue(key.Substring(0, i), out value));
+                Assert.IsNull(value);
+            }
+        }
+
+        [TestMethod]
         public void TrieContractItemGet1()
         {
             ITrie<String, char, String> trie = this.GetInstance();
