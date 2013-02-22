@@ -4,15 +4,19 @@
     <id>VDS.Common</id>
     <title>VDS.Common</title>
     <version>1.2.0</version>
-    <authors>RobVesse</authors>
+    <authors>RobVesse,kal_ahmed</authors>
     <owners>RobVesse</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bitbucket.org/rvesse/vds-common</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A library containing useful data structures like Trees, Tries and fast dictionaries.</description>
+    <description>A library containing useful data structures like Trees, Tries and indexing tailored dictionaries.</description>
     <releaseNotes>
-	- Extract ITrie interface
-	- Add alternative ITrie implementations
+      - Extract ITrie interface
+      - Add Contains() and ContainsKey() methods to ITrie
+      - Add alternative ITrie implemenations: SparseReferenceTrie, SparseValueTrie, SparseCharacterTrie, SparseStringTrie
+      - Bug fix to problem where enumerating over a Trie would not reflect latest state of tree
+      - Bug fix to logic error in TryGetValue() on Tries
+      - Null Keys support for MultiDictionary must now be explicitly configured, mark constructors calls which should be updated as Obsolete
     </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>

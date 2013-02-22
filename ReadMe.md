@@ -1,10 +1,16 @@
 # Introduction
 
-VDS.Common is a lightweight, dependency-free library of useful advanced data structures such as Trees, Tries and collision-resistant dictionaries.
+VDS.Common is a lightweight, dependency-free library of useful advanced data structures such as Trees, Tries and indexing tailored dictionaries.
 
 It is based on code originally from in the [dotNetRDF Project][1] (see past code history [here][2] and [here][3]) but was split off into a separate library once it became sufficiently generic to be more broadly useful.
 
-VDS.Common is built for a variety of .Net versions and profiles.
+VDS.Common is built for a variety of .Net versions and profiles, currently we have builds for the following:
+
+- .Net 3.5 Full/Client Profile
+- .Net 4.0 Full/Client Profile
+- Silverlight 4
+- Windows Phone 7
+- Portable Class Library
 
 # License
 
@@ -14,7 +20,11 @@ VDS.Common is licensed under the MIT License
 
 To use VDS.Common simply add a reference to the DLL for the appropriate .Net version to your project.  If you are using NuGet simply search for VDS.Common and install it that way.
 
-For documentation on the features this library provides please see the [Wiki][4]
+For documentation on the features this library provides please see the [Wiki][4].s
+
+# Ackowledgements
+
+VDS.Common is developed primarily Rob Vesse with some contributions from Kal Ahmed.
 
 [1]: http://www.dotnetrdf.org
 [2]: https://bitbucket.org/dotnetrdf/dotnetrdf/src/4365cd7d087158b72c2e4053879bede2e194cdec/Libraries/core/net40/Common?at=default
