@@ -136,4 +136,12 @@
       <Link>Tries\SparseTrieNode.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Tries\DescendantNodesEnumerable.cs">
+      <Link>Tries\DescendantNodesEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Tries\DescendantValuesEnumerable.cs">
+      <Link>Tries\DescendantValuesEnumerable.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
