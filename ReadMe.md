@@ -22,7 +22,7 @@ To use VDS.Common simply add a reference to the DLL for the appropriate .Net ver
 
 For documentation on the features this library provides please see the [Wiki][4].s
 
-# Ackowledgements
+# Acknowledgements
 
 VDS.Common is developed primarily Rob Vesse with some contributions from Kal Ahmed.
 
