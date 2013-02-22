@@ -25,6 +25,29 @@ namespace VDS.Common.Tries
         void Clear();
 
         /// <summary>
+        /// Gets whether the Trie contains the given key value pair
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
+        /// <returns>True if the key value pair exists, false otherwise</returns>
+        bool Contains(TKey key, TValue value);
+
+        /// <summary>
+        /// Gets whether the Trie contains a specific key and has a value associated with that key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>True if the Trie contains a specific key and has a value associated with it, false otherwise</returns>
+        bool ContainsKey(TKey key);
+
+        /// <summary>
+        /// Gets whether the Trie contains a specific key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="requireValue">Whether the key is required to have a value associated with it in order to be considered as being contained</param>
+        /// <returns>True if the Trie contains the given key and meets the value requirement</returns>
+        bool ContainsKey(TKey key, bool requireValue);
+
+        /// <summary>
         /// Gets the Count of all Nodes in the Trie
         /// </summary>
         int Count { get; }

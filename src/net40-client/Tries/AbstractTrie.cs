@@ -115,6 +115,45 @@ namespace VDS.Common.Tries
             }
         }
 
+
+        /// <summary>
+        /// Gets whether the Trie contains the given key value pair
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
+        /// <returns>True if the key value pair exists, false otherwise</returns>
+        public bool Contains(TKey key, TValue value)
+        {
+            ITrieNode<TKeyBit, TValue> node = this.Find(key);
+            if (node == null) return false;
+            if (node.HasValue && node.Value.Equals(value)) return true;
+            if (!node.HasValue && value == null) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets whether the Trie contains a specific key and has a value associated with that key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>True if the Trie contains a specific key and has a value associated with it, false otherwise</returns>
+        public bool ContainsKey(TKey key)
+        {
+            return this.ContainsKey(key, true);
+        }
+
+        /// <summary>
+        /// Gets whether the Trie contains a specific key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="requireValue">Whether the key is required to have a value associated with it in order to be considered as being contained</param>
+        /// <returns>True if the Trie contains the given key and meets the value requirement</returns>
+        public bool ContainsKey(TKey key, bool requireValue)
+        {
+            ITrieNode<TKeyBit, TValue> node = this.Find(key);
+            if (node == null) return false;
+            return (!requireValue || node.HasValue);
+        }
+
         /// <summary>
         /// Finds and returns a Node for the given Key
         /// </summary>
