@@ -242,10 +242,12 @@ namespace VDS.Common.Tries
         /// Tries to get the Value associated with a given Key
         /// </summary>
         /// <param name="key">Key</param>
-        /// <param name="value">Value</param>
-        /// <returns>True if the Key exists in the Trie, False if it does not</returns>
+        /// <param name="value">Value, will be null if the key does not exist or has no value associated with it</param>
+        /// <returns>True if the Key exists in the Trie and has a value associated with it, False if it does not</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
+            value = null;
+
             ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
             foreach (TKeyBit b in bs)
@@ -253,12 +255,18 @@ namespace VDS.Common.Tries
                 //Bail out early if key does not exist
                 if (!node.TryGetChild(b, out node))
                 {
-                    value = null;
                     return false;
                 }
             }
-            value = node.Value;
-            return true;
+            if (node.HasValue)
+            {
+                value = node.Value;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

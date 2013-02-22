@@ -384,6 +384,83 @@ namespace VDS.Common.Tries
             Assert.IsTrue(descendants.Any());
             Assert.AreEqual(7, descendants.Count());
         }
+
+        [TestMethod]
+        public void TrieContractMoveToNode1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.MoveToNode("test");
+            Assert.IsNotNull(node);
+        }
+
+        [TestMethod]
+        public void TrieContractMoveToNode2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.MoveToNode("test");
+            Assert.IsNotNull(node);
+            Assert.AreEqual(4, trie.Count);
+
+            node = trie.MoveToNode("test");
+            Assert.IsNotNull(node);
+            Assert.AreEqual(4, trie.Count);
+        }
+
+        [TestMethod]
+        public void TrieContractFind1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.Find("test");
+            Assert.IsNull(node);
+        }
+
+        [TestMethod]
+        public void TrieContractFind2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.Find("test");
+            Assert.IsNull(node);
+
+            trie.Add("test", "a");
+
+            node = trie.Find("test");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+        }
+
+        [TestMethod]
+        public void TrieContractFind3()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.Find("test");
+            Assert.IsNull(node);
+
+            trie.Add("test", "a");
+
+            node = trie.Find("testing");
+            Assert.IsNull(node);
+        }
+
+        [TestMethod]
+        public void TrieContractFind4()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.Find("test");
+            Assert.IsNull(node);
+
+            trie.Add("test", "a");
+
+            //Find with a custom key mapper
+            node = trie.Find("testing", (s => s.Substring(0, 4).ToCharArray()));
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+        }
     }
 
     [TestClass]
