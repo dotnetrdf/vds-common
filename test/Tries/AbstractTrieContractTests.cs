@@ -175,6 +175,42 @@ namespace VDS.Common.Tries
 
             Assert.AreEqual("b", trie["test"]);
         }
+
+        [TestMethod]
+        public void TrieContractValues1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.Values.Any());
+        }
+
+        [TestMethod]
+        public void TrieContractValues2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.Values.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(trie.Values.Any());
+            Assert.AreEqual(1, trie.Values.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractValues3()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            IEnumerable<String> values = trie.Values;
+
+            Assert.IsFalse(values.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(values.Any());
+            Assert.AreEqual(1, values.Count());
+        }
     }
 
     [TestClass]

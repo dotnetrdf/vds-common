@@ -37,7 +37,7 @@ namespace VDS.Common.Tries
         where TKeyBit : IEquatable<TKeyBit>
         where TValue : class
     {
-        private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+        internal Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
@@ -68,12 +68,15 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child node
         /// </summary>
-        protected abstract ITrieNode<TKeyBit, TValue> SingletonChild
+        protected internal abstract ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Clears the singelton
+        /// </summary>
         protected abstract void ClearSingleton();
 
         /// <summary>
@@ -323,21 +326,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this)
-                {
-                    if (this._children != null)
-                    {
-                        return this._children.Values.ToList();
-                    }
-                    else if (this.SingletonChild != null)
-                    {
-                        return this.SingletonChild.AsEnumerable();
-                    }
-                    else
-                    {
-                        return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>();
-                    }
-                }
+                return new AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>(this);
             }
         }
 
@@ -348,13 +337,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this)
-                {
-                    IEnumerable<ITrieNode<TKeyBit, TValue>> cs = this.Children;
-                    return cs.Concat(from c in cs
-                                     from d in c.Children
-                                     select d); 
-                }
+                return new DescendantNodesEnumerable<TKeyBit, TValue>(this);
             }
         }
 
@@ -365,8 +348,45 @@ namespace VDS.Common.Tries
         {
             get
             {
-                return this.Descendants.Select(d => d.Value);
+                return new DescendantValuesEnumerable<TKeyBit, TValue>(this);
             }
+        }
+    }
+
+    class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
+        : IEnumerable<ITrieNode<TKeyBit, TValue>>
+        where TKeyBit : IEquatable<TKeyBit>
+        where TValue : class
+    {
+        private AbstractSparseTrieNode<TKeyBit, TValue> _node;
+
+        public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
+        {
+            if (node == null) throw new ArgumentNullException("node");
+            this._node = node;
+        }
+
+        public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
+        {
+            if (this._node.IsLeaf)
+            {
+                return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
+            }
+            else if (this._node._children != null)
+            {
+                //May be mutliple children present
+                return this._node._children.Values.GetEnumerator();
+            }
+            else 
+            {
+                //Must be singleton child
+                return this._node.SingletonChild.AsEnumerable().GetEnumerator();
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

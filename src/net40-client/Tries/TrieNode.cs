@@ -39,7 +39,7 @@ namespace VDS.Common.Tries
         : ITrieNode<TKeyBit, TValue>
         where TValue : class
     {
-        private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+        internal Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
@@ -269,7 +269,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                return this._children.Values.ToList();
+                return new TrieNodeChildrenEnumerable<TKeyBit, TValue>(this);
             }
         }
 
@@ -280,21 +280,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                if (this.IsLeaf)
-                {
-                    return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>();
-                }
-                else
-                {
-                    lock (this._children)
-                    {
-                        IEnumerable<ITrieNode<TKeyBit, TValue>> cs = from n in this._children.Values
-                                                                    from c in n.Descendants
-                                                                    select c;
-                        cs = this._children.Values.Concat(this._children.Values);
-                        return cs.ToList();
-                    }
-                }
+                return new DescendantNodesEnumerable<TKeyBit, TValue>(this);
             }
         }
 
@@ -305,29 +291,38 @@ namespace VDS.Common.Tries
         {
             get
             {
-                if (this.IsLeaf)
-                {
-                    if (this.HasValue)
-                    {
-                        return new TValue[] { this.Value };
-                    }
-                    else
-                    {
-                        return Enumerable.Empty<TValue>();
-                    }
-                }
-                else
-                {
-                    lock (this._children)
-                    {
-                        IEnumerable<TValue> vs = from n in this._children.Values
-                                                 from v in n.Values
-                                                 select v;
-                        if (this.Value != null && !this.IsRoot) vs = vs.Concat(new TValue[] { this.Value });
-                        return vs.ToList();
-                    }
-                }
+                return new DescendantValuesEnumerable<TKeyBit, TValue>(this);
             }
+        }
+    }
+
+    class TrieNodeChildrenEnumerable<TKeyBit, TValue>
+        : IEnumerable<ITrieNode<TKeyBit, TValue>>
+        where TValue : class
+    {
+        private TrieNode<TKeyBit, TValue> _node;
+
+        public TrieNodeChildrenEnumerable(TrieNode<TKeyBit, TValue> node)
+        {
+            if (node == null) throw new ArgumentNullException("node");
+            this._node = node;
+        }
+
+        public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
+        {
+            if (this._node.IsLeaf)
+            {
+                return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
+            }
+            else
+            {
+                return this._node._children.Values.GetEnumerator();
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

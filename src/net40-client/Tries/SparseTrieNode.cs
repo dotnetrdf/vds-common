@@ -62,7 +62,7 @@ namespace VDS.Common.Tries
             return new SparseValueTrieNode<TKeyBit, TValue>(this, key);
         }
 
-        protected override ITrieNode<TKeyBit, TValue> SingletonChild
+        protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get
             {
@@ -114,7 +114,7 @@ namespace VDS.Common.Tries
             return new SparseReferenceTrieNode<TKeyBit, TValue>(this, key);
         }
 
-        protected override ITrieNode<TKeyBit, TValue> SingletonChild
+        protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get
             {
@@ -164,7 +164,7 @@ namespace VDS.Common.Tries
             return new SparseCharacterTrieNode<TValue>(this, key);
         }
 
-        protected override ITrieNode<char, TValue> SingletonChild
+        protected internal override ITrieNode<char, TValue> SingletonChild
         {
             get
             {
