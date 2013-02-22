@@ -143,8 +143,10 @@
     <Compile Include="..\net40-client\Tries\DescendantNodesEnumerable.cs">
       <Link>Tries\DescendantNodesEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\net40-client\Tries\DescendantValuesEnumerable.cs">
-      <Link>Tries\DescendantValuesEnumerable.cs</Link>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Tries\TrieValuesEnumerable.cs">
+      <Link>Tries\TrieValuesEnumerable.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

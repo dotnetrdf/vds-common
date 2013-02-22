@@ -291,7 +291,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                return new DescendantValuesEnumerable<TKeyBit, TValue>(this);
+                return new TrieValuesEnumerable<TKeyBit, TValue>(this);
             }
         }
     }

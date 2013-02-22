@@ -61,7 +61,7 @@
     <Compile Include="Tries\AbstractSparseTrieNode.cs" />
     <Compile Include="Tries\AbstractTrie.cs" />
     <Compile Include="Tries\DescendantNodesEnumerable.cs" />
-    <Compile Include="Tries\DescendantValuesEnumerable.cs" />
+    <Compile Include="Tries\TrieValuesEnumerable.cs" />
     <Compile Include="Tries\ITrie.cs" />
     <Compile Include="Tries\ITrieNode.cs" />
     <Compile Include="Tries\SparseTrie.cs" />

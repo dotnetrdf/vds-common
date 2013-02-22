@@ -43,7 +43,13 @@ namespace VDS.Common.Tries
         : ITrie<TKey, TKeyBit, TValue>
         where TValue : class
     {
+        /// <summary>
+        /// Key Mapper function
+        /// </summary>
         protected readonly Func<TKey, IEnumerable<TKeyBit>> _keyMapper;
+        /// <summary>
+        /// Root of the Trie
+        /// </summary>
         protected readonly ITrieNode<TKeyBit, TValue> _root;
         
         /// <summary>
@@ -59,7 +65,6 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Method which creates a new child node
         /// </summary>
-        /// <param name="parent">Parent Node</param>
         /// <param name="key">Key Bit</param>
         /// <returns></returns>
         protected abstract ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key);
