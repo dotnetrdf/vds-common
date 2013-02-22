@@ -26,15 +26,10 @@ using System.Linq;
 namespace VDS.Common.Tries
 {
     /// <summary>
-    /// Node of a Trie
+    /// Sparse Node of a Trie
     /// </summary>
     /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
-    /// <remarks>
-    /// <para>
-    /// Original code taken from <a href="http://code.google.com/p/typocalypse/source/browse/#hg/Trie">Typocolypse</a> but has been heavily rewritten to be much more generic and LINQ friendly
-    /// </para>
-    /// </remarks>
     public class SparseValueTrieNode<TKeyBit, TValue> 
         : AbstractSparseTrieNode<TKeyBit, TValue>
         where TKeyBit : struct, IEquatable<TKeyBit>
@@ -42,7 +37,6 @@ namespace VDS.Common.Tries
     {
         private Nullable<TKeyBit> _singleton;
         private ITrieNode<TKeyBit, TValue> _singletonNode;
-        private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
@@ -84,15 +78,10 @@ namespace VDS.Common.Tries
     }
 
     /// <summary>
-    /// Node of a Trie
+    /// Sparse Node of a Trie
     /// </summary>
     /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
-    /// <remarks>
-    /// <para>
-    /// Original code taken from <a href="http://code.google.com/p/typocalypse/source/browse/#hg/Trie">Typocolypse</a> but has been heavily rewritten to be much more generic and LINQ friendly
-    /// </para>
-    /// </remarks>
     public class SparseReferenceTrieNode<TKeyBit, TValue>
         : AbstractSparseTrieNode<TKeyBit, TValue>
         where TKeyBit : class, IEquatable<TKeyBit>
@@ -100,7 +89,6 @@ namespace VDS.Common.Tries
     {
         private TKeyBit _singleton;
         private ITrieNode<TKeyBit, TValue> _singletonNode;
-        private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
@@ -139,5 +127,54 @@ namespace VDS.Common.Tries
             }
         }
 
+    }
+
+    /// <summary>
+    /// Sparse Node of a Trie
+    /// </summary>
+    /// <typeparam name="TValue">Value Type</typeparam>
+    public class SparseCharacterTrieNode<TValue>
+        : AbstractSparseTrieNode<char, TValue>
+        where TValue : class
+    {
+        private char _singleton = '\0';
+        private ITrieNode<char, TValue> _singletonNode;
+
+        /// <summary>
+        /// Creates a new Sparse Character Trie Node
+        /// </summary>
+        /// <param name="parent">Parent Node</param>
+        /// <param name="key">Key Bit</param>
+        public SparseCharacterTrieNode(ITrieNode<char, TValue> parent, char key)
+            : base(parent, key) { }
+
+        protected override bool MatchesSingleton(char key)
+        {
+            return key == this._singleton;
+        }
+
+        protected override void ClearSingleton()
+        {
+            this._singleton = '\0';
+            this._singletonNode = null;
+        }
+
+        protected override ITrieNode<char, TValue> CreateNewChild(char key)
+        {
+            return new SparseCharacterTrieNode<TValue>(this, key);
+        }
+
+        protected override ITrieNode<char, TValue> SingletonChild
+        {
+            get
+            {
+                return this._singletonNode;
+            }
+            set
+            {
+                this._singleton = value.KeyBit;
+                this._singletonNode = value;
+            }
+        }
     }
 }

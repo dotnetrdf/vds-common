@@ -30,7 +30,7 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="TKey">Type of keys</typeparam>
     /// <typeparam name="TKeyBit">Type of key bits</typeparam>
-    /// <typeparam name="TValue">Type of values to map to</typeparam>
+    /// <typeparam name="TValue">Type of values</typeparam>
     /// <remarks>
     /// </remarks>
     public class Trie<TKey, TKeyBit, TValue>

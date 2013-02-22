@@ -30,7 +30,7 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="TKey">Type of keys</typeparam>
     /// <typeparam name="TKeyBit">Type of key bits</typeparam>
-    /// <typeparam name="TValue">Type of values to map to</typeparam>
+    /// <typeparam name="TValue">Type of values</typeparam>
     /// <remarks>
     /// </remarks>
     public class SparseValueTrie<TKey, TKeyBit, TValue>
@@ -61,7 +61,7 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="TKey">Type of keys</typeparam>
     /// <typeparam name="TKeyBit">Type of key bits</typeparam>
-    /// <typeparam name="TValue">Type of values to map to</typeparam>
+    /// <typeparam name="TValue">Type of values</typeparam>
     /// <remarks>
     /// </remarks>
     public class SparseReferenceTrie<TKey, TKeyBit, TValue>
@@ -84,6 +84,24 @@ namespace VDS.Common.Tries
         protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
         {
             return new SparseReferenceTrieNode<TKeyBit, TValue>(null, key);
+        }
+    }
+
+    /// <summary>
+    /// Sparse Implementation of a Trie data structure optimized for the common case of the key bits being characters
+    /// </summary>
+    /// <typeparam name="TKey">Type of keys</typeparam>
+    /// <typeparam name="TValue">Type of values</typeparam>
+    public class SparseCharacterTrie<TKey, TValue>
+        : AbstractTrie<TKey, char, TValue>
+        where TValue : class
+    {
+        public SparseCharacterTrie(Func<TKey, IEnumerable<char>> keyMapper)
+            : base(keyMapper) { }
+
+        protected override ITrieNode<char, TValue> CreateRoot(char key)
+        {
+            return new SparseCharacterTrieNode<TValue>(null, key);
         }
     }
 }

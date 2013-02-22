@@ -53,8 +53,11 @@ namespace VDS.Common.Tries
     /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
     /// </summary>
     /// <typeparam name="T">Type of values to be stored</typeparam>
+    /// <remarks>
+    /// This is a sparse implementation so should be more memory efficient than the <see cref="StringTrie{T}"/> for many use cases
+    /// </remarks>
     public class SparseStringTrie<T>
-        : SparseValueTrie<String, char, T>
+        : SparseCharacterTrie<String, T>
         where T : class
     {
         /// <summary>

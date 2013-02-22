@@ -30,13 +30,13 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="TKey">Type of keys</typeparam>
     /// <typeparam name="TKeyBit">Type of key bits</typeparam>
-    /// <typeparam name="TValue">Type of values to map to</typeparam>
+    /// <typeparam name="TValue">Type of values</typeparam>
     /// <remarks>
     /// <para>
     /// Keys are converted into a sequence of key bits using a user provided function
     /// </para>
     /// <para>
-    /// The original code that inspired this was taken from <a href="http://code.google.com/p/typocalypse/source/browse/#hg/Trie">Typocolypse</a> but has been heavily rewritten to be much more generic and LINQ friendly
+    /// The original code that inspired this was taken from <a href="http://code.google.com/p/typocalypse/source/browse/#hg/Trie">Typocolypse</a> but has been heavily rewritten to be much more abstract, generic and LINQ friendly
     /// </para>
     /// </remarks>
     public abstract class AbstractTrie<TKey, TKeyBit, TValue>

@@ -8,6 +8,10 @@ This is the Change Log for VDS.Common
 
 - Extract ITrie interface
 - Add alternative ITrie implemenations
+ - SparseReferenceTrie
+ - SparseValueTrie
+ - SparseCharacterTrie
+ - SparseStringTrie
 
 1.1.3
 -----
