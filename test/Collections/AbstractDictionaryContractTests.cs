@@ -468,7 +468,7 @@ namespace VDS.Common.Collections
     {
         protected override IDictionary<string, int> GetInstance()
         {
-            return new MultiDictionary<string, int>(s => s != null ? s.GetHashCode() : 0);
+            return new MultiDictionary<string, int>(s => s != null ? s.GetHashCode() : 0, true);
         }
     }
 

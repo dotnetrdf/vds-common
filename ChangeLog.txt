@@ -12,6 +12,7 @@ This is the Change Log for VDS.Common
  - SparseValueTrie
  - SparseCharacterTrie
  - SparseStringTrie
+- Null Keys support for MultiDictionary must now be explicitly configured
 
 1.1.3
 -----

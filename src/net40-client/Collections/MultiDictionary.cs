@@ -84,29 +84,36 @@ namespace VDS.Common.Collections
         /// Creates a new multi-dictionary
         /// </summary>
         public MultiDictionary()
-            : this(null, null, DefaultMode) { }
+            : this(null, false, null, DefaultMode) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
         /// <param name="mode">Mode to use for the buckets</param>
         public MultiDictionary(MultiDictionaryMode mode)
-            : this(null, null, mode) { }
+            : this(null, false, null, mode) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
         /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
         public MultiDictionary(Func<TKey, int> hashFunction)
-            : this(hashFunction, null, DefaultMode) { }
+            : this(hashFunction, false, null, DefaultMode) { }
 
+        /// <summary>
+        /// Creates a new multi-dictionary
+        /// </summary>
+        /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
+        /// <param name="allowNullKeys">Whether to allow null keys</param>
+        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys)
+            : this(hashFunction, allowNullKeys, null, DefaultMode) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         public MultiDictionary(IComparer<TKey> comparer)
-            : this(null, comparer, DefaultMode) { }
+            : this(null, false, comparer, DefaultMode) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
@@ -114,7 +121,15 @@ namespace VDS.Common.Collections
         /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
         /// <param name="mode">Mode to use for the buckets</param>
         public MultiDictionary(Func<TKey, int> hashFunction, MultiDictionaryMode mode)
-            : this(hashFunction, null, mode) { }
+            : this(hashFunction, false, null, mode) { }
+
+        /// <summary>
+        /// Creates a new multi-dictionary
+        /// </summary>
+        /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
+        /// <param name="mode">Mode to use for the buckets</param>
+        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys, MultiDictionaryMode mode)
+            : this(hashFunction, allowNullKeys, null, mode) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
@@ -122,34 +137,22 @@ namespace VDS.Common.Collections
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         /// <param name="mode">Mode to use for the buckets</param>
         public MultiDictionary(IComparer<TKey> comparer, MultiDictionaryMode mode)
-            : this(null, comparer, mode) { }
+            : this(null, false, comparer, mode) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
         /// <param name="hashFunction">Hash Function to splut the keys into the buckets</param>
+        /// <param name="allowNullKeys">Whether null keys are allowed</param>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         /// <param name="mode">Mode to use for the buckets</param>
-        public MultiDictionary(Func<TKey, int> hashFunction, IComparer<TKey> comparer, MultiDictionaryMode mode)
+        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys, IComparer<TKey> comparer, MultiDictionaryMode mode)
         {
             this._comparer = (comparer != null ? comparer : this._comparer);
             this._hashFunc = (hashFunction != null ? hashFunction : this._hashFunc);
+            this._allowNullKeys = allowNullKeys;
             this._dict = new Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>>();
             this._mode = mode;
-
-            try
-            {
-                this._hashFunc(default(TKey));
-                //If the above suceeds then we know that either null keys are supported by the hash function
-                //or we are using a non-nullable type.  Either way it is safe to go ahead and allow null keys
-                this._allowNullKeys = true;
-            }
-            catch (NullReferenceException)
-            {
-                //Ignore NPE
-                //This just indicates that the hash function specified does not support null keys
-                //Thus we will use the default behaviour of forbidding null keys
-            }
         }
 
         /// <summary>
