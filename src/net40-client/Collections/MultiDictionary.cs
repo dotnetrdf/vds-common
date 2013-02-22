@@ -97,6 +97,7 @@ namespace VDS.Common.Collections
         /// Creates a new multi-dictionary
         /// </summary>
         /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
+        [Obsolete("It is strongly recommended that you use the two argument form of the constructor and explicitly state whether your hash function supports null keys", false)]
         public MultiDictionary(Func<TKey, int> hashFunction)
             : this(hashFunction, false, null, DefaultMode) { }
 
@@ -120,6 +121,7 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
         /// <param name="mode">Mode to use for the buckets</param>
+        [Obsolete("It is strongly recommended that you use the three argument form of the constructor and explicitly state whether your hash function supports null keys", false)]
         public MultiDictionary(Func<TKey, int> hashFunction, MultiDictionaryMode mode)
             : this(hashFunction, false, null, mode) { }
 
