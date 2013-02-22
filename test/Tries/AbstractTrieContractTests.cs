@@ -117,6 +117,64 @@ namespace VDS.Common.Tries
             Assert.AreEqual("a", trie["test"]);
             Assert.IsNull(trie.Find("testing"));
         }
+
+        [TestMethod]
+        public void TrieContractItemGet1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+            trie.Add("test", "a");
+
+            Assert.AreEqual("a", trie["test"]);
+        }
+
+        [TestMethod]
+        public void TrieContractItemGet2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+            trie.Add("test", "a");
+            trie.Add("testing", "b");
+
+            Assert.AreEqual("a", trie["test"]);
+            Assert.AreEqual("b", trie["testing"]);
+        }
+
+        [TestMethod, ExpectedException(typeof(KeyNotFoundException))]
+        public void TrieContractItemGet3()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.AreEqual(null, trie["test"]);
+        }
+
+        [TestMethod]
+        public void TrieContractItemSet1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.ContainsKey("test"));
+
+            trie["test"] = "a";
+
+            Assert.IsTrue(trie.ContainsKey("test"));
+            Assert.AreEqual("a", trie["test"]);
+        }
+
+        [TestMethod]
+        public void TrieContractItemSet2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.ContainsKey("test"));
+
+            trie["test"] = "a";
+
+            Assert.IsTrue(trie.ContainsKey("test"));
+            Assert.AreEqual("a", trie["test"]);
+
+            trie["test"] = "b";
+
+            Assert.AreEqual("b", trie["test"]);
+        }
     }
 
     [TestClass]
