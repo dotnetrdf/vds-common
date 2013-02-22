@@ -46,22 +46,38 @@ namespace VDS.Common.Tries
         public SparseValueTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
             : base(parent, key) { }
 
+        /// <summary>
+        /// Gets whether the given key bit matches the current singleton
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>True if it matches, false otherwise</returns>
         protected override bool MatchesSingleton(TKeyBit key)
         {
             return this._singleton.HasValue && this._singleton.Value.Equals(key);
         }
 
+        /// <summary>
+        /// Clears the singleton
+        /// </summary>
         protected override void ClearSingleton()
         {
             this._singleton = null;
             this._singletonNode = null;
         }
 
+        /// <summary>
+        /// Creates a new child in the trie
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>New Child</returns>
         protected override ITrieNode<TKeyBit, TValue> CreateNewChild(TKeyBit key)
         {
             return new SparseValueTrieNode<TKeyBit, TValue>(this, key);
         }
 
+        /// <summary>
+        /// Gets/Sets the singleton child node
+        /// </summary>
         protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get
@@ -98,22 +114,38 @@ namespace VDS.Common.Tries
         public SparseReferenceTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
             : base(parent, key) { }
 
+        /// <summary>
+        /// Gets whether the key matches the singleton
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>True if it matches, false otherwise</returns>
         protected override bool MatchesSingleton(TKeyBit key)
         {
             return this._singleton != null && this._singleton.Equals(key);
         }
 
+        /// <summary>
+        /// Clears the singleton
+        /// </summary>
         protected override void ClearSingleton()
         {
             this._singleton = null;
             this._singletonNode = null;
         }
 
+        /// <summary>
+        /// Creates a new child node
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>New Child</returns>
         protected override ITrieNode<TKeyBit, TValue> CreateNewChild(TKeyBit key)
         {
             return new SparseReferenceTrieNode<TKeyBit, TValue>(this, key);
         }
 
+        /// <summary>
+        /// Gets/Sets the singleton child
+        /// </summary>
         protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get
@@ -148,22 +180,38 @@ namespace VDS.Common.Tries
         public SparseCharacterTrieNode(ITrieNode<char, TValue> parent, char key)
             : base(parent, key) { }
 
+        /// <summary>
+        /// Gets whether the given key matches the singleton
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>True if it matches, false otherwise</returns>
         protected override bool MatchesSingleton(char key)
         {
             return key == this._singleton;
         }
 
+        /// <summary>
+        /// Clears the singleton
+        /// </summary>
         protected override void ClearSingleton()
         {
             this._singleton = '\0';
             this._singletonNode = null;
         }
 
+        /// <summary>
+        /// Creates a new child
+        /// </summary>
+        /// <param name="key">Key Bit</param>
+        /// <returns>New Child</returns>
         protected override ITrieNode<char, TValue> CreateNewChild(char key)
         {
             return new SparseCharacterTrieNode<TValue>(this, key);
         }
 
+        /// <summary>
+        /// Gets/Sets the singleton child
+        /// </summary>
         protected internal override ITrieNode<char, TValue> SingletonChild
         {
             get

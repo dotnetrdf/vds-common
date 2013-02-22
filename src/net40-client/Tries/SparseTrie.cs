@@ -47,7 +47,6 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Method which creates a new child node
         /// </summary>
-        /// <param name="parent">Parent Node</param>
         /// <param name="key">Key Bit</param>
         /// <returns></returns>
         protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
@@ -78,7 +77,6 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Method which creates a new child node
         /// </summary>
-        /// <param name="parent">Parent Node</param>
         /// <param name="key">Key Bit</param>
         /// <returns></returns>
         protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
@@ -96,9 +94,18 @@ namespace VDS.Common.Tries
         : AbstractTrie<TKey, char, TValue>
         where TValue : class
     {
+        /// <summary>
+        /// Creates a new sparse character trie
+        /// </summary>
+        /// <param name="keyMapper">Key Mapper</param>
         public SparseCharacterTrie(Func<TKey, IEnumerable<char>> keyMapper)
             : base(keyMapper) { }
 
+        /// <summary>
+        /// Creates the root node of the trie
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>Root Node</returns>
         protected override ITrieNode<char, TValue> CreateRoot(char key)
         {
             return new SparseCharacterTrieNode<TValue>(null, key);

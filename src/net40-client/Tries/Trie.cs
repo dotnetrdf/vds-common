@@ -46,7 +46,6 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Method which creates a new child node
         /// </summary>
-        /// <param name="parent">Parent Node</param>
         /// <param name="key">Key Bit</param>
         /// <returns></returns>
         protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)

@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace VDS.Common.Tries
 {
     /// <summary>
-    /// Interface for Trie nodes, this is the node in a <see cref="ITrie"/>
+    /// Interface for Trie nodes, this is the node in a <see cref="ITrie{Tkey,TKeyBit,TValue}"/>
     /// </summary>
     /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
