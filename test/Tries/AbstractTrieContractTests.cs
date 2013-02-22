@@ -1,4 +1,4 @@
-/*
+﻿/*
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2009-2013 Robert Vesse
@@ -231,6 +231,118 @@ namespace VDS.Common.Tries
 
             Assert.IsTrue(values.Any());
             Assert.AreEqual(1, values.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractValues4()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.Values.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(trie.Values.Any());
+            Assert.AreEqual(1, trie.Values.Count());
+
+            trie.Add("testing", "b");
+
+            Assert.IsTrue(trie.Values.Any());
+            Assert.AreEqual(2, trie.Values.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractValues5()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            IEnumerable<String> values = trie.Values;
+
+            Assert.IsFalse(values.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(values.Any());
+            Assert.AreEqual(1, values.Count());
+
+            trie.Add("testing", "b");
+
+            Assert.IsTrue(values.Any());
+            Assert.AreEqual(2, values.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractDescendants1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.Root.Descendants.Any());
+        }
+
+        [TestMethod]
+        public void TrieContractDescendants2()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.Root.Descendants.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(trie.Root.Descendants.Any());
+            Assert.AreEqual(4, trie.Root.Descendants.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractDescendants3()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            IEnumerable<ITrieNode<char, String>> descendants = trie.Root.Descendants;
+
+            Assert.IsFalse(descendants.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(descendants.Any());
+            Assert.AreEqual(4, descendants.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractDescendants4()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            Assert.IsFalse(trie.Root.Descendants.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(trie.Root.Descendants.Any());
+            Assert.AreEqual(4, trie.Root.Descendants.Count());
+
+            trie.Add("testing", "b");
+
+            Assert.IsTrue(trie.Root.Descendants.Any());
+            Assert.AreEqual(7, trie.Root.Descendants.Count());
+        }
+
+        [TestMethod]
+        public void TrieContractDescendants5()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            IEnumerable<ITrieNode<char, String>> descendants = trie.Root.Descendants;
+
+            Assert.IsFalse(descendants.Any());
+
+            trie.Add("test", "a");
+
+            Assert.IsTrue(descendants.Any());
+            Assert.AreEqual(4, descendants.Count());
+
+            trie.Add("testing", "b");
+
+            Assert.IsTrue(descendants.Any());
+            Assert.AreEqual(7, descendants.Count());
         }
     }
 
