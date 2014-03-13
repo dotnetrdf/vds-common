@@ -1,7 +1,7 @@
 /*
 VDS.Common is licensed under the MIT License
 
-Copyright (c) 2009-2013 Robert Vesse
+Copyright (c) 2009-2014 Robert Vesse
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Collections
 {
@@ -39,7 +38,7 @@ namespace VDS.Common.Collections
         /// The enumerable being wrapped
         /// </summary>
         protected IEnumerable<T> _items;
-        private String _errMsg;
+        private readonly String _errMsg;
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
@@ -108,9 +107,9 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start the copying at</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Cannot start copying at index < 0");
-            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
+            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
+            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array", "array");
 
             int i = arrayIndex;
             foreach (T item in this._items)
@@ -172,7 +171,7 @@ namespace VDS.Common.Collections
     }
 
     /// <summary>
-    /// A version of <see cref="ImmutableView{T}"/> where the enumerable is materialized as a list
+    /// A version of <see cref="ImmutableView{T}"/> where the enumerable is materialized as a list internally
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
     public class MaterializedImmutableView<T>

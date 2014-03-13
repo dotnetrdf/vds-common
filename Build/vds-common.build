@@ -6,7 +6,7 @@
   <property name="common.License.exclude.exts" 
             value="dll,pdb,exe,xml,csproj,user,template,cache,orig" />
   <property name="common.License.exclude.regex" value="hg|svn|obj|bin" />
-  <property name="common.License.search" value="Copyright (c) 2009-2013 Robert Vesse" />
+  <property name="common.License.search" value="Copyright (c) 2009-2014 Robert Vesse" />
   <property name="common.License.replace" value="License.txt" />
   <property name="common.License.overwrite" value="-overwrite" /> <!-- Alternative is -preserve which does not change existing Licenses -->
   

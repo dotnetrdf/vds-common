@@ -1,7 +1,7 @@
-﻿/*
+/*
 VDS.Common is licensed under the MIT License
 
-Copyright (c) 2009-2013 Robert Vesse
+Copyright (c) 2009-2014 Robert Vesse
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
