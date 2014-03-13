@@ -14,7 +14,7 @@ namespace VDS.Common.Collections
     /// </para>
     /// </remarks>
     /// <typeparam name="T">Element type</typeparam>
-    interface IBoundedList<T> 
+    public interface IBoundedList<T> 
         : IList<T>
     {
         /// <summary>

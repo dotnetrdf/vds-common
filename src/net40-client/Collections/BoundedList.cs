@@ -23,6 +23,15 @@ namespace VDS.Common.Collections
             this._capacity = capacity;
         }
 
+        public BoundedList(int capacity, IEnumerable<T> items)
+            : this(capacity)
+        {
+            foreach (T item in items)
+            {
+                this.Add(item);
+            }
+        }
+
         /// <summary>
         /// Gets the overflow policy for this bounded list which is <see cref="BoundedListOverflowPolicy.Error"/>
         /// </summary>
