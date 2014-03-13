@@ -43,6 +43,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\AbstractListBackedBoundedList.cs" />
+    <Compile Include="Collections\BoundedList.cs" />
+    <Compile Include="Collections\BoundedListOverflowPolicy.cs" />
+    <Compile Include="Collections\IBoundedList.cs" />
     <Compile Include="Collections\ImmutableView.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\TreeSortedDictionary.cs" />
