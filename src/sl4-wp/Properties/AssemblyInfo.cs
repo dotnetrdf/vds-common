@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Visual Design Studios")]
 [assembly: AssemblyProduct("VDS.Common")]
-[assembly: AssemblyCopyright("Copyright © Robert Vesse 2012-2013")]
+[assembly: AssemblyCopyright("Copyright © Robert Vesse 2012-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
