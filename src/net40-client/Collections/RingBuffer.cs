@@ -30,12 +30,24 @@ namespace VDS.Common.Collections
             return GetEnumerator();
         }
 
+        private int ToActualIndex(int index)
+        {
+            return (this._startIndex + index)%this._items.Length;
+        }
+
         public void Add(T item)
         {
             int index = this._startIndex + this.Count;
-            if (index == this._items.Length) this._startIndex++;
-            this._items[index%this._items.Length] = item;
-            this.Count++;
+            if (index >= this._items.Length)
+            {
+                this._startIndex++;
+                index = this.Count - 1;
+            }
+            else
+            {
+                this.Count++;
+            }
+            this._items[ToActualIndex(index)] = item;
         }
 
         public void Clear()
@@ -44,14 +56,16 @@ namespace VDS.Common.Collections
             {
                 this._items[i] = default(T);
             }
+            this._startIndex = 0;
+            this.Count = 0;
         }
 
         public bool Contains(T item)
         {
             if (this.Count == 0) return false;
-            for (int i = this._startIndex, index = i%this._items.Length; i < this.Count; i++)
+            for (int i = 0; i < this.Count; i++)
             {
-                if (this._comparer.Compare(item, this._items[index]) == 0) return true;
+                if (this._comparer.Compare(item, this._items[this.ToActualIndex(i)]) == 0) return true;
             }
             return false;
         }
@@ -76,32 +90,48 @@ namespace VDS.Common.Collections
         public int IndexOf(T item)
         {
             if (this.Count == 0) return -1;
-            for (int i = this._startIndex, index = i%this._items.Length; i < this.Count; i++)
+            for (int i = 0; i < this.Count; i++)
             {
-                if (this._comparer.Compare(item, this._items[index]) == 0) return i - this._startIndex;
+                if (this._comparer.Compare(item, this._items[this.ToActualIndex(i)]) == 0) return i;
             }
             return -1;
         }
 
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+            // Shift items forward
+            for (int i = index; i < this.Count - 1; i++)
+            {
+                this._items[ToActualIndex(i + 1)] = this._items[ToActualIndex(i)];
+            }
+            // Insert new item
+            this._items[ToActualIndex(index)] = item;
         }
 
         public void RemoveAt(int index)
         {
             if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
-            for (int i = this._startIndex + index, currIndex = i%this._items.Length; i < this.Count; i++)
+            // Shift items backwards
+            for (int i = index; i < this.Count - 1; i++)
             {
-                this._items[currIndex] = this._items[currIndex + 1%this._items.Length];
+                this._items[ToActualIndex(i)] = this._items[ToActualIndex(i + 1)];
             }
             this.Count--;
         }
 
         public T this[int index]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get
+            {
+                if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+                return this._items[ToActualIndex(index)];
+            }
+            set
+            {
+                if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+                this._items[ToActualIndex(index)] = value;
+            }
         }
 
         /// <summary>
