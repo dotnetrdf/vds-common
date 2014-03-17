@@ -98,6 +98,8 @@ namespace VDS.Common.Collections
 
         public int Count { get; private set; }
 
+        public int Capacity { get { return this._items.Length; } }
+
         public bool IsReadOnly
         {
             get { return false; }

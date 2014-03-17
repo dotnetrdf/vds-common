@@ -75,6 +75,8 @@ namespace VDS.Common.Collections
 
         public abstract BoundedListOverflowPolicy OverflowPolicy { get; }
 
+        public abstract int Capacity { get; protected set; }
+
         public virtual void RemoveAt(int index)
         {
             this._list.RemoveAt(index);

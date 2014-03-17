@@ -22,12 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestClass]
+    [TestFixtureAttribute]
     public abstract class AbstractDictionaryContractTests
     {
         /// <summary>
@@ -36,7 +35,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         protected abstract IDictionary<String, int> GetInstance();
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentException))]
         public void DictionaryContractAdd1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -45,7 +44,7 @@ namespace VDS.Common.Collections
             dict.Add("key", 2);
         }
         
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentException))]
         public void DictionaryContractAdd2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -54,7 +53,7 @@ namespace VDS.Common.Collections
             dict.Add(new KeyValuePair<String, int>("key", 2));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractRemove1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -63,7 +62,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.Remove("key"));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractRemove2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -71,7 +70,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Remove("key"));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractRemove3()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -80,7 +79,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.Remove(new KeyValuePair<String, int>("key", 1)));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractRemove4()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -89,7 +88,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Remove(new KeyValuePair<String, int>("key", 2)));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractContains1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -97,7 +96,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.ContainsKey("key"));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractContains2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -106,7 +105,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.ContainsKey("key"));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractContains3()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -115,7 +114,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.Contains(new KeyValuePair<String, int>("key", 1)));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractContains4()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -124,7 +123,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Contains(new KeyValuePair<String, int>("key", 2)));
         }
 
-        [TestMethod, ExpectedException(typeof(KeyNotFoundException))]
+        [TestAttribute, ExpectedException(typeof(KeyNotFoundException))]
         public void DictionaryContractItemGet1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -132,7 +131,7 @@ namespace VDS.Common.Collections
             int value = dict["key"];
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemGet2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -141,7 +140,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, dict["key"]);
         }
 
-        [TestMethod,ExpectedException(typeof(KeyNotFoundException))]
+        [TestAttribute,ExpectedException(typeof(KeyNotFoundException))]
         public void DictionaryContractItemGet3()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -151,7 +150,7 @@ namespace VDS.Common.Collections
             int value = dict["key"];
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemSet1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -160,7 +159,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, dict["key"]);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemSet2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -170,7 +169,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, dict["key"]);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemSet3()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -181,7 +180,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, dict["key"]);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractTryGetValue1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -190,7 +189,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.TryGetValue("key", out value));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractTryGetValue2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -201,7 +200,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, value);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractKeys1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -209,7 +208,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Keys.Any());
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractKeys2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -219,7 +218,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.Keys.Contains("key"));
         }
 
-        [TestMethod,ExpectedException(typeof(NotSupportedException))]
+        [TestAttribute,ExpectedException(typeof(NotSupportedException))]
         public void DictionaryContractKeys3()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -229,7 +228,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.ContainsKey("key"));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractKeys4()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -241,7 +240,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, dict.Count);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractValues1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -249,7 +248,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Values.Any());
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractValues2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -259,7 +258,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.Values.Contains(1));
         }
 
-        [TestMethod, ExpectedException(typeof(NotSupportedException))]
+        [TestAttribute, ExpectedException(typeof(NotSupportedException))]
         public void DictionaryContractValues3()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -269,7 +268,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Values.Contains(1));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractValues4()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -282,11 +281,11 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixtureAttribute]
     public abstract class AbstractDictionaryWithNullKeysAllowedContractTests
         : AbstractDictionaryContractTests
     {
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractAddNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -295,7 +294,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, dict[null]);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractRemoveNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -303,7 +302,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Remove(null));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractRemoveNullKey2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -312,7 +311,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.Remove(null));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractContainsNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -320,7 +319,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.ContainsKey(null));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractContainsNullKey2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -329,7 +328,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(dict.ContainsKey(null));
         }
 
-        [TestMethod, ExpectedException(typeof(KeyNotFoundException))]
+        [TestAttribute, ExpectedException(typeof(KeyNotFoundException))]
         public void DictionaryContractItemGetNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -337,7 +336,7 @@ namespace VDS.Common.Collections
             int value = dict[null];
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemGetNullKey2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -347,7 +346,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, value);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemSetNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -356,7 +355,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, dict[null]);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractItemSetNullKey2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -367,7 +366,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, dict[null]);
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractTryGetValueNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -376,7 +375,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.TryGetValue(null, out value));
         }
 
-        [TestMethod]
+        [TestAttribute]
         public void DictionaryContractTryGetValueNullKey2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -388,11 +387,11 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixtureAttribute]
     public abstract class AbstractDictionaryWithNullKeysForbiddenContractTests
         : AbstractDictionaryContractTests
     {
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
         public void DictionaryContractAddNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -400,7 +399,7 @@ namespace VDS.Common.Collections
             dict.Add(null, 1);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
         public void DictionaryContractRemoveNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -408,7 +407,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.Remove(null));
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
         public void DictionaryContractContainsNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -416,7 +415,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(dict.ContainsKey(null));
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
         public void DictionaryContractItemGetNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -424,7 +423,7 @@ namespace VDS.Common.Collections
             int value = dict[null];
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
         public void DictionaryContractItemSetNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -432,7 +431,7 @@ namespace VDS.Common.Collections
             dict[null] = 1;
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
         public void DictionaryContractTryGetValueNullKey1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -442,7 +441,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixtureAttribute]
     public class DictionaryContractTests
         : AbstractDictionaryWithNullKeysForbiddenContractTests
     {
@@ -452,7 +451,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixtureAttribute]
     public class MultiDictionaryContractTests
         : AbstractDictionaryWithNullKeysForbiddenContractTests
     {
@@ -462,7 +461,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixtureAttribute]
     public class MultiDictionaryWithNullableKeysContractTests
         : AbstractDictionaryWithNullKeysAllowedContractTests
     {
@@ -472,7 +471,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixtureAttribute]
     public class TreeSortedDictionaryContractTests
         : AbstractDictionaryWithNullKeysAllowedContractTests
     {

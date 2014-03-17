@@ -21,5 +21,10 @@ namespace VDS.Common.Collections
         /// Gets the overflow policy that applies when attempting to add more elements to the list than there is capacity for
         /// </summary>
         BoundedListOverflowPolicy OverflowPolicy { get; }
+
+        /// <summary>
+        /// Gets the capacity of the bounded list i.e. the maximum number of elements it holds
+        /// </summary>
+        int Capacity { get; }
     }
 }

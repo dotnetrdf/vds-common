@@ -146,4 +146,21 @@
       <Link>Tries\TrieValuesEnumerable.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\AbstractListBackedBoundedList.cs">
+      <Link>Collections\AbstractListBackedBoundedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\BoundedList.cs">
+      <Link>Collections\BoundedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\BoundedListOverflowPolicy.cs">
+      <Link>Collections\BoundedListOverflowPolicy.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\IBoundedList.cs">
+      <Link>Collections\IBoundedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\RingBuffer.cs">
+      <Link>Collections\RingBuffer.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
