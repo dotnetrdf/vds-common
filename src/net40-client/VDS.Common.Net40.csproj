@@ -46,6 +46,7 @@
     <Compile Include="Collections\AbstractListBackedBoundedList.cs" />
     <Compile Include="Collections\BoundedList.cs" />
     <Compile Include="Collections\BoundedListOverflowPolicy.cs" />
+    <Compile Include="Collections\DiscardingBoundedList.cs" />
     <Compile Include="Collections\IBoundedList.cs" />
     <Compile Include="Collections\ImmutableView.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />

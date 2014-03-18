@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace VDS.Common.Collections
 {
+
     public class RingBuffer<T>
         : IBoundedList<T>
     {
@@ -14,7 +15,7 @@ namespace VDS.Common.Collections
         {
             StartIndex = 0;
             Count = 0;
-            if (capacity < 0) throw new ArgumentException("Capacity must be >= 0", "capacity");
+            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", "capacity");
             this._items = new T[capacity];
             this._comparer = Comparer<T>.Default;
             if (this._comparer == null) throw new InvalidOperationException("Unable to create a RingBuffer since no default comparer is available for the configured element type");
@@ -98,7 +99,7 @@ namespace VDS.Common.Collections
 
         public int Count { get; private set; }
 
-        public int Capacity { get { return this._items.Length; } }
+        public int MaxCapacity { get { return this._items.Length; } }
 
         public bool IsReadOnly
         {

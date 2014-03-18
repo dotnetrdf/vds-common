@@ -10,12 +10,25 @@ namespace VDS.Common.Collections
     public abstract class AbstractListBackedBoundedList<T>
         : IBoundedList<T>
     {
+        /// <summary>
+        /// Underlying list
+        /// </summary>
         protected readonly IList<T> _list;
 
         protected AbstractListBackedBoundedList(IList<T> list)
         {
             if (list == null) throw new ArgumentNullException("list");
             this._list = list;
+        }
+
+        /// <summary>
+        /// Helper method for selecting an initial capacity for the backing list to avoid preemptively allocating the full capacity needed to hold the maximum number of permitted elements
+        /// </summary>
+        /// <param name="capacity">MaxCapacity</param>
+        /// <returns>Initial capacity</returns>
+        protected static int SelectInitialCapacity(int capacity)
+        {
+            return capacity < 10 ? capacity : Convert.ToInt32(Math.Log(capacity, 2d));
         }
 
         public virtual int Count
@@ -75,7 +88,7 @@ namespace VDS.Common.Collections
 
         public abstract BoundedListOverflowPolicy OverflowPolicy { get; }
 
-        public abstract int Capacity { get; protected set; }
+        public abstract int MaxCapacity { get; protected set; }
 
         public virtual void RemoveAt(int index)
         {

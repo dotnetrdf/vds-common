@@ -23,8 +23,8 @@ namespace VDS.Common.Collections
         BoundedListOverflowPolicy OverflowPolicy { get; }
 
         /// <summary>
-        /// Gets the capacity of the bounded list i.e. the maximum number of elements it holds
+        /// Gets the maximum capacity of the bounded list i.e. the maximum number of elements it holds
         /// </summary>
-        int Capacity { get; }
+        int MaxCapacity { get; }
     }
 }
