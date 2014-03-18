@@ -22,18 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestClass]
+    [TestFixture]
     public abstract class AbstractSortedDictionaryContractTests
         : AbstractDictionaryContractTests
     {
         protected abstract IDictionary<String, int> GetInstance(IComparer<String> comparer);
 
-        [TestMethod]
+        [Test]
         public void DictionaryContractSortedKeys1()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -49,7 +48,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual("b", keys.Last());
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryContractSortedKeys2()
         {
             IDictionary<String, int> dict = this.GetInstance();
@@ -66,7 +65,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class SortedDictionaryContractTests
         : AbstractSortedDictionaryContractTests
     {
@@ -81,7 +80,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class TreeSortedDictionaryContractTests2
         : AbstractSortedDictionaryContractTests
     {

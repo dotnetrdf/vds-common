@@ -22,36 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestClass]
+    [TestFixture]
     public class MultiDictionaryTests
     {
-        [TestMethod]
+        [Test]
         public void MultiDictionaryInstantiation1()
         {
             MultiDictionary<String, int> dict = new MultiDictionary<string, int>();
         }
 
-        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        [Test,ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling1()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Add(null, 1);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling2()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             int i = dict[null];
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling3()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
@@ -59,63 +57,63 @@ namespace VDS.Common.Collections
             dict.TryGetValue(null, out i);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling4()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict[null] = 1;
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling5()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Add(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling6()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Remove(null);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling7()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Remove(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling8()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.ContainsKey(null);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling10()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Contains(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling11()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Add(null, 1);
         }
 
-        [TestMethod,ExpectedException(typeof(KeyNotFoundException))]
+        [Test,ExpectedException(typeof(KeyNotFoundException))]
         public void MultiDictionaryNullKeyHandling12()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             int i = dict[null];
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling13()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
@@ -123,49 +121,49 @@ namespace VDS.Common.Collections
             dict.TryGetValue(null, out i);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling14()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict[null] = 1;
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling15()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Add(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling16()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Remove(null);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling17()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Remove(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling18()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.ContainsKey(null);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryNullKeyHandling19()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Contains(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryInsertBasic1()
         {
             Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>();
@@ -195,7 +193,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, mDict[b]);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryInsertBasic2()
         {
             Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>(new TestKeyComparer<String>());
@@ -217,7 +215,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, mDict[b]);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryLookupPathological1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -261,7 +259,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime < dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryLookupPathological2()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -306,7 +304,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime < dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryInsertPathological1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -349,7 +347,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime < dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryLookupNormal1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -393,7 +391,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime > dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryLookupNormal2()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -438,7 +436,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime > dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryInsertNormal1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -481,7 +479,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime > dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryLookupPool1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -525,7 +523,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime < dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryLookupPool2()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -570,7 +568,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime < dictTime);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiDictionaryVsDictionaryInsertPool1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());

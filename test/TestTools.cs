@@ -21,42 +21,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.IO;
-using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VDS.Common
 {
     public class TestTools
     {
-        public static void ReportError(String title, Exception ex)
-        {
-            Console.WriteLine(title);
-            Console.WriteLine(ex.Message);
-            Console.WriteLine(ex.StackTrace);
-
-            if (ex.InnerException != null)
-            {
-                ReportError("Inner Exception", ex.InnerException);
-            }
-        }
-
-        public static void WarningPrinter(String message)
-        {
-            Console.WriteLine(message);
-        }
-
-        public static void TestInMTAThread(ThreadStart info)
-        {
-                Thread t = new Thread(info);
-                t.SetApartmentState(ApartmentState.MTA);
-                t.Start();
-                t.Join();
-        }
-
         public static void PrintEnumerable<T>(IEnumerable<T> items, String sep)
             where T : class
         {

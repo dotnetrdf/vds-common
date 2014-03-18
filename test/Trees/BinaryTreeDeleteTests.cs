@@ -19,15 +19,12 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace VDS.Common.Trees
 {
-    [TestClass]
+    [TestFixture]
     public class BinaryTreeDeleteTests
     {
         #region Tree Preparation
@@ -654,147 +651,147 @@ namespace VDS.Common.Trees
 
         #endregion
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation1()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree1(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation1()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree1(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation1()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree1(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation2a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree2a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation2b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree2b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation2a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree2a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation2b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree2b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation2a()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree2a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation2b()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree2b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation3a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree3a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation3b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree3b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation3a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree3a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation3b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree3b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation3a()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree3a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation3b()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree3b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation4a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree4a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation4b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree4b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation4c()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree4c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation4a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree4a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation4b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree4b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation4c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
@@ -806,175 +803,175 @@ namespace VDS.Common.Trees
         //NB - Tree 4c, 5 and 6 tests also trigger the rebalance but they always leave the tree in the state
         //we expect so they can be safely run
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation4c()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree4c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation5a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree5a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation5b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree5b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation5c()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree5c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation5a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree5a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation5b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree5b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation5c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree5c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation5a()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree5a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation5b()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree5b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation5c()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree5c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation6a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree6a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation6b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree6b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation6c()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree6c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation6a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree6a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation6b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree6b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation6c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree6c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation6a()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree6a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation6b()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree6b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeScapegoatDeleteValidation6c()
         {
             ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
             this.TestTree6c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation7a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree7a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation7b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree7b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation7c()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree7c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation7a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree7a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation7b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree7b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation7c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
@@ -986,42 +983,42 @@ namespace VDS.Common.Trees
         //NB - Tree 4c, 5 and 6 tests also trigger the rebalance but they always leave the tree in the state
         //we expect so they can be safely run
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation8a()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree8a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation8b()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree8b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeAVLDeleteValidation8c()
         {
             AVLTree<int, int> tree = new AVLTree<int, int>();
             this.TestTree8c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation8a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree8a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation8b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree8b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation8c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
@@ -1033,56 +1030,56 @@ namespace VDS.Common.Trees
         //NB - Tree 4c, 5 and 6 tests also trigger the rebalance but they always leave the tree in the state
         //we expect so they can be safely run
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation9a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree9a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation9b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree9b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation9c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree9c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation9d()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree9d(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation10a()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree10a(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation10b()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree10b(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation10c()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
             this.TestTree10c(tree);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryTreeUnbalancedDeleteValidation10d()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();

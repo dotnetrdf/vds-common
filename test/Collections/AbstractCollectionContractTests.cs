@@ -21,13 +21,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestClass]
+    [TestFixture]
     public abstract class AbstractCollectionContractTests
     {
         /// <summary>
@@ -43,7 +41,7 @@ namespace VDS.Common.Collections
         /// <returns>Instance to test</returns>
         protected abstract ICollection<String> GetInstance(IEnumerable<String> contents);
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof(ArgumentNullException))]
         public void CollectionContractCopyTo1()
         {
             ICollection<String> c = this.GetInstance();
@@ -51,7 +49,7 @@ namespace VDS.Common.Collections
             c.CopyTo(null, 0);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CollectionContractCopyTo2()
         {
             ICollection<String> c = this.GetInstance();
@@ -59,7 +57,7 @@ namespace VDS.Common.Collections
             c.CopyTo(new String[10], -1);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [Test, ExpectedException(typeof(ArgumentException))]
         public void CollectionContractCopyTo3()
         {
             ICollection<String> c = this.GetInstance();
@@ -67,7 +65,7 @@ namespace VDS.Common.Collections
             c.CopyTo(new String[1], 2);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractCopyTo4()
         {
             ICollection<String> c = this.GetInstance();
@@ -75,7 +73,7 @@ namespace VDS.Common.Collections
             c.CopyTo(new String[1], 0);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractCopyTo5()
         {
             ICollection<String> c = this.GetInstance(new String[] { "test" });
@@ -85,7 +83,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual("test", dest[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractEnumerate1()
         {
             ICollection<String> c = this.GetInstance();
@@ -96,7 +94,7 @@ namespace VDS.Common.Collections
             }
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractEnumerate2()
         {
             ICollection<String> c = this.GetInstance(new String[] { "test" });
@@ -109,28 +107,28 @@ namespace VDS.Common.Collections
             }
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractCount1()
         {
             ICollection<String> c = this.GetInstance();
             Assert.AreEqual(0, c.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractCount2()
         {
             ICollection<String> c = this.GetInstance(new String[] { "test" });
             Assert.AreEqual(1, c.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractContains1()
         {
             ICollection<String> c = this.GetInstance();
             Assert.IsFalse(c.Contains("test"));
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractContains2()
         {
             ICollection<String> c = this.GetInstance(new String[] { "test" });
@@ -138,25 +136,25 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public abstract class AbstractImmutableCollectionContractTests
         : AbstractCollectionContractTests
     {
-        [TestMethod, ExpectedException(typeof(NotSupportedException))]
+        [Test, ExpectedException(typeof(NotSupportedException))]
         public void CollectionContractAdd1()
         {
             ICollection<String> c = this.GetInstance();
             c.Add("test");
         }
 
-        [TestMethod, ExpectedException(typeof(NotSupportedException))]
+        [Test, ExpectedException(typeof(NotSupportedException))]
         public void CollectionContractRemove1()
         {
             ICollection<String> c = this.GetInstance();
             c.Remove("test");
         }
 
-        [TestMethod, ExpectedException(typeof(NotSupportedException))]
+        [Test, ExpectedException(typeof(NotSupportedException))]
         public void CollectionContractClear1()
         {
             ICollection<String> c = this.GetInstance();
@@ -164,11 +162,11 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public abstract class AbstractMutableCollectionContractTests
         : AbstractCollectionContractTests
     {
-        [TestMethod]
+        [Test]
         public void CollectionContractAdd1()
         {
             ICollection<String> c = this.GetInstance();
@@ -178,7 +176,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(1, c.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractAdd2()
         {
             ICollection<String> c = this.GetInstance();
@@ -191,7 +189,7 @@ namespace VDS.Common.Collections
             }
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractRemove1()
         {
             ICollection<String> c = this.GetInstance();
@@ -202,7 +200,7 @@ namespace VDS.Common.Collections
             Assert.IsFalse(c.Contains("test"));
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractRemove2()
         {
             ICollection<String> c = this.GetInstance();
@@ -216,7 +214,7 @@ namespace VDS.Common.Collections
             Assert.IsTrue(c.Contains("test"));
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractClear1()
         {
             ICollection<String> c = this.GetInstance();
@@ -226,7 +224,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(0, c.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionContractClear2()
         {
             ICollection<String> c = this.GetInstance();
@@ -240,7 +238,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class ListContractTests
         : AbstractMutableCollectionContractTests
     {
@@ -255,7 +253,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class ImmutableViewContractTests
         : AbstractImmutableCollectionContractTests
     {
@@ -270,7 +268,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class MaterializedImmutableViewContractTests
         : AbstractImmutableCollectionContractTests
     {
