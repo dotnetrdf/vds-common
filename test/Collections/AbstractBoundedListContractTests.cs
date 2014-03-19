@@ -246,6 +246,79 @@ namespace VDS.Common.Collections
                 }
             }
         }
+
+        [Test]
+        public void BoundedListContractRemove1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            list.Add("b");
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(list.Contains("b"));
+
+            Assert.AreEqual("a", list[0]);
+            Assert.AreEqual("b", list[1]);
+
+            // Now remove item a
+            Assert.IsTrue(list.Remove("a"));
+            Assert.IsFalse(list.Contains("a"));
+            Assert.AreEqual("b", list[0]);
+            Assert.AreEqual(1, list.Count);
+
+            // Now remove item b
+            Assert.IsTrue(list.Remove("b"));
+            Assert.IsFalse(list.Contains("b"));
+            Assert.AreEqual(0, list.Count);
+        }
+
+        [Test]
+        public void BoundedListContractRemove2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            list.Add("b");
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(list.Contains("b"));
+
+            Assert.AreEqual("a", list[0]);
+            Assert.AreEqual("b", list[1]);
+
+            // Now remove item b
+            Assert.IsTrue(list.Remove("b"));
+            Assert.IsFalse(list.Contains("b"));
+            Assert.AreEqual("a", list[0]);
+            Assert.AreEqual(1, list.Count);
+
+            // Now remove item a
+            Assert.IsTrue(list.Remove("a"));
+            Assert.IsFalse(list.Contains("a"));
+            Assert.AreEqual(0, list.Count);
+        }
+
+        [Test]
+        public void BoundedListContractRemove3()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            // Can't remove non-existent items
+            Assert.IsFalse(list.Remove("a"));
+        }
+
+        [Test]
+        public void BoundedListContractRemove4()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+
+            // Can't remove non-existent items
+            Assert.IsFalse(list.Remove("b"));
+        }
     }
 
     [TestFixture]
@@ -290,6 +363,20 @@ namespace VDS.Common.Collections
         protected override IBoundedList<string> GetInstance(int capacity, IEnumerable<string> contents)
         {
             return new DiscardingBoundedList<string>(capacity, contents);
+        }
+    }
+
+    public class OverwritingBoundedListTests
+        : AbstractBoundedListContractTests
+    {
+        protected override IBoundedList<string> GetInstance(int capacity)
+        {
+            return new OverwritingBoundedList<string>(capacity);
+        }
+
+        protected override IBoundedList<string> GetInstance(int capacity, IEnumerable<string> contents)
+        {
+            return new OverwritingBoundedList<string>(capacity, contents);
         }
     }
 }

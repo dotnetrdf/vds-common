@@ -174,4 +174,12 @@
       <Link>Collections\RingBuffer.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\DiscardingBoundedList.cs">
+      <Link>Collections\DiscardingBoundedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\OverwritingBoundedList.cs">
+      <Link>Collections\OverwritingBoundedList.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -94,7 +94,16 @@ namespace VDS.Common.Collections
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            int index = this.IndexOf(item);
+            if (index == -1) return false;
+
+            // Shift items backwards
+            for (int i = index; i < this.Count - 1; i++)
+            {
+                this._items[ToActualIndex(i)] = this._items[ToActualIndex(i + 1)];
+            }
+            this.Count--;
+            return true;
         }
 
         public int Count { get; private set; }
@@ -118,7 +127,7 @@ namespace VDS.Common.Collections
 
         public void Insert(int index, T item)
         {
-            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + (this.Count - 1));
             // Shift items forward
             for (int i = index; i < this.Count - 1; i++)
             {
@@ -130,7 +139,7 @@ namespace VDS.Common.Collections
 
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + (this.Count - 1));
             // Shift items backwards
             for (int i = index; i < this.Count - 1; i++)
             {
@@ -143,12 +152,12 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+                if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + (this.Count - 1));
                 return this._items[ToActualIndex(index)];
             }
             set
             {
-                if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + this.Count);
+                if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException("Index must be in range 0-" + (this.Count - 1));
                 this._items[ToActualIndex(index)] = value;
             }
         }

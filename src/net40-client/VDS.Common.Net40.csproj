@@ -50,6 +50,7 @@
     <Compile Include="Collections\IBoundedList.cs" />
     <Compile Include="Collections\ImmutableView.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
+    <Compile Include="Collections\OverwritingBoundedList.cs" />
     <Compile Include="Collections\RingBuffer.cs" />
     <Compile Include="Collections\TreeSortedDictionary.cs" />
     <Compile Include="Extensions.cs" />
