@@ -35,21 +35,21 @@ namespace VDS.Common.Collections
             MultiDictionary<String, int> dict = new MultiDictionary<string, int>();
         }
 
-        [Test,ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling1()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Add(null, 1);
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling2()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             int i = dict[null];
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling3()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
@@ -57,35 +57,35 @@ namespace VDS.Common.Collections
             dict.TryGetValue(null, out i);
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling4()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict[null] = 1;
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling5()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Add(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling6()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Remove(null);
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling7()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
             dict.Remove(new KeyValuePair<Object, int>(null, 1));
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test, ExpectedException(typeof (ArgumentNullException))]
         public void MultiDictionaryNullKeyHandling8()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
@@ -106,7 +106,7 @@ namespace VDS.Common.Collections
             dict.Add(null, 1);
         }
 
-        [Test,ExpectedException(typeof(KeyNotFoundException))]
+        [Test, ExpectedException(typeof (KeyNotFoundException))]
         public void MultiDictionaryNullKeyHandling12()
         {
             MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
@@ -232,7 +232,7 @@ namespace VDS.Common.Collections
             }
 
             Stopwatch timer = new Stopwatch();
-            
+
             //Lookup all keys in dictionary
             timer.Start();
             foreach (TestKey<int> key in keys)
@@ -436,15 +436,15 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime > dictTime);
         }
 
-        [Test]
-        public void MultiDictionaryVsDictionaryInsertNormal1()
+        [TestCase(1000), TestCase(10000), TestCase(100000), TestCase(250000)]
+        public void MultiDictionaryVsDictionaryInsertNormal1(int numKeys)
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
             MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
-            //Generate 10000 keys
+            //Generate some number of keys
             List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < numKeys; i++)
             {
                 TestKey<int> key = new TestKey<int>(i, i);
                 keys.Add(key);
@@ -489,7 +489,7 @@ namespace VDS.Common.Collections
             List<TestKey<int>> keys = new List<TestKey<int>>();
             for (int i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(i % 100, i);
+                TestKey<int> key = new TestKey<int>(i%100, i);
                 keys.Add(key);
                 dict.Add(key, i);
                 mDict.Add(key, i);
@@ -533,7 +533,7 @@ namespace VDS.Common.Collections
             List<TestKey<int>> keys = new List<TestKey<int>>();
             for (int i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(i % 100, i);
+                TestKey<int> key = new TestKey<int>(i%100, i);
                 keys.Add(key);
                 dict.Add(key, i);
                 mDict.Add(key, i);
@@ -578,7 +578,7 @@ namespace VDS.Common.Collections
             List<TestKey<int>> keys = new List<TestKey<int>>();
             for (int i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(i % 100, i);
+                TestKey<int> key = new TestKey<int>(i%100, i);
                 keys.Add(key);
             }
 
