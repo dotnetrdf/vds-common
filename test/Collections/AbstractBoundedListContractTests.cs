@@ -8,7 +8,7 @@ namespace VDS.Common.Collections
 {
     [TestFixture]
     public abstract class AbstractBoundedListContractTests
-        : AbstractCollectionContractTests
+        : AbstractMutableCollectionContractTests
     {
         protected abstract IBoundedList<string> GetInstance(int capacity);
 
@@ -16,13 +16,13 @@ namespace VDS.Common.Collections
 
         protected override ICollection<string> GetInstance()
         {
-            return GetInstance(10);
+            return GetInstance(100);
         }
 
         protected override ICollection<string> GetInstance(IEnumerable<string> contents)
         {
             var enumerable = contents as IList<string> ?? contents.ToList();
-            return GetInstance(enumerable.Count, enumerable);
+            return GetInstance(100, enumerable);
         }
 
         [Test]
@@ -213,12 +213,12 @@ namespace VDS.Common.Collections
         }
 
         [TestCase(10, 100),
- TestCase(10, 1000),
- TestCase(1, 100),
- TestCase(100, 10),
- TestCase(100, 1000),
- TestCase(2, 100),
- TestCase(2, 1000)]
+         TestCase(10, 1000),
+         TestCase(1, 100),
+         TestCase(100, 10),
+         TestCase(100, 1000),
+         TestCase(2, 100),
+         TestCase(2, 1000)]
         public void BoundedListContractAddDiscard2(int capacity, int iterations)
         {
             IBoundedList<String> list = this.GetInstance(capacity);
@@ -317,22 +317,202 @@ namespace VDS.Common.Collections
             Assert.IsTrue(list.Contains("a"));
 
             // Can't remove non-existent items
-            Assert.IsFalse(list.Remove("b"));
+            Assert.IsFalse(list.Remove("bhg"));
+        }
+
+        [Test]
+        public void BoundedListContractInsert1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.AreEqual("a", list[0]);
+
+            // Insert before
+            list.Insert(0, "b");
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(list.Contains("b"));
+            Assert.AreEqual("b", list[0]);
+            Assert.AreEqual("a", list[1]);
+        }
+
+        [Test]
+        public void BoundedListContractInsert2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.AreEqual("a", list[0]);
+
+            // Insert after
+            list.Insert(1, "b");
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(list.Contains("b"));
+            Assert.AreEqual("a", list[0]);
+            Assert.AreEqual("b", list[1]);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractInsertOutOfRange1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            // Insert out of range
+            list.Insert(2, "b");
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractInsertOutOfRange2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            // Insert out of range
+            list.Insert(-1, "b");
+        }
+
+        [Test, ExpectedException(typeof (InvalidOperationException))]
+        public void BoundedListContractInsertError1()
+        {
+            IBoundedList<String> list = this.GetInstance(1);
+            if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.AreEqual("a", list[0]);
+
+            // Inserting an additional item should exceed capacity and result in an error
+            list.Insert(0, "b");
+        }
+
+        [Test, ExpectedException(typeof (InvalidOperationException))]
+        public void BoundedListContractInsertError2()
+        {
+            IBoundedList<String> list = this.GetInstance(1);
+            if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.AreEqual("a", list[0]);
+
+            // Inserting an additional item should exceed capacity and result in an error
+            list.Insert(1, "b");
+        }
+
+        [TestCase(10, 100),
+         TestCase(10, 1000),
+         TestCase(1, 100),
+         TestCase(100, 10),
+         TestCase(100, 1000),
+         TestCase(2, 100),
+         TestCase(2, 1000)]
+        public void BoundedListContractInsertError3(int capacity, int iterations)
+        {
+            IBoundedList<String> list = this.GetInstance(capacity);
+            if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
+
+            List<String> items = new List<string>();
+            for (int i = 0; i < iterations; i++)
+            {
+                String newItem = i.ToString(CultureInfo.InvariantCulture);
+                Assert.IsFalse(list.Contains(newItem));
+                items.Add(newItem);
+
+                // Try to insert to list, should error once capacity is exceeded
+                try
+                {
+                    list.Insert(0, newItem);
+                    Assert.IsTrue(list.Contains(newItem));
+
+                    // Should never exceed list capacity
+                    Assert.IsFalse(list.Count > list.MaxCapacity);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // If this error occurs then we expect the list to be full
+                    Assert.AreEqual(list.MaxCapacity, list.Count);
+                }
+
+                // Check expected items are in list
+                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                {
+                    Assert.IsTrue(list.Contains(items[index]));
+                    Assert.AreEqual(items[Math.Min(items.Count, list.MaxCapacity) - 1 - index], list[index]);
+                }
+                // Check additional items are not in list
+                if (items.Count <= list.MaxCapacity) continue;
+                for (int index = list.MaxCapacity; index < items.Count; index++)
+                {
+                    Assert.IsFalse(list.Contains(items[index]));
+                }
+            }
+        }
+
+        [TestCase(10, 100),
+         TestCase(10, 1000),
+         TestCase(1, 100),
+         TestCase(100, 10),
+         TestCase(100, 1000),
+         TestCase(2, 100),
+         TestCase(2, 1000)]
+        public void BoundedListContractInsertError4(int capacity, int iterations)
+        {
+            IBoundedList<String> list = this.GetInstance(capacity);
+            if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
+
+            List<String> items = new List<string>();
+            for (int i = 0, insert = 0; i < iterations; i++, insert = (insert + 1) % (capacity + 1))
+            {
+                String newItem = i.ToString(CultureInfo.InvariantCulture);
+                Assert.IsFalse(list.Contains(newItem));
+                items.Add(newItem);
+
+                // Try to insert to list, should error once capacity is exceeded
+                try
+                {
+                    // Insert at cycled position
+                    list.Insert(insert, newItem);
+                    Assert.IsTrue(list.Contains(newItem));
+
+                    // Should never exceed list capacity
+                    Assert.IsFalse(list.Count > list.MaxCapacity);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // If this error occurs then we expect the list to be full
+                    Assert.AreEqual(list.MaxCapacity, list.Count);
+                }
+
+                // Check expected items are in list
+                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                {
+                    Assert.IsTrue(list.Contains(items[index]));
+                }
+                // Check additional items are not in list
+                if (items.Count <= list.MaxCapacity) continue;
+                for (int index = list.MaxCapacity; index < items.Count; index++)
+                {
+                    Assert.IsFalse(list.Contains(items[index]));
+                }
+            }
         }
     }
 
     [TestFixture]
-    public class BoundedListTests
+    public class CappedBoundedListTests
         : AbstractBoundedListContractTests
     {
         protected override IBoundedList<string> GetInstance(int capacity)
         {
-            return new BoundedList<string>(capacity);
+            return new CappedBoundedList<string>(capacity);
         }
 
         protected override IBoundedList<string> GetInstance(int capacity, IEnumerable<string> contents)
         {
-            return new BoundedList<string>(capacity, contents);
+            return new CappedBoundedList<string>(capacity, contents);
         }
     }
 

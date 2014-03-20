@@ -7,14 +7,14 @@ namespace VDS.Common.Collections
     /// A simple bounded list implementation that errors if users attempt to add more items than there is capacity for
     /// </summary>
     /// <typeparam name="T">Element type</typeparam>
-    public class BoundedList<T>
+    public class CappedBoundedList<T>
         : AbstractListBackedBoundedList<T>
     {
         /// <summary>
         /// Creates a new bounded list with the given capacity
         /// </summary>
         /// <param name="capacity">MaxCapacity</param>
-        public BoundedList(int capacity)
+        public CappedBoundedList(int capacity)
             : base(new List<T>(SelectInitialCapacity(capacity)))
         {
             if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", "capacity");
@@ -29,7 +29,7 @@ namespace VDS.Common.Collections
         /// <remarks>
         /// If the number of items provided exceeds the declared capacity then an error will be thrown from the constructor
         /// </remarks>
-        public BoundedList(int capacity, IEnumerable<T> items)
+        public CappedBoundedList(int capacity, IEnumerable<T> items)
             : this(capacity)
         {
             foreach (T item in items)

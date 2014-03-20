@@ -92,9 +92,16 @@ namespace VDS.Common.Collections
 
         public void Insert(int index, T item)
         {
-            LinkedListNode<T> node = FindNode(index);
-            this._list.AddBefore(node, item);
-            if (this._list.Count > this.MaxCapacity) this._list.RemoveFirst();
+            if (index == this.Count)
+            {
+                this.Add(item);
+            }
+            else
+            {
+                LinkedListNode<T> node = FindNode(index);
+                this._list.AddBefore(node, item);
+                if (this._list.Count > this.MaxCapacity) this._list.RemoveFirst();
+            }
         }
 
         public void RemoveAt(int index)
@@ -119,7 +126,7 @@ namespace VDS.Common.Collections
 
         private LinkedListNode<T> FindNode(int index)
         {
-            if (index < 0 || index >= this._list.Count) throw new IndexOutOfRangeException("Index must be in the range 0-" + (this._list.Count - 1));
+            if (index < 0 || index >= this._list.Count) throw new ArgumentOutOfRangeException("Index must be in the range 0-" + (this._list.Count - 1));
             LinkedListNode<T> node = this._list.First;
             for (int i = 0; i < index; i++)
             {

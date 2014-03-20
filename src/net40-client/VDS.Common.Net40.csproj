@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AbstractListBackedBoundedList.cs" />
-    <Compile Include="Collections\BoundedList.cs" />
+    <Compile Include="Collections\CappedBoundedList.cs" />
     <Compile Include="Collections\BoundedListOverflowPolicy.cs" />
     <Compile Include="Collections\DiscardingBoundedList.cs" />
     <Compile Include="Collections\IBoundedList.cs" />

@@ -161,9 +161,6 @@
     <Compile Include="..\net40-client\Collections\AbstractListBackedBoundedList.cs">
       <Link>Collections\AbstractListBackedBoundedList.cs</Link>
     </Compile>
-    <Compile Include="..\net40-client\Collections\BoundedList.cs">
-      <Link>Collections\BoundedList.cs</Link>
-    </Compile>
     <Compile Include="..\net40-client\Collections\BoundedListOverflowPolicy.cs">
       <Link>Collections\BoundedListOverflowPolicy.cs</Link>
     </Compile>
@@ -180,6 +177,11 @@
     </Compile>
     <Compile Include="..\net40-client\Collections\OverwritingBoundedList.cs">
       <Link>Collections\OverwritingBoundedList.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\CappedBoundedList.cs">
+      <Link>Collections\CappedBoundedList.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
