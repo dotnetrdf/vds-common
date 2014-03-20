@@ -21,8 +21,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Collections
 {
@@ -32,12 +30,13 @@ namespace VDS.Common.Collections
     public class TestKey<T>
         where T : IComparable<T>
     {
-        private int _hashCode;
+        private readonly int _hashCode;
 
         /// <summary>
         /// Creates a test key
         /// </summary>
         /// <param name="hashCode">Hash Code</param>
+        /// <param name="value">Value</param>
         public TestKey(int hashCode, T value)
         {
             if (value == null) throw new ArgumentNullException("value");

@@ -474,7 +474,7 @@ namespace VDS.Common.Collections
             timer.Stop();
 
             TimeSpan mDictTime = timer.Elapsed;
-            Console.WriteLine("MutliDictionary took " + timer.Elapsed);
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime > dictTime);
         }
@@ -568,15 +568,15 @@ namespace VDS.Common.Collections
             Assert.IsTrue(mDictTime < dictTime);
         }
 
-        [Test]
-        public void MultiDictionaryVsDictionaryInsertPool1()
+        [TestCase(1000), TestCase(10000), TestCase(100000), TestCase(250000)]
+        public void MultiDictionaryVsDictionaryInsertPool1(int numKeys)
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
             MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Generate 10000 keys
             List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < numKeys; i++)
             {
                 TestKey<int> key = new TestKey<int>(i%100, i);
                 keys.Add(key);
