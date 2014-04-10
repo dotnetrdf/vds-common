@@ -6,6 +6,8 @@ This is the Change Log for VDS.Common
 1.3.0
 -----
 
+- Switch to PCL Profile 136 as our PCL target
+ - Removed SL4 and WP7 builds
 - New IBoundedList interface
 - Add IBoundedList implementations:
  - BoundedList
