@@ -1,10 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Net40", "src\net40-client\VDS.Common.Net40.csproj", "{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Test", "test\VDS.Common.Test.csproj", "{5091A75F-7EF2-4813-A2F0-2E106507AED3}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{320B10FC-8206-473F-9901-89A0D5FF5B00}"
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.txt = ChangeLog.txt
@@ -18,22 +16,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		VDS.Common.vsmdi = VDS.Common.vsmdi
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{998C61CD-FB9B-4528-8687-7F59CF07A51A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Net40", "src\net40-client\VDS.Common.Net40.csproj", "{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Test", "test\VDS.Common.Test.csproj", "{5091A75F-7EF2-4813-A2F0-2E106507AED3}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Net35", "src\net35-client\VDS.Common.Net35.csproj", "{1EBE35AB-6D46-40D5-8C81-78D7A34A5290}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Silverlight4", "src\sl4\VDS.Common.Silverlight4.csproj", "{71F08B3B-8713-4FFE-BFC9-57CF6E4E8350}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.WindowsPhone7", "src\sl4-wp\VDS.Common.WindowsPhone7.csproj", "{64705ED9-D0AC-4601-A5EF-0AB0CB403153}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{998C61CD-FB9B-4528-8687-7F59CF07A51A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Portable", "src\portable\VDS.Common.Portable.csproj", "{3E259A2C-D877-4ABC-A8ED-4C0AFDAED530}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = VDS.Common.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -68,11 +67,14 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8} = {6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}
 		{1EBE35AB-6D46-40D5-8C81-78D7A34A5290} = {6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}
 		{71F08B3B-8713-4FFE-BFC9-57CF6E4E8350} = {6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}
 		{64705ED9-D0AC-4601-A5EF-0AB0CB403153} = {6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}
-		{176B21E1-83C4-44AE-AA8E-DC48C33CB3A8} = {6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}
 		{3E259A2C-D877-4ABC-A8ED-4C0AFDAED530} = {6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}
 		{5091A75F-7EF2-4813-A2F0-2E106507AED3} = {998C61CD-FB9B-4528-8687-7F59CF07A51A}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = VDS.Common.vsmdi
 	EndGlobalSection
 EndGlobal
