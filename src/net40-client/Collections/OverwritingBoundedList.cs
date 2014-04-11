@@ -25,6 +25,13 @@ using System.Collections.Generic;
 
 namespace VDS.Common.Collections
 {
+    /// <summary>
+    /// A bounded list implementation where items added above the capacity overwrite the oldest items in the list
+    /// </summary>
+    /// <remarks>
+    /// This differs in internal implementation from <see cref="RingBuffer{T}"/> in that it doesn't pre-allocate all the memory for the list so performs better when the capacity is set to a high value or where the capacity will rarely be exceeded.  Some overwriting operations may be slower while others may be faster.  Generally we suggest that you benchmark to see which performs better in your usage scenario.
+    /// </remarks>
+    /// <typeparam name="T">Item type</typeparam>
     public class OverwritingBoundedList<T>
         : IBoundedList<T>
     {

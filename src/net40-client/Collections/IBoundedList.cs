@@ -28,7 +28,7 @@ namespace VDS.Common.Collections
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The primary constraint on a bounded list is that it is guaranteed to never grow beyond it's configured capacity.  Implementations may internally grow the data structures used to store the elements up to that limit using whatever strategy they desire but they <strong>must</strong> never allow the size of the list to grow beyond the capacity.
+    /// The primary constraint on a bounded list is that it is guaranteed to never grow beyond it's configured maximum capacity.  Implementations may internally grow the data structures used to store the elements up to/above that limit using whatever strategy they desire but they <strong>must</strong> never allow the size of the list to grow beyond the maximum capacity.
     /// </para>
     /// <para>
     /// The second constraint on a bounded list is with regards to its behaviour when a user attempts to assert more elements than the list has capacity for.  The behaviour in this regard is declared via the <see cref="OverflowPolicy"/> property, depending on the policy declared different behaviours may occur.

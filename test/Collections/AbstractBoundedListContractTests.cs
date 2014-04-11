@@ -342,6 +342,83 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        public void BoundedListRemoveAt1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+
+            list.RemoveAt(0);
+            Assert.AreEqual(0, list.Count);
+            Assert.IsFalse(list.Contains("a"));
+        }
+
+        [Test]
+        public void BoundedListRemoveAt2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            list.Add("b");
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(list.Contains("b"));
+
+            list.RemoveAt(0);
+            Assert.AreEqual(1, list.Count);
+            Assert.IsFalse(list.Contains("a"));
+            Assert.IsTrue(list.Contains("b"));
+        }
+
+        [Test]
+        public void BoundedListRemoveAt3()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            list.Add("b");
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(list.Contains("b"));
+
+            list.RemoveAt(1);
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.IsFalse(list.Contains("b"));
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListRemoveAtOutOfRange1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            // Remove out of range due to empty list
+            list.RemoveAt(0);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListRemoveAtOutOfRange2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            // Remove out of range
+            list.RemoveAt(-1);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListRemoveAtOutOfRange3()
+        {
+            IBoundedList<string> list = this.GetInstance(2, new string[] { "a", "b" });
+
+            // Remove out of range due to being >= current size of list
+            list.RemoveAt(2);
+        }
+
+        [Test]
         public void BoundedListContractInsert1()
         {
             IBoundedList<string> list = this.GetInstance(2);
@@ -519,6 +596,17 @@ namespace VDS.Common.Collections
                     Assert.IsFalse(list.Contains(items[index]));
                 }
             }
+        }
+
+        // TODO Tests for inserting into overwriting and discarding implementations
+
+        [Test, ExpectedException(typeof(IndexOutOfRangeException))]
+        public void BoundedListContractGet1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+// ReSharper disable once UnusedVariable
+            String x = list[0];
         }
     }
 

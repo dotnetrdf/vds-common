@@ -25,13 +25,23 @@ using System.Collections.Generic;
 
 namespace VDS.Common.Collections
 {
-
+    /// <summary>
+    /// A bounded list implementation backed by a circular ring buffer where items added beyond the capacity overwrite the oldest items in the list
+    /// </summary>
+    /// <remarks>
+    /// This differs from the <see cref="OverwritingBoundedList{T}"/> in that it pre-allocates the ring buffer with the specified maximum capacity which means this can be substantially less memory efficient.  However overwriting existing items will be marginally faster for some kinds of overwrite though not in all cases.  Generally we suggest that you benchmark to see which performs better in your usage scenario.
+    /// </remarks>
+    /// <typeparam name="T">Item type</typeparam>
     public class RingBuffer<T>
         : IBoundedList<T>
     {
         private readonly T[] _items;
         private readonly IComparer<T> _comparer;
 
+        /// <summary>
+        /// Creates a new ring buffer
+        /// </summary>
+        /// <param name="capacity">Max capacity</param>
         public RingBuffer(int capacity)
         {
             StartIndex = 0;
@@ -42,6 +52,11 @@ namespace VDS.Common.Collections
             if (this._comparer == null) throw new InvalidOperationException("Unable to create a RingBuffer since no default comparer is available for the configured element type");
         }
 
+        /// <summary>
+        /// Creates a ring buffer
+        /// </summary>
+        /// <param name="capacity">Max capacity</param>
+        /// <param name="items">Initial items, if more than the max capacity then overwriting will occur</param>
         public RingBuffer(int capacity, IEnumerable<T> items)
             : this(capacity)
         {
@@ -51,6 +66,10 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets an enumerator over the ring buffer
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             return new RingBufferEnumerator<T>(this);

@@ -36,6 +36,10 @@ namespace VDS.Common.Collections
         /// </summary>
         protected readonly IList<T> _list;
 
+        /// <summary>
+        /// Creates a new list backed bounded list using the given list
+        /// </summary>
+        /// <param name="list">List</param>
         protected AbstractListBackedBoundedList(IList<T> list)
         {
             if (list == null) throw new ArgumentNullException("list");
@@ -107,8 +111,14 @@ namespace VDS.Common.Collections
             return this._list.GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets the overflow policy that is in-use
+        /// </summary>
         public abstract BoundedListOverflowPolicy OverflowPolicy { get; }
 
+        /// <summary>
+        /// Gets the maximum capacity of the list
+        /// </summary>
         public abstract int MaxCapacity { get; protected set; }
 
         public virtual void RemoveAt(int index)
