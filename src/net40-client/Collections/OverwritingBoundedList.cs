@@ -165,7 +165,7 @@ namespace VDS.Common.Collections
 
         public BoundedListOverflowPolicy OverflowPolicy
         {
-            get { return BoundedListOverflowPolicy.Overwrite; }
+            get { return BoundedListOverflowPolicy.OverwriteOldest; }
         }
 
         public int MaxCapacity { get; private set; }

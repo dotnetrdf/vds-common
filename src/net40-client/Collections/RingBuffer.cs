@@ -215,7 +215,7 @@ namespace VDS.Common.Collections
         /// </summary>
         public BoundedListOverflowPolicy OverflowPolicy
         {
-            get { return BoundedListOverflowPolicy.Overwrite; }
+            get { return BoundedListOverflowPolicy.OverwriteOldest; }
         }
 
         internal int StartIndex { get; set; }

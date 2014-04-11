@@ -33,12 +33,12 @@ namespace VDS.Common.Collections
         /// </summary>
         Error,
         /// <summary>
-        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items being silenty discarded
+        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items being silenty discarded.  When attempting to insert items then the behaviour will depend on where you are inserting. If inserting prior to the end of the list then inserting should cause items at the end of the list to be discarded if the capacity would be exceeded.  If inserting at the end of a list that is at capacity then the item to be inserted is itself discarded.
         /// </summary>
         Discard,
         /// <summary>
-        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items overwriting previously added items.  Which items are overwritten is a detail of the specific <see cref="IBoundedList{T}"/> implementation.
+        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items overwriting previously added items.  The oldest items <strong>must</strong> be overwritten.
         /// </summary>
-        Overwrite
+        OverwriteOldest
     }
 }

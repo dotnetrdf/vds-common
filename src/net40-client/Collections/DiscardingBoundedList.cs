@@ -21,8 +21,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Collections
 {
@@ -63,7 +61,7 @@ namespace VDS.Common.Collections
 
         public override void Insert(int index, T item)
         {
-            if (this._list.Count == this.MaxCapacity) return;
+            if (this._list.Count == this.MaxCapacity && index == this._list.Count) return;
             this._list.Insert(index, item);
             while (this._list.Count > this.MaxCapacity)
             {
@@ -71,7 +69,7 @@ namespace VDS.Common.Collections
             }
         }
 
-        public override void Add(T item)
+        public override sealed void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) return;
             this._list.Add(item);
@@ -85,6 +83,6 @@ namespace VDS.Common.Collections
             get { return BoundedListOverflowPolicy.Discard; }
         }
 
-        public override int MaxCapacity { get; protected set; }
+        public override sealed int MaxCapacity { get; protected set; }
     }
 }
