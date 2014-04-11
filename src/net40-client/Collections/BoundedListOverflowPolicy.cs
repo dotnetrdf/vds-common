@@ -37,8 +37,8 @@ namespace VDS.Common.Collections
         /// </summary>
         Discard,
         /// <summary>
-        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items overwriting previously added items.  The oldest items <strong>must</strong> be overwritten.
+        /// When this policy is used attempting to the bounded list acts as a ring buffer.  Adding/Inserting to a full list causes the head of the list to be removed and the entire list shifted back one index with the new item taking the appropriate position in the list.
         /// </summary>
-        OverwriteOldest
+        RingBuffer
     }
 }

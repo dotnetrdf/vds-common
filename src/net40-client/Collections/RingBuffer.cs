@@ -137,7 +137,7 @@ namespace VDS.Common.Collections
             int index = this.IndexOf(item);
             if (index == -1) return false;
 
-            // Shift items backwards
+            // RingBuffer items backwards
             for (int i = index; i < this.Count - 1; i++)
             {
                 this._items[ToActualIndex(i)] = this._items[ToActualIndex(i + 1)];
@@ -174,7 +174,7 @@ namespace VDS.Common.Collections
             }
             else
             {
-                // Shift items forward
+                // RingBuffer items forward
                 if (this.Count < this.MaxCapacity) this.Count++;
                 for (int i = index; i < this.Count - 1; i++)
                 {
@@ -188,7 +188,7 @@ namespace VDS.Common.Collections
         public void RemoveAt(int index)
         {
             if (index < 0 || index >= this.Count) throw new ArgumentOutOfRangeException("Index must be in range 0-" + (this.Count - 1));
-            // Shift items backwards
+            // RingBuffer items backwards
             for (int i = index; i < this.Count - 1; i++)
             {
                 this._items[ToActualIndex(i)] = this._items[ToActualIndex(i + 1)];
@@ -215,7 +215,7 @@ namespace VDS.Common.Collections
         /// </summary>
         public BoundedListOverflowPolicy OverflowPolicy
         {
-            get { return BoundedListOverflowPolicy.OverwriteOldest; }
+            get { return BoundedListOverflowPolicy.RingBuffer; }
         }
 
         internal int StartIndex { get; set; }

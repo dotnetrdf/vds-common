@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VDS.Common.Collections
 {
@@ -120,15 +121,23 @@ namespace VDS.Common.Collections
 
         public void Insert(int index, T item)
         {
+            if (index < 0 || index > this.Count) throw new ArgumentOutOfRangeException("Insertion index must be in range 0-" + (this._list.Count + 1));
             if (index == this.Count)
             {
                 this.Add(item);
             }
             else
             {
-                LinkedListNode<T> node = FindNode(index);
-                this._list.AddBefore(node, item);
-                if (this._list.Count > this.MaxCapacity) this._list.RemoveFirst();
+                if (this._list.Count == this.MaxCapacity) this._list.RemoveFirst();
+                if (this._list.Count == 0 && index == 0)
+                {
+                    this.Add(item);
+                }
+                else
+                {
+                    LinkedListNode<T> node = FindNode(index);
+                    this._list.AddBefore(node, item);
+                }
             }
         }
 
@@ -165,7 +174,7 @@ namespace VDS.Common.Collections
 
         public BoundedListOverflowPolicy OverflowPolicy
         {
-            get { return BoundedListOverflowPolicy.OverwriteOldest; }
+            get { return BoundedListOverflowPolicy.RingBuffer; }
         }
 
         public int MaxCapacity { get; private set; }
