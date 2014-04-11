@@ -600,13 +600,83 @@ namespace VDS.Common.Collections
 
         // TODO Tests for inserting into overwriting and discarding implementations
 
-        [Test, ExpectedException(typeof(IndexOutOfRangeException))]
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BoundedListContractGet1()
         {
             IBoundedList<string> list = this.GetInstance(2);
 
 // ReSharper disable once UnusedVariable
             String x = list[0];
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractGet2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            // ReSharper disable once UnusedVariable
+            String x = list[-1];
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractGet3()
+        {
+            IBoundedList<string> list = this.GetInstance(2, new String[] { "a", "b" });
+
+            // ReSharper disable once UnusedVariable
+            String x = list[2];
+        }
+
+        [Test]
+        public void BoundedListContractGet4()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.AreEqual("a", list[0]);
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractSet1()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list[0] = "a";
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractSet2()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list[-1] = "a";
+        }
+
+        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BoundedListContractSet3()
+        {
+            IBoundedList<string> list = this.GetInstance(2, new String[] { "a", "b" });
+
+            list[2] = "a";
+        }
+
+        [Test]
+        public void BoundedListContractSet4()
+        {
+            IBoundedList<string> list = this.GetInstance(2);
+
+            list.Add("a");
+            Assert.AreEqual(1, list.Count);
+            Assert.IsTrue(list.Contains("a"));
+            Assert.AreEqual("a", list[0]);
+
+            list[0] = "b";
+            Assert.AreEqual(1, list.Count);
+            Assert.IsFalse(list.Contains("a"));
+            Assert.IsTrue(list.Contains("b"));
+            Assert.AreEqual("b", list[0]);
         }
     }
 
