@@ -11,8 +11,6 @@ This is the Change Log for VDS.Common
 - New IBoundedList interface
 - Add IBoundedList implementations:
  - BoundedList
- - RingBuffer
- - OverwritingBoundedList
  - DiscardingBoundedList
 
 1.2.0
