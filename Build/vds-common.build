@@ -180,6 +180,8 @@
       <arg value="VDS.Common.nuspec" />
       <arg value="-Verbosity" />
       <arg value="detailed" />
+      <arg value="-Version" />
+      <arg value="${common.version}" />
     </exec>
   </target>
 

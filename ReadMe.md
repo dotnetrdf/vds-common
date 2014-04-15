@@ -8,9 +8,7 @@ VDS.Common is built for a variety of .Net versions and profiles, currently we ha
 
 - .Net 3.5 Full/Client Profile
 - .Net 4.0 Full/Client Profile
-- Silverlight 4
-- Windows Phone 7
-- Portable Class Library
+- Portable Class Library Profile 136
 
 # License
 

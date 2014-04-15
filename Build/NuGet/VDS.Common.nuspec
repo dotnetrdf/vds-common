@@ -3,7 +3,7 @@
   <metadata>
     <id>VDS.Common</id>
     <title>VDS.Common</title>
-    <version>1.2.1</version>
+    <version>$version$</version>
     <authors>RobVesse,kal_ahmed</authors>
     <owners>RobVesse</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -11,12 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries and indexing tailored dictionaries.</description>
     <releaseNotes>
-      - Extract ITrie interface
-      - Add Contains() and ContainsKey() methods to ITrie
-      - Add alternative ITrie implemenations: SparseReferenceTrie, SparseValueTrie, SparseCharacterTrie, SparseStringTrie
-      - Bug fix to problem where enumerating over a Trie would not reflect latest state of tree
-      - Bug fix to logic error in TryGetValue() on Tries
-      - Null Keys support for MultiDictionary must now be explicitly configured, mark constructors calls which should be updated as Obsolete
+      - Switch to Profile 136 for PCL build
+      - Add new IBoundedList interface and basic implementations
     </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>
