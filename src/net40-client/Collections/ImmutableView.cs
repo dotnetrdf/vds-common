@@ -95,7 +95,7 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="item">Item</param>
         /// <returns>True if the item is contained in the collection, false otherwise</returns>
-        public bool Contains(T item)
+        public virtual bool Contains(T item)
         {
             return this._items.Contains(item);
         }
@@ -214,6 +214,16 @@ namespace VDS.Common.Collections
             {
                 return ((IList<T>)this._items).Count;
             }
+        }
+
+        /// <summary>
+        /// Checks whether the collection contains a given item
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>True if the item is contained in the collection, false otherwise</returns>
+        public override bool Contains(T item)
+        {
+            return ((IList<T>) this._items).Contains(item);
         }
     }
 }
