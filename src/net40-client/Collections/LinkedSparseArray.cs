@@ -5,8 +5,16 @@ using System.Collections.Generic;
 namespace VDS.Common.Collections
 {
     /// <summary>
-    /// A memory efficient sparse array backed by a <see cref="LinkedList{T}"/> thus it trades lookup performance off against memory
+    /// A memory efficient sparse array backed by a <see cref="LinkedList{T}"/> thus it trades lookup performance off against memory.  
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This implementation is extremely memory efficient for sparse arrays since it only stores entries where the value has been set.  However the use of a linked list means lookup of a specific index is a worse case O(n) operation where n is the length of the list.
+    /// </para>
+    /// <para>
+    /// If fast access is preferred over memory efficiency then the <see cref="BlockSparseArray{T}"/> may be a better option
+    /// </para>
+    /// </remarks>
     /// <typeparam name="T">Value type</typeparam>
     public class LinkedSparseArray<T>
         : ISparseArray<T>
