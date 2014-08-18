@@ -460,6 +460,46 @@ namespace VDS.Common.Tries
             Assert.IsNotNull(node);
             Assert.AreEqual("a", node.Value);
         }
+
+        [Test]
+        public void TrieContractFindPredecessor1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.FindPredecessor("test");
+            Assert.IsNull(node);
+
+            trie.Add("test", "a");
+            trie.Add("testing", "b");
+            trie.Add("blah", "c");
+
+            node = trie.FindPredecessor("test");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+
+            node = trie.FindPredecessor("testi");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+
+            node = trie.FindPredecessor("testit");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+
+            node = trie.FindPredecessor("testing");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("b", node.Value);
+
+            node = trie.FindPredecessor("testingtest");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("b", node.Value);
+
+            node = trie.FindPredecessor("b");
+            Assert.IsNull(node);
+
+            node = trie.FindPredecessor("blahblah");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("c", node.Value);
+        }
     }
 
     [TestFixture]

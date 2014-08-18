@@ -102,6 +102,34 @@ namespace VDS.Common.Tries
         ITrieNode<TKeyBit, TValue> Find(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper);
 
         /// <summary>
+        /// Finds and returns a Node that has the longest prefix match for the given sequence of Key Bits
+        /// </summary>
+        /// <param name="bs">Key Bits</param>
+        /// <returns>Null if the Key does not map to a Node</returns>
+        /// <remarks>
+        /// The ability to provide a specific seqeunce of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
+        /// </remarks>
+        ITrieNode<TKeyBit, TValue> FindPredecessor(IEnumerable<TKeyBit> bs);
+
+        /// <summary>
+        /// Finds and returns a Node that has the longest prefix match for the given Key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>Null if the Key does not map to a Node</returns>
+        ITrieNode<TKeyBit, TValue> FindPredecessor(TKey key);
+
+        /// <summary>
+        /// Finds and returns a Node that has the longest prefix match for the given Key using the given Key to Key Bit mapping function
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="keyMapper">Function to map keys to key bits</param>
+        /// <returns>Null if the Key does not map to a Node</returns>
+        /// <remarks>
+        /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
+        /// </remarks>
+        ITrieNode<TKeyBit, TValue> FindPredecessor(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper);
+
+        /// <summary>
         /// Moves to the Node associated with the given Key creating new nodes if necessary
         /// </summary>
         /// <param name="key">Key</param>
