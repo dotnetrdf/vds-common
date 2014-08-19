@@ -51,7 +51,7 @@ namespace VDS.Common.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new BlockSparseArrayEnumerator<T>((IEnumerator<SparseBlock<T>>) this._blocks.GetEnumerator(), this.Length, this.BlockSize);
+            return new BlockSparseArrayEnumerator<T>(this._blocks.GetEnumerator(), this.Length, this.BlockSize);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -75,7 +75,11 @@ namespace VDS.Common.Collections
                 SparseBlock<T> block = this._blocks[blockIndex];
                 if (block == null)
                 {
-                    block = new SparseBlock<T>(blockIndex * this.BlockSize, this.BlockSize);
+                    // Calculate start index and block size
+                    // Remember that if length is not a multiple of the block size the final block must be truncated
+                    int startIndex = blockIndex*this.BlockSize;
+                    int blockSize = blockIndex < this._blocks.Length - 1 ? this.BlockSize : Math.Min(this.BlockSize, this.Length - startIndex);
+                    block = new SparseBlock<T>(startIndex, blockSize);
                     this._blocks[blockIndex] = block;
                 }
                 block[index] = value;
@@ -115,7 +119,7 @@ namespace VDS.Common.Collections
     class BlockSparseArrayEnumerator<T>
         : IEnumerator<T>
     {
-        public BlockSparseArrayEnumerator(IEnumerator<SparseBlock<T>> blocks, int length, int blockSize)
+        public BlockSparseArrayEnumerator(IEnumerator blocks, int length, int blockSize)
         {
             this.Blocks = blocks;
             this.Length = length;
@@ -123,7 +127,7 @@ namespace VDS.Common.Collections
             this.BlockSize = blockSize;
         }
 
-        private IEnumerator<SparseBlock<T>> Blocks { get; set; }
+        private IEnumerator Blocks { get; set; }
 
         private int Index { get; set; }
 
@@ -143,7 +147,7 @@ namespace VDS.Common.Collections
                 if (!this.Blocks.MoveNext()) return false;
             }
             this.Index++;
-            if (this.Index % this.BlockSize == 0)
+            if (this.Index > 0 && this.Index % this.BlockSize == 0)
             {
                 // Need to move to next block
                 if (!this.Blocks.MoveNext()) return false;
@@ -165,7 +169,7 @@ namespace VDS.Common.Collections
                 if (this.Index >= this.Length) throw new InvalidOperationException("Past the end of the enumerator");
 
                 // If no current block return default value
-                SparseBlock<T> currentBlock = this.Blocks.Current;
+                SparseBlock<T> currentBlock = (SparseBlock<T>) this.Blocks.Current;
                 if (currentBlock == null) return default(T);
 
                 // Otherwise return the value within the block
