@@ -539,8 +539,7 @@ namespace VDS.Common.Tries
             Assert.AreEqual("c", node.Value);
 
             node = trie.FindSuccessor("testinga");
-            Assert.IsNotNull(node);
-            Assert.AreEqual("e", node.Value);
+            Assert.IsNull(node);
         }
     }
 

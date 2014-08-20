@@ -297,33 +297,18 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> FindSuccessor(IEnumerable<TKeyBit> bs)
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
-            ITrieNode<TKeyBit, TValue> nextNode = null;
-            Queue<ITrieNode<TKeyBit, TValue>> depthFirstQueue = new Queue<ITrieNode<TKeyBit, TValue>>();
-            bool splitNode = false;
 
             foreach (TKeyBit b in bs)
             {
                 //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out nextNode))
+                if (!node.TryGetChild(b, out node))
                 {
-                    var nodes = node.Children.Where(n => this.KeyBitComparer.Compare(n.KeyBit, b) > 0).OrderBy(n => n.KeyBit, this.KeyBitComparer);
-                    foreach (var child in nodes)
-                    {
-                        depthFirstQueue.Enqueue(child);
-                    }
-                    splitNode = true;
-                    break;
-                }
-                else
-                {
-                    node = nextNode;
+                    return null;
                 }
             }
-
-            if (!splitNode)
-            {
-                depthFirstQueue.Enqueue(node);
-            }
+            
+            Queue<ITrieNode<TKeyBit, TValue>> depthFirstQueue = new Queue<ITrieNode<TKeyBit, TValue>>();
+            depthFirstQueue.Enqueue(node);
 
             while (depthFirstQueue.Count > 0)
             {
