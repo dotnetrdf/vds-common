@@ -60,6 +60,7 @@ namespace VDS.Common.Tries
             if (keyMapper == null) throw new ArgumentNullException("keyMapper", "Key Mapper function cannot be null");
             this._keyMapper = keyMapper;
             this._root = this.CreateRoot(default(TKeyBit));
+            this.KeyBitComparer = Comparer<TKeyBit>.Default;
         }
 
         /// <summary>
@@ -79,6 +80,11 @@ namespace VDS.Common.Tries
                 return this._root;
             }
         }
+
+        /// <summary>
+        /// Key comparer used for ordered operations like FindSuccessor
+        /// </summary>
+        public IComparer<TKeyBit> KeyBitComparer { get; set; }
 
         /// <summary>
         /// Adds a new key value pair, overwriting the existing value if the given key is already in use
@@ -254,6 +260,86 @@ namespace VDS.Common.Tries
             }
 
             return predecessor;
+        }
+
+        /// <summary>
+        /// Finds and returns a Node that has the shortest prefix match greater than or equal to the given sequence of Key Bits
+        /// </summary>
+        /// <param name="bs">Key Bits</param>
+        /// <returns>Null if the Key does not map to a Node</returns>
+        /// <remarks>
+        /// The ability to provide a specific seqeunce of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
+        /// </remarks>
+        public ITrieNode<TKeyBit, TValue> FindSuccessor(TKey key)
+        {
+            return this.FindSuccessor(key, this._keyMapper);
+        }
+
+        /// <summary>
+        /// Finds and returns a Node that has the shortest prefix match greater than or equal to the given Key
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <returns>Null if the Key does not map to a Node</returns>
+        public ITrieNode<TKeyBit, TValue> FindSuccessor(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        {
+            return this.FindSuccessor(keyMapper(key));
+        }
+
+        /// <summary>
+        /// Finds and returns a Node that has the shortest prefix match greater than or equal to the given Key using the given Key to Key Bit mapping function
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="keyMapper">Function to map keys to key bits</param>
+        /// <returns>Null if the Key does not map to a Node</returns>
+        /// <remarks>
+        /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
+        /// </remarks>
+        public ITrieNode<TKeyBit, TValue> FindSuccessor(IEnumerable<TKeyBit> bs)
+        {
+            ITrieNode<TKeyBit, TValue> node = this._root;
+            ITrieNode<TKeyBit, TValue> nextNode = null;
+            Queue<ITrieNode<TKeyBit, TValue>> depthFirstQueue = new Queue<ITrieNode<TKeyBit, TValue>>();
+            bool splitNode = false;
+
+            foreach (TKeyBit b in bs)
+            {
+                //Bail out early if key does not exist
+                if (!node.TryGetChild(b, out nextNode))
+                {
+                    var nodes = node.Children.Where(n => this.KeyBitComparer.Compare(n.KeyBit, b) > 0).OrderBy(n => n.KeyBit, this.KeyBitComparer);
+                    foreach (var child in nodes)
+                    {
+                        depthFirstQueue.Enqueue(child);
+                    }
+                    splitNode = true;
+                    break;
+                }
+                else
+                {
+                    node = nextNode;
+                }
+            }
+
+            if (!splitNode)
+            {
+                depthFirstQueue.Enqueue(node);
+            }
+
+            while (depthFirstQueue.Count > 0)
+            {
+                node = depthFirstQueue.Dequeue();
+                if (node.HasValue)
+                {
+                    return node;
+                }
+
+                foreach (var child in node.Children.OrderBy(n => n.KeyBit, this.KeyBitComparer))
+                {
+                    depthFirstQueue.Enqueue(child);
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

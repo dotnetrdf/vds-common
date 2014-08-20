@@ -500,6 +500,48 @@ namespace VDS.Common.Tries
             Assert.IsNotNull(node);
             Assert.AreEqual("c", node.Value);
         }
+
+        [Test]
+        public void TrieContractFindSuccessor1()
+        {
+            ITrie<String, char, String> trie = this.GetInstance();
+
+            ITrieNode<char, String> node = trie.FindSuccessor("test");
+            Assert.IsNull(node);
+
+            trie.Add("test", "a");
+            trie.Add("testing", "b");
+            trie.Add("blah", "c");
+            trie.Add("testinh", "d");
+            trie.Add("testings", "e");
+
+            node = trie.FindSuccessor("test");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+
+            node = trie.FindSuccessor("testi");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("b", node.Value);
+
+            node = trie.FindSuccessor("testit");
+            Assert.IsNull(node);
+
+            node = trie.FindSuccessor("testing");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("b", node.Value);
+
+            node = trie.FindSuccessor("t");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("a", node.Value);
+
+            node = trie.FindSuccessor("b");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("c", node.Value);
+
+            node = trie.FindSuccessor("testinga");
+            Assert.IsNotNull(node);
+            Assert.AreEqual("e", node.Value);
+        }
     }
 
     [TestFixture]
