@@ -56,6 +56,9 @@
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\TreeSortedDictionary.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Filters\BaseBloomFilter.cs" />
+    <Compile Include="Filters\IBloomFilter.cs" />
+    <Compile Include="Filters\SparseBloomFilter.cs" />
     <Compile Include="References\NestedReference.cs" />
     <Compile Include="References\ThreadIsolatedReference.cs" />
     <Compile Include="Trees\AVLTree.cs" />
