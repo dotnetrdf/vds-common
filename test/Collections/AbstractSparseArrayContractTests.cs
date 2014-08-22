@@ -94,6 +94,28 @@ namespace VDS.Common.Collections
                 Assert.IsTrue(sparsEnumerator.MoveNext(), "Unable to move next at index " + index);
                 Assert.AreEqual(actualEnumerator.Current, sparsEnumerator.Current, "Incorrect value at index " + index);
             }
+            Assert.AreEqual(length - 1, index);
+        }
+
+        public void SparseArrayEnumerator2(int length)
+        {
+            ISparseArray<int> array = this.CreateInstance(length);
+            Assert.AreEqual(length, array.Length);
+            for (int i = 0; i < array.Length; i++)
+            {
+                // Should have default value
+                Assert.AreEqual(default(int), i);
+            }
+
+            IEnumerator<int> enumerator = array.GetEnumerator();
+
+            int index = -1;
+            while (enumerator.MoveNext())
+            {
+                index++;
+                Assert.AreEqual(default(int), enumerator.Current, "Incorrect value at index " + index);
+            }
+            Assert.AreEqual(length - 1, index);
         }
     }
     
@@ -124,6 +146,15 @@ namespace VDS.Common.Collections
         public override ISparseArray<int> CreateInstance(int length)
         {
             return new BlockSparseArray<int>(length, this.BlockSize);
+        }
+    }
+
+    public class BinarySparseArrayTests
+        : AbstractSparseArrayContractTests
+    {
+        public override ISparseArray<int> CreateInstance(int length)
+        {
+            return new BinarySparseArray<int>(length);
         }
     }
 }

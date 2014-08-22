@@ -9,8 +9,9 @@ This is the Change Log for VDS.Common
 - MaterializedImmutableView overrides Contains() to improve efficiency
 - New ISparseArray interface
 - Add ISparseArray implementations:
- - LinkedSparseArray
- - BlockSparseArray
+ - LinkedSparseArray - O(n) lookup with best memory efficiency
+ - BlockSparseArray - O(1) lookup with least memory efficiency
+ - BinarySparseArray - O(log n) lookup
 
 1.3.0
 -----

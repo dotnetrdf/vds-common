@@ -144,7 +144,7 @@ namespace VDS.Common.Collections
         {
             if (this.Index == -1)
             {
-                if (!this.Blocks.MoveNext()) return false;
+                this.Blocks.MoveNext();
             }
             this.Index++;
             if (this.Index > 0 && this.Index % this.BlockSize == 0)
