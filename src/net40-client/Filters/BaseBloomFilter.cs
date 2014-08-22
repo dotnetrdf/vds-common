@@ -11,7 +11,7 @@ namespace VDS.Common.Filters
     public abstract class BaseBloomFilter<T> 
         : IBloomFilter<T>
     {
-        protected List<Func<T, int>> _hashFunctions;
+        private readonly List<Func<T, int>> _hashFunctions;
         
         /// <summary>
         /// Creates a new filter
@@ -40,7 +40,7 @@ namespace VDS.Common.Filters
         /// </summary>
         /// <param name="item">Item</param>
         /// <returns>Bit Indices</returns>
-        protected virtual IEnumerable<int> GetBitIndices(T item)
+        protected IEnumerable<int> GetBitIndices(T item)
         {
             int[] indices = new int[this._hashFunctions.Count];
             for (int i = 0; i < indices.Length; i++)
@@ -50,7 +50,7 @@ namespace VDS.Common.Filters
             return indices;
         }
 
-        public virtual bool MayContain(T item)
+        public bool MayContain(T item)
         {
             IEnumerable<int> indices = this.GetBitIndices(item);
             return indices.All(index => IsBitSet(index));
@@ -63,7 +63,7 @@ namespace VDS.Common.Filters
         /// <returns>True if the bit is set, false if not</returns>
         protected abstract bool IsBitSet(int index);
 
-        public virtual bool Add(T item)
+        public bool Add(T item)
         {
             IEnumerable<int> indices = this.GetBitIndices(item);
             bool alreadySeen = true;
