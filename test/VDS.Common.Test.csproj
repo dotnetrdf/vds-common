@@ -54,6 +54,7 @@
     <Compile Include="Collections\AbstractSortedDictionaryContractTests.cs" />
     <Compile Include="Collections\AbstractSparseArrayContractTests.cs" />
     <Compile Include="Collections\TestKey.cs" />
+    <Compile Include="Filters\AbstractBloomFilterContractTests.cs" />
     <Compile Include="TestTools.cs" />
     <Compile Include="Trees\BinaryTreeDeleteTests.cs" />
     <Compile Include="Trees\BinaryTreeTests.cs" />

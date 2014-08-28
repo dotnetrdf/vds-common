@@ -8,11 +8,11 @@ namespace VDS.Common.Filters
     /// Abstract implementation of a bloom filter
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class BaseBloomFilter<T> 
+    public abstract class BaseBloomFilter<T>
         : IBloomFilter<T>
     {
         private readonly List<Func<T, int>> _hashFunctions;
-        
+
         /// <summary>
         /// Creates a new filter
         /// </summary>
@@ -20,11 +20,13 @@ namespace VDS.Common.Filters
         /// <param name="hashFunctions">Hash Functions</param>
         protected BaseBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
         {
+            if (bits <= 0) throw new ArgumentException("Bits must be a positive value", "bits");
             if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
             this._hashFunctions = new List<Func<T, int>>(hashFunctions);
-            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions");
-            if (bits <= 0) throw new ArgumentException("Bits must be a positive value");
-            if (bits <= this._hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions");
+            this._hashFunctions.RemoveAll(f => f == null);
+            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", "hashFunctions");
+            if (bits <= this._hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", "bits");
+
             this.NumberOfBits = bits;
         }
 
@@ -45,7 +47,7 @@ namespace VDS.Common.Filters
             int[] indices = new int[this._hashFunctions.Count];
             for (int i = 0; i < indices.Length; i++)
             {
-                indices[i] = this._hashFunctions[i](item) % this.NumberOfBits;
+                indices[i] = this._hashFunctions[i](item)%this.NumberOfBits;
             }
             return indices;
         }
