@@ -47,7 +47,7 @@ namespace VDS.Common.Filters
             int[] indices = new int[this._hashFunctions.Count];
             for (int i = 0; i < indices.Length; i++)
             {
-                indices[i] = this._hashFunctions[i](item)%this.NumberOfBits;
+                indices[i] = Math.Abs(this._hashFunctions[i](item)) % this.NumberOfBits;
             }
             return indices;
         }

@@ -48,6 +48,100 @@ namespace VDS.Common.Filters
         {
             CreateInstance(3, Enumerable.Repeat((Func<String, int>)(s => s.GetHashCode()), 2));
         }
+
+        [Test]
+        public void BloomFilterMayContain1()
+        {
+            const string item1 = "test";
+
+            IBloomFilter<String> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<String, int>) (x => x.GetHashCode())), 2));
+            Assert.IsFalse(filter.MayContain(item1));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+        }
+
+        [Test]
+        public void BloomFilterMayContain2()
+        {
+            const string item1 = "test";
+            const string item2 = "other";
+
+            IBloomFilter<String> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<String, int>)(x => x.GetHashCode())), 2));
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterMayContain3()
+        {
+            const string item1 = "test";
+            const string item2 = "other";
+
+            // In this test use has functions that will map all items to the same hash values
+            IBloomFilter<String> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<String, int>)(_ => 0)), 2));
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            // Due to dud hash functions should get a false positive here
+            Assert.IsTrue(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterMayContain4()
+        {
+            const string item1 = "test";
+            const string item2 = "other";
+
+            // In this test use hash functions that will map the first and last letters to their character values
+            IBloomFilter<String> filter = this.CreateInstance(100, new Func<String, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterMayContain5()
+        {
+            const string item1 = "test";
+            const string item2 = "time";
+
+            // In this test use hash functions that will map the first and last letters to their character values
+            IBloomFilter<String> filter = this.CreateInstance(100, new Func<String, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            // Only one hash should be equivalent so should be negative
+            Assert.IsFalse(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterMayContain6()
+        {
+            const string item1 = "test";
+            const string item2 = "tat";
+
+            // In this test use hash functions that will map the first and last letters to their character values
+            IBloomFilter<String> filter = this.CreateInstance(100, new Func<String, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            // Both hash functions give equal values so should be a false positive
+            Assert.IsTrue(filter.MayContain(item2));
+        }
     }
 
     [TestFixture]
