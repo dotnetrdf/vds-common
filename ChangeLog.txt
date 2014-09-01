@@ -12,6 +12,10 @@ This is the Change Log for VDS.Common
  - LinkedSparseArray - O(n) lookup with best memory efficiency
  - BlockSparseArray - O(1) lookup with least memory efficiency
  - BinarySparseArray - O(log n) lookup
+- New IBloomFilter interface
+- Add IBloomFilter implementations:
+ - BloomFilter
+ - SparseBloomFilter - Used BlockSparseArray so more memory efficient for large numbers of bits
 
 1.3.0
 -----
