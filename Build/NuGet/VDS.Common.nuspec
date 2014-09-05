@@ -9,11 +9,13 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bitbucket.org/rvesse/vds-common</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A library containing useful data structures like Trees, Tries and indexing tailored dictionaries.</description>
+    <description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</description>
     <releaseNotes>
-      - Minor improvements to MaterializedImmutableView
-      - Add new ISparseArray interface and implementations
+- Minor improvements to MaterializedImmutableView
+- Add new ISparseArray interface and implementations
+- Add new IBloomFilter interface and implementations
+- Add FindSuccessor() and FindPredecessor() to ITrie (thanks to Mike Davies)
     </releaseNotes>
-    <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
+    <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections Sparse Arrays Bloom Filters</tags>
   </metadata>
 </package>
