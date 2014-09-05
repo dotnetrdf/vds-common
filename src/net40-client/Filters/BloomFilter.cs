@@ -31,22 +31,22 @@ namespace VDS.Common.Filters
     public class BloomFilter<T>
         : BaseBloomFilter<T>
     {
-        private readonly int[] _bits;
+        private readonly bool[] _bits;
 
         public BloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
             : base(bits, hashFunctions)
         {
-            this._bits = new int[bits];
+            this._bits = new bool[bits];
         }
 
         protected override bool IsBitSet(int index)
         {
-            return this._bits[index] > 0;
+            return this._bits[index];
         }
 
         protected override void SetBit(int index)
         {
-            this._bits[index] = 1;
+            this._bits[index] = true;
         }
     }
 }
