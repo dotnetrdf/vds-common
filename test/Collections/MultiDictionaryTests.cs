@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestFixture]
+    [TestFixture, Category("Dictionaries")]
     public class MultiDictionaryTests
     {
         [Test]
@@ -433,10 +433,11 @@ namespace VDS.Common.Collections
             TimeSpan dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
 
+            // Expect multi-dictionary to be slower when there are few hash collisions
             Assert.IsTrue(mDictTime > dictTime);
         }
 
-        [TestCase(1000), TestCase(10000), TestCase(100000), TestCase(250000)]
+        [TestCase(10000), TestCase(100000), TestCase(250000)]
         public void MultiDictionaryVsDictionaryInsertNormal1(int numKeys)
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());

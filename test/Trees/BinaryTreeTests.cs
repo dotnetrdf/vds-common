@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Trees
 {
-    [TestFixture]
+    [TestFixture, Category("Trees")]
     public class BinaryTreeTests
     {
         private readonly Random _rnd = new Random();

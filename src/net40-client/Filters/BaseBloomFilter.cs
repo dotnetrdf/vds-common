@@ -71,7 +71,8 @@ namespace VDS.Common.Filters
             bool alreadySeen = true;
             foreach (int index in indices)
             {
-                alreadySeen = alreadySeen && this.IsBitSet(index);
+                if (this.IsBitSet(index)) continue;
+                alreadySeen = false;
                 SetBit(index);
             }
             return !alreadySeen;

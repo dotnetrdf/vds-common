@@ -27,7 +27,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestFixture]
+    [TestFixture,Category("Lists")]
     public abstract class AbstractBoundedListContractTests
         : AbstractMutableCollectionContractTests
     {
@@ -719,7 +719,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Lists")]
     public class CappedBoundedListTests
         : AbstractBoundedListContractTests
     {
@@ -734,7 +734,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Lists")]
     public class DiscardingBoundedListTests
         : AbstractBoundedListContractTests
     {

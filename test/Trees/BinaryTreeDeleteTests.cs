@@ -24,7 +24,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Trees
 {
-    [TestFixture]
+    [TestFixture,Category("Trees")]
     public class BinaryTreeDeleteTests
     {
         #region Tree Preparation

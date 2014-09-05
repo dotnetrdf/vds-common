@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -45,35 +44,32 @@ namespace VDS.Common.Trees
             {
                 return " null";
             }
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("{");
+            builder.AppendLine("  Key: " + node.Key);
+            builder.AppendLine("  Value: " + node.Value);
+            String lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
+            if (lhs.Contains('\n'))
+            {
+                builder.Append("  Left Child: ");
+                builder.AppendLine(AddIndent(lhs));
+            }
             else
             {
-                StringBuilder builder = new StringBuilder();
-                builder.AppendLine("{");
-                builder.AppendLine("  Key: " + node.Key);
-                builder.AppendLine("  Value: " + node.Value);
-                String lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
-                if (lhs.Contains('\n'))
-                {
-                    builder.Append("  Left Child: ");
-                    builder.AppendLine(AddIndent(lhs));
-                }
-                else
-                {
-                    builder.AppendLine("  Left Child: " + lhs);
-                }
-                String rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
-                if (rhs.Contains('\n'))
-                {
-                    builder.Append("  Right Child: ");
-                    builder.AppendLine(AddIndent(rhs));
-                }
-                else
-                {
-                    builder.AppendLine("  Right Child: " + rhs);
-                }
-                builder.Append("}");
-                return builder.ToString();
+                builder.AppendLine("  Left Child: " + lhs);
             }
+            String rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
+            if (rhs.Contains('\n'))
+            {
+                builder.Append("  Right Child: ");
+                builder.AppendLine(AddIndent(rhs));
+            }
+            else
+            {
+                builder.AppendLine("  Right Child: " + rhs);
+            }
+            builder.Append("}");
+            return builder.ToString();
         }
 
         private static String AddIndent(String input)

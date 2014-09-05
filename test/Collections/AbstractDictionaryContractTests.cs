@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestFixtureAttribute]
+    [TestFixture, Category("Dictionaries")]
     public abstract class AbstractDictionaryContractTests
     {
         /// <summary>
@@ -281,7 +281,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixtureAttribute]
+    [TestFixture,Category("Dictionaries")]
     public abstract class AbstractDictionaryWithNullKeysAllowedContractTests
         : AbstractDictionaryContractTests
     {
@@ -387,7 +387,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixtureAttribute]
+    [TestFixture,Category("Dictionaries")]
     public abstract class AbstractDictionaryWithNullKeysForbiddenContractTests
         : AbstractDictionaryContractTests
     {
@@ -441,7 +441,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixtureAttribute]
+    [TestFixture, Category("Dictionaries")]
     public class DictionaryContractTests
         : AbstractDictionaryWithNullKeysForbiddenContractTests
     {
@@ -451,7 +451,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixtureAttribute]
+    [TestFixture, Category("Dictionaries")]
     public class MultiDictionaryContractTests
         : AbstractDictionaryWithNullKeysForbiddenContractTests
     {
@@ -461,7 +461,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixtureAttribute]
+    [TestFixture, Category("Dictionaries")]
     public class MultiDictionaryWithNullableKeysContractTests
         : AbstractDictionaryWithNullKeysAllowedContractTests
     {
@@ -471,7 +471,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixtureAttribute]
+    [TestFixture, Category("Dictionaries")]
     public class TreeSortedDictionaryContractTests
         : AbstractDictionaryWithNullKeysAllowedContractTests
     {

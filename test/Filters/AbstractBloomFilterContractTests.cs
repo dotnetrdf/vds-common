@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Filters
 {
-    [TestFixture]
+    [TestFixture,Category("Filters")]
     public abstract class AbstractBloomFilterContractTests
     {
         /// <summary>
@@ -142,9 +142,123 @@ namespace VDS.Common.Filters
             // Both hash functions give equal values so should be a false positive
             Assert.IsTrue(filter.MayContain(item2));
         }
+
+        [Test]
+        public void BloomFilterAdd1()
+        {
+            const string item1 = "test";
+
+            IBloomFilter<String> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<String, int>)(x => x.GetHashCode())), 2));
+            Assert.IsFalse(filter.MayContain(item1));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+
+            // Adding the item again should report false since it is already in the filter
+            Assert.IsFalse(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+        }
+
+        [Test]
+        public void BloomFilterAdd2()
+        {
+            const string item1 = "test";
+            const string item2 = "other";
+
+            IBloomFilter<String> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<String, int>)(x => x.GetHashCode())), 2));
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+
+            // Adding the second item should report true because it is considered different
+            Assert.IsTrue(filter.Add(item2));
+            Assert.IsTrue(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterAdd3()
+        {
+            const string item1 = "test";
+            const string item2 = "other";
+
+            // In this test use has functions that will map all items to the same hash values
+            IBloomFilter<String> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<String, int>)(_ => 0)), 2));
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+
+            // Due to dud hash functions should get false here since the items are considered equivalent
+            // This is a false positive
+            Assert.IsFalse(filter.Add(item2));
+            Assert.IsTrue(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterAdd4()
+        {
+            const string item1 = "test";
+            const string item2 = "other";
+
+            // In this test use hash functions that will map the first and last letters to their character values
+            IBloomFilter<String> filter = this.CreateInstance(100, new Func<String, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            // Should be possible to add the second item
+            Assert.IsTrue(filter.Add(item2));
+            Assert.IsTrue(filter.MayContain(item2));
+        }
+
+        [Test]
+        public void BloomFilterAdd5()
+        {
+            const string item1 = "test";
+            const string item2 = "time";
+
+            // In this test use hash functions that will map the first and last letters to their character values
+            IBloomFilter<String> filter = this.CreateInstance(100, new Func<String, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            // Only one hash should be equivalent so should be possible to add the additional item
+            Assert.IsTrue(filter.Add(item2));
+            Assert.IsTrue(filter.MayContain(item1));
+        }
+
+        [Test]
+        public void BloomFilterAdd6()
+        {
+            const string item1 = "test";
+            const string item2 = "tat";
+
+            // In this test use hash functions that will map the first and last letters to their character values
+            IBloomFilter<String> filter = this.CreateInstance(100, new Func<String, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            Assert.IsFalse(filter.MayContain(item1));
+            Assert.IsFalse(filter.MayContain(item2));
+
+            Assert.IsTrue(filter.Add(item1));
+            Assert.IsTrue(filter.MayContain(item1));
+
+            // Both hash functions give equal values so should return false since it is already considered to be in the filter
+            // This is a false positive
+            Assert.IsFalse(filter.Add(item2));
+            Assert.IsTrue(filter.MayContain(item2));
+        }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Filters")]
     public class BloomFilterContractTests
         : AbstractBloomFilterContractTests
     {
@@ -154,6 +268,7 @@ namespace VDS.Common.Filters
         }
     }
 
+    [TestFixture,Category("Filters")]
     public class SparseBloomFilterContractTests
         : AbstractBloomFilterContractTests
     {

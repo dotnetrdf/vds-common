@@ -25,7 +25,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestFixture]
+    [TestFixture,Category("Collections")]
     public abstract class AbstractCollectionContractTests
     {
         /// <summary>
@@ -136,7 +136,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Collections")]
     public abstract class AbstractImmutableCollectionContractTests
         : AbstractCollectionContractTests
     {
@@ -162,7 +162,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Collections")]
     public abstract class AbstractMutableCollectionContractTests
         : AbstractCollectionContractTests
     {
@@ -238,7 +238,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Lists")]
     public class ListContractTests
         : AbstractMutableCollectionContractTests
     {
@@ -253,7 +253,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Collections")]
     public class ImmutableViewContractTests
         : AbstractImmutableCollectionContractTests
     {
@@ -268,7 +268,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Collections")]
     public class MaterializedImmutableViewContractTests
         : AbstractImmutableCollectionContractTests
     {

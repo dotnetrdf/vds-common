@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestFixture]
+    [TestFixture,Category("Arrays")]
     public abstract class AbstractSparseArrayContractTests
     {
         /// <summary>
@@ -211,7 +211,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture,Category("Arrays")]
     public class LinkedSparseArrayTests
         : AbstractSparseArrayContractTests
     {
@@ -224,7 +224,8 @@ namespace VDS.Common.Collections
     [TestFixture(1),
      TestFixture(10),
      TestFixture(250),
-     TestFixture(1000)]
+     TestFixture(1000),
+     Category("Arrays")]
     public class BlockSparseArrayTests
         : AbstractSparseArrayContractTests
     {
@@ -241,6 +242,7 @@ namespace VDS.Common.Collections
         }
     }
 
+    [TestFixture, Category("Arrays")]
     public class BinarySparseArrayTests
         : AbstractSparseArrayContractTests
     {

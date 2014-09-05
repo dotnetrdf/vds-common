@@ -15,7 +15,7 @@ This is the Change Log for VDS.Common
 - New IBloomFilter interface
 - Add IBloomFilter implementations:
  - BloomFilter
- - SparseBloomFilter - Used BlockSparseArray so more memory efficient for large numbers of bits
+ - SparseBloomFilter - Uses BlockSparseArray so more memory efficient for large numbers of bits
 
 1.3.0
 -----

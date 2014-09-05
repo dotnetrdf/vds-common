@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Tries
 {
-    [TestFixture]
+    [TestFixture, Category("Tries")]
     public abstract class AbstractTrieContractTests
     {
         protected abstract ITrie<String, char, String> GetInstance();
@@ -462,7 +462,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Tries")]
     public class TrieContractTests
         : AbstractTrieContractTests
     {
@@ -472,7 +472,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Tries")]
     public class TrieContractTests2
         : AbstractTrieContractTests
     {
@@ -482,7 +482,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Tries")]
     public class SparseTrieContractTests
         : AbstractTrieContractTests
     {
@@ -492,7 +492,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Tries")]
     public class SparseTrieContractTests2
         : AbstractTrieContractTests
     {
@@ -502,7 +502,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Tries")]
     public class SparseTrieContractTests3
         : AbstractTrieContractTests
     {
