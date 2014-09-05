@@ -193,4 +193,28 @@
       <arg value="VDS.Common.${common.version}.nupkg" />
     </exec>
   </target>
+  
+  <!-- Cut a Release -->
+
+  <target name="prepare-release" depends="build">
+    <exec program="Build/VersionBumper.exe">
+      <arg value="-set" />
+      <arg value="${common.version}.0" />
+      <arg value="-scan" />
+      <arg value="." />
+    </exec>
+  </target>
+
+  <target name="verify-release" depends="build">
+    <exec program="VersionBumper.exe">
+      <arg value="-validate" />
+      <arg value="${common.version}.0" />
+      <arg value="-scan" />
+      <arg value="." />
+    </exec>
+  </target>
+
+  <target name="release" depends="verify-release,dist,upload">
+    
+  </target>
 </project>

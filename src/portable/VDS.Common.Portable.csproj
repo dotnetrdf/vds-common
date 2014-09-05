@@ -172,4 +172,30 @@
       <Link>Collections\CappedBoundedList.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\BinarySparseArray.cs">
+      <Link>Collections\BinarySparseArray.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\BlockSparseArray.cs">
+      <Link>Collections\BlockSparseArray.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\ISparseArray.cs">
+      <Link>Collections\ISparseArray.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\LinkedSparseArray.cs">
+      <Link>Collections\LinkedSparseArray.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BaseBloomFilter.cs">
+      <Link>Filters\BaseBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BloomFilter.cs">
+      <Link>Filters\BloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\IBloomFilter.cs">
+      <Link>Filters\IBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\SparseBloomFilter.cs">
+      <Link>Filters\SparseBloomFilter.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
