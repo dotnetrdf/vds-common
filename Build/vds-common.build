@@ -213,8 +213,11 @@
       <arg value="." />
     </exec>
   </target>
-
+  
   <target name="release" depends="verify-release,dist,upload">
-    
+    <exec program="hg">
+      <arg value="tag" />
+      <arg value="${common.version}" />
+    </exec>
   </target>
 </project>
