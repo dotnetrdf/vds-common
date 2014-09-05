@@ -11,8 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries and indexing tailored dictionaries.</description>
     <releaseNotes>
-      - Switch to Profile 136 for PCL build
-      - Add new IBoundedList interface and basic implementations
+      - Minor improvements to MaterializedImmutableView
+      - Add new ISparseArray interface and implementations
     </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections</tags>
   </metadata>

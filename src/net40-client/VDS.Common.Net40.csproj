@@ -44,14 +44,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AbstractListBackedBoundedList.cs" />
+    <Compile Include="Collections\BinarySparseArray.cs" />
+    <Compile Include="Collections\BlockSparseArray.cs" />
     <Compile Include="Collections\CappedBoundedList.cs" />
     <Compile Include="Collections\BoundedListOverflowPolicy.cs" />
     <Compile Include="Collections\DiscardingBoundedList.cs" />
     <Compile Include="Collections\IBoundedList.cs" />
     <Compile Include="Collections\ImmutableView.cs" />
+    <Compile Include="Collections\ISparseArray.cs" />
+    <Compile Include="Collections\LinkedSparseArray.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\TreeSortedDictionary.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Filters\BaseBloomFilter.cs" />
+    <Compile Include="Filters\BloomFilter.cs" />
+    <Compile Include="Filters\IBloomFilter.cs" />
+    <Compile Include="Filters\SparseBloomFilter.cs" />
     <Compile Include="References\NestedReference.cs" />
     <Compile Include="References\ThreadIsolatedReference.cs" />
     <Compile Include="Trees\AVLTree.cs" />

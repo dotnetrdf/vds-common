@@ -26,7 +26,7 @@ using NUnit.Framework;
 
 namespace VDS.Common.Collections
 {
-    [TestFixture]
+    [TestFixture, Category("Dictionaries")]
     public abstract class AbstractSortedDictionaryContractTests
         : AbstractDictionaryContractTests
     {
@@ -65,7 +65,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Dictionaries")]
     public class SortedDictionaryContractTests
         : AbstractSortedDictionaryContractTests
     {
@@ -80,7 +80,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    [TestFixture]
+    [TestFixture, Category("Dictionaries")]
     public class TreeSortedDictionaryContractTests2
         : AbstractSortedDictionaryContractTests
     {
