@@ -20,6 +20,10 @@ To use VDS.Common simply add a reference to the DLL for the appropriate .Net ver
 
 For documentation on the features this library provides please see the [Wiki][4].
 
+# Build Status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/v889x025ow5b76qb)](https://ci.appveyor.com/project/rvesse/vds-common)
+
 # Acknowledgements
 
 VDS.Common is developed primarily Rob Vesse with some contributions from Kal Ahmed and Mike Davies
