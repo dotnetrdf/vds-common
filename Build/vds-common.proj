@@ -53,8 +53,7 @@
     
     <Copy SourceFiles="@(Net40Client)" DestinationFolder="NuGet/lib/net40-client"/>
     <Copy SourceFiles="@(Net35Client)" DestinationFolder="NuGet/lib/net35-client"/>
-    <Copy SourceFiles="@(Portable)" DestinationFolder="NuGet/lib/portable-net4+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" Condition="!$(NoPortable)"/>
-    <Copy SourceFiles="@(Portable)" DestinationFolder="NuGet/lib/portable-net45+sl50+win+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10" Condition="!$(NoPortable)" />
+    <Copy SourceFiles="@(Portable)" DestinationFolder="NuGet/lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" Condition="!$(NoPortable)"/>
   </Target>
   
   <Target Name="Clean" DependsOnTargets="CleanIntermediaries;CleanDist" />
