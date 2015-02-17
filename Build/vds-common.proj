@@ -2,7 +2,7 @@
   <PropertyGroup>
     <NoPortable Condition="'$(NoPortable)' == ''">False</NoPortable>
     <CommonLicenseExcludeExts>dll,pdb,exe,xml,csproj,user,template,cache,orig</CommonLicenseExcludeExts>
-    <CommonLicenseExcludeRegex>hg|svn|obj|bin</CommonLicenseExcludeRegex>
+    <CommonLicenseExcludeRegex>hg|svn|obj|bin|packages.config</CommonLicenseExcludeRegex>
     <CommonLicenseSearch>Copyright (c) 2009-2014 Robert Vesse</CommonLicenseSearch>
     <CommonLicenseReplace>License.txt</CommonLicenseReplace>
     <CommonLicenseOverwrite>-overwrite</CommonLicenseOverwrite>
@@ -54,6 +54,7 @@
     <Copy SourceFiles="@(Net40Client)" DestinationFolder="NuGet/lib/net40-client"/>
     <Copy SourceFiles="@(Net35Client)" DestinationFolder="NuGet/lib/net35-client"/>
     <Copy SourceFiles="@(Portable)" DestinationFolder="NuGet/lib/portable-net4+sl5+netcore45+wp8+MonoAndroid1+MonoTouch1" Condition="!$(NoPortable)"/>
+    <Copy SourceFiles="@(Portable)" DestinationFolder="NuGet/lib/portable-net45+sl50+win+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10" Condition="!$(NoPortable)" />
   </Target>
   
   <Target Name="Clean" DependsOnTargets="CleanIntermediaries;CleanDist" />
@@ -71,7 +72,7 @@
   </Target>
 
   <Target Name="DistNuGet" DependsOnTargets="Build">
-    <Exec Command="nuget.exe pack VDS.Common.nuspec -Verbosity detailed" WorkingDirectory="../Build/NuGet"/>
+    <Exec Command="nuget.exe pack VDS.Common.nuspec -Verbosity detailed -Version $(CommonVersion)" WorkingDirectory="../Build/NuGet"/>
   </Target>
   
 </Project>
