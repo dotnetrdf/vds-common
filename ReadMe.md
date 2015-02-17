@@ -8,7 +8,7 @@ VDS.Common is built for a variety of .Net versions and profiles, currently we ha
 
 - .Net 3.5 Full/Client Profile
 - .Net 4.0 Full/Client Profile
-- Portable Class Library Profile 136
+- Portable Class Library Profile 158
 
 # License
 
