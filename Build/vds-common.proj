@@ -7,7 +7,7 @@
     <CommonLicenseReplace>License.txt</CommonLicenseReplace>
     <CommonLicenseOverwrite>-overwrite</CommonLicenseOverwrite>
     <CommonKeyFile>$(MSBuildProjectDirectory)\..\VDS.Common.snk</CommonKeyFile>
-    <CommonVersion>1.5.0</CommonVersion>
+    <CommonVersion>1.6.0</CommonVersion>
     <CommonZip>VDS.Common.$(CommonVersion).zip</CommonZip>
     <CommonSrczip>VDS.Common.$(CommonVersion).Source.zip</CommonSrczip>
   </PropertyGroup>

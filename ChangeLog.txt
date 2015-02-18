@@ -3,6 +3,11 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+1.6.0
+-----
+
+
+
 1.5.0
 -----
 
