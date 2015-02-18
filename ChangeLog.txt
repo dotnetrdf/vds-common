@@ -6,7 +6,8 @@ This is the Change Log for VDS.Common
 1.5.0
 -----
 
-
+- Improved Bloom Filter performance
+- Switch to PCL Profile 328 as our PCL target
 
 1.4.0
 -----
