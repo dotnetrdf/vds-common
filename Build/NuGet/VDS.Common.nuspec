@@ -11,10 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</description>
     <releaseNotes>
-- Minor improvements to MaterializedImmutableView
-- Add new ISparseArray interface and implementations
-- Add new IBloomFilter interface and implementations
-- Add FindSuccessor() and FindPredecessor() to ITrie (thanks to Mike Davies)
+- Performance improvements to Bloom Filters
+- Updated PCL build to Profile 328 to support a wider range of targets
     </releaseNotes>
     <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections Sparse Arrays Bloom Filters</tags>
   </metadata>
