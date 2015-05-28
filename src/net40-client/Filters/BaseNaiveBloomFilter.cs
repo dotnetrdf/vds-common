@@ -30,7 +30,7 @@ namespace VDS.Common.Filters
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class BaseNaiveBloomFilter<T>
-        : BaseBloomFilterParameters<T>, IBloomFilter<T>
+        : BaseBloomFilterParameters, IBloomFilter<T>
     {
         private readonly List<Func<T, int>> _hashFunctions;
 
