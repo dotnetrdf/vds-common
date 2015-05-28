@@ -29,15 +29,15 @@ namespace VDS.Common.Filters
     /// Bloom filter implementation backed by a <see cref="ISparseArray{T}"/>
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class SparseBloomFilter<T>
-        : BaseBloomFilter<T>
+    public class SparseNaiveBloomFilter<T>
+        : BaseNaiveBloomFilter<T>
     {
         private readonly ISparseArray<bool> _array;
 
-        public SparseBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
+        public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
             : this(bits, hashFunctions, new BlockSparseArray<bool>(bits)) {}
 
-        public SparseBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions, ISparseArray<bool> sparseArray)
+        public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions, ISparseArray<bool> sparseArray)
             : base(bits, hashFunctions)
         {
             if (sparseArray == null) throw new ArgumentNullException("sparseArray");

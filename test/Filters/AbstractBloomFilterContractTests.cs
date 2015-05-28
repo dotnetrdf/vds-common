@@ -285,7 +285,7 @@ namespace VDS.Common.Filters
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
-            return new BloomFilter<string>(numBits, hashFunctions);
+            return new NaiveBloomFilter<string>(numBits, hashFunctions);
         }
     }
 
@@ -295,7 +295,7 @@ namespace VDS.Common.Filters
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
-            return new SparseBloomFilter<string>(numBits, hashFunctions);
+            return new SparseNaiveBloomFilter<string>(numBits, hashFunctions);
         }
     }
 }

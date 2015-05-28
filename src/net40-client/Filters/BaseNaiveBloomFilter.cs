@@ -29,8 +29,8 @@ namespace VDS.Common.Filters
     /// Abstract implementation of a bloom filter
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class BaseBloomFilter<T>
-        : IBloomFilter<T>
+    public abstract class BaseNaiveBloomFilter<T>
+        : BaseBloomFilterParameters<T>, IBloomFilter<T>
     {
         private readonly List<Func<T, int>> _hashFunctions;
 
@@ -39,7 +39,7 @@ namespace VDS.Common.Filters
         /// </summary>
         /// <param name="bits">Number of Bits</param>
         /// <param name="hashFunctions">Hash Functions</param>
-        protected BaseBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
+        protected BaseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
         {
             if (bits <= 0) throw new ArgumentException("Bits must be a positive value", "bits");
             if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
@@ -51,9 +51,7 @@ namespace VDS.Common.Filters
             this.NumberOfBits = bits;
         }
 
-        public int NumberOfBits { get; set; }
-
-        public int NumberOfHashFunctions
+        public override int NumberOfHashFunctions
         {
             get { return this._hashFunctions.Count; }
         }

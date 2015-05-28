@@ -56,10 +56,14 @@
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\TreeSortedDictionary.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Filters\BaseBloomFilter.cs" />
-    <Compile Include="Filters\BloomFilter.cs" />
+    <Compile Include="Filters\BaseBloomFilterParameters.cs" />
+    <Compile Include="Filters\BaseNaiveBloomFilter.cs" />
+    <Compile Include="Filters\BloomFilterParameters.cs" />
+    <Compile Include="Filters\BloomUtils.cs" />
+    <Compile Include="Filters\IBloomFilterParameters.cs" />
+    <Compile Include="Filters\NaiveBloomFilter.cs" />
     <Compile Include="Filters\IBloomFilter.cs" />
-    <Compile Include="Filters\SparseBloomFilter.cs" />
+    <Compile Include="Filters\SparseNaiveBloomFilter.cs" />
     <Compile Include="References\NestedReference.cs" />
     <Compile Include="References\ThreadIsolatedReference.cs" />
     <Compile Include="Trees\AVLTree.cs" />

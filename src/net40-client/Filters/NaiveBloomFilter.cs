@@ -28,12 +28,12 @@ namespace VDS.Common.Filters
     /// A bloom filter backed by an array
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class BloomFilter<T>
-        : BaseBloomFilter<T>
+    public class NaiveBloomFilter<T>
+        : BaseNaiveBloomFilter<T>
     {
         private readonly bool[] _bits;
 
-        public BloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
+        public NaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
             : base(bits, hashFunctions)
         {
             this._bits = new bool[bits];
