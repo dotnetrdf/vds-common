@@ -185,17 +185,31 @@
     <Compile Include="..\net40-client\Collections\LinkedSparseArray.cs">
       <Link>Collections\LinkedSparseArray.cs</Link>
     </Compile>
-    <Compile Include="..\net40-client\Filters\BaseBloomFilter.cs">
-      <Link>Filters\BaseBloomFilter.cs</Link>
-    </Compile>
-    <Compile Include="..\net40-client\Filters\BloomFilter.cs">
-      <Link>Filters\BloomFilter.cs</Link>
-    </Compile>
     <Compile Include="..\net40-client\Filters\IBloomFilter.cs">
       <Link>Filters\IBloomFilter.cs</Link>
     </Compile>
-    <Compile Include="..\net40-client\Filters\SparseBloomFilter.cs">
-      <Link>Filters\SparseBloomFilter.cs</Link>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Filters\BaseBloomFilterParameters.cs">
+      <Link>Filters\BaseBloomFilterParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BaseNaiveBloomFilter.cs">
+      <Link>Filters\BaseNaiveBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BloomFilterParameters.cs">
+      <Link>Filters\BloomFilterParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BloomUtils.cs">
+      <Link>Filters\BloomUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\IBloomFilterParameters.cs">
+      <Link>Filters\IBloomFilterParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\NaiveBloomFilter.cs">
+      <Link>Filters\NaiveBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\SparseNaiveBloomFilter.cs">
+      <Link>Filters\SparseNaiveBloomFilter.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
