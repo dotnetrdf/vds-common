@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using VDS.Common.Collections;
+using VDS.Common.Filters.Storage;
 
 namespace VDS.Common.Filters
 {
@@ -32,27 +33,15 @@ namespace VDS.Common.Filters
     public class SparseNaiveBloomFilter<T>
         : BaseNaiveBloomFilter<T>
     {
-        private readonly ISparseArray<bool> _array;
 
         public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
             : this(bits, hashFunctions, new BlockSparseArray<bool>(bits)) {}
 
         public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions, ISparseArray<bool> sparseArray)
-            : base(bits, hashFunctions)
+            : base(new SparseArrayStorage(sparseArray), bits, hashFunctions)
         {
             if (sparseArray == null) throw new ArgumentNullException("sparseArray");
             if (sparseArray.Length != bits) throw new ArgumentException("Length of sparse array should be equal to number of bits", "sparseArray");
-            this._array = sparseArray;
-        }
-
-        protected override void SetBit(int index)
-        {
-            this._array[index] = true;
-        }
-
-        protected override bool IsBitSet(int index)
-        {
-            return this._array[index];
         }
     }
 }

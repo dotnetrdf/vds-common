@@ -20,22 +20,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.Collections.Generic;
+using VDS.Common.Collections;
 using VDS.Common.Filters.Storage;
 
 namespace VDS.Common.Filters
 {
     /// <summary>
-    /// A naive bloom filter backed by an array
+    /// Bloom filter implementation backed by a <see cref="ISparseArray{T}"/>
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    /// <remarks>
-    /// This implementation is considered naive because it is entirely configured by the end user, consider using the <see cref="FastBloomFilter{T}"/> which uses a much better hashing approach that is faster and more robust
-    /// </remarks>
-    public class NaiveBloomFilter<T>
-        : BaseNaiveBloomFilter<T>
+    public class SparseFastBloomFilter<T>
+        : BaseFastBloomFilter<T>
     {
-        public NaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
-            : base(new ArrayStorage(bits), bits, hashFunctions) { }
+
+        public SparseFastBloomFilter(IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
+            : base(new SparseArrayStorage(parameters), parameters, h1, h2) { }
+
+        public SparseFastBloomFilter(IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2, ISparseArray<bool> sparseArray)
+            : base(new SparseArrayStorage(sparseArray), parameters, h1, h2)
+        {
+            if (sparseArray == null) throw new ArgumentNullException("sparseArray");
+            if (sparseArray.Length != parameters.NumberOfBits) throw new ArgumentException("Length of sparse array should be equal to number of bits", "sparseArray");
+        }
     }
 }

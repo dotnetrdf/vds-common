@@ -21,7 +21,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace VDS.Common.Filters
 {
@@ -29,17 +28,22 @@ namespace VDS.Common.Filters
     /// Abstract implementation of a bloom filter
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <remarks>
+    /// This implementation is considered naive because it gives full control over the hash functions and number of bits to the end user
+    /// </remarks>
     public abstract class BaseNaiveBloomFilter<T>
-        : BaseBloomFilterParameters, IBloomFilter<T>
+        : BaseBloomFilter<T>
     {
         private readonly List<Func<T, int>> _hashFunctions;
 
         /// <summary>
         /// Creates a new filter
         /// </summary>
+        /// <param name="storage">Bloom Filter storage</param>
         /// <param name="bits">Number of Bits</param>
         /// <param name="hashFunctions">Hash Functions</param>
-        protected BaseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
+        protected BaseNaiveBloomFilter(IBloomFilterStorage storage, int bits, IEnumerable<Func<T, int>> hashFunctions)
+            : base(storage)
         {
             if (bits <= 0) throw new ArgumentException("Bits must be a positive value", "bits");
             if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
@@ -61,7 +65,7 @@ namespace VDS.Common.Filters
         /// </summary>
         /// <param name="item">Item</param>
         /// <returns>Bit Indices</returns>
-        protected IEnumerable<int> GetBitIndices(T item)
+        protected override IEnumerable<int> GetBitIndices(T item)
         {
             int[] indices = new int[this._hashFunctions.Count];
             for (int i = 0; i < indices.Length; i++)
@@ -70,37 +74,5 @@ namespace VDS.Common.Filters
             }
             return indices;
         }
-
-        public bool MayContain(T item)
-        {
-            IEnumerable<int> indices = this.GetBitIndices(item);
-            return indices.All(index => IsBitSet(index));
-        }
-
-        /// <summary>
-        /// Gets whether the given bit is set
-        /// </summary>
-        /// <param name="index">Index</param>
-        /// <returns>True if the bit is set, false if not</returns>
-        protected abstract bool IsBitSet(int index);
-
-        public bool Add(T item)
-        {
-            IEnumerable<int> indices = this.GetBitIndices(item);
-            bool alreadySeen = true;
-            foreach (int index in indices)
-            {
-                if (this.IsBitSet(index)) continue;
-                alreadySeen = false;
-                SetBit(index);
-            }
-            return !alreadySeen;
-        }
-
-        /// <summary>
-        /// Sets the given bit
-        /// </summary>
-        /// <param name="index">Index</param>
-        protected abstract void SetBit(int index);
     }
 }

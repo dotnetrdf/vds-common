@@ -212,4 +212,9 @@
       <Link>Filters\SparseNaiveBloomFilter.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Filters\BaseBloomFilter.cs">
+      <Link>Filters\BaseBloomFilter.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

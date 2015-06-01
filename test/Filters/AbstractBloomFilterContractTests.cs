@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -280,7 +281,7 @@ namespace VDS.Common.Filters
     }
 
     [TestFixture,Category("Filters")]
-    public class BloomFilterContractTests
+    public class NaiveBloomFilterContractTests
         : AbstractBloomFilterContractTests
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
@@ -290,12 +291,40 @@ namespace VDS.Common.Filters
     }
 
     [TestFixture,Category("Filters")]
-    public class SparseBloomFilterContractTests
+    public class SparseNaiveBloomFilterContractTests
         : AbstractBloomFilterContractTests
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
             return new SparseNaiveBloomFilter<string>(numBits, hashFunctions);
+        }
+    }
+
+    [TestFixture, Category("Filters")]
+    public class FastBloomFilterContractTests
+        : AbstractBloomFilterContractTests
+    {
+        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
+        {
+            IList<Func<String, int>> funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            Func<String, int> h1 = funcs.FirstOrDefault();
+            Func<String, int> h2 = funcs.Skip(1).FirstOrDefault();
+
+            return new FastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
+        }
+    }
+
+    [TestFixture, Category("Filters")]
+    public class SparseFastBloomFilterContractTests
+        : AbstractBloomFilterContractTests
+    {
+        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
+        {
+            IList<Func<String, int>> funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            Func<String, int> h1 = funcs.FirstOrDefault();
+            Func<String, int> h2 = funcs.Skip(1).FirstOrDefault();
+
+            return new SparseFastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
         }
     }
 }
