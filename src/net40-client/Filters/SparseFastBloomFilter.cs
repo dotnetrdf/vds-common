@@ -32,15 +32,7 @@ namespace VDS.Common.Filters
     public class SparseFastBloomFilter<T>
         : BaseFastBloomFilter<T>
     {
-
         public SparseFastBloomFilter(IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
             : base(new SparseArrayStorage(parameters), parameters, h1, h2) { }
-
-        public SparseFastBloomFilter(IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2, ISparseArray<bool> sparseArray)
-            : base(new SparseArrayStorage(sparseArray), parameters, h1, h2)
-        {
-            if (sparseArray == null) throw new ArgumentNullException("sparseArray");
-            if (sparseArray.Length != parameters.NumberOfBits) throw new ArgumentException("Length of sparse array should be equal to number of bits", "sparseArray");
-        }
     }
 }

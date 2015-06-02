@@ -327,4 +327,26 @@ namespace VDS.Common.Filters
             return new SparseFastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
         }
     }
+
+    [TestFixture, Category("Filters")]
+    public class HybridBloomFilterContractTests
+        : AbstractBloomFilterContractTests
+    {
+        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
+        {
+            IList<Func<String,int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            return new HybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count()), functions);
+        }
+    }
+
+    [TestFixture, Category("Filters")]
+    public class SparseHybridBloomFilterContractTests
+        : AbstractBloomFilterContractTests
+    {
+        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
+        {
+            IList<Func<String, int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            return new SparseHybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count), functions);
+        }
+    }
 }

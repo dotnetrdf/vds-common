@@ -21,19 +21,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using VDS.Common.Collections;
 using VDS.Common.Filters.Storage;
 
 namespace VDS.Common.Filters
 {
     /// <summary>
-    /// Bloom filter implementation backed by a <see cref="ISparseArray{T}"/>
+    /// A hybrid bloom filter backed by an array
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class SparseNaiveBloomFilter<T>
-        : BaseNaiveBloomFilter<T>
+    public class SparseHybridBloomFilter<T>
+        : BaseHybridBloomFilter<T>
     {
-        public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
-            : base(new SparseArrayStorage(new BlockSparseArray<bool>(bits)), bits, hashFunctions) { }
+        public SparseHybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
+            : base(new SparseArrayStorage(parameters), parameters, hashFunctions) { }
     }
 }
