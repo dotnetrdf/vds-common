@@ -217,4 +217,69 @@
       <Link>Filters\BaseBloomFilter.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\AddDistinctEnumerable.cs">
+      <Link>Collections\Enumerations\AddDistinctEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AddIfEmptyEnumerable.cs">
+      <Link>Collections\Enumerations\AddIfEmptyEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\EnumerableExtensions.cs">
+      <Link>Collections\Enumerations\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\LongSkipEnumerable.cs">
+      <Link>Collections\Enumerations\LongSkipEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\LongTakeEnumerable.cs">
+      <Link>Collections\Enumerations\LongTakeEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\OmitAllEnumerable.cs">
+      <Link>Collections\Enumerations\OmitAllEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ReducedEnumerable.cs">
+      <Link>Collections\Enumerations\ReducedEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ReferenceEqualityComparer.cs">
+      <Link>Collections\Enumerations\ReferenceEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ReversedComparer.cs">
+      <Link>Collections\Enumerations\ReversedComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNEnumerable.cs">
+      <Link>Collections\Enumerations\TopNEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\WrapperEnumerable.cs">
+      <Link>Collections\Enumerations\WrapperEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\WrapperEnumerator.cs">
+      <Link>Collections\Enumerations\WrapperEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BaseHybridBloomFilter.cs">
+      <Link>Filters\BaseHybridBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BaseFastBloomFilter.cs">
+      <Link>Filters\BaseFastBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\FastBloomFilter.cs">
+      <Link>Filters\FastBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\SparseHybridBloomFilter.cs">
+      <Link>Filters\SparseHybridBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\IBloomFilterStorage.cs">
+      <Link>Filters\IBloomFilterStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\HybridBloomFilter.cs">
+      <Link>Filters\HybridBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\SparseFastBloomFilter.cs">
+      <Link>Filters\SparseFastBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\Storage\ArrayStorage.cs">
+      <Link>Filters\Storage\ArrayStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\Storage\SparseArrayStorage.cs">
+      <Link>Filters\Storage\SparseArrayStorage.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
