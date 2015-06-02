@@ -21,32 +21,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using VDS.Common.Filters.Storage;
 
 namespace VDS.Common.Filters
 {
     /// <summary>
-    /// A bloom filter backed by an array
+    /// A naive bloom filter backed by an array
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class BloomFilter<T>
-        : BaseBloomFilter<T>
+    /// <remarks>
+    /// This implementation is considered naive because it is entirely configured by the end user, consider using the <see cref="FastBloomFilter{T}"/> which uses a much better hashing approach that is faster and more robust
+    /// </remarks>
+    public class NaiveBloomFilter<T>
+        : BaseNaiveBloomFilter<T>
     {
-        private readonly bool[] _bits;
-
-        public BloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
-            : base(bits, hashFunctions)
-        {
-            this._bits = new bool[bits];
-        }
-
-        protected override bool IsBitSet(int index)
-        {
-            return this._bits[index];
-        }
-
-        protected override void SetBit(int index)
-        {
-            this._bits[index] = true;
-        }
+        public NaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
+            : base(new ArrayStorage(bits), bits, hashFunctions) { }
     }
 }

@@ -21,38 +21,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using VDS.Common.Collections;
+using VDS.Common.Filters.Storage;
 
 namespace VDS.Common.Filters
 {
     /// <summary>
-    /// Bloom filter implementation backed by a <see cref="ISparseArray{T}"/>
+    /// A hybrid bloom filter backed by an array
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class SparseBloomFilter<T>
-        : BaseBloomFilter<T>
+    public class SparseHybridBloomFilter<T>
+        : BaseHybridBloomFilter<T>
     {
-        private readonly ISparseArray<bool> _array;
-
-        public SparseBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
-            : this(bits, hashFunctions, new BlockSparseArray<bool>(bits)) {}
-
-        public SparseBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions, ISparseArray<bool> sparseArray)
-            : base(bits, hashFunctions)
-        {
-            if (sparseArray == null) throw new ArgumentNullException("sparseArray");
-            if (sparseArray.Length != bits) throw new ArgumentException("Length of sparse array should be equal to number of bits", "sparseArray");
-            this._array = sparseArray;
-        }
-
-        protected override void SetBit(int index)
-        {
-            this._array[index] = true;
-        }
-
-        protected override bool IsBitSet(int index)
-        {
-            return this._array[index];
-        }
+        public SparseHybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
+            : base(new SparseArrayStorage(parameters), parameters, hashFunctions) { }
     }
 }
