@@ -21,24 +21,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Trees
 {
     /// <summary>
-    /// Interface for bloom filter storage
+    /// Interface for trees that support indexed access
     /// </summary>
-    public interface IBloomFilterStorage
+    /// <remarks>
+    /// Indexes may not be stable depending on the underlying tree type
+    /// </remarks>
+    /// <typeparam name="TNode">Node type</typeparam>
+    /// <typeparam name="TKey">Key type</typeparam>
+    /// <typeparam name="TValue">Value type</typeparam>
+    public interface IIndexAccessTree<TNode, TKey, TValue>
+        : ITree<TNode, TKey, TValue>
+        where TNode : class, ITreeNode<TKey, TValue>
     {
         /// <summary>
-        /// Gets whether the given bit is set
+        /// Gets the value at the given index
         /// </summary>
         /// <param name="index">Index</param>
-        /// <returns>True if set, false otherwise</returns>
-        bool IsSet(int index);
+        /// <returns>Value at the given index</returns>
+        /// <exception cref="IndexOutOfRangeException">Thrown if the index is not within the acceptable range for this tree</exception>
+        TValue GetValueAt(int index);
 
         /// <summary>
-        /// Sets the given bit
+        /// Sets the value at the given index
         /// </summary>
         /// <param name="index">Index</param>
-        void Set(int index);
+        /// <param name="value">Value</param>
+        /// <exception cref="IndexOutOfRangeException">Thrown if the index is not within the acceptable range for this tree</exception>
+        void SetValueAt(int index, TValue value);
     }
 }

@@ -48,6 +48,7 @@ namespace VDS.Common.Trees
             inputs.Sort();
             Console.Write("Sorted Inputs (Expected Output): ");
             TestTools.PrintEnumerableStruct<TKey>(inputs, ",");
+            Console.WriteLine();
 
             List<TKey> outputs = tree.Keys.ToList();
             Console.Write("Outputs: ");
@@ -164,6 +165,32 @@ namespace VDS.Common.Trees
             }
 
             this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(input, tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedIndexAccess1()
+        {
+            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(Enumerable.Range(1, 10), tree);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(i + 1, tree.GetValueAt(i));
+            }
+
+            // Swap the values using index access
+            for (int i = 0, j = 9; i < j; i++, j--)
+            {
+                int temp = tree.GetValueAt(i);
+                tree.SetValueAt(i, tree.GetValueAt(j));
+                tree.SetValueAt(j, temp);
+            }
+
+            TestTools.PrintEnumerableStruct(tree.Values, ",");
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(10 - i, tree.GetValueAt(i));
+            }
         }
 
         private UnbalancedBinaryTree<int, int> GetTreeForDelete()

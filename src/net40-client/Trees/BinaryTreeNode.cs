@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
@@ -73,6 +72,7 @@ namespace VDS.Common.Trees
                 this._left = value;
                 if (this._left != null) this._left.Parent = this;
                 this.RecalculateHeight();
+                this.RecalculateSize();
             }
         }
 
@@ -90,6 +90,7 @@ namespace VDS.Common.Trees
                 this._right = value;
                 if (this._right != null) this._right.Parent = this;
                 this.RecalculateHeight();
+                this.RecalculateSize();
             }
         }
 
@@ -123,7 +124,7 @@ namespace VDS.Common.Trees
         }
 
         /// <summary>
-        /// Gets the number of child nodes present (0, 1 or 2)
+        /// Gets the number of child nodes present (0, or 1)
         /// </summary>
         public int ChildCount
         {
@@ -154,11 +155,25 @@ namespace VDS.Common.Trees
         public void RecalculateHeight()
         {
             long newHeight = Math.Max((this._left != null ? this._left.Height : 0), (this._right != null ? this._right.Height : 0)) + 1;
-            if (newHeight != this._height)
-            {
-                this._height = newHeight;
-                if (this.Parent != null) this.Parent.RecalculateHeight();
-            }
+            if (newHeight == this._height) return;
+            this._height = newHeight;
+            if (this.Parent != null) this.Parent.RecalculateHeight();
+        }
+
+        /// <summary>
+        /// Gets the size of the subtree i.e. number of nodes including this node in the count
+        /// </summary>
+        public long Size { get; private set; }
+
+        /// <summary>
+        /// Recalculates the size of the subtree
+        /// </summary>
+        public void RecalculateSize()
+        {
+            long leftSize = this._left != null ? this._left.Size : 0;
+            long rightSize = this._right != null ? this._right.Size : 0;
+            this.Size = leftSize + rightSize + 1;
+            if (this.Parent != null) this.Parent.RecalculateSize();
         }
 
         /// <summary>

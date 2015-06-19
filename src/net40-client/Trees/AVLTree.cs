@@ -139,37 +139,40 @@ namespace VDS.Common.Trees
         /// <param name="balance">Balance at the Node</param>
         private void Rebalance(IBinaryTreeNode<TKey, TValue> node, long balance)
         {
-            if (balance == 2)
-            {
-                //Right subtree is heavier
-                long rightBalance = node.RightChild.GetBalance();
-                if (rightBalance == 1 || rightBalance == 0)
-                {
-                    //Left Rotation
-                    this.RotateLeft(node);
-                }
-                else if (rightBalance == -1)
-                {
-                    //Right Rotation of right child followed by left rotation
-                    this.RotateRight(node.RightChild);
-                    this.RotateLeft(node);
-                }
-            }
-            else if (balance == -2)
-            {
-                //Left subtree is heavier
-                long leftBalance = node.LeftChild.GetBalance();
-                if (leftBalance == 1)
-                {
-                    //Left rotation of left child followed by right rotation
-                    this.RotateLeft(node.LeftChild);
-                    this.RotateRight(node);
-                }
-                else if (leftBalance == -1 || leftBalance == 0)
-                {
-                    //Right rotation
-                    this.RotateRight(node);
-                }
+            switch (balance) {
+                case 2:
+                    //Right subtree is heavier
+                    long rightBalance = node.RightChild.GetBalance();
+                    switch (rightBalance)
+                    {
+                        case 1:
+                        case 0:
+                            //Left Rotation
+                            this.RotateLeft(node);
+                            break;
+                        case -1:
+                            //Right Rotation of right child followed by left rotation
+                            this.RotateRight(node.RightChild);
+                            this.RotateLeft(node);
+                            break;
+                    }
+                    break;
+                case -2:
+                    //Left subtree is heavier
+                    long leftBalance = node.LeftChild.GetBalance();
+                    switch (leftBalance) {
+                        case 1:
+                            //Left rotation of left child followed by right rotation
+                            this.RotateLeft(node.LeftChild);
+                            this.RotateRight(node);
+                            break;
+                        case -1:
+                        case 0:
+                            //Right rotation
+                            this.RotateRight(node);
+                            break;
+                    }
+                    break;
             }
         }
 
