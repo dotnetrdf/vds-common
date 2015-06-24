@@ -82,7 +82,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets the size of the subtree this node represents i.e. number of nodes including this node
         /// </summary>
-        long Size { get; }
+        int Size { get; }
 
         /// <summary>
         /// Indicates that the node should recalculate the size of the subtree it represents

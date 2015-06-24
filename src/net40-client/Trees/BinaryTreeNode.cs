@@ -47,6 +47,7 @@ namespace VDS.Common.Trees
             this.Parent = parent;
             this.Key = key;
             this.Value = value;
+            this.Size = 1;
         }
 
         /// <summary>
@@ -163,15 +164,15 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets the size of the subtree i.e. number of nodes including this node in the count
         /// </summary>
-        public long Size { get; private set; }
+        public int Size { get; private set; }
 
         /// <summary>
         /// Recalculates the size of the subtree
         /// </summary>
         public void RecalculateSize()
         {
-            long leftSize = this._left != null ? this._left.Size : 0;
-            long rightSize = this._right != null ? this._right.Size : 0;
+            int leftSize = this._left != null ? this._left.Size : 0;
+            int rightSize = this._right != null ? this._right.Size : 0;
             this.Size = leftSize + rightSize + 1;
             if (this.Parent != null) this.Parent.RecalculateSize();
         }

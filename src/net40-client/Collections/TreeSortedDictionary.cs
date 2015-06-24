@@ -198,8 +198,8 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start copying elements at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Cannot start copying at index < 0");
+            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
             if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
             int i = arrayIndex;

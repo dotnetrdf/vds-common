@@ -35,8 +35,6 @@ namespace VDS.Common.Trees
         : IIndexAccessTree<TNode, TKey, TValue>
         where TNode : class, IBinaryTreeNode<TKey, TValue>
     {
-        private int _count = 0;
-
         /// <summary>
         /// Key Comparer
         /// </summary>
@@ -75,14 +73,12 @@ namespace VDS.Common.Trees
             {
                 //No root yet so just insert at the root
                 this.Root = this.CreateNode(null, key, value);
-                this._count++;
                 return true;
             }
             //Move to the node
             bool created = false;
             IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out created);
             if (!created) throw new ArgumentException("Duplicate keys are not permitted");
-            this._count++;
             node.Value = value;
             return true;
         }
@@ -236,8 +232,18 @@ namespace VDS.Common.Trees
             // Node not found so nothing to remove
             if (current == null) return false;
 
+            return RemoveNode(current, c);
+        }
+
+        /// <summary>
+        /// Removes a node
+        /// </summary>
+        /// <param name="current">Node to be removed</param>
+        /// <param name="c">Comparison of this node versus its parent</param>
+        /// <returns>True if node removed</returns>
+        protected bool RemoveNode(TNode current, int c)
+        {
             //Perform the delete if we found a node
-            this._count--;
             if (current.ChildCount == 2)
             {
                 //Has two children
@@ -463,12 +469,25 @@ namespace VDS.Common.Trees
             return false;
         }
 
+        /// <summary>
+        /// Tries to move to a node based on its index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Node</returns>
+        /// <exception cref="IndexOutOfRangeException">Thrown if the index is out of range</exception>
         protected TNode MoveToIndex(int index)
         {
-            if (index < 0 || index >= this._count) throw new IndexOutOfRangeException();
+            if (this.Root == null) throw new IndexOutOfRangeException();
+            int count = this.Root.Size;
+            if (index < 0 || index >= count) throw new IndexOutOfRangeException();
 
-            // Special case index 0 and only one node, return the root
-            if (index == 0 && this._count == 1) return this.Root;
+            // Special cases
+            // Index 0 and only one node, return the root
+            if (index == 0 && count == 1) return this.Root;
+            // Index 0, return the left most child
+            if (index == 0) return FindLeftmostChild(this.Root);
+            // Index == count - 1, return the right most child
+            if (index == 0) return FindRightmostChild(this.Root);
 
             long baseIndex = 0;
             TNode currentNode = this.Root;
@@ -500,6 +519,13 @@ namespace VDS.Common.Trees
         {
             TNode node = this.MoveToIndex(index);
             node.Value = value;
+        }
+
+        public void RemoveAt(int index)
+        {
+            TNode node = this.MoveToIndex(index);
+            int c = node.Parent != null ? this._comparer.Compare(node.Key, node.Parent.Key) : 0;
+            this.RemoveNode(node, c);
         }
 
         /// <summary>

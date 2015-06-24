@@ -51,5 +51,12 @@ namespace VDS.Common.Trees
         /// <param name="value">Value</param>
         /// <exception cref="IndexOutOfRangeException">Thrown if the index is not within the acceptable range for this tree</exception>
         void SetValueAt(int index, TValue value);
+
+        /// <summary>
+        /// Removes the value (and corresponding key) at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <exception cref="IndexOutOfRangeException">Thrown if the index is not within the acceptable range for this tree</exception>
+        void RemoveAt(int index);
     }
 }

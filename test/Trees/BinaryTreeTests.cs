@@ -171,7 +171,8 @@ namespace VDS.Common.Trees
         public void BinaryTreeUnbalancedIndexAccess1()
         {
             UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(Enumerable.Range(1, 10), tree);
+            List<int> inputs = Enumerable.Range(1, 10).ToList();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(inputs, tree);
 
             for (int i = 0; i < 10; i++)
             {
@@ -190,6 +191,28 @@ namespace VDS.Common.Trees
             for (int i = 0; i < 10; i++)
             {
                 Assert.AreEqual(10 - i, tree.GetValueAt(i));
+            }
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedIndexAccess2()
+        {
+            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
+            List<int> inputs = Enumerable.Range(1, 10).ToList();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(inputs, tree);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(i + 1, tree.GetValueAt(i));
+            }
+
+            // Remove values in random order
+            while (tree.Root != null)
+            {
+                int index = this._rnd.Next(tree.Root.Size);
+                tree.RemoveAt(index);
+                inputs.RemoveAt(index);
+                this.TestOrderStructs(inputs, tree.Keys.ToList());
             }
         }
 
