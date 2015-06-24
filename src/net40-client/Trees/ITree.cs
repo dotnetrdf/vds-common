@@ -175,6 +175,10 @@ namespace VDS.Common.Trees
         }
     }
 
+    public interface IBinaryTree<TKey, TValue>
+        : ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
+    { }
+
     /// <summary>
     /// Interface for Binary Tree Nodes
     /// </summary>

@@ -25,11 +25,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using VDS.Common.Trees;
 
 namespace VDS.Common.Collections.Enumerations
 {
     public class TopNEnumerable<T>
         : WrapperEnumerable<T>
+        where T : class
     {
         public TopNEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
             : base(enumerable)
@@ -52,6 +54,7 @@ namespace VDS.Common.Collections.Enumerations
 
     public class TopNEnumerator<T>
         : WrapperEnumerator<T>
+        where T : class
     {
         public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator)
@@ -59,12 +62,12 @@ namespace VDS.Common.Collections.Enumerations
             if (comparer == null) throw new ArgumentNullException("comparer");
             if (n < 1) throw new ArgumentException("N must be >= 1", "n");
             this.N = n;
-            this.TopItems = new SortedList<T, byte>(comparer);
+            this.TopItems = new AVLTree<T, bool>(comparer);
         }
 
         public long N { get; private set; }
 
-        private SortedList<T, byte> TopItems { get; set; }
+        private IBinaryTree<T, bool> TopItems { get; set; }
 
         private IEnumerator<KeyValuePair<T, byte>> TopItemsEnumerator { get; set; } 
 
@@ -75,7 +78,8 @@ namespace VDS.Common.Collections.Enumerations
             {
                 while (this.InnerEnumerator.MoveNext())
                 {
-                    this.TopItems.Add(this.InnerEnumerator.Current, 0);
+                    this.TopItems.Add(this.InnerEnumerator.Current, true);
+                    int count = this.TopItems.Root != null ? this.TopItems.Root.Size : 0;
                     if (this.TopItems.Count > this.N) this.TopItems.RemoveAt(this.TopItems.Count - 1);
                 }
                 this.TopItemsEnumerator = this.TopItems.GetEnumerator();

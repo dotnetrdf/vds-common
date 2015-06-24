@@ -37,7 +37,7 @@ namespace VDS.Common.Trees
     /// </para>
     /// </remarks>
     public sealed class AVLTree<TKey, TValue>
-        : BinaryTree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
+        : BinaryTree<TKey, TValue>
     {
 
         /// <summary>

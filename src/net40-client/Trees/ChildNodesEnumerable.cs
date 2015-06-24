@@ -36,13 +36,13 @@ namespace VDS.Common.Trees
         : IEnumerable<IBinaryTreeNode<TKey, TValue>>
         where TNode : class, IBinaryTreeNode<TKey, TValue>
     {
-        private BinaryTree<TNode, TKey, TValue> _tree;
+        private readonly IBinaryTree<TKey, TValue> _tree;
 
         /// <summary>
         /// Creates a new nodes enumerable for a binary tree
         /// </summary>
         /// <param name="tree">Binary Tree</param>
-        public NodesEnumerable(BinaryTree<TNode, TKey, TValue> tree)
+        public NodesEnumerable(IBinaryTree<TKey, TValue> tree)
         {
             if (tree == null) throw new ArgumentNullException("tree", "Tree cannot be null");
             this._tree = tree;

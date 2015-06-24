@@ -32,11 +32,11 @@ namespace VDS.Common.Trees
     /// <typeparam name="TKey">Key Type</typeparam>
     /// <typeparam name="TValue">Valye Type</typeparam>
     public sealed class ScapegoatTree<TKey, TValue>
-        : BinaryTree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
+        : BinaryTree<TKey, TValue>
     {
-        private double _balanceFactor = 0.75d;
+        private readonly double _balanceFactor = 0.75d;
         private long _nodeCount = 0, _maxNodeCount = 0;
-        private double _logBase = 1d / 0.75d;
+        private readonly double _logBase = 1d / 0.75d;
 
         /// <summary>
         /// Creates a new Scapegoat Tree

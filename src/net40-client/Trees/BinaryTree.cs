@@ -21,20 +21,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
     /// <summary>
     /// Abstract base implementation of an unbalanced binary search tree
     /// </summary>
-    /// <typeparam name="TNode">Tree Node Type</typeparam>
     /// <typeparam name="TKey">Key Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
-    public abstract class BinaryTree<TNode, TKey, TValue>
-        : ITree<TNode, TKey, TValue>
-        where TNode : class, IBinaryTreeNode<TKey, TValue>
+    public abstract class BinaryTree<TKey, TValue>
+        : IBinaryTree<TKey, TValue>
     {
         /// <summary>
         /// Key Comparer
@@ -44,22 +40,22 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Creates a new unbalanced Binary Tree
         /// </summary>
-        public BinaryTree()
+        protected BinaryTree()
             : this(null) { }
 
         /// <summary>
         /// Creates a new unbalanced Binary Tree
         /// </summary>
         /// <param name="comparer">Comparer for keys</param>
-        public BinaryTree(IComparer<TKey> comparer)
+        protected BinaryTree(IComparer<TKey> comparer)
         {
-            this._comparer = (comparer != null ? comparer : this._comparer);
+            this._comparer = (comparer ?? this._comparer);
         }
 
         /// <summary>
         /// Gets/Sets the Root of the Tree
         /// </summary>
-        public virtual TNode Root
+        public virtual IBinaryTreeNode<TKey,TValue> Root
         {
             get;
             set;
@@ -98,30 +94,30 @@ namespace VDS.Common.Trees
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
         /// <returns></returns>
-        protected abstract TNode CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value);
+        protected abstract IBinaryTreeNode<TKey, TValue> CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value);
 
         /// <summary>
         /// Finds a Node based on the key
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Node associated with the given Key or null if the key is not present in the tree</returns>
-        public virtual TNode Find(TKey key)
+        public virtual IBinaryTreeNode<TKey, TValue> Find(TKey key)
         {
             if (this.Root == null) return null;
 
             //Iteratively binary search for the key
-            TNode current = this.Root;
+            IBinaryTreeNode<TKey, TValue> current = this.Root;
             int c;
             do
             {
                 c = this._comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
-                    current = (TNode)current.LeftChild;
+                    current = current.LeftChild;
                 }
                 else if (c > 0)
                 {
-                    current = (TNode)current.RightChild;
+                    current = current.RightChild;
                 }
                 else
                 {
@@ -139,7 +135,7 @@ namespace VDS.Common.Trees
         /// <param name="key">Key</param>
         /// <param name="created">Whether a new node was inserted</param>
         /// <returns></returns>
-        public virtual TNode MoveToNode(TKey key, out bool created)
+        public virtual IBinaryTreeNode<TKey, TValue> MoveToNode(TKey key, out bool created)
         {
             if (this.Root == null)
             {
@@ -150,8 +146,8 @@ namespace VDS.Common.Trees
             else
             {
                 //Iteratively binary search for the key
-                TNode current = this.Root;
-                TNode parent = null;
+                IBinaryTreeNode<TKey, TValue> current = this.Root;
+                IBinaryTreeNode<TKey, TValue> parent = null;
                 int c;
                 do
                 {
@@ -159,12 +155,12 @@ namespace VDS.Common.Trees
                     if (c < 0)
                     {
                         parent = current;
-                        current = (TNode)current.LeftChild;
+                        current = current.LeftChild;
                     }
                     else if (c > 0)
                     {
                         parent = current;
-                        current = (TNode)current.RightChild;
+                        current = current.RightChild;
                     }
                     else
                     {
@@ -220,18 +216,18 @@ namespace VDS.Common.Trees
             if (this.Root == null) return false;
 
             //Iteratively binary search for the key
-            TNode current = this.Root;
+            IBinaryTreeNode<TKey, TValue> current = this.Root;
             int c;
             do
             {
                 c = this._comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
-                    current = (TNode)current.LeftChild;
+                    current = current.LeftChild;
                 }
                 else if (c > 0)
                 {
-                    current = (TNode)current.RightChild;
+                    current = current.RightChild;
                 }
                 else
                 {
@@ -251,7 +247,7 @@ namespace VDS.Common.Trees
                     //Has two children
                     //Therefore we need to in order successor of the left child (which must exist) and move it's key and value
                     //to this node and then delete the successor
-                    TNode successor = this.FindRightmostChild((TNode)current.LeftChild);
+                    IBinaryTreeNode<TKey, TValue> successor = this.FindRightmostChild(current.LeftChild);
                     if (ReferenceEquals(successor, current.LeftChild))
                     {
                         //If the successor is just the left child i.e. the left child has no right children
@@ -289,30 +285,30 @@ namespace VDS.Common.Trees
                     if (c < 0)
                     {
                         current.Parent.LeftChild = (current.LeftChild != null ? current.LeftChild : current.RightChild);
-                        this.AfterDelete((TNode)current.Parent);
+                        this.AfterDelete(current.Parent);
                         return true;
                     }
                     else if (c > 0)
                     {
                         current.Parent.RightChild = (current.RightChild != null ? current.RightChild : current.LeftChild);
-                        this.AfterDelete((TNode)current.Parent);
+                        this.AfterDelete(current.Parent);
                         return true;
                     }
                     else
                     {
-                        TNode successor;
+                        IBinaryTreeNode<TKey, TValue> successor;
                         if (current.LeftChild != null)
                         {
                             //Has a left subtree so get the in order successor which is the rightmost child of the left
                             //subtree
-                            successor = this.FindRightmostChild((TNode)current.LeftChild);
+                            successor = this.FindRightmostChild(current.LeftChild);
                             if (ReferenceEquals(current.LeftChild, successor))
                             {
                                 //There were no right children on the left subtree
                                 if (current.Parent == null)
                                 {
                                     //At Root and no right child of left subtree so can move left child up to root
-                                    this.Root = (TNode)current.LeftChild;
+                                    this.Root = current.LeftChild;
                                     if (this.Root != null) this.Root.Parent = null;
                                     this.AfterDelete(this.Root);
                                     return true;
@@ -321,7 +317,7 @@ namespace VDS.Common.Trees
                                 {
                                     //Not at Root and no right child of left subtree so can move left child up
                                     current.Parent.LeftChild = current.LeftChild;
-                                    this.AfterDelete((TNode)current.Parent.LeftChild);
+                                    this.AfterDelete(current.Parent.LeftChild);
                                     return true;
                                 }
                             }
@@ -345,14 +341,14 @@ namespace VDS.Common.Trees
                         {
                             //Must have a right subtree so find the in order sucessor which is the
                             //leftmost child of the right subtree
-                            successor = this.FindLeftmostChild((TNode)current.RightChild);
+                            successor = this.FindLeftmostChild(current.RightChild);
                             if (ReferenceEquals(current.RightChild, successor))
                             {
                                 //There were no left children on the right subtree
                                 if (current.Parent == null)
                                 {
                                     //At Root and no left child of right subtree so can move right child up to root
-                                    this.Root = (TNode)current.RightChild;
+                                    this.Root = current.RightChild;
                                     if (this.Root != null) this.Root.Parent = null;
                                     this.AfterDelete(this.Root);
                                     return true;
@@ -361,7 +357,7 @@ namespace VDS.Common.Trees
                                 {
                                     //Not at Root and no left child of right subtree so can move right child up
                                     current.Parent.RightChild = current.RightChild;
-                                    this.AfterDelete((TNode)current.Parent.RightChild);
+                                    this.AfterDelete(current.Parent.RightChild);
                                     return true;
                                 }
                             }
@@ -390,13 +386,13 @@ namespace VDS.Common.Trees
                     if (c < 0)
                     {
                         current.Parent.LeftChild = null;
-                        this.AfterDelete((TNode)current.Parent);
+                        this.AfterDelete(current.Parent);
                         return true;
                     }
                     else if (c > 0)
                     {
                         current.Parent.RightChild = null;
-                        this.AfterDelete((TNode)current.Parent);
+                        this.AfterDelete(current.Parent);
                         return true;
                     }
                     else
@@ -419,11 +415,11 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="node">Node</param>
         /// <returns></returns>
-        protected TNode FindLeftmostChild(TNode node)
+        protected IBinaryTreeNode<TKey, TValue> FindLeftmostChild(IBinaryTreeNode<TKey, TValue> node)
         {
             while (node.LeftChild != null)
             {
-                node = (TNode)node.LeftChild;
+                node = node.LeftChild;
             }
             return node;
         }
@@ -433,11 +429,11 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="node">Node</param>
         /// <returns></returns>
-        protected TNode FindRightmostChild(TNode node)
+        protected IBinaryTreeNode<TKey, TValue> FindRightmostChild(IBinaryTreeNode<TKey, TValue> node)
         {
             while (node.RightChild != null)
             {
-                node = (TNode)node.RightChild;
+                node = node.RightChild;
             }
             return node;
         }
@@ -446,7 +442,7 @@ namespace VDS.Common.Trees
         /// Virtual method that can be used by derived implementations to perform tree balances after a delete
         /// </summary>
         /// <param name="node">Node at which the deletion happened</param>
-        protected virtual void AfterDelete(TNode node)
+        protected virtual void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
         { }
 
         /// <summary>
@@ -469,7 +465,7 @@ namespace VDS.Common.Trees
         {
             get
             {
-                TNode n = this.Find(key);
+                IBinaryTreeNode<TKey, TValue> n = this.Find(key);
                 if (n != null)
                 {
                     return n.Value;
@@ -482,7 +478,7 @@ namespace VDS.Common.Trees
             set
             {
                 bool created = false;
-                TNode n = this.MoveToNode(key, out created);
+                IBinaryTreeNode<TKey, TValue> n = this.MoveToNode(key, out created);
                 if (n != null)
                 {
                     n.Value = value;
@@ -502,7 +498,7 @@ namespace VDS.Common.Trees
         /// <returns>True if there is a value associated with the key</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            TNode n = this.Find(key);
+            IBinaryTreeNode<TKey, TValue> n = this.Find(key);
             if (n != null)
             {
                 value = n.Value;
@@ -518,19 +514,19 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets the Nodes of the Tree
         /// </summary>
-        public IEnumerable<TNode> Nodes
+        public IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
         {
             get
             {
-                return (IEnumerable<TNode>)new NodesEnumerable<TNode, TKey, TValue>(this);
+                return (IEnumerable<IBinaryTreeNode<TKey, TValue>>)new NodesEnumerable<IBinaryTreeNode<TKey, TValue>, TKey, TValue>(this);
                 //if (this.Root == null)
                 //{
-                //    return Enumerable.Empty<TNode>();
+                //    return Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>();
                 //}
                 //else
                 //{
-                //    //return (this.Root.LeftChild != null ? this.Root.LeftChild.Nodes.OfType<TNode>() : Enumerable.Empty<TNode>()).Concat(this.Root.AsEnumerable()).Concat(this.Root.RightChild != null ? this.Root.RightChild.Nodes.OfType<TNode>() : Enumerable.Empty<TNode>());
-                //    return new LeftChildNodeEnumerable<TKey, TValue>(this.Root).OfType<TNode>().Concat(this.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this.Root).OfType<TNode>());
+                //    //return (this.Root.LeftChild != null ? this.Root.LeftChild.Nodes.OfType<IBinaryTreeNode<TKey, TValue>>() : Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>()).Concat(this.Root.AsEnumerable()).Concat(this.Root.RightChild != null ? this.Root.RightChild.Nodes.OfType<IBinaryTreeNode<TKey, TValue>>() : Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>());
+                //    return new LeftChildNodeEnumerable<TKey, TValue>(this.Root).OfType<IBinaryTreeNode<TKey, TValue>>().Concat(this.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this.Root).OfType<IBinaryTreeNode<TKey, TValue>>());
                 //}
             }
         }
