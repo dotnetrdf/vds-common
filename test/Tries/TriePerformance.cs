@@ -40,7 +40,17 @@ namespace VDS.Common.Tries
             return words;
         }
 
-        private static List<TrieFiller<String, char>> CreateFillers(List<String> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads)
+        private static List<TrieFiller<String, char>> CreateFillers(List<List<String>> threadWords, ITrie<String, char, String> trie)
+        {
+            List<TrieFiller<String, char>> fillers = new List<TrieFiller<String, char>>();
+            foreach (List<String> threadWordList in threadWords)
+            {
+                fillers.Add(new TrieFiller<string, char>(trie, threadWordList));
+            }
+            return fillers;
+        }
+
+        private static List<List<string>> CreateThreadWordLists(List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads)
         {
             if (threadsPerWord > numThreads) throw new ArgumentException("threadsPerWord must be <= numThreads", "threadsPerWord");
 
@@ -97,14 +107,7 @@ namespace VDS.Common.Tries
                     }
                 }
             }
-
-            StringTrie<String> trie = new StringTrie<string>();
-            List<TrieFiller<String, char>> fillers = new List<TrieFiller<String, char>>();
-            foreach (List<String> threadWordList in threadWords)
-            {
-                fillers.Add(new TrieFiller<string, char>(trie, threadWordList));
-            }
-            return fillers;
+            return threadWords;
         }
 
         private static void RunFillers(List<TrieFiller<String, char>> fillers)
@@ -162,8 +165,14 @@ namespace VDS.Common.Tries
         public void TrieMultiThreadedPerformance(int numWords, int minLength, int maxLength, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinct)
         {
             List<String> words = GenerateWords(numWords, minLength, maxLength);
-            List<TrieFiller<String, char>> fillers = CreateFillers(words, numThreads, repeatsPerWord, threadsPerWord, requireDistinct);
+            List<List<String>> threadWords = CreateThreadWordLists(words, numThreads, repeatsPerWord, threadsPerWord, requireDistinct);
 
+            Console.WriteLine("StringTrie:");
+            List<TrieFiller<String, char>> fillers = CreateFillers(threadWords, new StringTrie<string>());
+            RunFillers(fillers);
+            Console.WriteLine();
+            Console.WriteLine("SparseStringTrie:");
+            fillers = CreateFillers(threadWords, new SparseStringTrie<string>());
             RunFillers(fillers);
         }
     }
