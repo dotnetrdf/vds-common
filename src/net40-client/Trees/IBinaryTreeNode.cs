@@ -24,36 +24,69 @@ using System.Collections.Generic;
 namespace VDS.Common.Trees
 {
     /// <summary>
-    /// An unbalanced binary tree
+    /// Interface for Binary Tree Nodes
     /// </summary>
     /// <typeparam name="TKey">Key Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
-    public sealed class UnbalancedBinaryTree<TKey, TValue>
-        : BinaryTree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
+    public interface IBinaryTreeNode<TKey, TValue>
+        : ITreeNode<TKey, TValue>
     {
         /// <summary>
-        /// Creates a new unbalanced tree
+        /// Gets the left child of this node
         /// </summary>
-        public UnbalancedBinaryTree()
-            : base() { }
-
-        /// <summary>
-        /// Creates a new unbalanced tree
-        /// </summary>
-        /// <param name="comparer">Key Comparer</param>
-        public UnbalancedBinaryTree(IComparer<TKey> comparer)
-            : base(comparer) { }
-
-        /// <summary>
-        /// Creates a new node
-        /// </summary>
-        /// <param name="parent">Parent</param>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected sealed override IBinaryTreeNode<TKey, TValue> CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value)
+        IBinaryTreeNode<TKey, TValue> LeftChild
         {
-            return new BinaryTreeNode<TKey, TValue>(parent, key, value);
+            get;
+            set;
         }
+
+        /// <summary>
+        /// Gets the right child of this node
+        /// </summary>
+        IBinaryTreeNode<TKey, TValue> RightChild
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the parent of the node
+        /// </summary>
+        IBinaryTreeNode<TKey, TValue> Parent
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the nodes present for the entire subtree (including this node)
+        /// </summary>
+        IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the Height of the subtree this node represents
+        /// </summary>
+        long Height
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Indicates that the node should recalculate the height of the subtree it represents
+        /// </summary>
+        void RecalculateHeight();
+
+        /// <summary>
+        /// Gets the size of the subtree this node represents i.e. number of nodes including this node
+        /// </summary>
+        int Size { get; }
+
+        /// <summary>
+        /// Indicates that the node should recalculate the size of the subtree it represents
+        /// </summary>
+        void RecalculateSize();
     }
 }

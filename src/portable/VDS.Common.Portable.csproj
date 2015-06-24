@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\VDS.Common.XML</DocumentationFile>
@@ -34,9 +34,10 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\VDS.Common.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -112,12 +113,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Collections\" />
-    <Folder Include="References\" />
-    <Folder Include="Trees\" />
-    <Folder Include="Tries\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)Build\SyncProjects.exe" sync "$(SolutionDir)src\net40-client\VDS.Common.Net40.csproj" "$(ProjectPath)" "..\net40-client\\"</PreBuildEvent>
   </PropertyGroup>
@@ -244,6 +240,17 @@
     </Compile>
     <Compile Include="..\net40-client\Filters\Storage\SparseArrayStorage.cs">
       <Link>Filters\Storage\SparseArrayStorage.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Trees\IBinaryTreeNode.cs">
+      <Link>Trees\IBinaryTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\IIndexAccessTree.cs">
+      <Link>Trees\IIndexAccessTree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\ITreeNode.cs">
+      <Link>Trees\ITreeNode.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
