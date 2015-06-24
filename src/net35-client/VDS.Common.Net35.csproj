@@ -207,4 +207,36 @@
       <Link>Filters\SparseNaiveBloomFilter.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Filters\BaseBloomFilter.cs">
+      <Link>Filters\BaseBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BaseHybridBloomFilter.cs">
+      <Link>Filters\BaseHybridBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\BaseFastBloomFilter.cs">
+      <Link>Filters\BaseFastBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\FastBloomFilter.cs">
+      <Link>Filters\FastBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\SparseHybridBloomFilter.cs">
+      <Link>Filters\SparseHybridBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\IBloomFilterStorage.cs">
+      <Link>Filters\IBloomFilterStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\HybridBloomFilter.cs">
+      <Link>Filters\HybridBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\SparseFastBloomFilter.cs">
+      <Link>Filters\SparseFastBloomFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\Storage\ArrayStorage.cs">
+      <Link>Filters\Storage\ArrayStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Filters\Storage\SparseArrayStorage.cs">
+      <Link>Filters\Storage\SparseArrayStorage.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
