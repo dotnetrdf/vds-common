@@ -358,7 +358,7 @@ namespace VDS.Common.Tries
         where TKeyBit : IEquatable<TKeyBit>
         where TValue : class
     {
-        private AbstractSparseTrieNode<TKeyBit, TValue> _node;
+        private readonly AbstractSparseTrieNode<TKeyBit, TValue> _node;
 
         public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
         {
