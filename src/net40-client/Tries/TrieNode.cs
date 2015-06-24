@@ -41,8 +41,8 @@ namespace VDS.Common.Tries
         where TValue : class
     {
         private readonly Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
-#if PORTABLE
-        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+#if !PORTABLE
+        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 #endif
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace VDS.Common.Tries
         /// </summary>
         protected internal void EnterReadLock()
         {
-#if PORTABLE
+#if !PORTABLE
             this._lock.EnterReadLock();
 #else
             Monitor.Enter(this._children);
@@ -75,10 +75,28 @@ namespace VDS.Common.Tries
         /// </summary>
         protected internal void ExitReadLock()
         {
-#if PORTABLE
+#if !PORTABLE
             this._lock.ExitReadLock();
 #else
             Monitor.Exit(this._children);
+#endif
+        }
+
+        protected internal void EnterUpgradeableReadLock()
+        {
+#if !PORTABLE
+            this._lock.EnterUpgradeableReadLock();
+#else
+            Monitor.Enter(this._children);
+#endif
+        }
+
+        protected internal void ExitUpgradeableReadLock()
+        {
+#if !PORTABLE
+            this._lock.ExitUpgradeableReadLock();
+#else
+            Monitor.Enter(this._children);
 #endif
         }
 
@@ -87,7 +105,7 @@ namespace VDS.Common.Tries
         /// </summary>
         protected internal void EnterWriteLock()
         {
-#if PORTABLE
+#if !PORTABLE
             this._lock.EnterWriteLock();
 #else
             // Since we use a Monitor under PCL there is no difference between a read and write lock
@@ -100,7 +118,7 @@ namespace VDS.Common.Tries
         /// </summary>
         protected internal void ExitWriteLock()
         {
-#if PORTABLE
+#if !PORTABLE
             this._lock.ExitWriteLock();
 #else
             // Since we use a Monitor under PCL there is no difference between a read and write lock
@@ -343,7 +361,7 @@ namespace VDS.Common.Tries
                 // There is a race condition where another thread might have entered 
                 // the write lock and created the node while we were waiting to 
                 // receive the write lock
-                if (this._children.TryGetValue(key, out child)) 
+                if (this._children.TryGetValue(key, out child))
                     return child;
 
                 // Otherwise go ahead and create the child
@@ -355,6 +373,37 @@ namespace VDS.Common.Tries
             {
                 this.ExitWriteLock();
             }
+
+            // Alternative strategy using upgradeable locks
+            // The problem is that this optimises the write case at the cost of decreasing performance
+            // for the read case and reducing thread throughput for read biased workflows
+            // This is because an upgradeable lock is equivalent to an exclusive lock
+
+            //try
+            //{
+            //    this.EnterUpgradeableReadLock();
+
+            //    if (this._children.TryGetValue(key, out child))
+            //        return child;
+
+            //    try
+            //    {
+            //        this.EnterWriteLock();
+
+            //        // Otherwise go ahead and create the child
+            //        child = new TrieNode<TKeyBit, TValue>(this, key);
+            //        this._children.Add(key, child);
+            //        return child;
+            //    }
+            //    finally
+            //    {
+            //        this.ExitWriteLock();
+            //    }
+            //}
+            //finally
+            //{
+            //    this.ExitUpgradeableReadLock();
+            //}
         }
 
         /// <summary>

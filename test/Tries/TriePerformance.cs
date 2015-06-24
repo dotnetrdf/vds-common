@@ -135,7 +135,7 @@ namespace VDS.Common.Tries
             foreach (TrieFiller<String, char> filler in fillers)
             {
                 Console.Write(filler.HasError ? "[Error]" : "[Success]");
-                Console.WriteLine(" Added {0} objects in {1}", filler.Added, filler.Elapsed);
+                Console.WriteLine(" Added {0} objects and Read {1} in {2}", filler.Added, filler.Read, filler.Elapsed);
             }
         }
 
@@ -173,6 +173,7 @@ namespace VDS.Common.Tries
     {
         private readonly ITrie<TKey, TKeyBit, TKey> _trie;
         private readonly Queue<TKey> _keysToInsert = new Queue<TKey>(); 
+        private readonly Queue<TKey> _keysToRead = new Queue<TKey>();
         private readonly Stopwatch _timer = new Stopwatch();
 
         public TrieFiller(ITrie<TKey, TKeyBit, TKey> trie, IEnumerable<TKey> keysToInsert)
@@ -189,6 +190,7 @@ namespace VDS.Common.Tries
             this.Error = null;
             this.IsFinished = false;
             this.Added = 0;
+            this.Read = 0;
             this._timer.Stop();
             this._timer.Reset();
             this._timer.Start();
@@ -200,6 +202,13 @@ namespace VDS.Common.Tries
                     TKey key = this._keysToInsert.Dequeue();
                     this._trie.Add(key, key);
                     this.Added++;
+                    this._keysToRead.Enqueue(key);
+                }
+                while (this._keysToRead.Count > 0)
+                {
+                    TKey key = this._keysToRead.Dequeue();
+                    TKey value = this._trie[key];
+                    this.Read++;
                 }
             }
             catch (Exception ex)
@@ -218,6 +227,8 @@ namespace VDS.Common.Tries
         public Exception Error { get; private set; }
 
         public int Added { get; private set; }
+
+        public int Read { get; private set; }
 
         public TimeSpan Elapsed { get { return this._timer.Elapsed; } }
 
