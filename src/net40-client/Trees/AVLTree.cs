@@ -191,13 +191,13 @@ namespace VDS.Common.Trees
             bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
             bool atRoot = (parent == null);
 
-            //Rotate
-            node.RightChild = pivot.LeftChild;
-            pivot.LeftChild = node;
-
             //Update Parents
             node.Parent = pivot;
             pivot.Parent = parent;
+
+            //Rotate
+            node.RightChild = pivot.LeftChild;
+            pivot.LeftChild = node;
 
             if (node.RightChild != null) node.RightChild.Parent = node;
             if (atRoot) this.Root = pivot;
@@ -226,13 +226,13 @@ namespace VDS.Common.Trees
             bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
             bool atRoot = (parent == null);
 
-            //Rotate
-            node.LeftChild = pivot.RightChild;
-            pivot.RightChild = node;
-
             //Update Parents
             node.Parent = pivot;
             pivot.Parent = parent;
+
+            //Rotate
+            node.LeftChild = pivot.RightChild;
+            pivot.RightChild = node;
 
             if (node.LeftChild != null) node.LeftChild.Parent = node;
             if (atRoot) this.Root = pivot;

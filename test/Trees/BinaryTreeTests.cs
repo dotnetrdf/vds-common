@@ -648,6 +648,55 @@ namespace VDS.Common.Trees
             }
         }
 
+        [Test]
+        public void BinaryTreeScapegoatIndexAccess1()
+        {
+            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
+            List<int> inputs = Enumerable.Range(1, 10).ToList();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(inputs, tree);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(inputs[i], tree.GetValueAt(i));
+            }
+
+            // Swap the values using index access
+            for (int i = 0, j = 9; i < j; i++, j--)
+            {
+                int temp = tree.GetValueAt(i);
+                tree.SetValueAt(i, tree.GetValueAt(j));
+                tree.SetValueAt(j, temp);
+            }
+
+            TestTools.PrintEnumerableStruct(tree.Values, ",");
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(10 - i, tree.GetValueAt(i));
+            }
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatIndexAccess2()
+        {
+            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
+            List<int> inputs = Enumerable.Range(1, 10).ToList();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(inputs, tree);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(inputs[i], tree.GetValueAt(i));
+            }
+
+            // Remove values in random order
+            while (tree.Root != null)
+            {
+                int index = this._rnd.Next(tree.Root.Size);
+                tree.RemoveAt(index);
+                inputs.RemoveAt(index);
+                this.TestOrderStructs(inputs, tree.Keys.ToList());
+            }
+        }
+
         #endregion
 
         #region AVL Tree
@@ -835,6 +884,55 @@ namespace VDS.Common.Trees
                 count--;
                 this.TestOrderStructs<int>(input.OrderBy(k => k, Comparer<int>.Default).ToList(), tree.Keys.ToList());
                 Assert.AreEqual(count, tree.Nodes.Count(), "Removal of Key " + i + " did not reduce node count as expected");
+            }
+        }
+
+        [Test]
+        public void BinaryTreeAVLIndexAccess1()
+        {
+            AVLTree<int, int> tree = new AVLTree<int, int>();
+            List<int> inputs = Enumerable.Range(1, 10).ToList();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(inputs, tree);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(inputs[i], tree.GetValueAt(i));
+            }
+
+            // Swap the values using index access
+            for (int i = 0, j = 9; i < j; i++, j--)
+            {
+                int temp = tree.GetValueAt(i);
+                tree.SetValueAt(i, tree.GetValueAt(j));
+                tree.SetValueAt(j, temp);
+            }
+
+            TestTools.PrintEnumerableStruct(tree.Values, ",");
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(10 - i, tree.GetValueAt(i));
+            }
+        }
+
+        [Test]
+        public void BinaryTreeAVLIndexAccess2()
+        {
+            AVLTree<int, int> tree = new AVLTree<int, int>();
+            List<int> inputs = Enumerable.Range(1, 10).ToList();
+            this.TestOrderPreservationOnInsertStructs<IBinaryTreeNode<int, int>, int>(inputs, tree);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(inputs[i], tree.GetValueAt(i));
+            }
+
+            // Remove values in random order
+            while (tree.Root != null)
+            {
+                int index = this._rnd.Next(tree.Root.Size);
+                tree.RemoveAt(index);
+                inputs.RemoveAt(index);
+                this.TestOrderStructs(inputs, tree.Keys.ToList());
             }
         }
 

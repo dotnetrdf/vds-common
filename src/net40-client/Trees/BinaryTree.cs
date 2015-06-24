@@ -500,12 +500,18 @@ namespace VDS.Common.Trees
                 {
                     // We're at a node where our calculated index is greater than the desired so need to move to the left sub-tree
                     currentNode = (TNode) currentNode.LeftChild;
+                    continue;
                 }
 
                 // We're at a node where our calculated index is less than the desired so need to move to the right sub-tree
                 // Plus we need to adjust the base appropriately
-                currentNode = (TNode) currentNode.RightChild;
-                baseIndex = currentIndex + 1;
+                if (currentNode.RightChild != null)
+                {
+                    currentNode = (TNode)currentNode.RightChild;
+                    baseIndex = currentIndex + 1;
+                    continue;
+                }
+                throw new InvalidOperationException();
             }
         }
 
