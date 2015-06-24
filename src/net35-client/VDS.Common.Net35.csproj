@@ -275,4 +275,15 @@
       <Link>Filters\Storage\SparseArrayStorage.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Trees\IBinaryTreeNode.cs">
+      <Link>Trees\IBinaryTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\IIndexAccessTree.cs">
+      <Link>Trees\IIndexAccessTree.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Trees\ITreeNode.cs">
+      <Link>Trees\ITreeNode.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

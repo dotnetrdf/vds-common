@@ -67,7 +67,7 @@ namespace VDS.Common.Trees
 #if NET40
                 return new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>().Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>()).GetEnumerator();
 #else
-                return (IEnumerator<IBinaryTreeNode<TKey, TValue>>)new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>().Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>()).GetEnumerator();
+                return (IEnumerator<IBinaryTreeNode<TKey, TValue>>)new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root)).GetEnumerator();
 #endif
             }
         }

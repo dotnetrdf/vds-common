@@ -133,7 +133,7 @@ namespace VDS.Common.Trees
         void Clear();
     }
     public interface IBinaryTree<TKey, TValue>
-        : ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
+        : IIndexAccessTree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
     { }
 
 }

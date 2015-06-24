@@ -31,7 +31,6 @@ namespace VDS.Common.Collections.Enumerations
 {
     public class TopNEnumerable<T>
         : WrapperEnumerable<T>
-        where T : class
     {
         public TopNEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
             : base(enumerable)
@@ -54,7 +53,6 @@ namespace VDS.Common.Collections.Enumerations
 
     public class TopNEnumerator<T>
         : WrapperEnumerator<T>
-        where T : class
     {
         public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator)
@@ -69,7 +67,7 @@ namespace VDS.Common.Collections.Enumerations
 
         private IBinaryTree<T, bool> TopItems { get; set; }
 
-        private IEnumerator<KeyValuePair<T, byte>> TopItemsEnumerator { get; set; } 
+        private IEnumerator<T> TopItemsEnumerator { get; set; } 
 
         protected override bool TryMoveNext(out T item)
         {
@@ -80,15 +78,15 @@ namespace VDS.Common.Collections.Enumerations
                 {
                     this.TopItems.Add(this.InnerEnumerator.Current, true);
                     int count = this.TopItems.Root != null ? this.TopItems.Root.Size : 0;
-                    if (this.TopItems.Count > this.N) this.TopItems.RemoveAt(this.TopItems.Count - 1);
+                    if (count > this.N) this.TopItems.RemoveAt(count - 1);
                 }
-                this.TopItemsEnumerator = this.TopItems.GetEnumerator();
+                this.TopItemsEnumerator = this.TopItems.Keys.GetEnumerator();
             }
 
             // Afterwards we just pull items from that list
             item = default(T);
             if (!this.TopItemsEnumerator.MoveNext()) return false;
-            item = this.TopItemsEnumerator.Current.Key;
+            item = this.TopItemsEnumerator.Current;
             return true;
         }
 

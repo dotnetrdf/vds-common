@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VDS.Common.Trees
 {
@@ -243,7 +244,7 @@ namespace VDS.Common.Trees
         /// <param name="current">Node to be removed</param>
         /// <param name="c">Comparison of this node versus its parent</param>
         /// <returns>True if node removed</returns>
-        protected bool RemoveNode(TNode current, int c)
+        protected bool RemoveNode(IBinaryTreeNode<TKey, TValue> current, int c)
         {
             //Perform the delete if we found a node
             if (current.ChildCount == 2)
@@ -477,7 +478,7 @@ namespace VDS.Common.Trees
         /// <param name="index">Index</param>
         /// <returns>Node</returns>
         /// <exception cref="IndexOutOfRangeException">Thrown if the index is out of range</exception>
-        protected TNode MoveToIndex(int index)
+        protected IBinaryTreeNode<TKey, TValue> MoveToIndex(int index)
         {
             if (this.Root == null) throw new IndexOutOfRangeException();
             int count = this.Root.Size;
@@ -492,7 +493,7 @@ namespace VDS.Common.Trees
             if (index == 0) return FindRightmostChild(this.Root);
 
             long baseIndex = 0;
-            TNode currentNode = this.Root;
+            IBinaryTreeNode<TKey, TValue> currentNode = this.Root;
             while (true)
             {
                 long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size : baseIndex;
@@ -501,7 +502,7 @@ namespace VDS.Common.Trees
                 if (currentIndex > index)
                 {
                     // We're at a node where our calculated index is greater than the desired so need to move to the left sub-tree
-                    currentNode = (TNode) currentNode.LeftChild;
+                    currentNode = currentNode.LeftChild;
                     continue;
                 }
 
@@ -509,7 +510,7 @@ namespace VDS.Common.Trees
                 // Plus we need to adjust the base appropriately
                 if (currentNode.RightChild != null)
                 {
-                    currentNode = (TNode)currentNode.RightChild;
+                    currentNode = currentNode.RightChild;
                     baseIndex = currentIndex + 1;
                     continue;
                 }
@@ -519,19 +520,19 @@ namespace VDS.Common.Trees
 
         public TValue GetValueAt(int index)
         {
-            TNode node = this.MoveToIndex(index);
+            IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
             return node.Value;
         }
 
         public void SetValueAt(int index, TValue value)
         {
-            TNode node = this.MoveToIndex(index);
+            IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
             node.Value = value;
         }
 
         public void RemoveAt(int index)
         {
-            TNode node = this.MoveToIndex(index);
+            IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
             int c = node.Parent != null ? this._comparer.Compare(node.Key, node.Parent.Key) : 0;
             this.RemoveNode(node, c);
         }
@@ -541,8 +542,7 @@ namespace VDS.Common.Trees
         /// </summary>
         public IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
         {
-            get { return (IEnumerable<TNode>) new NodesEnumerable<TNode, TKey, TValue>(this); }
-                return (IEnumerable<IBinaryTreeNode<TKey, TValue>>)new NodesEnumerable<IBinaryTreeNode<TKey, TValue>, TKey, TValue>(this);
+            get { return new NodesEnumerable<IBinaryTreeNode<TKey, TValue>, TKey, TValue>(this); }
         }
 
         /// <summary>
