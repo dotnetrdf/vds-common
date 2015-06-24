@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace VDS.Common.Tries
 {
@@ -39,7 +40,10 @@ namespace VDS.Common.Tries
         : ITrieNode<TKeyBit, TValue>
         where TValue : class
     {
-        internal Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+        private readonly Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+#if !PORTABLE
+        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+#endif
 
         /// <summary>
         /// Create an empty node with no children and null value
@@ -52,6 +56,74 @@ namespace VDS.Common.Tries
             this.Value = null;
             this.Parent = parent;
             this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
+        }
+
+        /// <summary>
+        /// Enters a read lock on this node
+        /// </summary>
+        protected internal void EnterReadLock()
+        {
+#if !PORTABLE
+            this._lock.EnterReadLock();
+#else
+            Monitor.Enter(this._children);
+#endif
+        }
+
+        /// <summary>
+        /// Exits a read lock on this node
+        /// </summary>
+        protected internal void ExitReadLock()
+        {
+#if !PORTABLE
+            this._lock.ExitReadLock();
+#else
+            Monitor.Exit(this._children);
+#endif
+        }
+
+        protected internal void EnterUpgradeableReadLock()
+        {
+#if !PORTABLE
+            this._lock.EnterUpgradeableReadLock();
+#else
+            Monitor.Enter(this._children);
+#endif
+        }
+
+        protected internal void ExitUpgradeableReadLock()
+        {
+#if !PORTABLE
+            this._lock.ExitUpgradeableReadLock();
+#else
+            Monitor.Enter(this._children);
+#endif
+        }
+
+        /// <summary>
+        /// Enters a write lock on this node
+        /// </summary>
+        protected internal void EnterWriteLock()
+        {
+#if !PORTABLE
+            this._lock.EnterWriteLock();
+#else
+            // Since we use a Monitor under PCL there is no difference between a read and write lock
+            this.EnterReadLock();
+#endif
+        }
+
+        /// <summary>
+        /// Exits a write lock on this node
+        /// </summary>
+        protected internal void ExitWriteLock()
+        {
+#if !PORTABLE
+            this._lock.ExitWriteLock();
+#else
+            // Since we use a Monitor under PCL there is no difference between a read and write lock
+            this.ExitReadLock();
+#endif
         }
 
         /// <summary>
@@ -77,9 +149,14 @@ namespace VDS.Common.Tries
         internal ITrieNode<TKeyBit, TValue> GetChild(TKeyBit key)
         {
             ITrieNode<TKeyBit, TValue> child;
-            lock (this._children)
+            try
             {
+                this.EnterReadLock();
                 if (this._children.TryGetValue(key, out child)) return child;
+            } 
+            finally
+            {
+                this.ExitReadLock();
             }
             return null;
         }
@@ -92,9 +169,14 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public bool TryGetChild(TKeyBit key, out ITrieNode<TKeyBit, TValue> child)
         {
-            lock (this._children)
+            try
             {
+                this.EnterReadLock();
                 return this._children.TryGetValue(key, out child);
+            }
+            finally
+            {
+                this.ExitReadLock();
             }
         }
 
@@ -127,9 +209,14 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this._children)
+                try
                 {
+                    this.EnterReadLock();
                     return this._children.Count;
+                }
+                finally
+                {
+                    this.ExitReadLock();
                 }
             }
         }
@@ -152,9 +239,14 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this._children)
+                try
                 {
+                    this.EnterReadLock();
                     return this._children.Count == 0;
+                }
+                finally
+                {
+                    this.ExitReadLock();
                 }
             }
         }
@@ -166,9 +258,14 @@ namespace VDS.Common.Tries
         /// <returns>True if a child with given key exists, false otherwise</returns>
         internal bool ContainsKey(TKeyBit key)
         {
-            lock (this._children)
+            try
             {
+                this.EnterReadLock();
                 return this._children.ContainsKey(key);
+            }
+            finally
+            {
+                this.ExitReadLock();
             }
         }
 
@@ -206,19 +303,29 @@ namespace VDS.Common.Tries
         {
             if (depth == 0)
             {
-                lock (this._children)
+                try
                 {
+                    this.EnterWriteLock();
                     this._children.Clear();
+                }
+                finally
+                {
+                    this.ExitWriteLock();
                 }
             }
             else if (depth > 0)
             {
-                lock (this._children)
+                try
                 {
+                    this.EnterReadLock();
                     foreach (ITrieNode<TKeyBit, TValue> node in this._children.Values)
                     {
                         node.Trim(depth - 1);
                     }
+                }
+                finally
+                {
+                    this.ExitReadLock();
                 }
             }
             else
@@ -235,19 +342,68 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
             ITrieNode<TKeyBit, TValue> child;
-            lock (this._children)
+            try
             {
+                this.EnterReadLock();
                 if (this._children.TryGetValue(key, out child))
                 {
                     return child;
                 }
-                else
-                {
-                    child = new TrieNode<TKeyBit, TValue>(this, key);
-                    this._children.Add(key, child);
-                    return child;
-                }
             }
+            finally
+            {
+                this.ExitReadLock();
+            }
+            try
+            {
+                this.EnterWriteLock();
+
+                // There is a race condition where another thread might have entered 
+                // the write lock and created the node while we were waiting to 
+                // receive the write lock
+                if (this._children.TryGetValue(key, out child))
+                    return child;
+
+                // Otherwise go ahead and create the child
+                child = new TrieNode<TKeyBit, TValue>(this, key);
+                this._children.Add(key, child);
+                return child;
+            }
+            finally
+            {
+                this.ExitWriteLock();
+            }
+
+            // Alternative strategy using upgradeable locks
+            // The problem is that this optimises the write case at the cost of decreasing performance
+            // for the read case and reducing thread throughput for read biased workflows
+            // This is because an upgradeable lock is equivalent to an exclusive lock
+
+            //try
+            //{
+            //    this.EnterUpgradeableReadLock();
+
+            //    if (this._children.TryGetValue(key, out child))
+            //        return child;
+
+            //    try
+            //    {
+            //        this.EnterWriteLock();
+
+            //        // Otherwise go ahead and create the child
+            //        child = new TrieNode<TKeyBit, TValue>(this, key);
+            //        this._children.Add(key, child);
+            //        return child;
+            //    }
+            //    finally
+            //    {
+            //        this.ExitWriteLock();
+            //    }
+            //}
+            //finally
+            //{
+            //    this.ExitUpgradeableReadLock();
+            //}
         }
 
         /// <summary>
@@ -256,9 +412,14 @@ namespace VDS.Common.Tries
         /// <param name="key">The key associated with the child to remove.</param>
         public void RemoveChild(TKeyBit key)
         {
-            lock (this._children)
+            try
             {
+                this.EnterWriteLock();
                 this._children.Remove(key);
+            }
+            finally
+            {
+                this.ExitWriteLock();
             }
         }
 
@@ -269,7 +430,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                return new TrieNodeChildrenEnumerable<TKeyBit, TValue>(this);
+                return new TrieNodeChildrenEnumerable<TKeyBit, TValue>(this, this._children);
             }
         }
 
@@ -300,23 +461,28 @@ namespace VDS.Common.Tries
         : IEnumerable<ITrieNode<TKeyBit, TValue>>
         where TValue : class
     {
-        private TrieNode<TKeyBit, TValue> _node;
+        private readonly Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+        private readonly TrieNode<TKeyBit, TValue> _node;
 
-        public TrieNodeChildrenEnumerable(TrieNode<TKeyBit, TValue> node)
+        public TrieNodeChildrenEnumerable(TrieNode<TKeyBit, TValue> node, Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> children)
         {
             if (node == null) throw new ArgumentNullException("node");
+            if (children == null) throw new ArgumentNullException("children");
             this._node = node;
+            this._children = children;
         }
 
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
         {
-            if (this._node.IsLeaf)
+            try
             {
-                return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
+                this._node.EnterReadLock();
+                // Take a copy so we can safely enumerate the children even if another thread is modifying the Trie
+                return this._children.Values.ToList().GetEnumerator();
             }
-            else
+            finally
             {
-                return this._node._children.Values.GetEnumerator();
+                this._node.ExitReadLock();
             }
         }
 

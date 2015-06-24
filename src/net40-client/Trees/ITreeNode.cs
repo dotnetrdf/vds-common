@@ -19,24 +19,47 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace VDS.Common.Filters
+namespace VDS.Common.Trees
 {
-    public class BloomFilterParameters
-        : BaseBloomFilterParameters
+    /// <summary>
+    /// Interface for Tree Nodes
+    /// </summary>
+    /// <typeparam name="TKey">Key Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
+    public interface ITreeNode<TKey, TValue>
     {
-        private readonly int _numHashFunctions;
-
-        public BloomFilterParameters(int numBits, int numHashFunctions)
+        /// <summary>
+        /// Gets/Sets the key associated with the node
+        /// </summary>
+        TKey Key
         {
-            this.NumberOfBits = numBits;
-            this._numHashFunctions = numHashFunctions;
+            get;
+            set;
         }
 
-        public override int NumberOfHashFunctions { get { return this._numHashFunctions; } }
+        /// <summary>
+        /// Gets/Sets the value associated with the node
+        /// </summary>
+        TValue Value
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets whether the node has children
+        /// </summary>
+        bool HasChildren
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets whether the number of child nodes
+        /// </summary>
+        int ChildCount
+        {
+            get;
+        }
     }
 }

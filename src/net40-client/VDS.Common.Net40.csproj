@@ -92,7 +92,10 @@
     <Compile Include="Trees\BinaryTree.cs" />
     <Compile Include="Trees\BinaryTreeNode.cs" />
     <Compile Include="Trees\ChildNodesEnumerable.cs" />
+    <Compile Include="Trees\IBinaryTreeNode.cs" />
+    <Compile Include="Trees\IIndexAccessTree.cs" />
     <Compile Include="Trees\ITree.cs" />
+    <Compile Include="Trees\ITreeNode.cs" />
     <Compile Include="Trees\ScapegoatTree.cs" />
     <Compile Include="Trees\TreeExtensions.cs" />
     <Compile Include="Trees\UnbalancedBinaryTree.cs" />

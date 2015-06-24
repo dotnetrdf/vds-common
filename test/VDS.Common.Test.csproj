@@ -64,6 +64,7 @@
     <Compile Include="Collections\MultiDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tries\AbstractTrieContractTests.cs" />
+    <Compile Include="Tries\TriePerformance.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\net40-client\VDS.Common.Net40.csproj">
