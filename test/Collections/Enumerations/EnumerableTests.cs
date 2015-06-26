@@ -326,5 +326,93 @@ namespace VDS.Common.Collections.Enumerations
 
             Check(expected, actual);
         }
+
+        [TestCaseSource("TopNData")]
+        public void BottomNDistinctEnumerable1(int[] data, int n)
+        {
+            IEnumerable<int> expected = Enumerable.Take(data.OrderByDescending(i => i).Distinct(), n);
+            IEnumerable<int> actual = data.BottomDistinct(n);
+
+            TestTools.PrintOrderingComparisonEnumerableStruct(data);
+
+            CheckStruct(expected, actual);
+        }
+
+        [TestCaseSource("TopNData")]
+        public void BottomNDistinctEnumerable2(int[] data, int n)
+        {
+            IComparer<int> comparer = new ReversedComparer<int>();
+            IEnumerable<int> expected = Enumerable.Take(data.OrderByDescending(i => i, comparer).Distinct(), n);
+            IEnumerable<int> actual = data.BottomDistinct(n, comparer);
+
+            CheckStruct(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void BottomNDistinctEnumerable3(String[] data, int n)
+        {
+            IEnumerable<String> expected = Enumerable.Take(data.OrderByDescending(i => i).Distinct(), n);
+            IEnumerable<String> actual = data.BottomDistinct(n);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void BottomNDistinctEnumerable4(String[] data, int n)
+        {
+            IComparer<String> comparer = new ReversedComparer<String>();
+            IEnumerable<String> expected = Enumerable.Take(data.OrderByDescending(i => i, comparer).Distinct(), n);
+            IEnumerable<String> actual = data.BottomDistinct(n, comparer);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
+
+        [TestCaseSource("TopNData")]
+        public void BottomNEnumerable1(int[] data, int n)
+        {
+            IEnumerable<int> expected = Enumerable.Take(data.OrderByDescending(i => i), n);
+            IEnumerable<int> actual = data.Bottom(n);
+
+            TestTools.PrintOrderingComparisonEnumerableStruct(data);
+
+            CheckStruct(expected, actual);
+        }
+
+        [TestCaseSource("TopNData")]
+        public void BottomNEnumerable2(int[] data, int n)
+        {
+            IComparer<int> comparer = new ReversedComparer<int>();
+            IEnumerable<int> expected = Enumerable.Take(data.OrderByDescending(i => i, comparer), n);
+            IEnumerable<int> actual = data.Bottom(n, comparer);
+
+            CheckStruct(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void BottomNEnumerable3(String[] data, int n)
+        {
+            IEnumerable<String> expected = Enumerable.Take(data.OrderByDescending(i => i), n);
+            IEnumerable<String> actual = data.Bottom(n);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void BottomNEnumerable4(String[] data, int n)
+        {
+            IComparer<String> comparer = new ReversedComparer<String>();
+            IEnumerable<String> expected = Enumerable.Take(data.OrderByDescending(i => i, comparer), n);
+            IEnumerable<String> actual = data.Bottom(n, comparer);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
     }
 }

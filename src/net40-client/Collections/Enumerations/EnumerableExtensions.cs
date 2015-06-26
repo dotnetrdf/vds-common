@@ -84,5 +84,25 @@ namespace VDS.Common.Collections.Enumerations
         {
             return Top(enumerable, n, Comparer<T>.Default);
         }
+
+        public static IEnumerable<T> BottomDistinct<T>(this IEnumerable<T> enumerable, long n, IComparer<T> comparer)
+        {
+            return new TopNDistinctEnumerable<T>(enumerable, new ReversedComparer<T>(comparer), n);
+        }
+
+        public static IEnumerable<T> BottomDistinct<T>(this IEnumerable<T> enumerable, long n)
+        {
+            return BottomDistinct(enumerable, n, Comparer<T>.Default);
+        }
+
+        public static IEnumerable<T> Bottom<T>(this IEnumerable<T> enumerable, long n, IComparer<T> comparer)
+        {
+            return new TopNEnumerable<T>(enumerable, new ReversedComparer<T>(comparer), n);
+        }
+
+        public static IEnumerable<T> Bottom<T>(this IEnumerable<T> enumerable, long n)
+        {
+            return Bottom(enumerable, n, Comparer<T>.Default);
+        }
     }
 }
