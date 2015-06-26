@@ -56,11 +56,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets/Sets the Root of the Tree
         /// </summary>
-        public virtual IBinaryTreeNode<TKey,TValue> Root
-        {
-            get;
-            set;
-        }
+        public virtual IBinaryTreeNode<TKey, TValue> Root { get; set; }
 
 
         /// <summary>
@@ -142,8 +138,8 @@ namespace VDS.Common.Trees
                 return this.Root;
             }
             //Iteratively binary search for the key
-                IBinaryTreeNode<TKey, TValue> current = this.Root;
-                IBinaryTreeNode<TKey, TValue> parent = null;
+            IBinaryTreeNode<TKey, TValue> current = this.Root;
+            IBinaryTreeNode<TKey, TValue> parent = null;
             int c;
             do
             {
@@ -151,12 +147,12 @@ namespace VDS.Common.Trees
                 if (c < 0)
                 {
                     parent = current;
-                        current = current.LeftChild;
+                    current = current.LeftChild;
                 }
                 else if (c > 0)
                 {
                     parent = current;
-                        current = current.RightChild;
+                    current = current.RightChild;
                 }
                 else
                 {
@@ -252,7 +248,7 @@ namespace VDS.Common.Trees
                 //Has two children
                 //Therefore we need to get the in order successor of the left child (which must exist) and move it's key and value
                 //to this node and then delete the successor
-                    IBinaryTreeNode<TKey, TValue> successor = this.FindRightmostChild(current.LeftChild);
+                IBinaryTreeNode<TKey, TValue> successor = current.LeftChild.FindRightmostChild();
                 if (ReferenceEquals(successor, current.LeftChild))
                 {
                     //If the successor is just the left child i.e. the left child has no right children
@@ -280,39 +276,36 @@ namespace VDS.Common.Trees
                 if (c < 0)
                 {
                     current.Parent.LeftChild = (current.LeftChild ?? current.RightChild);
-                        this.AfterDelete(current.Parent);
+                    this.AfterDelete(current.Parent);
                     return true;
                 }
                 if (c > 0)
                 {
                     current.Parent.RightChild = (current.RightChild ?? current.LeftChild);
-                        this.AfterDelete(current.Parent);
+                    this.AfterDelete(current.Parent);
                     return true;
                 }
-                        IBinaryTreeNode<TKey, TValue> successor;
+                IBinaryTreeNode<TKey, TValue> successor;
                 if (current.LeftChild != null)
                 {
                     //Has a left subtree so get the in order successor which is the rightmost child of the left
                     //subtree
-                            successor = this.FindRightmostChild(current.LeftChild);
+                    successor = current.LeftChild.FindRightmostChild();
                     if (ReferenceEquals(current.LeftChild, successor))
                     {
                         //There were no right children on the left subtree
                         if (current.Parent == null)
                         {
                             //At Root and no right child of left subtree so can move left child up to root
-                                    this.Root = current.LeftChild;
+                            this.Root = current.LeftChild;
                             if (this.Root != null) this.Root.Parent = null;
                             this.AfterDelete(this.Root);
                             return true;
                         }
-                        else
-                        {
-                            //Not at Root and no right child of left subtree so can move left child up
-                            current.Parent.LeftChild = current.LeftChild;
-                                    this.AfterDelete(current.Parent.LeftChild);
-                            return true;
-                        }
+                        //Not at Root and no right child of left subtree so can move left child up
+                        current.Parent.LeftChild = current.LeftChild;
+                        this.AfterDelete(current.Parent.LeftChild);
+                        return true;
                     }
                     //Move value up to this node and delete the rightmost child
                     current.Key = successor.Key;
@@ -332,21 +325,21 @@ namespace VDS.Common.Trees
                 }
                 //Must have a right subtree so find the in order sucessor which is the
                 //leftmost child of the right subtree
-                            successor = this.FindLeftmostChild(current.RightChild);
+                successor = current.RightChild.FindLeftmostChild();
                 if (ReferenceEquals(current.RightChild, successor))
                 {
                     //There were no left children on the right subtree
                     if (current.Parent == null)
                     {
                         //At Root and no left child of right subtree so can move right child up to root
-                                    this.Root = current.RightChild;
+                        this.Root = current.RightChild;
                         if (this.Root != null) this.Root.Parent = null;
                         this.AfterDelete(this.Root);
                         return true;
                     }
                     //Not at Root and no left child of right subtree so can move right child up
                     current.Parent.RightChild = current.RightChild;
-                                    this.AfterDelete(current.Parent.RightChild);
+                    this.AfterDelete(current.Parent.RightChild);
                     return true;
                 }
                 //Move value up to this node and delete the leftmost child
@@ -363,13 +356,13 @@ namespace VDS.Common.Trees
             if (c < 0)
             {
                 current.Parent.LeftChild = null;
-                        this.AfterDelete(current.Parent);
+                this.AfterDelete(current.Parent);
                 return true;
             }
             if (c > 0)
             {
                 current.Parent.RightChild = null;
-                        this.AfterDelete(current.Parent);
+                this.AfterDelete(current.Parent);
                 return true;
             }
             //Root of tree is only way we can get here so just
@@ -379,38 +372,10 @@ namespace VDS.Common.Trees
         }
 
         /// <summary>
-        /// Finds the leftmost child of the given node
-        /// </summary>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        protected IBinaryTreeNode<TKey, TValue> FindLeftmostChild(IBinaryTreeNode<TKey, TValue> node)
-        {
-            while (node.LeftChild != null)
-            {
-                node = node.LeftChild;
-            }
-            return node;
-        }
-
-        /// <summary>
-        /// Finds the rightmost child of the given node
-        /// </summary>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        protected IBinaryTreeNode<TKey, TValue> FindRightmostChild(IBinaryTreeNode<TKey, TValue> node)
-        {
-            while (node.RightChild != null)
-            {
-                node = node.RightChild;
-            }
-            return node;
-        }
-
-        /// <summary>
         /// Virtual method that can be used by derived implementations to perform tree balances after a delete
         /// </summary>
         /// <param name="node">Node at which the deletion happened</param>
-        protected virtual void AfterDelete(IBinaryTreeNode<TKey, TValue> node) { }
+        protected virtual void AfterDelete(IBinaryTreeNode<TKey, TValue> node) {}
 
         /// <summary>
         /// Determines whether a given Key exists in the Tree
@@ -488,9 +453,9 @@ namespace VDS.Common.Trees
             // Index 0 and only one node, return the root
             if (index == 0 && count == 1) return this.Root;
             // Index 0, return the left most child
-            if (index == 0) return FindLeftmostChild(this.Root);
+            if (index == 0) return this.Root.FindLeftmostChild();
             // Index == count - 1, return the right most child
-            if (index == 0) return FindRightmostChild(this.Root);
+            if (index == 0) return this.Root.FindRightmostChild();
 
             long baseIndex = 0;
             IBinaryTreeNode<TKey, TValue> currentNode = this.Root;

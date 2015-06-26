@@ -49,6 +49,7 @@
     <Compile Include="Collections\CappedBoundedList.cs" />
     <Compile Include="Collections\BoundedListOverflowPolicy.cs" />
     <Compile Include="Collections\DiscardingBoundedList.cs" />
+    <Compile Include="Collections\DuplicateSortedList.cs" />
     <Compile Include="Collections\Enumerations\AddDistinctEnumerable.cs" />
     <Compile Include="Collections\Enumerations\AddIfEmptyEnumerable.cs" />
     <Compile Include="Collections\Enumerations\EnumerableExtensions.cs" />

@@ -108,6 +108,39 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        public void CollectionContractEnumerate3()
+        {
+            ICollection<String> c = this.GetInstance(new String[] { "a", "b" });
+
+            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            {
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual("a", enumerator.Current);
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual("b", enumerator.Current);
+                Assert.IsFalse(enumerator.MoveNext());
+            }
+        }
+
+        [Test]
+        public void CollectionContractEnumerate4()
+        {
+            String[] values = new String[] { "a", "a", "b", "c", "d", "e", "e" };
+            ICollection<String> c = this.GetInstance(values);
+
+            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            {
+                int index = 0;
+                while (index < values.Length)
+                {
+                    Assert.IsTrue(enumerator.MoveNext(), "Failed to move next at Index " + index);
+                    Assert.AreEqual(values[index], enumerator.Current);
+                    index++;
+                }
+            }
+        }
+
+        [Test]
         public void CollectionContractCount1()
         {
             ICollection<String> c = this.GetInstance();
@@ -280,6 +313,21 @@ namespace VDS.Common.Collections
         protected override ICollection<string> GetInstance(IEnumerable<string> contents)
         {
             return new MaterializedImmutableView<String>(contents);
+        }
+    }
+
+    [TestFixture, Category("Collections")]
+    public class DuplicateSortedListContractTests
+        : AbstractMutableCollectionContractTests
+    {
+        protected override ICollection<string> GetInstance()
+        {
+            return new DuplicateSortedList<string>();
+        }
+
+        protected override ICollection<string> GetInstance(IEnumerable<string> contents)
+        {
+            return new DuplicateSortedList<string>(contents);
         }
     }
 }
