@@ -18,6 +18,7 @@ namespace VDS.Common.Collections
         : IList<T>
     {
         private readonly IBinaryTree<T, int> _data;
+        private readonly IComparer<T> _comparer; 
         private int _total = 0;
 
         public DuplicateSortedList()
@@ -31,8 +32,8 @@ namespace VDS.Common.Collections
 
         public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items)
         {
-            comparer = comparer ?? Comparer<T>.Default;
-            this._data = new AVLTree<T, int>(comparer);
+            this._comparer = comparer ?? Comparer<T>.Default;
+            this._data = new AVLTree<T, int>(this._comparer);
             if (items != null)
             {
                 foreach (T item in items)
@@ -152,7 +153,16 @@ namespace VDS.Common.Collections
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            if (this._data.Root == null) return -1;
+
+            IEnumerator<IBinaryTreeNode<T, int>> enumerator = this._data.Nodes.GetEnumerator();
+            int index = 0;
+            while (enumerator.MoveNext())
+            {
+                if (this._comparer.Compare(item, enumerator.Current.Key) == 0) return index;
+                index += enumerator.Current.Value;
+            }
+            return -1;
         }
 
         public void Insert(int index, T item)
