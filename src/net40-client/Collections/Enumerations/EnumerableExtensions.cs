@@ -65,14 +65,24 @@ namespace VDS.Common.Collections.Enumerations
             return new ReducedEnumerable<T>(enumerable);
         }
 
-        public static IEnumerable<T> Top<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, long n)
+        public static IEnumerable<T> TopDistinct<T>(this IEnumerable<T> enumerable, long n, IComparer<T> comparer)
+        {
+            return new TopNDistinctEnumerable<T>(enumerable, comparer, n);
+        }
+
+        public static IEnumerable<T> TopDistinct<T>(this IEnumerable<T> enumerable, long n)
+        {
+            return TopDistinct(enumerable, n, Comparer<T>.Default);
+        }
+
+        public static IEnumerable<T> Top<T>(this IEnumerable<T> enumerable, long n, IComparer<T> comparer)
         {
             return new TopNEnumerable<T>(enumerable, comparer, n);
         }
 
         public static IEnumerable<T> Top<T>(this IEnumerable<T> enumerable, long n)
         {
-            return Top(enumerable, Comparer<T>.Default, n);
+            return Top(enumerable, n, Comparer<T>.Default);
         }
     }
 }

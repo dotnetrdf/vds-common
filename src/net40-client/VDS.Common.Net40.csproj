@@ -50,6 +50,8 @@
     <Compile Include="Collections\BoundedListOverflowPolicy.cs" />
     <Compile Include="Collections\DiscardingBoundedList.cs" />
     <Compile Include="Collections\DuplicateSortedList.cs" />
+    <Compile Include="Collections\Enumerations\AbstractTopNEnumerable.cs" />
+    <Compile Include="Collections\Enumerations\AbstractTopNEnumerator.cs" />
     <Compile Include="Collections\Enumerations\AddDistinctEnumerable.cs" />
     <Compile Include="Collections\Enumerations\AddIfEmptyEnumerable.cs" />
     <Compile Include="Collections\Enumerations\EnumerableExtensions.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="Collections\Enumerations\ReferenceEqualityComparer.cs" />
     <Compile Include="Collections\Enumerations\ReversedComparer.cs" />
     <Compile Include="Collections\Enumerations\TopNEnumerable.cs" />
+    <Compile Include="Collections\Enumerations\TopNDistinctEnumerable.cs" />
     <Compile Include="Collections\Enumerations\WrapperEnumerable.cs" />
     <Compile Include="Collections\Enumerations\WrapperEnumerator.cs" />
     <Compile Include="Collections\IBoundedList.cs" />

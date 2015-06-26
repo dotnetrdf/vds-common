@@ -81,7 +81,16 @@ namespace VDS.Common.Collections
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
+            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
+
+            int i = arrayIndex;
+            foreach (T item in this)
+            {
+                array[i] = item;
+                i++;
+            }
         }
 
         public bool Remove(T item)
@@ -113,16 +122,15 @@ namespace VDS.Common.Collections
         private IBinaryTreeNode<T, int> MoveToIndex(int index)
         {
             if (this._data.Root == null) throw new IndexOutOfRangeException();
-            int count = this._data.Root.Size;
-            if (index < 0 || index >= count) throw new IndexOutOfRangeException();
+            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException();
 
             // Special cases
             // Index 0 and only one node, return the root
-            if (index == 0 && count == 1) return this._data.Root;
+            if (index == 0 && this.Count == 1) return this._data.Root;
             // Index 0, return the left most child
             if (index == 0) return this._data.Root.FindLeftmostChild();
             // Index == count - 1, return the right most child
-            if (index == 0) return this._data.Root.FindRightmostChild();
+            if (index == this.Count - 1) return this._data.Root.FindRightmostChild();
 
             long baseIndex = 0;
             IBinaryTreeNode<T, int> currentNode = this._data.Root;

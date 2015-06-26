@@ -68,7 +68,7 @@ namespace VDS.Common.Collections.Enumerations
                 if (!this.InnerEnumerator.MoveNext()) return false;
                 this.Skipped++;
             }
-            return true;
+            return this.Skipped == this.ToSkip;
         }
 
         protected override bool TryMoveNext(out T item)
@@ -85,8 +85,7 @@ namespace VDS.Common.Collections.Enumerations
 
             // First time being accessed so attempt to skip if possible
             if (!this.TrySkip()) return false;
-            item = this.InnerEnumerator.Current;
-            return true;
+            return this.TryMoveNext(out item);
         }
 
         protected override void ResetInternal()

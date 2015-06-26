@@ -291,4 +291,18 @@
       <Link>Collections\Enumerations\WrapperEnumerator.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\DuplicateSortedList.cs">
+      <Link>Collections\DuplicateSortedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractTopNEnumerable.cs">
+      <Link>Collections\Enumerations\AbstractTopNEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractTopNEnumerator.cs">
+      <Link>Collections\Enumerations\AbstractTopNEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNDistinctEnumerable.cs">
+      <Link>Collections\Enumerations\TopNDistinctEnumerable.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

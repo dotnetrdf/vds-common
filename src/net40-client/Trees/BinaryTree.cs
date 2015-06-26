@@ -455,7 +455,7 @@ namespace VDS.Common.Trees
             // Index 0, return the left most child
             if (index == 0) return this.Root.FindLeftmostChild();
             // Index == count - 1, return the right most child
-            if (index == 0) return this.Root.FindRightmostChild();
+            if (index == count - 1) return this.Root.FindRightmostChild();
 
             long baseIndex = 0;
             IBinaryTreeNode<TKey, TValue> currentNode = this.Root;

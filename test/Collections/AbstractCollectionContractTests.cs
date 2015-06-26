@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -81,6 +82,17 @@ namespace VDS.Common.Collections
             String[] dest = new String[1];
             c.CopyTo(dest, 0);
             Assert.AreEqual("test", dest[0]);
+        }
+
+        [Test]
+        public void CollectionContractCopyTo6()
+        {
+            String[] data = new String[] { "a", "a", "b", "c" };
+            ICollection<String> c = this.GetInstance(data);
+
+            String[] dest = new String[data.Length];
+            c.CopyTo(dest, 0);
+            Assert.AreEqual(data, dest);
         }
 
         [Test]

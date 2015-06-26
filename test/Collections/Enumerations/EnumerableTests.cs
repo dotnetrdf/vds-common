@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework;
-using VDS.Common;
-using VDS.Common.Collections.Enumerations;
 
-namespace VDS.RDF.Collections
+namespace VDS.Common.Collections.Enumerations
 {
-    [TestFixture]
+    [TestFixture, Category("Collections")]
     public class EnumerableTests
     {
-        public static void Check<T>(IEnumerable<T> expected, IEnumerable<T> actual) 
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        public static void Check<T>(IEnumerable<T> expected, IEnumerable<T> actual)
             where T : class
         {
             Console.WriteLine("Expected:");
@@ -39,6 +38,7 @@ namespace VDS.RDF.Collections
             if (actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator has additional unexpected items");
         }
 
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static void CheckStruct<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : struct
         {
             Console.WriteLine("Expected:");
@@ -48,7 +48,9 @@ namespace VDS.RDF.Collections
             TestTools.PrintEnumerableStruct(actual, ",");
             Console.WriteLine();
 
-            Assert.AreEqual(expected.Count(), actual.Count());
+            int eCount = expected.Count();
+            int aCount = actual.Count();
+            Assert.AreEqual(eCount, aCount, "Counts differ");
 
             IEnumerator<T> expectedEnumerator = expected.GetEnumerator();
             IEnumerator<T> actualEnumerator = actual.GetEnumerator();
@@ -58,7 +60,7 @@ namespace VDS.RDF.Collections
             {
                 T expectedItem = expectedEnumerator.Current;
                 i++;
-                if (!actualEnumerator.MoveNext()) Assert.Fail(String.Format("Actual enumerator was exhaused at Item {0} when next Item {1} was expected", i, expectedItem));
+                if (!actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator was exhaused at Item {0} when next Item {1} was expected", i, expectedItem);
                 T actualItem = actualEnumerator.Current;
 
                 Assert.AreEqual(expectedItem, actualItem, String.Format("Enumerators mismatched at Item {0}", i));
@@ -68,47 +70,26 @@ namespace VDS.RDF.Collections
 
         private static void Exhaust<T>(IEnumerator<T> enumerator)
         {
-            while (enumerator.MoveNext()) { }
+            while (enumerator.MoveNext()) {}
         }
 
-        public static readonly Object[] SkipAndTakeData =
-        {
-            new object[] { 1, 1, 1},
-            new object[] { 1, 50, 10 },
-            new object[] { 1, 10, 10 },
-            new object[] { 1, 10, 5 },
-            new object[] { 1, 10, 20 },
-            new object[] { 1, 100, 50 },
-        };
-
-        public static readonly Object[] AddOmitData =
-        {
-            new object[] { 1, 1, 1},
-            new object[] { 1, 10, 1},
-            new object[] { 1, 10, 11},
-            new object[] { 1, 10, 100},
-            new object[] { 1, 100, 50 },
-            new object[] { 1, 100, 1000 }
-        };
-
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorBeforeFirstElement1()
         {
             IEnumerable<int> data = Enumerable.Range(1, 10);
-            IEnumerator<int> enumerator =  new LongTakeEnumerator<int>(data.GetEnumerator(), 1);
+            IEnumerator<int> enumerator = new LongTakeEnumerator<int>(data.GetEnumerator(), 1);
             int i = enumerator.Current;
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorBeforeFirstElement2()
         {
             IEnumerable<String> data = new String[] { "a", "b", "c" };
             IEnumerator<String> enumerator = new LongTakeEnumerator<String>(data.GetEnumerator(), 1);
             String i = enumerator.Current;
-            Assert.AreEqual(default(String), i);
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorBeforeFirstElement3()
         {
             IEnumerable<int> data = Enumerable.Range(1, 10);
@@ -116,7 +97,7 @@ namespace VDS.RDF.Collections
             int i = enumerator.Current;
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorBeforeFirstElement4()
         {
             IEnumerable<String> data = new String[] { "a", "b", "c" };
@@ -125,7 +106,7 @@ namespace VDS.RDF.Collections
             Assert.AreEqual(default(String), i);
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorAfterLastElement1()
         {
             IEnumerable<int> data = Enumerable.Range(1, 10);
@@ -134,7 +115,7 @@ namespace VDS.RDF.Collections
             int i = enumerator.Current;
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorAfterLastElement2()
         {
             IEnumerable<String> data = new String[] { "a", "b", "c" };
@@ -144,7 +125,7 @@ namespace VDS.RDF.Collections
             Assert.AreEqual(default(String), i);
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorAfterLastElement3()
         {
             IEnumerable<int> data = Enumerable.Range(1, 10);
@@ -153,7 +134,7 @@ namespace VDS.RDF.Collections
             int i = enumerator.Current;
         }
 
-        [Test, ExpectedException(typeof(InvalidOperationException))]
+        [Test, ExpectedException(typeof (InvalidOperationException))]
         public void EnumeratorAfterLastElement4()
         {
             IEnumerable<String> data = new String[] { "a", "b", "c" };
@@ -162,12 +143,23 @@ namespace VDS.RDF.Collections
             String i = enumerator.Current;
             Assert.AreEqual(default(String), i);
         }
-            
+
+        public static readonly Object[] SkipAndTakeData =
+        {
+            new object[] { 1, 1, 1 },
+            new object[] { 1, 50, 10 },
+            new object[] { 1, 10, 10 },
+            new object[] { 1, 10, 5 },
+            new object[] { 1, 10, 20 },
+            new object[] { 1, 100, 50 },
+        };
+
         [TestCaseSource("SkipAndTakeData")]
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public void LongSkipEnumerable(int start, int count, int skip)
         {
             IEnumerable<int> data = Enumerable.Range(start, count);
-            IEnumerable<int> expected = data.Skip(skip);
+            IEnumerable<int> expected = Enumerable.Skip(data, skip);
             IEnumerable<int> actual = new LongSkipEnumerable<int>(data, skip);
 
             if (skip > count)
@@ -175,21 +167,33 @@ namespace VDS.RDF.Collections
                 Assert.IsFalse(expected.Any());
                 Assert.IsFalse(actual.Any());
             }
-            
+
             CheckStruct(expected, actual);
         }
 
         [TestCaseSource("SkipAndTakeData")]
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public void LongTakeEnumerable(int start, int count, int take)
         {
             IEnumerable<int> data = Enumerable.Range(start, count);
-            IEnumerable<int> expected = data.Take(take);
+            IEnumerable<int> expected = Enumerable.Take(data, take);
             IEnumerable<int> actual = new LongTakeEnumerable<int>(data, take);
 
             CheckStruct(expected, actual);
         }
 
+        public static readonly Object[] AddOmitData =
+        {
+            new object[] { 1, 1, 1 },
+            new object[] { 1, 10, 1 },
+            new object[] { 1, 10, 11 },
+            new object[] { 1, 10, 100 },
+            new object[] { 1, 100, 50 },
+            new object[] { 1, 100, 1000 }
+        };
+
         [TestCaseSource("AddOmitData")]
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public void AddDistinctEnumerable(int start, int count, int item)
         {
             IEnumerable<int> data = Enumerable.Range(start, count);
@@ -200,6 +204,7 @@ namespace VDS.RDF.Collections
         }
 
         [TestCaseSource("AddOmitData")]
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public void OmitAllEnumerable(int start, int count, int item)
         {
             IEnumerable<int> data = Enumerable.Range(start, count);
@@ -210,57 +215,112 @@ namespace VDS.RDF.Collections
         }
 
         [Test]
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public void AddIfEmptyEnumerable()
         {
             IEnumerable<int> data = Enumerable.Empty<int>();
             IEnumerable<int> actual = data.AddIfEmpty(1);
 
-            Assert.IsFalse(data.Any());            
+            Assert.IsFalse(data.Any());
             Assert.IsTrue(actual.Any());
             Assert.AreEqual(1, actual.First());
         }
 
-        [Test]
-        public void TopNEnumerable1()
+        public static readonly Object[] TopNData =
         {
-            IEnumerable<int> data = new int[] {1, 7, 9, 3, 5};
-            IEnumerable<int> expected = data.OrderBy(i => i).Take(1);
-            IEnumerable<int> actual = data.Top(1);
+            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 1 },
+            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 3 },
+            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 5 },
+            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 100 }
+        };
+
+        public static readonly Object[] TopNStringData =
+        {
+            new object[] { new String[] { "a", "b", "b", "a", "z", "m", "q", "m", "b", "c", "f" }, 1 }
+        };
+
+        [TestCaseSource("TopNData")]
+        public void TopNDistinctEnumerable1(int[] data, int n)
+        {
+            IEnumerable<int> expected = Enumerable.Take(data.OrderBy(i => i).Distinct(), n);
+            IEnumerable<int> actual = data.TopDistinct(n);
 
             TestTools.PrintOrderingComparisonEnumerableStruct(data);
 
             CheckStruct(expected, actual);
         }
 
-        [Test]
-        public void TopNEnumerable2()
+        [TestCaseSource("TopNData")]
+        public void TopNDistinctEnumerable2(int[] data, int n)
         {
-            IEnumerable<int> data = new int[] { 1, 7, 9, 3, 5 };
-            IEnumerable<int> expected = data.OrderBy(i => i).Take(3);
-            IEnumerable<int> actual = data.Top(3);
-
-            TestTools.PrintOrderingComparisonEnumerableStruct(data);
-
-            CheckStruct(expected, actual);
-        }
-
-        [Test]
-        public void TopNEnumerable3()
-        {
-            IEnumerable<int> data = new int[] { 1, 7, 9, 3, 5 };
             IComparer<int> comparer = new ReversedComparer<int>();
-            IEnumerable<int> expected = data.OrderBy(i => i, comparer).Take(3);
-            IEnumerable<int> actual = data.Top(comparer, 3);
+            IEnumerable<int> expected = Enumerable.Take(data.OrderBy(i => i, comparer).Distinct(), n);
+            IEnumerable<int> actual = data.TopDistinct(n, comparer);
 
             CheckStruct(expected, actual);
         }
 
-        [Test]
-        public void TopNEnumerable4()
+        [TestCaseSource("TopNStringData")]
+        public void TopNDistinctEnumerable3(String[] data, int n)
         {
-            IEnumerable<String> data = new String[] { "a", "z", "m", "q", "c", "f" };
-            IEnumerable<String> expected = data.OrderBy(i => i).Take(3);
-            IEnumerable<String> actual = data.Top(3);
+            IEnumerable<String> expected = Enumerable.Take(data.OrderBy(i => i).Distinct(), n);
+            IEnumerable<String> actual = data.TopDistinct(n);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void TopNDistinctEnumerable4(String[] data, int n)
+        {
+            IComparer<String> comparer = new ReversedComparer<String>();
+            IEnumerable<String> expected = Enumerable.Take(data.OrderBy(i => i, comparer).Distinct(), n);
+            IEnumerable<String> actual = data.TopDistinct(n, comparer);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
+
+        [TestCaseSource("TopNData")]
+        public void TopNEnumerable1(int[] data, int n)
+        {
+            IEnumerable<int> expected = Enumerable.Take(data.OrderBy(i => i), n);
+            IEnumerable<int> actual = data.Top(n);
+
+            TestTools.PrintOrderingComparisonEnumerableStruct(data);
+
+            CheckStruct(expected, actual);
+        }
+
+        [TestCaseSource("TopNData")]
+        public void TopNEnumerable2(int[] data, int n)
+        {
+            IComparer<int> comparer = new ReversedComparer<int>();
+            IEnumerable<int> expected = Enumerable.Take(data.OrderBy(i => i, comparer), n);
+            IEnumerable<int> actual = data.Top(n, comparer);
+
+            CheckStruct(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void TopNEnumerable3(String[] data, int n)
+        {
+            IEnumerable<String> expected = Enumerable.Take(data.OrderBy(i => i), n);
+            IEnumerable<String> actual = data.Top(n);
+
+            TestTools.PrintOrderingComparisonEnumerable(data);
+
+            Check(expected, actual);
+        }
+
+        [TestCaseSource("TopNStringData")]
+        public void TopNEnumerable4(String[] data, int n)
+        {
+            IComparer<String> comparer = new ReversedComparer<String>();
+            IEnumerable<String> expected = Enumerable.Take(data.OrderBy(i => i, comparer), n);
+            IEnumerable<String> actual = data.Top(n, comparer);
 
             TestTools.PrintOrderingComparisonEnumerable(data);
 

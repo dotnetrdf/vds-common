@@ -24,41 +24,46 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 using System.Collections.Generic;
+using VDS.Common.Trees;
 
 namespace VDS.Common.Collections.Enumerations
 {
-    public class TopNEnumerable<T>
+    public class TopNDistinctEnumerable<T>
         : AbstractTopNEnumerable<T>
     {
-        public TopNEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
+        public TopNDistinctEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
             : base(enumerable, comparer, n) { }
 
         public override IEnumerator<T> GetEnumerator()
         {
-            return new TopNEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.Comparer, this.N);
+            return new TopNDistinctEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.Comparer, this.N);
         }
     }
 
-    public class TopNEnumerator<T>
+    public class TopNDistinctEnumerator<T>
         : AbstractTopNEnumerator<T>
     {
-        public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
+        public TopNDistinctEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator, comparer, n)
         {
-            this.TopItems = new DuplicateSortedList<T>(comparer);
+            this.TopItems = new AVLTree<T, bool>(comparer);
         }
 
-        private DuplicateSortedList<T> TopItems { get; set; }
+        private IBinaryTree<T, bool> TopItems { get; set; }
 
         protected override IEnumerator<T> BuildTopItems()
         {
             this.TopItems.Clear();
             while (this.InnerEnumerator.MoveNext())
             {
-                this.TopItems.Add(this.InnerEnumerator.Current);
-                if (this.TopItems.Count > this.N) this.TopItems.RemoveAt(this.TopItems.Count - 1);
+                T item = this.InnerEnumerator.Current;
+                if (this.TopItems.ContainsKey(item)) continue;
+
+                this.TopItems.Add(this.InnerEnumerator.Current, true);
+                int count = this.TopItems.Root != null ? this.TopItems.Root.Size : 0;
+                if (count > this.N) this.TopItems.RemoveAt(count - 1);
             }
-            return this.TopItems.GetEnumerator();
+            return this.TopItems.Keys.GetEnumerator();
         }
     }
 }

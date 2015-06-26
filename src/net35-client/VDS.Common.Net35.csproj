@@ -235,9 +235,6 @@
     <Compile Include="..\net40-client\Collections\Enumerations\ReversedComparer.cs">
       <Link>Collections\Enumerations\ReversedComparer.cs</Link>
     </Compile>
-    <Compile Include="..\net40-client\Collections\Enumerations\TopNEnumerable.cs">
-      <Link>Collections\Enumerations\TopNEnumerable.cs</Link>
-    </Compile>
     <Compile Include="..\net40-client\Collections\Enumerations\WrapperEnumerable.cs">
       <Link>Collections\Enumerations\WrapperEnumerable.cs</Link>
     </Compile>
@@ -284,6 +281,25 @@
     </Compile>
     <Compile Include="..\net40-client\Trees\ITreeNode.cs">
       <Link>Trees\ITreeNode.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\DuplicateSortedList.cs">
+      <Link>Collections\DuplicateSortedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNDistinctEnumerable.cs">
+      <Link>Collections\Enumerations\TopNDistinctEnumerable.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractTopNEnumerable.cs">
+      <Link>Collections\Enumerations\AbstractTopNEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractTopNEnumerator.cs">
+      <Link>Collections\Enumerations\AbstractTopNEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNEnumerable.cs">
+      <Link>Collections\Enumerations\TopNEnumerable.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>
