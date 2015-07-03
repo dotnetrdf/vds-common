@@ -61,6 +61,11 @@ namespace VDS.Common.Filters
             return indices.All(index => this._storage.IsSet(index));
         }
 
+        public void Clear()
+        {
+            this._storage.Clear();
+        }
+
         /// <summary>
         /// Adds an item to the filter
         /// </summary>

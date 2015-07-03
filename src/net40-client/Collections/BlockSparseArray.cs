@@ -111,6 +111,11 @@ namespace VDS.Common.Collections
         private int BlockSize { get; set; }
 
         public int Length { get; private set; }
+
+        public void Clear()
+        {
+            Array.Clear(this._blocks, 0, this._blocks.Length);
+        }
     }
 
     class SparseBlock<T>

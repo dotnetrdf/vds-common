@@ -72,6 +72,11 @@ namespace VDS.Common.Collections
         }
 
         public int Length { get; private set; }
+
+        public void Clear()
+        {
+            this._tree.Clear();
+        }
     }
 
     class BinarySparseArrayEnumerator<T>

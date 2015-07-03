@@ -51,5 +51,10 @@ namespace VDS.Common.Filters.Storage
         {
             this._bits[index] = true;
         }
+
+        public void Clear()
+        {
+            this._bits.Clear();
+        }
     }
 }

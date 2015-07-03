@@ -43,5 +43,10 @@ namespace VDS.Common.Filters.Storage
         {
             this._bits[index] = true;
         }
+
+        public void Clear()
+        {
+            Array.Clear(this._bits, 0, this._bits.Length);
+        }
     }
 }

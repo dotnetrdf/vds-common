@@ -65,6 +65,8 @@
     <Compile Include="Collections\Enumerations\LongSkipEnumerator.cs" />
     <Compile Include="Collections\Enumerations\LongTakeEnumerable.cs" />
     <Compile Include="Collections\Enumerations\LongTakeEnumerator.cs" />
+    <Compile Include="Collections\Enumerations\ProbabilisticDistinctEnumerable.cs" />
+    <Compile Include="Collections\Enumerations\ProbabilisticDistinctEnumerator.cs" />
     <Compile Include="Collections\Enumerations\ReducedEnumerable.cs" />
     <Compile Include="Collections\Enumerations\ReducedEnumerator.cs" />
     <Compile Include="Comparers\ReferenceEqualityComparer.cs" />
