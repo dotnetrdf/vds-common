@@ -25,55 +25,51 @@ using System.Collections.Generic;
 namespace VDS.Common.Collections.Enumerations
 {
     /// <summary>
-    /// Abstract implementation of a Top N enumerator
+    /// An enumerator that takes some number of items
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractTopNEnumerator<T> 
-        : AbstractOrderedEnumerator<T> 
+    public class LongTakeEnumerator<T>
+        : AbstractWrapperEnumerator<T>
     {
         /// <summary>
         /// Creates a new enumerator
         /// </summary>
         /// <param name="enumerator">Enumerator to operate over</param>
-        /// <param name="comparer">Comparer to use for ordering</param>
-        /// <param name="n">Number of items to return</param>
-        protected AbstractTopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
-            : base(enumerator, comparer)
+        /// <param name="toTake">Number of items to take</param>
+        public LongTakeEnumerator(IEnumerator<T> enumerator, long toTake)
+            : base(enumerator)
         {
-            if (n < 1) throw new ArgumentException("N must be >= 1", "n");
-            this.N = n;
+            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", "toTake");
+            this.ToTake = toTake;
+            this.Taken = 0;
         }
 
         /// <summary>
-        /// Gets the number of items to be returned
+        /// Gets/Sets the number of items to take
         /// </summary>
-        public long N { get; private set; }
+        private long ToTake { get; set; }
 
         /// <summary>
-        /// Gets/Sets the Top Items enumerator
+        /// Gets/Sets the number of items taken
         /// </summary>
-        private IEnumerator<T> TopItemsEnumerator { get; set; }
+        private long Taken { get; set; }
 
         /// <summary>
         /// Tries to move next
         /// </summary>
         /// <param name="item">Item</param>
-        /// <returns>True if more items, false otherwise</returns>
+        /// <returns></returns>
         /// <remarks>
-        /// If this is the first time the enumerator is trying to move next it will build the top items list by consuming the inner enumerator and storing the top N items in a temporary data structure.  Once it has done that it will then return items from that data structure until they are exhausted
+        /// While the number of items seen is less than the desired number of items the inner enumerator is accessed normally, once that is reached no further items are returned
         /// </remarks>
         protected override bool TryMoveNext(out T item)
         {
-            // First time this is accessed need to populate the Top N items list
-            if (this.TopItemsEnumerator == null)
-            {
-                this.TopItemsEnumerator = this.BuildTopItems();
-            }
-
-            // Afterwards we just pull items from that list
             item = default(T);
-            if (!this.TopItemsEnumerator.MoveNext()) return false;
-            item = this.TopItemsEnumerator.Current;
+            if (this.Taken >= this.ToTake) return false;
+            if (!this.InnerEnumerator.MoveNext()) return false;
+
+            this.Taken++;
+            item = this.InnerEnumerator.Current;
             return true;
         }
 
@@ -82,15 +78,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            if (this.TopItemsEnumerator == null) return;
-            this.TopItemsEnumerator.Dispose();
-            this.TopItemsEnumerator = null;
+            this.Taken = 0;
         }
-
-        /// <summary>
-        /// Requests that the top items enumerator be built
-        /// </summary>
-        /// <returns>Top Items enumerator</returns>
-        protected abstract IEnumerator<T> BuildTopItems();
     }
 }

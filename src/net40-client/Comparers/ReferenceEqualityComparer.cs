@@ -19,14 +19,40 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Comparers
 {
-    class SortedDuplicatesList
+    /// <summary>
+    /// An equality comparer based purely on Object reference
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    public sealed class ReferenceEqualityComparer<T>
+        : IEqualityComparer<T>
     {
+        /// <summary>
+        /// Gets whether two items are reference equals
+        /// </summary>
+        /// <param name="x">Item</param>
+        /// <param name="y">Other item</param>
+        /// <returns>True if items are reference equals, false otherwise</returns>
+        public bool Equals(T x, T y)
+        {
+            return ReferenceEquals(x, y);
+        }
+
+        /// <summary>
+        /// Gets a hash code for an item
+        /// </summary>
+        /// <param name="obj">Item</param>
+        /// <returns>Hash code</returns>
+        /// <remarks>
+        /// Defers to <see cref="RuntimeHelpers.GetHashCode(object)"/>
+        /// </remarks>
+        public int GetHashCode(T obj)
+        {
+            return RuntimeHelpers.GetHashCode(obj);
+        }
     }
 }

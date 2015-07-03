@@ -24,9 +24,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections.Enumerations
 {
-    class SortedDuplicatesList
+    /// <summary>
+    /// Abstract implementation of a wrapper enumerable that needs item equality
+    /// </summary>
+    /// <typeparam name="T">Item type</typeparam>
+    public abstract class AbstractEqualityEnumerable<T>
+        : AbstractWrapperEnumerable<T>
     {
+        /// <summary>
+        /// Creates a new enumerable
+        /// </summary>
+        /// <param name="enumerable">Enumerable to wrap</param>
+        /// <param name="equalityComparer">Equality comparer to use</param>
+        protected AbstractEqualityEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+            : base(enumerable)
+        {
+            if (equalityComparer == null) throw new ArgumentNullException("equalityComparer");
+            this.EqualityComparer = equalityComparer;
+        }
+
+        /// <summary>
+        /// Gets the equality comparer to use
+        /// </summary>
+        protected IEqualityComparer<T> EqualityComparer { get; private set; } 
     }
 }

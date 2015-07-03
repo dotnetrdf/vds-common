@@ -1,86 +1,58 @@
 /*
-dotNetRDF is free and open source software licensed under the MIT License
+VDS.Common is licensed under the MIT License
 
------------------------------------------------------------------------------
+Copyright (c) 2012-2015 Robert Vesse
 
-Copyright (c) 2009-2015 dotNetRDF Project (dotnetrdf-develop@lists.sf.net)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+and associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software 
+is furnished to do so, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is furnished
-to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace VDS.Common.Collections.Enumerations
 {
+    /// <summary>
+    /// An enumerable that adds an additional item if the enumerable it operates over is empty
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class AddIfEmptyEnumerable<T>
-        : WrapperEnumerable<T>
+        : AbstractWrapperEnumerable<T>
     {
+        /// <summary>
+        /// Creates a new enumerable
+        /// </summary>
+        /// <param name="enumerable">Enumerable to operate over</param>
+        /// <param name="item">Item to add if enumerable is empty</param>
         public AddIfEmptyEnumerable(IEnumerable<T> enumerable, T item)
             : base(enumerable)
         {
             this.AdditionalItem = item;
         }
 
-        public T AdditionalItem { get; private set; }
+        /// <summary>
+        /// Gets the item to be added if the enumerable is empty
+        /// </summary>
+        private T AdditionalItem { get; set; }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
             return new AddIfEmptyEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.AdditionalItem);
-        }
-    }
-
-    public class AddIfEmptyEnumerator<T>
-        : WrapperEnumerator<T>
-    {
-        public AddIfEmptyEnumerator(IEnumerator<T> enumerator, T item)
-            : base(enumerator)
-        {
-            this.AdditionalItem = item;
-        }
-
-        public T AdditionalItem { get; private set; }
-
-        private bool AnyItemsSeen { get; set; }
-
-        private bool IsCurrentAdditionalItem { get; set; }
-
-        protected override bool TryMoveNext(out T item)
-        {
-            item = default(T);
-            if (this.InnerEnumerator.MoveNext())
-            {
-                this.AnyItemsSeen = true;
-                item = this.InnerEnumerator.Current;
-                return true;
-            }
-            if (this.AnyItemsSeen) return false;
-            if (this.IsCurrentAdditionalItem) return false;
-
-            this.IsCurrentAdditionalItem = true;
-            item = this.AdditionalItem;
-            return true;
-        }
-
-        protected override void ResetInternal()
-        {
-            this.AnyItemsSeen = false;
-            this.IsCurrentAdditionalItem = false;
         }
     }
 }

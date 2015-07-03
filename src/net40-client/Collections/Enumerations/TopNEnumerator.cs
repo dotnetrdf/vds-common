@@ -19,42 +19,47 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace VDS.Common.Collections.Enumerations
 {
     /// <summary>
-    /// An enumerable that skips items
+    /// An enumerator that returns the top N items based on a given ordering
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class LongSkipEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    public class TopNEnumerator<T>
+        : AbstractTopNEnumerator<T>
     {
         /// <summary>
-        /// Creates a new enumerable
+        /// Creates a new enumerator
         /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="toSkip">Number of items to skip</param>
-        public LongSkipEnumerable(IEnumerable<T> enumerable, long toSkip)
-            : base(enumerable)
+        /// <param name="enumerator">Enumerator to operate over</param>
+        /// <param name="comparer">Comparer to use</param>
+        /// <param name="n">Number of items to return</param>
+        public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
+            : base(enumerator, comparer, n)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
+            this.TopItems = new DuplicateSortedList<T>(comparer);
         }
 
         /// <summary>
-        /// Gets/Sets the number of items to skip
+        /// Stores the top N items
         /// </summary>
-        private long ToSkip { get; set; }
+        private DuplicateSortedList<T> TopItems { get; set; }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Builds the top items
         /// </summary>
         /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
+        protected override IEnumerator<T> BuildTopItems()
         {
-            return new LongSkipEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToSkip);
+            this.TopItems.Clear();
+            while (this.InnerEnumerator.MoveNext())
+            {
+                this.TopItems.Add(this.InnerEnumerator.Current);
+                if (this.TopItems.Count > this.N) this.TopItems.RemoveAt(this.TopItems.Count - 1);
+            }
+            return this.TopItems.GetEnumerator();
         }
     }
 }

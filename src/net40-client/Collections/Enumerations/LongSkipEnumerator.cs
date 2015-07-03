@@ -25,56 +25,71 @@ using System.Collections.Generic;
 namespace VDS.Common.Collections.Enumerations
 {
     /// <summary>
-    /// Abstract implementation of a Top N enumerator
+    /// An enumerator that skips items
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractTopNEnumerator<T> 
-        : AbstractOrderedEnumerator<T> 
+    public class LongSkipEnumerator<T>
+        : AbstractWrapperEnumerator<T>
     {
         /// <summary>
         /// Creates a new enumerator
         /// </summary>
         /// <param name="enumerator">Enumerator to operate over</param>
-        /// <param name="comparer">Comparer to use for ordering</param>
-        /// <param name="n">Number of items to return</param>
-        protected AbstractTopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
-            : base(enumerator, comparer)
+        /// <param name="toSkip">Number of items to skip</param>
+        public LongSkipEnumerator(IEnumerator<T> enumerator, long toSkip)
+            : base(enumerator)
         {
-            if (n < 1) throw new ArgumentException("N must be >= 1", "n");
-            this.N = n;
+            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
+            this.ToSkip = toSkip;
+            this.Skipped = 0;
         }
 
         /// <summary>
-        /// Gets the number of items to be returned
+        /// Gets/Sets the number of items to skip
         /// </summary>
-        public long N { get; private set; }
+        private long ToSkip { get; set; }
 
         /// <summary>
-        /// Gets/Sets the Top Items enumerator
+        /// Gets/Sets the number of items skipped
         /// </summary>
-        private IEnumerator<T> TopItemsEnumerator { get; set; }
+        private long Skipped { get; set; }
+
+        /// <summary>
+        /// Tries to skip the desired number of items
+        /// </summary>
+        /// <returns></returns>
+        private bool TrySkip()
+        {
+            while (this.Skipped < this.ToSkip)
+            {
+                if (!this.InnerEnumerator.MoveNext()) return false;
+                this.Skipped++;
+            }
+            return this.Skipped == this.ToSkip;
+        }
 
         /// <summary>
         /// Tries to move next
         /// </summary>
         /// <param name="item">Item</param>
-        /// <returns>True if more items, false otherwise</returns>
+        /// <returns></returns>
         /// <remarks>
-        /// If this is the first time the enumerator is trying to move next it will build the top items list by consuming the inner enumerator and storing the top N items in a temporary data structure.  Once it has done that it will then return items from that data structure until they are exhausted
+        /// The first time this is called it will try to skip the requisite number of items from the inner enumerator, if that succeeds it will then start returning items from the inner enumerator.
         /// </remarks>
         protected override bool TryMoveNext(out T item)
         {
-            // First time this is accessed need to populate the Top N items list
-            if (this.TopItemsEnumerator == null)
+            item = default(T);
+
+            // If we've previously done the skipping so can just defer to inner enumerator
+            if (this.Skipped == this.ToSkip)
             {
-                this.TopItemsEnumerator = this.BuildTopItems();
+                if (!this.InnerEnumerator.MoveNext()) return false;
+                item = this.InnerEnumerator.Current;
+                return true;
             }
 
-            // Afterwards we just pull items from that list
-            item = default(T);
-            if (!this.TopItemsEnumerator.MoveNext()) return false;
-            item = this.TopItemsEnumerator.Current;
-            return true;
+            // First time being accessed so attempt to skip if possible
+            return this.TrySkip() && this.TryMoveNext(out item);
         }
 
         /// <summary>
@@ -82,15 +97,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            if (this.TopItemsEnumerator == null) return;
-            this.TopItemsEnumerator.Dispose();
-            this.TopItemsEnumerator = null;
+            this.Skipped = 0;
         }
-
-        /// <summary>
-        /// Requests that the top items enumerator be built
-        /// </summary>
-        /// <returns>Top Items enumerator</returns>
-        protected abstract IEnumerator<T> BuildTopItems();
     }
 }

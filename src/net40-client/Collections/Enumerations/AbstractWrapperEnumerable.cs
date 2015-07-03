@@ -20,41 +20,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VDS.Common.Collections.Enumerations
 {
     /// <summary>
-    /// An enumerable that skips items
+    /// Abstract implementation of an enumerable that wraps another enumerable
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class LongSkipEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    public abstract class AbstractWrapperEnumerable<T> 
+        : IEnumerable<T>
     {
         /// <summary>
         /// Creates a new enumerable
         /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="toSkip">Number of items to skip</param>
-        public LongSkipEnumerable(IEnumerable<T> enumerable, long toSkip)
-            : base(enumerable)
+        /// <param name="enumerable">Enumerable to wrap</param>
+        protected AbstractWrapperEnumerable(IEnumerable<T> enumerable)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
+            if (enumerable == null) throw new ArgumentNullException("enumerable");
+            this.InnerEnumerable = enumerable;
         }
-
+        
         /// <summary>
-        /// Gets/Sets the number of items to skip
+        /// Gets the wrapped enumerable
         /// </summary>
-        private long ToSkip { get; set; }
+        protected IEnumerable<T> InnerEnumerable { get; private set; }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Gets an enumerator
         /// </summary>
         /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
+        public abstract IEnumerator<T> GetEnumerator();
+
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return new LongSkipEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToSkip);
+            return GetEnumerator();
         }
     }
 }

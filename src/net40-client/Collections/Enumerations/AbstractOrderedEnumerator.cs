@@ -21,12 +21,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections.Enumerations
 {
-    class SortedDuplicatesList
+    /// <summary>
+    /// Abstract implementation of a wrapper enumerator that uses item ordering
+    /// </summary>
+    /// <typeparam name="T">Item type</typeparam>
+    public abstract class AbstractOrderedEnumerator<T>
+        : AbstractWrapperEnumerator<T>
     {
+        /// <summary>
+        /// Creates a new enumerator
+        /// </summary>
+        /// <param name="enumerator">Enumerator to wrap</param>
+        /// <param name="comparer">Comparer to use</param>
+        protected AbstractOrderedEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer)
+            : base(enumerator)
+        {
+            if (comparer == null) throw new ArgumentNullException("comparer");
+            this.Comparer = comparer;
+        }
+
+        /// <summary>
+        /// Gets the comparer to use for ordering
+        /// </summary>
+        protected IComparer<T> Comparer { get; private set; } 
     }
 }

@@ -22,39 +22,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Comparers
 {
     /// <summary>
-    /// An enumerable that skips items
+    /// A comparer that reverses the ordering provided by another comparer
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class LongSkipEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    public class ReversedComparer<T>
+        : IComparer<T>
     {
         /// <summary>
-        /// Creates a new enumerable
+        /// Creates a new comparer that reverses the default ordering
         /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="toSkip">Number of items to skip</param>
-        public LongSkipEnumerable(IEnumerable<T> enumerable, long toSkip)
-            : base(enumerable)
+        public ReversedComparer()
+            : this(Comparer<T>.Default) { }
+
+        /// <summary>
+        /// Creates a new comparer that reverses the given ordering
+        /// </summary>
+        /// <param name="comparer">Comparer</param>
+        public ReversedComparer(IComparer<T> comparer)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
+            if (comparer == null) throw new ArgumentNullException("comparer");
+            this.InnerComparer = comparer;
         }
 
         /// <summary>
-        /// Gets/Sets the number of items to skip
+        /// Gets the inner comparer
         /// </summary>
-        private long ToSkip { get; set; }
+        public IComparer<T> InnerComparer { get; private set; }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Compares two items
         /// </summary>
+        /// <param name="x">Item</param>
+        /// <param name="y">Other item</param>
         /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
+        public int Compare(T x, T y)
         {
-            return new LongSkipEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToSkip);
+            return this.InnerComparer.Compare(y, x);
         }
     }
 }

@@ -19,42 +19,41 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace VDS.Common.Collections.Enumerations
 {
     /// <summary>
-    /// An enumerable that skips items
+    /// An enumerable that adds the given item if it is not seen in the inner enumerable
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class LongSkipEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    public class AddIfMissingEnumerable<T>
+        : AbstractEqualityEnumerable<T>
     {
         /// <summary>
         /// Creates a new enumerable
         /// </summary>
         /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="toSkip">Number of items to skip</param>
-        public LongSkipEnumerable(IEnumerable<T> enumerable, long toSkip)
-            : base(enumerable)
+        /// <param name="equalityComparer">Equality comparer to use</param>
+        /// <param name="item">Item to add if not present in inner enumerable</param>
+        public AddIfMissingEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer, T item)
+            : base(enumerable, equalityComparer)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
+            this.AdditionalItem = item;
         }
 
         /// <summary>
-        /// Gets/Sets the number of items to skip
+        /// Gets the additional item
         /// </summary>
-        private long ToSkip { get; set; }
+        private T AdditionalItem { get; set; }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Gets an enumerator
         /// </summary>
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new LongSkipEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToSkip);
+            return new AddIfMissingEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.EqualityComparer, this.AdditionalItem);
         }
     }
 }

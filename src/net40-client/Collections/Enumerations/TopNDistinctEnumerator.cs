@@ -19,42 +19,52 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
+using VDS.Common.Trees;
 
 namespace VDS.Common.Collections.Enumerations
 {
     /// <summary>
-    /// An enumerable that skips items
+    /// An enumerator that returns the top N distinct items accoding to some ordering
     /// </summary>
     /// <typeparam name="T">Item type</typeparam>
-    public class LongSkipEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    public class TopNDistinctEnumerator<T>
+        : AbstractTopNEnumerator<T>
     {
         /// <summary>
-        /// Creates a new enumerable
+        /// Creates a new enumerator
         /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="toSkip">Number of items to skip</param>
-        public LongSkipEnumerable(IEnumerable<T> enumerable, long toSkip)
-            : base(enumerable)
+        /// <param name="enumerator">Enumerator to operate over</param>
+        /// <param name="comparer">Comparer to use</param>
+        /// <param name="n">Number of items to return</param>
+        public TopNDistinctEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
+            : base(enumerator, comparer, n)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
+            this.TopItems = new AVLTree<T, bool>(comparer);
         }
 
         /// <summary>
-        /// Gets/Sets the number of items to skip
+        /// Gets/Sets the tree of stored items
         /// </summary>
-        private long ToSkip { get; set; }
+        private IBinaryTree<T, bool> TopItems { get; set; }
 
         /// <summary>
-        /// Gets the enumerator
+        /// Builds the top items
         /// </summary>
         /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
+        protected override IEnumerator<T> BuildTopItems()
         {
-            return new LongSkipEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToSkip);
+            this.TopItems.Clear();
+            while (this.InnerEnumerator.MoveNext())
+            {
+                T item = this.InnerEnumerator.Current;
+                if (this.TopItems.ContainsKey(item)) continue;
+
+                this.TopItems.Add(this.InnerEnumerator.Current, true);
+                int count = this.TopItems.Root != null ? this.TopItems.Root.Size : 0;
+                if (count > this.N) this.TopItems.RemoveAt(count - 1);
+            }
+            return this.TopItems.Keys.GetEnumerator();
         }
     }
 }
