@@ -35,6 +35,11 @@ namespace VDS.Common.Filters
     public class NaiveBloomFilter<T>
         : BaseNaiveBloomFilter<T>
     {
+        /// <summary>
+        /// Creates a new filter
+        /// </summary>
+        /// <param name="bits">Number of bits</param>
+        /// <param name="hashFunctions">Hash functions</param>
         public NaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
             : base(new ArrayStorage(bits), bits, hashFunctions) { }
     }

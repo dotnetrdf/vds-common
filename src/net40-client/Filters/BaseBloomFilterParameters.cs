@@ -21,11 +21,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 namespace VDS.Common.Filters
 {
+    /// <summary>
+    /// Abstract implementation of bloom filter parameters
+    /// </summary>
     public abstract class BaseBloomFilterParameters
         : IBloomFilterParameters
     {
+        /// <summary>
+        /// Gets the number of bits
+        /// </summary>
         public int NumberOfBits { get; protected set; }
 
+        /// <summary>
+        /// Gets the number of hash functions
+        /// </summary>
         public abstract int NumberOfHashFunctions { get; }
     }
 }

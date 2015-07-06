@@ -31,9 +31,10 @@ namespace VDS.Common.Collections.Enumerations
         : AbstractEqualityEnumerator<T>
     {
         /// <summary>
-        /// Creates
+        /// Creates a new enumerator
         /// </summary>
-        /// <param name="enumerator"></param>
+        /// <param name="enumerator">Enumerator to operate over</param>
+        /// <param name="equalityComparer">Equality comparer to use</param>
         public ReducedEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer)
             : base(enumerator, equalityComparer)
         {

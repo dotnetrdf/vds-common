@@ -73,11 +73,12 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         /// <typeparam name="T">Item type</typeparam>
         /// <param name="enumerable">Enumerable to operate over</param>
+        /// <param name="equalityComparer">Equality comparer to use</param>
         /// <param name="item">Item to add if it is not already present</param>
         /// <returns></returns>
-        public static IEnumerable<T> AddIfMissing<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComprarer, T item)
+        public static IEnumerable<T> AddIfMissing<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer, T item)
         {
-            return new AddIfMissingEnumerable<T>(enumerable, equalityComprarer, item);
+            return new AddIfMissingEnumerable<T>(enumerable, equalityComparer, item);
         }
 
         /// <summary>
@@ -108,6 +109,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
         /// <param name="enumerable">Enumerable</param>
+        /// <param name="equalityComparer">Equality comparer to use</param>
         /// <returns>Enumerable which removes adjacent duplicates</returns>
         public static IEnumerable<T> Reduced<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
         {
@@ -144,7 +146,6 @@ namespace VDS.Common.Collections.Enumerations
         {
             return TopDistinct(enumerable, n, Comparer<T>.Default);
         }
-
 
         /// <summary>
         /// Gets the top N items according to a given ordering
