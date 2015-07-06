@@ -3,7 +3,7 @@
     <NoPortable Condition="'$(NoPortable)' == ''">False</NoPortable>
     <CommonLicenseExcludeExts>dll,pdb,exe,xml,csproj,user,template,cache,orig</CommonLicenseExcludeExts>
     <CommonLicenseExcludeRegex>hg|svn|obj|bin|packages.config</CommonLicenseExcludeRegex>
-    <CommonLicenseSearch>Copyright (c) 2009-2014 Robert Vesse</CommonLicenseSearch>
+    <CommonLicenseSearch>Copyright (c) 2009-2015 Robert Vesse</CommonLicenseSearch>
     <CommonLicenseReplace>License.txt</CommonLicenseReplace>
     <CommonLicenseOverwrite>-overwrite</CommonLicenseOverwrite>
     <CommonKeyFile>$(MSBuildProjectDirectory)\..\VDS.Common.snk</CommonKeyFile>
