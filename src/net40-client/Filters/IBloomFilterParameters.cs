@@ -21,7 +21,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 namespace VDS.Common.Filters
 {
-    public interface IBloomFilterParameters {
+    /// <summary>
+    /// Represents Bloom Filter parameters
+    /// </summary>
+    public interface IBloomFilterParameters 
+    {
         /// <summary>
         /// Gets the number of bits used for the filter
         /// </summary>

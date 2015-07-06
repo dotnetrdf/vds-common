@@ -43,5 +43,10 @@ namespace VDS.Common.Collections
         /// Gets the length of the array
         /// </summary>
         int Length { get; }
+
+        /// <summary>
+        /// Clears the array i.e. resets all values to the default and frees any unecessary storage
+        /// </summary>
+        void Clear();
     }
 }

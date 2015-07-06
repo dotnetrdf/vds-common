@@ -59,6 +59,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Inserts an item at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="item">Item</param>
         public override void Insert(int index, T item)
         {
             if (this._list.Count == this.MaxCapacity && index == this._list.Count) return;
@@ -69,6 +74,10 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Adds an item
+        /// </summary>
+        /// <param name="item">Item</param>
         public override sealed void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) return;
@@ -83,6 +92,9 @@ namespace VDS.Common.Collections
             get { return BoundedListOverflowPolicy.Discard; }
         }
 
+        /// <summary>
+        /// Gets the maximum capacity of the list
+        /// </summary>
         public override sealed int MaxCapacity { get; protected set; }
     }
 }

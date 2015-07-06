@@ -57,6 +57,9 @@ namespace VDS.Common.Filters
             this._parameters = parameters;
         }
 
+        /// <summary>
+        /// Gets the number of hash functions
+        /// </summary>
         public override int NumberOfHashFunctions
         {
             get { return this._parameters.NumberOfHashFunctions; }

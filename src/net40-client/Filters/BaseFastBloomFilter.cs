@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace VDS.Common.Filters
 {
     /// <summary>
-    /// Abstract implementation of a fast bloom filter using the methodology outlined in <a href="http://citeseer.ist.psu.edu/viewdoc/download;jsessionid=4060353E67A356EF9528D2C57C064F5A?doi=10.1.1.152.579&rep=rep1&type=pdf">Less Hashing, Same Performance: Building a Better Bloom Filter</a>
+    /// Abstract implementation of a fast bloom filter using the methodology outlined in <a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&amp;rep=rep1&amp;type=pdf">Less Hashing, Same Performance: Building a Better Bloom Filter</a>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <remarks>
@@ -58,8 +58,16 @@ namespace VDS.Common.Filters
             this._h2 = h2;
         }
 
+        /// <summary>
+        /// Gets the number of hash functions
+        /// </summary>
         public override int NumberOfHashFunctions { get { return this._parameters.NumberOfHashFunctions; } }
 
+        /// <summary>
+        /// Converts the item into a number of bit indices
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>Bit Indices</returns>
         protected override IEnumerable<int> GetBitIndices(T item)
         {
             int a = this._h1(item);

@@ -19,24 +19,30 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace VDS.Common.Filters
 {
+    /// <summary>
+    /// Basic implementation of bloom filter parameters
+    /// </summary>
     public class BloomFilterParameters
         : BaseBloomFilterParameters
     {
         private readonly int _numHashFunctions;
 
+        /// <summary>
+        /// Creates new parameters
+        /// </summary>
+        /// <param name="numBits">Number of bits</param>
+        /// <param name="numHashFunctions">Number of hash functions</param>
         public BloomFilterParameters(int numBits, int numHashFunctions)
         {
             this.NumberOfBits = numBits;
             this._numHashFunctions = numHashFunctions;
         }
 
+        /// <summary>
+        /// Gets the number of hash functions
+        /// </summary>
         public override int NumberOfHashFunctions { get { return this._numHashFunctions; } }
     }
 }

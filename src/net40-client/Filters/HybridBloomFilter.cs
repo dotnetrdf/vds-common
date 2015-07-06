@@ -32,6 +32,11 @@ namespace VDS.Common.Filters
     public class HybridBloomFilter<T>
         : BaseHybridBloomFilter<T>
     {
+        /// <summary>
+        /// Creates a new filter
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="hashFunctions">Hash functions</param>
         public HybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
             : base(new ArrayStorage(parameters.NumberOfBits), parameters, hashFunctions) { }
     }

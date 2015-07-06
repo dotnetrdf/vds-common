@@ -29,7 +29,7 @@ namespace VDS.Common.Trees
     /// <typeparam name="TKey">Key Type</typeparam>
     /// <typeparam name="TValue">Value Type</typeparam>
     public sealed class UnbalancedBinaryTree<TKey, TValue>
-        : BinaryTree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
+        : BinaryTree<TKey, TValue>
     {
         /// <summary>
         /// Creates a new unbalanced tree

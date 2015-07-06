@@ -21,11 +21,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace VDS.Common
 {
-    public class TestTools
+    public static class TestTools
     {
         public static void PrintEnumerable<T>(IEnumerable<T> items, String sep)
             where T : class
@@ -61,6 +62,33 @@ namespace VDS.Common
                 }
                 Console.Write(item.ToString());
             }
+        }
+
+        public static void PrintOrderingComparisonEnumerable<T>(IEnumerable<T> enumerable)
+            where T : class
+        {
+            Console.WriteLine("Ascending Order:");
+            PrintEnumerable(enumerable.OrderBy(i => i), ",");
+            Console.WriteLine();
+            Console.WriteLine("Descending Order:");
+            PrintEnumerable(enumerable.OrderByDescending(i => i), ",");
+            Console.WriteLine();
+        }
+
+        public static void PrintOrderingComparisonEnumerableStruct<T>(IEnumerable<T> enumerable)
+            where T : struct
+        {
+            Console.WriteLine("Ascending Order:");
+            PrintEnumerableStruct(enumerable.OrderBy(i => i), ",");
+            Console.WriteLine();
+            Console.WriteLine("Descending Order:");
+            PrintEnumerableStruct(enumerable.OrderByDescending(i => i), ",");
+            Console.WriteLine();
+        }
+
+        public static IEnumerable<T> AsEnumerable<T>(this T item)
+        {
+            return new T[] { item };
         }
     }
 }

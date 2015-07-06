@@ -32,6 +32,11 @@ namespace VDS.Common.Filters
     public class SparseHybridBloomFilter<T>
         : BaseHybridBloomFilter<T>
     {
+        /// <summary>
+        /// Creates a new filter
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="hashFunctions">Hash functions</param>
         public SparseHybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
             : base(new SparseArrayStorage(parameters), parameters, hashFunctions) { }
     }

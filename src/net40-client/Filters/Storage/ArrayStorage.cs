@@ -23,25 +23,49 @@ using System;
 
 namespace VDS.Common.Filters.Storage
 {
+    /// <summary>
+    /// Array based storage for Bloom Filters
+    /// </summary>
     public class ArrayStorage
         : IBloomFilterStorage
     {
         private readonly bool[] _bits;
 
+        /// <summary>
+        /// Creates new array storage
+        /// </summary>
+        /// <param name="size">Size in bits of the storage</param>
         public ArrayStorage(int size)
         {
             if (size <= 0) throw new ArgumentException("Size must be > 0", "size");
             this._bits = new bool[size];
         }
 
+        /// <summary>
+        /// Gets whether a given bit is set
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>True if set, false otherwise</returns>
         public bool IsSet(int index)
         {
             return this._bits[index];
         }
 
+        /// <summary>
+        /// Sets a given bit
+        /// </summary>
+        /// <param name="index">Index</param>
         public void Set(int index)
         {
             this._bits[index] = true;
+        }
+
+        /// <summary>
+        /// Clears the storage
+        /// </summary>
+        public void Clear()
+        {
+            Array.Clear(this._bits, 0, this._bits.Length);
         }
     }
 }

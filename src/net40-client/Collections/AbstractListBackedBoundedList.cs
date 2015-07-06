@@ -56,56 +56,107 @@ namespace VDS.Common.Collections
             return capacity < 10 ? capacity : Convert.ToInt32(Math.Log(capacity, 2d));
         }
 
+        /// <summary>
+        /// Gets the size of the list
+        /// </summary>
         public virtual int Count
         {
             get { return this._list.Count; }
         }
 
+        /// <summary>
+        /// Gets whether the list is ready only
+        /// </summary>
         public virtual bool IsReadOnly
         {
             get { return this._list.IsReadOnly; }
         }
 
+        /// <summary>
+        /// Gets the index of the given item
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>Index or -1 if not in list</returns>
         public virtual int IndexOf(T item)
         {
             return this._list.IndexOf(item);
         }
 
+        /// <summary>
+        /// Inserts an item at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="item">Item</param>
         public abstract void Insert(int index, T item);
 
+        /// <summary>
+        /// Gets/Sets the value at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Value</returns>
         public virtual T this[int index]
         {
             get { return this._list[index]; }
             set { this._list[index] = value; }
         }
 
+        /// <summary>
+        /// Adds an item
+        /// </summary>
+        /// <param name="item">Item</param>
         public abstract void Add(T item);
 
+        /// <summary>
+        /// Clears the list
+        /// </summary>
         public virtual void Clear()
         {
             this._list.Clear();
         }
 
+        /// <summary>
+        /// Gets whether the list contains the given item
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>True if contained in the list, false otherwise</returns>
         public virtual bool Contains(T item)
         {
             return this._list.Contains(item);
         }
 
+        /// <summary>
+        /// Copies the list to the given array
+        /// </summary>
+        /// <param name="array">Array</param>
+        /// <param name="arrayIndex">Array Index to start the copy at</param>
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
             this._list.CopyTo(array, arrayIndex);
         }
 
+        /// <summary>
+        /// Removes an item from the list
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>True if item was removed, false otherwise</returns>
         public virtual bool Remove(T item)
         {
             return this._list.Remove(item);
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             return this._list.GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this._list.GetEnumerator();
@@ -121,6 +172,10 @@ namespace VDS.Common.Collections
         /// </summary>
         public abstract int MaxCapacity { get; protected set; }
 
+        /// <summary>
+        /// Removes an item at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
         public virtual void RemoveAt(int index)
         {
             this._list.RemoveAt(index);

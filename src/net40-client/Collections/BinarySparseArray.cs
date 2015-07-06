@@ -38,6 +38,10 @@ namespace VDS.Common.Collections
     {
         private readonly ITree<IBinaryTreeNode<int, T>, int, T> _tree;
 
+        /// <summary>
+        /// Creates a new sparse array
+        /// </summary>
+        /// <param name="length">Length</param>
         public BinarySparseArray(int length)
         {
             if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
@@ -46,16 +50,29 @@ namespace VDS.Common.Collections
         }
 
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             return new BinarySparseArrayEnumerator<T>(this.Length, this._tree.Nodes.GetEnumerator());
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets/Sets the value at a given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Value</returns>
         public T this[int index]
         {
             get
@@ -71,7 +88,18 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets the length of the array
+        /// </summary>
         public int Length { get; private set; }
+
+        /// <summary>
+        /// Clears the array
+        /// </summary>
+        public void Clear()
+        {
+            this._tree.Clear();
+        }
     }
 
     class BinarySparseArrayEnumerator<T>

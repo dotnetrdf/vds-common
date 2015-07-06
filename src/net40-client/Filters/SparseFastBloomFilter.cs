@@ -32,6 +32,12 @@ namespace VDS.Common.Filters
     public class SparseFastBloomFilter<T>
         : BaseFastBloomFilter<T>
     {
+        /// <summary>
+        /// Creates a new filter
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="h1">Hash function 1</param>
+        /// <param name="h2">Hash function 2</param>
         public SparseFastBloomFilter(IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
             : base(new SparseArrayStorage(parameters), parameters, h1, h2) { }
     }

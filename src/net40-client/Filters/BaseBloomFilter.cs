@@ -32,13 +32,20 @@ namespace VDS.Common.Filters
     public abstract class BaseBloomFilter<T>
         : BaseBloomFilterParameters, IBloomFilter<T>
     {
-        private readonly IBloomFilterStorage _storage;
-
+        /// <summary>
+        /// Creates a new filter
+        /// </summary>
+        /// <param name="storage">Storage to use</param>
         protected BaseBloomFilter(IBloomFilterStorage storage)
         {
             if (storage == null) throw new ArgumentNullException("storage", "Storage cannot be null");
-            this._storage = storage;
+            this.Storage = storage;
         }
+
+        /// <summary>
+        /// Gets the storage in use
+        /// </summary>
+        private IBloomFilterStorage Storage { get; set; }
 
         /// <summary>
         /// Converts an item into a number of bit indexes
@@ -58,7 +65,15 @@ namespace VDS.Common.Filters
         public bool MayContain(T item)
         {
             IEnumerable<int> indices = this.GetBitIndices(item);
-            return indices.All(index => this._storage.IsSet(index));
+            return indices.All(index => this.Storage.IsSet(index));
+        }
+
+        /// <summary>
+        /// Clears the filter
+        /// </summary>
+        public void Clear()
+        {
+            this.Storage.Clear();
         }
 
         /// <summary>
@@ -72,9 +87,9 @@ namespace VDS.Common.Filters
             bool alreadySeen = true;
             foreach (int index in indices)
             {
-                if (this._storage.IsSet(index)) continue;
+                if (this.Storage.IsSet(index)) continue;
                 alreadySeen = false;
-                this._storage.Set(index);
+                this.Storage.Set(index);
             }
             return !alreadySeen;
         }

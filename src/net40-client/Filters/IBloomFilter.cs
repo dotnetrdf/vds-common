@@ -46,5 +46,10 @@ namespace VDS.Common.Filters
         /// Bloom filters may return false positives hence why this method is named <strong>MayContain</strong> but they are guaranteed to never return false negatives
         /// </remarks>
         bool MayContain(T item);
+
+        /// <summary>
+        /// Clears the bloom filter i.e. resets it to a state where it has seen no items
+        /// </summary>
+        void Clear();
     }
 }

@@ -24,11 +24,18 @@ using VDS.Common.Collections;
 
 namespace VDS.Common.Filters.Storage
 {
+    /// <summary>
+    /// A sparse array storage implementation for bloom filters
+    /// </summary>
     public class SparseArrayStorage
         : IBloomFilterStorage
     {
         private readonly ISparseArray<bool> _bits;
 
+        /// <summary>
+        /// Creates new storage
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
         public SparseArrayStorage(IBloomFilterParameters parameters)
         {
             if (parameters == null) throw new ArgumentNullException("parameters");
@@ -36,20 +43,41 @@ namespace VDS.Common.Filters.Storage
             this._bits = new BlockSparseArray<bool>(parameters.NumberOfBits);
         }
         
+        /// <summary>
+        /// Creates new storage
+        /// </summary>
+        /// <param name="bits">Sparse array to use as storage</param>
         public SparseArrayStorage(ISparseArray<bool> bits)
         {
             if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", "bits");
             this._bits = bits;
         }
 
+        /// <summary>
+        /// Gets whether a given bit is set
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>True if set, false otherwise</returns>
         public bool IsSet(int index)
         {
             return this._bits[index];
         }
 
+        /// <summary>
+        /// Sets a given bit
+        /// </summary>
+        /// <param name="index">Index</param>
         public void Set(int index)
         {
             this._bits[index] = true;
+        }
+
+        /// <summary>
+        /// Clears the storage
+        /// </summary>
+        public void Clear()
+        {
+            this._bits.Clear();
         }
     }
 }

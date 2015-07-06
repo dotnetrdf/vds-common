@@ -53,6 +53,7 @@
     <Compile Include="Collections\AbstractDictionaryContractTests.cs" />
     <Compile Include="Collections\AbstractSortedDictionaryContractTests.cs" />
     <Compile Include="Collections\AbstractSparseArrayContractTests.cs" />
+    <Compile Include="Collections\Enumerations\EnumerableTests.cs" />
     <Compile Include="Collections\TestKey.cs" />
     <Compile Include="Filters\AbstractBloomFilterContractTests.cs" />
     <Compile Include="Filters\BloomUtilsTests.cs" />

@@ -19,8 +19,6 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
-
 namespace VDS.Common.Filters
 {
     /// <summary>
@@ -40,5 +38,10 @@ namespace VDS.Common.Filters
         /// </summary>
         /// <param name="index">Index</param>
         void Set(int index);
+
+        /// <summary>
+        /// Clears the storage i.e. unsets all the bits
+        /// </summary>
+        void Clear();
     }
 }

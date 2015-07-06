@@ -253,4 +253,103 @@
       <Link>Trees\ITreeNode.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\AddIfEmptyEnumerable.cs">
+      <Link>Collections\Enumerations\AddIfEmptyEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\EnumerableExtensions.cs">
+      <Link>Collections\Enumerations\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\LongSkipEnumerable.cs">
+      <Link>Collections\Enumerations\LongSkipEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\LongTakeEnumerable.cs">
+      <Link>Collections\Enumerations\LongTakeEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ReducedEnumerable.cs">
+      <Link>Collections\Enumerations\ReducedEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNEnumerable.cs">
+      <Link>Collections\Enumerations\TopNEnumerable.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\DuplicateSortedList.cs">
+      <Link>Collections\DuplicateSortedList.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractTopNEnumerable.cs">
+      <Link>Collections\Enumerations\AbstractTopNEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractTopNEnumerator.cs">
+      <Link>Collections\Enumerations\AbstractTopNEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNDistinctEnumerable.cs">
+      <Link>Collections\Enumerations\TopNDistinctEnumerable.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\AddIfMissingEnumerable.cs">
+      <Link>Collections\Enumerations\AddIfMissingEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AddIfEmptyEnumerator.cs">
+      <Link>Collections\Enumerations\AddIfEmptyEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\LongSkipEnumerator.cs">
+      <Link>Collections\Enumerations\LongSkipEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\LongTakeEnumerator.cs">
+      <Link>Collections\Enumerations\LongTakeEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ReducedEnumerator.cs">
+      <Link>Collections\Enumerations\ReducedEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNDistinctEnumerator.cs">
+      <Link>Collections\Enumerations\TopNDistinctEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\TopNEnumerator.cs">
+      <Link>Collections\Enumerations\TopNEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractWrapperEnumerable.cs">
+      <Link>Collections\Enumerations\AbstractWrapperEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractWrapperEnumerator.cs">
+      <Link>Collections\Enumerations\AbstractWrapperEnumerator.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractEqualityEnumerable.cs">
+      <Link>Collections\Enumerations\AbstractEqualityEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractEqualityEnumerator.cs">
+      <Link>Collections\Enumerations\AbstractEqualityEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractOrderedEnumerable.cs">
+      <Link>Collections\Enumerations\AbstractOrderedEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AbstractOrderedEnumerator.cs">
+      <Link>Collections\Enumerations\AbstractOrderedEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\AddIfMissingEnumerator.cs">
+      <Link>Collections\Enumerations\AddIfMissingEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Comparers\ReferenceEqualityComparer.cs">
+      <Link>Comparers\ReferenceEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Comparers\ReversedComparer.cs">
+      <Link>Comparers\ReversedComparer.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\ProbabilisticDistinctEnumerable.cs">
+      <Link>Collections\Enumerations\ProbabilisticDistinctEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ProbabilisticDistinctEnumerator.cs">
+      <Link>Collections\Enumerations\ProbabilisticDistinctEnumerator.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Trees\IBinaryTree.cs">
+      <Link>Trees\IBinaryTree.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

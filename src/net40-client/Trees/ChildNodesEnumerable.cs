@@ -36,13 +36,13 @@ namespace VDS.Common.Trees
         : IEnumerable<IBinaryTreeNode<TKey, TValue>>
         where TNode : class, IBinaryTreeNode<TKey, TValue>
     {
-        private BinaryTree<TNode, TKey, TValue> _tree;
+        private readonly IBinaryTree<TKey, TValue> _tree;
 
         /// <summary>
         /// Creates a new nodes enumerable for a binary tree
         /// </summary>
         /// <param name="tree">Binary Tree</param>
-        public NodesEnumerable(BinaryTree<TNode, TKey, TValue> tree)
+        public NodesEnumerable(IBinaryTree<TKey, TValue> tree)
         {
             if (tree == null) throw new ArgumentNullException("tree", "Tree cannot be null");
             this._tree = tree;
@@ -67,7 +67,7 @@ namespace VDS.Common.Trees
 #if NET40
                 return new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>().Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>()).GetEnumerator();
 #else
-                return (IEnumerator<IBinaryTreeNode<TKey, TValue>>)new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>().Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root).OfType<TNode>()).GetEnumerator();
+                return (IEnumerator<IBinaryTreeNode<TKey, TValue>>)new LeftChildNodeEnumerable<TKey, TValue>(this._tree.Root).Concat(this._tree.Root.AsEnumerable()).Concat(new RightChildNodeEnumerable<TKey, TValue>(this._tree.Root)).GetEnumerator();
 #endif
             }
         }

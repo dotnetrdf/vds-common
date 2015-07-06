@@ -119,5 +119,35 @@ namespace VDS.Common.Trees
             node.RightChild = null;
             return node;
         }
+
+        /// <summary>
+        /// Finds the leftmost child of the given node
+        /// </summary>
+        /// <param name="node">Node</param>
+        /// <returns>Leftmost child or self if no left children</returns>
+        public static IBinaryTreeNode<TKey, TValue> FindLeftmostChild<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+        {
+            if (node == null) return null;
+            while (node.LeftChild != null)
+            {
+                node = node.LeftChild;
+            }
+            return node;
+        }
+
+        /// <summary>
+        /// Finds the rightmost child of the given node
+        /// </summary>
+        /// <param name="node">Node</param>
+        /// <returns>Rightmost child of self if no right children</returns>
+        public static IBinaryTreeNode<TKey, TValue> FindRightmostChild<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+        {
+            if (node == null) return null;
+            while (node.RightChild != null)
+            {
+                node = node.RightChild;
+            }
+            return node;
+        }
     }
 }

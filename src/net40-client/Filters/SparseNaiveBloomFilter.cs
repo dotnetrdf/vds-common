@@ -33,6 +33,11 @@ namespace VDS.Common.Filters
     public class SparseNaiveBloomFilter<T>
         : BaseNaiveBloomFilter<T>
     {
+        /// <summary>
+        /// Creates a new filter
+        /// </summary>
+        /// <param name="bits">Number of bits</param>
+        /// <param name="hashFunctions">Hash functions</param>
         public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
             : base(new SparseArrayStorage(new BlockSparseArray<bool>(bits)), bits, hashFunctions) { }
     }

@@ -52,16 +52,29 @@ namespace VDS.Common.Collections
             this.Length = length;
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             return new LinkedSparseArrayEnumerator<T>(this._list, this.Length);
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets/Sets the value at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Value</returns>
         public T this[int index]
         {
             get
@@ -104,7 +117,18 @@ namespace VDS.Common.Collections
             return createIfNotExists ? this._list.AddLast(new SparseArrayEntry<T>(index)) : null;
         }
 
+        /// <summary>
+        /// Gets the length of the array
+        /// </summary>
         public int Length { get; private set; }
+
+        /// <summary>
+        /// Clears the array
+        /// </summary>
+        public void Clear()
+        {
+            this._list.Clear();
+        }
     }
 
     class SparseArrayEntry<T>

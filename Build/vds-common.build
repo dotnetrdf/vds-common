@@ -24,6 +24,13 @@
   <!-- Project Sync Targets -->
 
   <target name="projectsync" description="Syncs the project files" depends="projectsync-net35,projectsync-portable" />
+  
+  <target name="projectsync-net40" description="Syncs the .Net 4.0 Client Profile build project file">
+    <exec program="Build/SyncProjects.exe">
+      <arg value="disk" />
+      <arg value="src/net40-client/VDS.Common.Net40.csproj" />
+    </exec>
+  </target>
 
   <target name="projectsync-net35" description="Syncs the .Net 3.5 Client Profile build project file">
     <exec program="Build/SyncProjects.exe">

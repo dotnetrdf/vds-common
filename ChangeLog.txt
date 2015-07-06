@@ -6,16 +6,37 @@ This is the Change Log for VDS.Common
 1.6.0
 -----
 
-- Further Bloom Filter improvements
+- Bloom Filter improvements
  - Refactored the interfaces slightly
  - Refactored base implementations for better code reuse
  - Three hashing approaches are now available:
   - Naive - the existing implementation that gives full control to devlopers
   - Fast - uses approach from http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&rep=rep1&type=pdf
   - Hybrid - uses a hybrid of the naive and fast approaches
+- Collection improvements
+ - ISparseArray now has a Clear() method
+ - New DuplicateSortedList for cases where you need to have a sorted list that supports duplicate items
+ - New Collections.Enumerations namespace with various useful enumerables and suitable extension methods for
+   invoking these in fluent style
+    - LongTake()
+    - LongSkip()
+    - AddIfMissing() - add an item if not present in another enumerable
+    - AddIfEmpty() - add an item if the other enumerable is empty
+    - Reduced() - eliminate adjacent duplicate elements
+    - Top(), TopDistinct(), Bottom() and BottomDistinct() - efficiently yield only the N top/bottom items 
+      optionally with distinctness
+    - ProbabilisticDistinct() - true streaming distinct using bloom filters
+- New Comparers namespaces
+ - ReferenceEqualityComparer for when you need reference equality only
+ - ReversedComparer for reversing the ordering given by another comparer
+- Tree improvements
+ - Better interface definition for binary trees
+ - Support for indexed access into binary trees
 - Trie improvements
  - Improved locking strategy for non-sparse tries to improve performance
-
+- General improvements
+ - Filled out missing XML doc comments
+ - Improved test coverage
 
 1.5.0
 -----
