@@ -70,16 +70,29 @@ namespace VDS.Common.Collections
             this.Length = length;
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             return new BlockSparseArrayEnumerator<T>(this._blocks.GetEnumerator(), this.Length, this.BlockSize);
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets/Sets the value at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Value</returns>
         public T this[int index]
         {
             get
@@ -108,10 +121,19 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets/Sets the block size
+        /// </summary>
         private int BlockSize { get; set; }
 
+        /// <summary>
+        /// Gets the length of the array
+        /// </summary>
         public int Length { get; private set; }
 
+        /// <summary>
+        /// Clears the array
+        /// </summary>
         public void Clear()
         {
             Array.Clear(this._blocks, 0, this._blocks.Length);

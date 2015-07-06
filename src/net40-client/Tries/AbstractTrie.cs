@@ -195,7 +195,7 @@ namespace VDS.Common.Tries
         /// <param name="bs">Key Bits</param>
         /// <returns>Null if the Key does not map to a Node</returns>
         /// <remarks>
-        /// The ability to provide a specific seqeunce of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
+        /// The ability to provide a specific sequence of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
         /// </remarks>
         public ITrieNode<TKeyBit, TValue> Find(IEnumerable<TKeyBit> bs)
         {
@@ -211,11 +211,8 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Finds and returns a Node that has the longest prefix match for the given sequence of Key Bits
         /// </summary>
-        /// <param name="bs">Key Bits</param>
-        /// <returns>Null if the Key does not map to a Node</returns>
-        /// <remarks>
-        /// The ability to provide a specific seqeunce of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
-        /// </remarks>
+        /// <param name="key">Key</param>
+        /// <returns>Null if the Key does not map to any nodes</returns>
         public ITrieNode<TKeyBit, TValue> FindPredecessor(TKey key)
         {
             return this.FindPredecessor(key, this._keyMapper);
@@ -225,7 +222,11 @@ namespace VDS.Common.Tries
         /// Finds and returns a Node that has the longest prefix match for the given Key
         /// </summary>
         /// <param name="key">Key</param>
+        /// <param name="keyMapper">Mapper that decomposes the key into the key bits</param>
         /// <returns>Null if the Key does not map to a Node</returns>
+        /// <remarks>
+        /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
+        /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindPredecessor(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
             return this.FindPredecessor(keyMapper(key));
@@ -234,11 +235,10 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Finds and returns a Node that has the longest prefix match for the given Key using the given Key to Key Bit mapping function
         /// </summary>
-        /// <param name="key">Key</param>
-        /// <param name="keyMapper">Function to map keys to key bits</param>
+        /// <param name="bs">Key bits</param>
         /// <returns>Null if the Key does not map to a Node</returns>
         /// <remarks>
-        /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
+        /// The ability to provide a specific sequence of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
         /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindPredecessor(IEnumerable<TKeyBit> bs)
         {
@@ -265,11 +265,8 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Finds and returns a Node that has the shortest prefix match greater than or equal to the given sequence of Key Bits
         /// </summary>
-        /// <param name="bs">Key Bits</param>
+        /// <param name="key">Key</param>
         /// <returns>Null if the Key does not map to a Node</returns>
-        /// <remarks>
-        /// The ability to provide a specific seqeunce of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
-        /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindSuccessor(TKey key)
         {
             return this.FindSuccessor(key, this._keyMapper);
@@ -279,7 +276,11 @@ namespace VDS.Common.Tries
         /// Finds and returns a Node that has the shortest prefix match greater than or equal to the given Key
         /// </summary>
         /// <param name="key">Key</param>
+        /// <param name="keyMapper">Mapper that decomposes the key into the key bits</param>
         /// <returns>Null if the Key does not map to a Node</returns>
+        /// <remarks>
+        /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
+        /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindSuccessor(TKey key, Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
             return this.FindSuccessor(keyMapper(key));
@@ -288,11 +289,10 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Finds and returns a Node that has the shortest prefix match greater than or equal to the given Key using the given Key to Key Bit mapping function
         /// </summary>
-        /// <param name="key">Key</param>
-        /// <param name="keyMapper">Function to map keys to key bits</param>
+        /// <param name="bs">Key Bits</param>
         /// <returns>Null if the Key does not map to a Node</returns>
         /// <remarks>
-        /// The ability to provide a custom mapping function allows you to do custom lookups into the Trie.  For example you might want to only match some portion of the key rather than the entire key
+        /// The ability to provide a specific sequence of key bits may be useful for custom lookups where you don't necessarily have a value of the <strong>TKey</strong> type but do have values of the <strong>TKeyBit</strong> type
         /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindSuccessor(IEnumerable<TKeyBit> bs)
         {

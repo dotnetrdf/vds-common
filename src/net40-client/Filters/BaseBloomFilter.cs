@@ -68,6 +68,9 @@ namespace VDS.Common.Filters
             return indices.All(index => this.Storage.IsSet(index));
         }
 
+        /// <summary>
+        /// Clears the filter
+        /// </summary>
         public void Clear()
         {
             this.Storage.Clear();

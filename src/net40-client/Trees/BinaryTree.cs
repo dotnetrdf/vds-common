@@ -483,18 +483,32 @@ namespace VDS.Common.Trees
             }
         }
 
+        /// <summary>
+        /// Gets the value at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Value</returns>
         public TValue GetValueAt(int index)
         {
             IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
             return node.Value;
         }
 
+        /// <summary>
+        /// Sets the value at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="value">Value</param>
         public void SetValueAt(int index, TValue value)
         {
             IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
             node.Value = value;
         }
 
+        /// <summary>
+        /// Removes the key-value pair at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
         public void RemoveAt(int index)
         {
             IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);

@@ -23,7 +23,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using VDS.Common.Trees;
 
 namespace VDS.Common.Collections
@@ -32,9 +31,9 @@ namespace VDS.Common.Collections
     /// A sorted list that supports duplicate entries
     /// </summary>
     /// <remarks>
-    /// Note that duplicates are not stored directly so this should only be used if the user is happy to receive multiple instances of the first instance of duplicates seen
+    /// Note that duplicates are not stored directly so this should <strong>only</strong> be used if the user is happy to receive multiple instances of the first instance of duplicates seen
     /// </remarks>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Item type</typeparam>
     public class DuplicateSortedList<T>
         : IList<T>
     {
@@ -42,38 +41,64 @@ namespace VDS.Common.Collections
         private readonly IComparer<T> _comparer; 
         private int _total = 0;
 
+        /// <summary>
+        /// Creates a new list
+        /// </summary>
         public DuplicateSortedList()
             : this(null, null) { }
 
+        /// <summary>
+        /// Creates a new list with the given items
+        /// </summary>
+        /// <param name="items">Items</param>
         public DuplicateSortedList(IEnumerable<T> items)
             : this(null, items) { }
 
+        /// <summary>
+        /// Creates a new list that uses the given comparer
+        /// </summary>
+        /// <param name="comparer">Comparer</param>
         public DuplicateSortedList(IComparer<T> comparer)
             : this(comparer, null) { }
 
+        /// <summary>
+        /// Creates a new list that uses the given comparer and has the given items
+        /// </summary>
+        /// <param name="comparer">Comparer</param>
+        /// <param name="items">Items</param>
         public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items)
         {
             this._comparer = comparer ?? Comparer<T>.Default;
             this._data = new AVLTree<T, int>(this._comparer);
-            if (items != null)
+            if (items == null) return;
+            foreach (T item in items)
             {
-                foreach (T item in items)
-                {
-                    this.Add(item);
-                }
+                this.Add(item);
             }
         }
 
+        /// <summary>
+        /// Gets an enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             return this._data.Nodes.SelectMany(n => Enumerable.Repeat(n.Key, n.Value)).GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets ane enumerator
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Adds an item to the list
+        /// </summary>
+        /// <param name="item">Item to add</param>
         public void Add(T item)
         {
             bool created;
@@ -89,17 +114,30 @@ namespace VDS.Common.Collections
             this._total++;
         }
 
+        /// <summary>
+        /// Clears the list
+        /// </summary>
         public void Clear()
         {
             this._data.Clear();
             this._total = 0;
         }
 
+        /// <summary>
+        /// Gets if the list contains the given item
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>True if contained in the list, false otherwise</returns>
         public bool Contains(T item)
         {
             return this._data.ContainsKey(item);
         }
 
+        /// <summary>
+        /// Copies the list to the given array
+        /// </summary>
+        /// <param name="array">Array</param>
+        /// <param name="arrayIndex">Array Index to start the copy at</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
@@ -114,6 +152,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Removes an item from the list
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>True if item was removed, false otherwise</returns>
         public bool Remove(T item)
         {
             int count;
@@ -130,11 +173,17 @@ namespace VDS.Common.Collections
             return true;
         }
 
+        /// <summary>
+        /// Gets the number of items in the list
+        /// </summary>
         public int Count
         {
             get { return this._total; }
         }
 
+        /// <summary>
+        /// Gets whether the list is read only
+        /// </summary>
         public bool IsReadOnly
         {
             get { return false; }
@@ -180,6 +229,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets the index of a given item in the list
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns></returns>
         public int IndexOf(T item)
         {
             if (this._data.Root == null) return -1;
@@ -194,11 +248,20 @@ namespace VDS.Common.Collections
             return -1;
         }
 
+        /// <summary>
+        /// Unsupported for this list
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="item">Item to insert</param>
         public void Insert(int index, T item)
         {
             throw new NotSupportedException("Cannot insert into a sorted list");
         }
 
+        /// <summary>
+        /// Removes the item at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
         public void RemoveAt(int index)
         {
             IBinaryTreeNode<T, int> node = this.MoveToIndex(index);
@@ -213,6 +276,11 @@ namespace VDS.Common.Collections
             }
         }
 
+        /// <summary>
+        /// Gets the value at the given index, setting the value at an index is unsupported
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Value</returns>
         public T this[int index]
         {
             get { return this.MoveToIndex(index).Key; }

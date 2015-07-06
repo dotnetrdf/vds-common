@@ -82,6 +82,9 @@ namespace VDS.Common.Tries
 #endif
         }
 
+        /// <summary>
+        /// Enters an upgradeable read lock on this node
+        /// </summary>
         protected internal void EnterUpgradeableReadLock()
         {
 #if !PORTABLE
@@ -91,6 +94,9 @@ namespace VDS.Common.Tries
 #endif
         }
 
+        /// <summary>
+        /// Exits an upgradeable read lock on this node
+        /// </summary>
         protected internal void ExitUpgradeableReadLock()
         {
 #if !PORTABLE

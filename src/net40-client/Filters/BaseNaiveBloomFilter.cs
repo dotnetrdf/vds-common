@@ -55,6 +55,9 @@ namespace VDS.Common.Filters
             this.NumberOfBits = bits;
         }
 
+        /// <summary>
+        /// Gets the number of hash functions
+        /// </summary>
         public override int NumberOfHashFunctions
         {
             get { return this._hashFunctions.Count; }

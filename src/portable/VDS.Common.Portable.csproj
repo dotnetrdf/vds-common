@@ -347,4 +347,9 @@
       <Link>Collections\Enumerations\ProbabilisticDistinctEnumerator.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Trees\IBinaryTree.cs">
+      <Link>Trees\IBinaryTree.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

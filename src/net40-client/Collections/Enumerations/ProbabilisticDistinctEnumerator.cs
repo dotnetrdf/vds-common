@@ -68,6 +68,9 @@ namespace VDS.Common.Collections.Enumerations
             return false;
         }
 
+        /// <summary>
+        /// Resets the bloom filter used
+        /// </summary>
         protected override void ResetInternal()
         {
             this.Filter.Clear();

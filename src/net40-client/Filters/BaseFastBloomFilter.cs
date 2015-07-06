@@ -58,8 +58,16 @@ namespace VDS.Common.Filters
             this._h2 = h2;
         }
 
+        /// <summary>
+        /// Gets the number of hash functions
+        /// </summary>
         public override int NumberOfHashFunctions { get { return this._parameters.NumberOfHashFunctions; } }
 
+        /// <summary>
+        /// Converts the item into a number of bit indices
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>Bit Indices</returns>
         protected override IEnumerable<int> GetBitIndices(T item)
         {
             int a = this._h1(item);

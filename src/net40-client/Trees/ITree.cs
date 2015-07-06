@@ -132,8 +132,4 @@ namespace VDS.Common.Trees
         /// </summary>
         void Clear();
     }
-    public interface IBinaryTree<TKey, TValue>
-        : IIndexAccessTree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>
-    { }
-
 }

@@ -67,14 +67,26 @@ namespace VDS.Common.Collections
             get { return BoundedListOverflowPolicy.Error; }
         }
 
+        /// <summary>
+        /// Gets the maximum capacity of the list
+        /// </summary>
         public override int MaxCapacity { get; protected set; }
 
+        /// <summary>
+        /// Inserts an item into the list at the given index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="item">Item to insert</param>
         public override void Insert(int index, T item)
         {
             if (this._list.Count == this.MaxCapacity) throw new InvalidOperationException("Cannot insert an item to this bounded list since it would cause the configured capacity of " + this.MaxCapacity + " to be exceeded");
             this._list.Insert(index, item);
         }
 
+        /// <summary>
+        /// Adds an item to the list
+        /// </summary>
+        /// <param name="item">Item</param>
         public override void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) throw new InvalidOperationException("Cannot add an item to this bounded list since it would cause the configured capacity of " + this.MaxCapacity + " to be exceeded");
