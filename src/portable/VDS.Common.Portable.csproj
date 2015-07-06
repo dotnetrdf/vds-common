@@ -339,4 +339,12 @@
       <Link>Comparers\ReversedComparer.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\net40-client\Collections\Enumerations\ProbabilisticDistinctEnumerable.cs">
+      <Link>Collections\Enumerations\ProbabilisticDistinctEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\net40-client\Collections\Enumerations\ProbabilisticDistinctEnumerator.cs">
+      <Link>Collections\Enumerations\ProbabilisticDistinctEnumerator.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
