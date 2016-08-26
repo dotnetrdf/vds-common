@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Visual Design Studios")]
 [assembly: AssemblyProduct("VDS.Common")]
-[assembly: AssemblyCopyright("Copyright © Robert Vesse 2012-2014")]
+[assembly: AssemblyCopyright("Copyright © Robert Vesse and others 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
