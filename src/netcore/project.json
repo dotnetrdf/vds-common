@@ -18,7 +18,8 @@
   "buildOptions": {
     "compile": {
       "include": [ "../net40-client/**/*.cs" ]
-    }
+    },
+    "outputName": "VDS.Common"
   }
 }
 
