@@ -5,9 +5,9 @@
     <title>VDS.Common</title>
     <version>$version$</version>
     <authors>RobVesse,kal_ahmed</authors>
-    <owners>RobVesse</owners>
+    <owners>RobVesse,kal_ahmed</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>http://bitbucket.org/rvesse/vds-common</projectUrl>
+    <projectUrl>https://github.com/dotnetrdf/vds-common</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</description>
     <releaseNotes>

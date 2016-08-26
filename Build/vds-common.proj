@@ -3,11 +3,11 @@
     <NoPortable Condition="'$(NoPortable)' == ''">False</NoPortable>
     <CommonLicenseExcludeExts>dll,pdb,exe,xml,csproj,user,template,cache,orig</CommonLicenseExcludeExts>
     <CommonLicenseExcludeRegex>hg|svn|obj|bin|packages.config</CommonLicenseExcludeRegex>
-    <CommonLicenseSearch>Copyright (c) 2009-2015 Robert Vesse</CommonLicenseSearch>
+    <CommonLicenseSearch>Copyright (c) 2009-2016 Robert Vesse and others</CommonLicenseSearch>
     <CommonLicenseReplace>License.txt</CommonLicenseReplace>
     <CommonLicenseOverwrite>-overwrite</CommonLicenseOverwrite>
     <CommonKeyFile>$(MSBuildProjectDirectory)\..\VDS.Common.snk</CommonKeyFile>
-    <CommonVersion>1.7.0</CommonVersion>
+    <CommonVersion>1.7.0-pre1</CommonVersion>
     <CommonZip>VDS.Common.$(CommonVersion).zip</CommonZip>
     <CommonSrczip>VDS.Common.$(CommonVersion).Source.zip</CommonSrczip>
   </PropertyGroup>
@@ -42,6 +42,7 @@
     <MSBuild Projects="../src/portable/VDS.Common.Portable.csproj"
              Properties="Configuration=Debug;SolutionDir=$(MSBuildProjectDirectory)\..\"
              Condition="!$(NoPortable)"/>
+	<Exec Command='"C:\Program Files\dotnet\dotnet.exe" build "..\src\netcore" --configuration Debug --no-dependencies'/>
   </Target>
 
   <Target Name="Build" DependsOnTargets="Compile">
@@ -49,11 +50,13 @@
       <Net40Client Include="../src/net40-client/bin/Debug/VDS.Common.dll;../src/net40-client/bin/Debug/VDS.Common.xml;../src/net40-client/bin/Debug/VDS.Common.pdb"/>
       <Net35Client Include="../src/net35-client/bin/Debug/VDS.Common.dll;../src/net35-client/bin/Debug/VDS.Common.xml;../src/net35-client/bin/Debug/VDS.Common.pdb"/>
       <Portable Include="../src/portable/bin/Debug/VDS.Common.dll;../src/portable/bin/Debug/VDS.Common.xml;../src/portable/bin/Debug/VDS.Common.pdb"/>
+	  <NetCore Include="../src/netcore/bin/Debug/netstandard1.4/VDS.Common.dll;../src/netcore/bin/Debug/netstandard1.4/VDS.Common.deps.json;../src/netcore/bin/Debug/netstandard1.4/VDS.Common.pdb"/>
     </ItemGroup>
     
     <Copy SourceFiles="@(Net40Client)" DestinationFolder="NuGet/lib/net40-client"/>
     <Copy SourceFiles="@(Net35Client)" DestinationFolder="NuGet/lib/net35-client"/>
     <Copy SourceFiles="@(Portable)" DestinationFolder="NuGet/lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" Condition="!$(NoPortable)"/>
+	<Copy SourceFiles="@(NetCore)" DestinationFolder="NuGet/lib/netstandard1.4" />
   </Target>
   
   <Target Name="Clean" DependsOnTargets="CleanIntermediaries;CleanDist" />
