@@ -1,0 +1,19 @@
+# File types to ignore
+*.cache
+*.suo
+*.user
+*.nupkg
+*.lock.json
+
+# Build artifacts to ignore
+bin/
+Bin/
+obj/
+TestResults/
+Build/NuGet/lib
+*.zip
+packages/
+Backup/
+
+# Visual Studio config
+.vs/
