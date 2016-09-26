@@ -23,7 +23,9 @@ For documentation on the features this library provides please see the [Wiki][4]
 
 # Build Status
 
-[![Build status](https://ci.appveyor.com/api/projects/status/v889x025ow5b76qb)](https://ci.appveyor.com/project/rvesse/vds-common)
+[![Develop Branch](https://ci.appveyor.com/api/projects/status/3bru28e2e3j18hm9/branch/develop?svg=true)](https://ci.appveyor.com/project/kal/vds-common)
+
+[![Master Branch](https://ci.appveyor.com/api/projects/status/3bru28e2e3j18hm9/branch/master?svg=true)](https://ci.appveyor.com/project/kal/vds-common/branch/master)
 
 # Acknowledgements
 
