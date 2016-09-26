@@ -9,7 +9,14 @@ string preRelease = null;
 var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
 var distDir = "./dist/" + nugetVersion;
 
+Task("NuGetRestore")
+	.Does(() =>
+{
+	NuGetRestore("VDS.Common.sln");
+});
+
 Task("Compile")
+	.IsDependentOn("NuGetRestore")
 	.Does(() =>
 {
 	DotNetBuild("VDS.Common.sln", settings => 
