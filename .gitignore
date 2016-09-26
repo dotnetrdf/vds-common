@@ -15,6 +15,7 @@ Build/NuGet/lib
 packages/
 Backup/
 dist/
+doc/Help
 
 # Created by Cake
 tools/
