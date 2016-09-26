@@ -5,7 +5,10 @@ This is the Change Log for VDS.Common
 
 1.7.0
 -----
+
 - Added .NET Core build targeting the netstandard1.4 framework
+- Changed build system to Cake (http://cakebuild.net/)
+- Added API documentation to the build (using Sandcastle Help File Builder)
 
 
 1.6.0
