@@ -1,3 +1,4 @@
+
 # Introduction
 
 VDS.Common is a lightweight, dependency-free library of useful advanced data structures such as Trees, Tries and indexing tailored dictionaries.
@@ -17,7 +18,11 @@ VDS.Common is licensed under the MIT License
 
 # Usage and Documentation
 
+Releases can be found [here on GitHub](https://github.com/dotnetrdf/vds-common/releases). From 1.7.0 the GitHub release includes a ZIP file containing the compiled binaries and a CHM of the API documentation.
+
 To use VDS.Common simply add a reference to the DLL for the appropriate .Net version to your project.  If you are using NuGet simply search for VDS.Common and install it that way.
+
+[![NuGet](https://img.shields.io/nuget/v/VDS.Common.svg?maxAge=2592000)](https://www.nuget.org/packages/VDS.Common)
 
 For documentation on the features this library provides please see the [Wiki][4].
 
