@@ -1,4 +1,5 @@
 #tool "nuget:?package=NUnit.Runners&version=2.6.4"
+#tool "nuget:?package=EWSoftware.SHFB"
 #addin "nuget:?package=NuGet.Core&version=2.12.0"
 #addin "Cake.ExtendedNuGet"
 
@@ -75,25 +76,42 @@ Task("CopyBinaries")
 	CopyDirectory("./Build/NuGet/lib", distDir + "/lib");
 });
 
-Task("BinariesZip")
+Task("Doc")
+	.IsDependentOn("Compile")
+	.Does(() =>
+{
+	MSBuild("./doc/vds-common.shfbproj");
+});
+
+Task("CopyCHM")
+	.IsDependentOn("Doc")
+	.IsDependentOn("DistDir")
+	.Does(() =>
+{
+	EnsureDirectoryExists(distDir + "/doc");
+	CopyFile("./doc/Help/VDS.Common.API.chm", distDir + "/doc/VDS.Common.API.chm");
+});
+
+Task("DistZip")
 	.IsDependentOn("CopyBinaries")
+	.IsDependentOn("CopyCHM")
 	.Does(() =>
 {
 	var files = GetFiles(distDir+"/lib/**/*.*");
 	files.Add(GetFiles(distDir + "/doc/**/*.*"));
-	Zip(distDir, "VDS.Common." + nugetVersion + "-bin.zip", files);
+	Zip(distDir, distDir + "/VDS.Common." + nugetVersion + "-bin.zip", files);
 });
 
 Task("Dist")
+	.IsDependentOn("Test")
 	.IsDependentOn("DistDir")
 	.IsDependentOn("NuGet")
-	.IsDependentOn("BinariesZip");
+	.IsDependentOn("DistZip");
 
 Task("Default")
   .IsDependentOn("Dist")
   .Does(() =>
 {
-  Information("Hello World!");
 });
 
 RunTarget(target);
