@@ -104,7 +104,7 @@ namespace VDS.Common.Collections
                     // Should never exceed list capacity
                     Assert.IsFalse(list.Count > list.MaxCapacity);
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     // If this error occurs then we expect the list to be full
                     Assert.AreEqual(list.MaxCapacity, list.Count);
@@ -442,7 +442,7 @@ namespace VDS.Common.Collections
                     // Should never exceed list capacity
                     Assert.IsFalse(list.Count > list.MaxCapacity);
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     // If this error occurs then we expect the list to be full
                     Assert.AreEqual(list.MaxCapacity, list.Count);
@@ -492,7 +492,7 @@ namespace VDS.Common.Collections
                     // Should never exceed list capacity
                     Assert.IsFalse(list.Count > list.MaxCapacity);
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     // If this error occurs then we expect the list to be full
                     Assert.AreEqual(list.MaxCapacity, list.Count);

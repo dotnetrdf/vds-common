@@ -31,7 +31,11 @@ namespace VDS.Common.References
     /// <typeparam name="T">Reference Type</typeparam>
     /// <remarks>
     /// <para>
-    /// Essentially the ThreadIsolatedReference guarantees that each thread that accesses it sees a thread-specific view of the reference.  The initial value of the reference for each Thread is generated either by an initialiser function passed to the constructor when the ThreadSafeReference is created or otherwise is null.  This is essentially what the <see cref="ThreadLocal{T}"/> introduced in .Net 4.0 does but we continue to use this our own wrapper because we need backwards compatibility with .Net 3.5 and ThreadLocal does not play quite right with some of our usage patterns
+    /// Essentially the ThreadIsolatedReference guarantees that each thread that accesses it sees a thread-specific view of the reference.  
+    /// The initial value of the reference for each Thread is generated either by an initialiser function passed to the constructor when 
+    /// the ThreadSafeReference is created or otherwise is null.  This is essentially what the ThreadLocal&lt;T&gt; introduced in .Net 4.0 
+    /// does but we continue to use this our own wrapper because we need backwards compatibility with .Net 3.5 and ThreadLocal does not 
+    /// play quite right with some of our usage patterns
     /// </para>
     /// </remarks>
     public class ThreadIsolatedReference<T> 
