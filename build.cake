@@ -1,4 +1,4 @@
-#tool "nuget:?package=NUnit.Runners"
+#tool "nuget:?package=NUnit.Runners&version=2.6.4"
 #tool "nuget:?package=EWSoftware.SHFB"
 #addin "nuget:?package=NuGet.Core"
 
