@@ -1,11 +1,10 @@
 #tool "nuget:?package=NUnit.Runners&version=2.6.4"
 #tool "nuget:?package=EWSoftware.SHFB"
-#addin "nuget:?package=NuGet.Core&version=2.12.0"
-#addin "Cake.ExtendedNuGet"
+#addin "nuget:?package=NuGet.Core"
 
 var target = Argument("target", "Default");
-var version = "1.7.0";
-string preRelease = null;
+var version = "1.8.0";
+string preRelease = "pre1";
 var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
 var distDir = "./dist/" + nugetVersion;
 
@@ -29,7 +28,8 @@ Task("Test")
 	.IsDependentOn("Compile")
 	.Does(() => 
 {
-	NUnit("./test/bin/release/VDS.Common.Test.dll");
+	var settings = new NUnitSettings { Exclude="Timing" };
+	NUnit("./test/bin/release/VDS.Common.Test.dll", settings);
 });
 
 Task("DistDir")
@@ -60,6 +60,8 @@ Task("CopyNuGetLib")
     CopyFiles("./src/portable/bin/Release/VDS.Common.*", "./Build/NuGet/lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1");
 	EnsureDirectoryExists("./Build/NuGet/lib/netstandard1.4");
     CopyFiles("./src/netcore/bin/Release/netstandard1.4/VDS.Common.*", "./Build/NuGet/lib/netstandard1.4");
+	EnsureDirectoryExists("./Build/NuGet/lib/netstandard1.0");
+    CopyFiles("./src/netcore/bin/Release/netstandard1.0/VDS.Common.*", "./Build/NuGet/lib/netstandard1.0");
 });
 
 Task("NuGet")

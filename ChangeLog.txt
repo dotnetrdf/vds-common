@@ -3,6 +3,12 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+1.8.0
+-----
+
+- Added support for the netstandard1.0 framework. Due to the lack of the Thread class on this framework, the class VDS.Common.References.ThreadIsolatedReference is not supported on this framework.
+
+
 1.7.0
 -----
 
