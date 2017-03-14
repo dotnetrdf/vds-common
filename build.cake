@@ -28,7 +28,8 @@ Task("Test")
 	.IsDependentOn("Compile")
 	.Does(() => 
 {
-	NUnit("./test/bin/release/VDS.Common.Test.dll");
+	var settings = new NUnitSettings { Exclude="Timing" };
+	NUnit("./test/bin/release/VDS.Common.Test.dll", settings);
 });
 
 Task("DistDir")
