@@ -19,6 +19,8 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#if !NO_THREAD
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -237,3 +239,4 @@ namespace VDS.Common.References
         }
     }
 }
+#endif

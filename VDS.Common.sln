@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{320B10FC-8206-473F-9901-89A0D5FF5B00}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Net35", "src\net
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDS.Common.Portable", "src\portable\VDS.Common.Portable.csproj", "{3E259A2C-D877-4ABC-A8ED-4C0AFDAED530}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "VDS.Common.NetCore", "src\netcore\VDS.Common.NetCore.xproj", "{A164681B-8A6F-4145-8EAB-77EBA720DADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "netcore", "src\netcore\netcore.csproj", "{A164681B-8A6F-4145-8EAB-77EBA720DADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
