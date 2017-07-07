@@ -11,18 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</description>
     <releaseNotes>
-- Three hashing approaches are now available for Bloom Filters:
-    - Naive - the existing implementation that gives full control to devlopers
-    - Fast - uses approach from http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&amp;rep=rep1&amp;type=pdf
-    - Hybrid - uses a hybrid of the naive and fast approaches
-- ISparseArray now has a Clear() method
-- New DuplicateSortedList for cases where you need to have a sorted list that supports duplicate items
-- New Collections.Enumerations namespace with various useful enumerables and suitable extension methods for invoking these in fluent style
-- New ReferenceEqualityComparer for when you need reference equality only
-- New ReversedComparer for reversing the ordering given by another comparer
-- Support for indexed access into binary trees
-- Improved locking strategy for non-sparse tries to improve performance
-- Filled out missing XML doc comments
+	Added support for the netstandard1.0 framework. Due to the lack of the Thread class on this framework, the class VDS.Common.References.ThreadIsolatedReference is not supported on this framework.
     </releaseNotes>
     <tags>Data Structures Tree Trie Binary AVL Scapegoat Dictionary Collections Sparse Arrays Bloom Filters Enumerations Comparers</tags>
   </metadata>

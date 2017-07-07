@@ -19,8 +19,9 @@
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\src\net40-client\bin\Release\VDS.Common.dll" />
-<DocumentationSource sourceFile="..\src\net40-client\bin\Release\VDS.Common.xml" /></DocumentationSources>
-    <HelpFileVersion>1.7.0</HelpFileVersion>
+      <DocumentationSource sourceFile="..\src\net40-client\bin\Release\VDS.Common.xml" />
+    </DocumentationSources>
+    <HelpFileVersion>1.8.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>

@@ -216,6 +216,7 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPathological1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -260,6 +261,7 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPathological2()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -305,6 +307,7 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryInsertPathological1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -348,6 +351,7 @@ namespace VDS.Common.Collections
         }
 
         [TestCase(50000), TestCase(100000), TestCase(250000)]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryInsertNormal1(int numKeys)
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -391,6 +395,7 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPool1()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -435,6 +440,7 @@ namespace VDS.Common.Collections
         }
 
         [Test]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPool2()
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
@@ -480,6 +486,7 @@ namespace VDS.Common.Collections
         }
 
         [TestCase(1000), TestCase(10000), TestCase(100000), TestCase(250000)]
+        [Category("Timing")]
         public void MultiDictionaryVsDictionaryInsertPool1(int numKeys)
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
