@@ -4,7 +4,7 @@
     <Description>Common data structures for .NET projects (.NET Core Build)</Description>
     <Copyright>Copyright (c) Robert Vesse and others 2012-2016</Copyright>
     <AssemblyTitle>VDS.Common</AssemblyTitle>
-    <VersionPrefix>1.7.0</VersionPrefix>
+    <VersionPrefix>1.8.0</VersionPrefix>
     <Authors>Rob Vesse;Khalil Ahmed</Authors>
     <TargetFrameworks>netstandard1.4;netstandard1.0</TargetFrameworks>
     <AssemblyName>VDS.Common</AssemblyName>

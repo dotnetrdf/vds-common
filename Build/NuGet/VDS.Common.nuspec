@@ -12,6 +12,7 @@
     <description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</description>
     <releaseNotes>
 	Added support for the netstandard1.0 framework. Due to the lack of the Thread class on this framework, the class VDS.Common.References.ThreadIsolatedReference is not supported on this framework.
+    .NET Standard assemblies are now signed
     </releaseNotes>
     <tags>Data Structures Tree Trie Binary AVL Scapegoat Dictionary Collections Sparse Arrays Bloom Filters Enumerations Comparers</tags>
   </metadata>
