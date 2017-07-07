@@ -4,7 +4,7 @@
 
 var target = Argument("target", "Default");
 var version = "1.8.0";
-string preRelease = "";
+string preRelease = null;
 var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
 var distDir = "./dist/" + nugetVersion;
 
@@ -22,6 +22,11 @@ Task("Compile")
 		settings.SetConfiguration("Release")
 			.WithTarget("Build")
 			.WithProperty("TreatWarningsAsErrors", "true"));
+    var coreBuildSettings = new DotNetCoreBuildSettings {
+        Configuration = "Release"
+    };
+    DotNetCoreRestore("./src/netcore/netcore.csproj");
+    DotNetCoreBuild("./src/netcore/netcore.csproj", coreBuildSettings);
 });
 
 Task("Test")
