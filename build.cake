@@ -4,7 +4,7 @@
 
 var target = Argument("target", "Default");
 var version = "1.8.0";
-string preRelease = "pre1";
+string preRelease = "";
 var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
 var distDir = "./dist/" + nugetVersion;
 
