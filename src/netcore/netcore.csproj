@@ -6,11 +6,12 @@
     <AssemblyTitle>VDS.Common</AssemblyTitle>
     <VersionPrefix>1.8.0</VersionPrefix>
     <Authors>Rob Vesse;Khalil Ahmed</Authors>
-    <TargetFrameworks>netstandard1.4;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;netstandard1.0;netstandard2.0</TargetFrameworks>
     <AssemblyName>VDS.Common</AssemblyName>
     <PackageId>netcore</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.0' ">1.6.0</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.1</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.0' ">1.6.1</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.0' ">2.0.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
