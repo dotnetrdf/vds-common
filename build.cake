@@ -3,8 +3,8 @@
 #addin "nuget:?package=NuGet.Core"
 
 var target = Argument("target", "Default");
-var version = "1.8.0";
-string preRelease = null;
+var version = "1.9.0";
+string preRelease = "alpha";
 var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
 var distDir = "./dist/" + nugetVersion;
 
@@ -67,6 +67,8 @@ Task("CopyNuGetLib")
     CopyFiles("./src/netcore/bin/Release/netstandard1.4/VDS.Common.*", "./Build/NuGet/lib/netstandard1.4");
 	EnsureDirectoryExists("./Build/NuGet/lib/netstandard1.0");
     CopyFiles("./src/netcore/bin/Release/netstandard1.0/VDS.Common.*", "./Build/NuGet/lib/netstandard1.0");
+	EnsureDirectoryExists("./Build/NuGet/lib/netstandard2.0");
+    CopyFiles("./src/netcore/bin/Release/netstandard2.0/VDS.Common.*", "./Build/NuGet/lib/netstandard2.0");
 });
 
 Task("NuGet")
