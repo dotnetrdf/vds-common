@@ -28,11 +28,11 @@ artifacts:
   - path: 'dist\%GitVersion_NuGetVersion%\doc\*.chm'
   - path: 'dist\%GitVersion_NuGetVersion%\*.zip'
  
- deploy:
-   - provider: GitHub
-     description: 'VDS.Common $(GitVersion_SemVer)'
-     auth_token:
-       secure: 9uAqwz07wsvnlfr0vvwMLRU0sTRg9mDN+CR+UcNQq3G34mBmsE/witNYuI2u8WVC
-     on:
-       appveyor_repo_tag: false
-     artifact: /.*\.nupkg/, /.*\.zip/, /.*\.chm/
+deploy:
+  - provider: GitHub
+    description: 'VDS.Common $(GitVersion_SemVer)'
+    auth_token:
+      secure: 9uAqwz07wsvnlfr0vvwMLRU0sTRg9mDN+CR+UcNQq3G34mBmsE/witNYuI2u8WVC
+    on:
+      appveyor_repo_tag: false
+    artifact: /.*\.nupkg/, /.*\.zip/, /.*\.chm/
