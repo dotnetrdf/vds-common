@@ -116,11 +116,14 @@ Task("DistZip")
 	Zip(distDir, distDir + "/VDS.Common." + nugetVersion + "-bin.zip", files);
 });
 
-Task("Dist")
-	.IsDependentOn("Test")
+Task("DistNoTest")
 	.IsDependentOn("DistDir")
 	.IsDependentOn("NuGet")
 	.IsDependentOn("DistZip");
+
+Task("Dist")
+	.IsDependentOn("Test")
+	.IsDependentOn("DistNoTest");
 
 Task("Default")
   .IsDependentOn("Dist")
