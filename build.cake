@@ -80,7 +80,7 @@ Task("NuGet")
 		OutputDirectory = "./dist/" + nugetVersion
 	};
 	Information("packSettings.Version: " + packSettings.Version);
-	Information("packSettings.OutputDirectory: " + packSettings.OutputDirectory)
+	Information("packSettings.OutputDirectory: " + packSettings.OutputDirectory);
 	NuGetPack("./Build/NuGet/VDS.Common.nuspec", packSettings);
 });
 
