@@ -3,6 +3,11 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+1.9.0
+-----
+
+- Added support for netstandard 2.0 framework.
+
 1.8.0
 -----
 
