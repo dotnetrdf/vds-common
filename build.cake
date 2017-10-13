@@ -3,9 +3,7 @@
 #addin "nuget:?package=NuGet.Core"
 
 var target = Argument("target", "Default");
-var version = "1.9.0";
-string preRelease = "alpha";
-var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
+var nugetVersion = Argument<string>("nugetVersion", "0.0.0-alpha");
 var distDir = "./dist/" + nugetVersion;
 
 Task("NuGetRestore")

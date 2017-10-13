@@ -18,4 +18,13 @@ before_build:
 configuration: Release
 
 build_script:
-  - ps: .\build.ps1 -Target Compile
+  - ps: .\build.ps1 -Target Compile -ScriptArgs '-nugetVersion="%GitVersion_NuGetVersion%"'
+  
+after_test:
+  - cmd: msbuild doc\vds-common.shfbproj /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:Configuration=%CONFIGURATION% /p:HelpFileVersion=%GitVersion_NuGetVersion%
+
+artifacts:
+  - path: 'dist\%GitVersion_NuGetVersion%\*.nupkg'
+  - path: 'dist\%GitVersion_NuGetVersion%\doc\*.chm'
+  - path: 'dist\%GitVersion_NuGetVersion%\*.zip'
+  
