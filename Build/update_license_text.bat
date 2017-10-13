@@ -1,0 +1,1 @@
+LicenseChecker.exe -directory ..\src -license-search "Copyright \(c\) 20\d{2}-20\d{2} dotNetRDF Project" -include-exts cs -exclude obj -license-file ..\License.txt -fix -overwrite

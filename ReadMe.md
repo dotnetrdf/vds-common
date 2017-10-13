@@ -10,8 +10,9 @@ VDS.Common is built for a variety of .Net versions and profiles, currently we ha
 - .Net 3.5 Full/Client Profile
 - .Net 4.0 Full/Client Profile
 - Portable Class Library Profile 328
-- .NET Core netstandard1.4
 - .NET Core netstandard1.0
+- .NET Core netstandard1.4
+- .NET Core netstandard2.0
 
 # License
 
@@ -29,7 +30,7 @@ For documentation on the features this library provides please see the [Wiki][4]
 
 # Build Status
 
-[Master Branch](https://github.com/dotnetrdf/vds-common/tree/master): [![Master Branch](https://ci.appveyor.com/api/projects/status/3bru28e2e3j18hm9/branch/master)](https://ci.appveyor.com/project/kal/vds-common/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/2818kcvj12mv1j9d/branch/master?svg=true)](https://ci.appveyor.com/project/dotNetRDFadmin/vds-common/branch/master)
 
 # Acknowledgements
 
@@ -38,7 +39,7 @@ Other contributions were aslo received from the following GitHub users:
 
 - @amardeepsingh
 
-[1]: http://dotnetrdf.github.io/
+[1]: http://dotnetrdf.org/
 [2]: https://bitbucket.org/dotnetrdf/dotnetrdf/src/4365cd7d087158b72c2e4053879bede2e194cdec/Libraries/core/net40/Common?at=default
 [3]: https://bitbucket.org/dotnetrdf/dotnetrdf/src/3378cdd89cc59dedb294657085da648946d76bb4/Libraries/core/Common?at=default
 [4]: https://github.com/dotnetrdf/vds-common/wiki/Home
