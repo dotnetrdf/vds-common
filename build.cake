@@ -3,9 +3,7 @@
 #addin "nuget:?package=NuGet.Core"
 
 var target = Argument("target", "Default");
-var version = "1.9.0";
-string preRelease = "alpha";
-var nugetVersion = version + (preRelease == null ? "" : "-" + preRelease);
+var nugetVersion = Argument<string>("nugetVersion", "0.0.0-alpha");
 var distDir = "./dist/" + nugetVersion;
 
 Task("NuGetRestore")
@@ -76,10 +74,13 @@ Task("NuGet")
 	.IsDependentOn("DistDir")
 	.Does(() =>
 {
+	Information("nugetVersion: " + nugetVersion);
     var packSettings = new NuGetPackSettings {
 		Version = nugetVersion,
 		OutputDirectory = "./dist/" + nugetVersion
 	};
+	Information("packSettings.Version: " + packSettings.Version);
+	Information("packSettings.OutputDirectory: " + packSettings.OutputDirectory);
 	NuGetPack("./Build/NuGet/VDS.Common.nuspec", packSettings);
 });
 
@@ -118,11 +119,14 @@ Task("DistZip")
 	Zip(distDir, distDir + "/VDS.Common." + nugetVersion + "-bin.zip", files);
 });
 
-Task("Dist")
-	.IsDependentOn("Test")
+Task("DistNoTest")
 	.IsDependentOn("DistDir")
 	.IsDependentOn("NuGet")
 	.IsDependentOn("DistZip");
+
+Task("Dist")
+	.IsDependentOn("Test")
+	.IsDependentOn("DistNoTest");
 
 Task("Default")
   .IsDependentOn("Dist")
