@@ -18,8 +18,10 @@ before_build:
 configuration: Release
 
 build_script:
+  - ps: .\build.ps1 -Target Compile -ScriptArgs '-nugetVersion="$Env:GitVersion_NuGetVersion"'
   
 after_test:
+  - ps: .\build.ps1 -Target DistNoTest -ScriptArgs '-nugetVersion="$Env:GitVersion_NuGetVersion"'
 
 artifacts:
   - path: 'dist\%GitVersion_NuGetVersion%\*.nupkg'
