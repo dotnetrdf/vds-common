@@ -74,10 +74,13 @@ Task("NuGet")
 	.IsDependentOn("DistDir")
 	.Does(() =>
 {
+	Information("nugetVersion: " + nugetVersion);
     var packSettings = new NuGetPackSettings {
 		Version = nugetVersion,
 		OutputDirectory = "./dist/" + nugetVersion
 	};
+	Information("packSettings.Version: " + packSettings.Version);
+	Information("packSettings.OutputDirectory: " + packSettings.OutputDirectory)
 	NuGetPack("./Build/NuGet/VDS.Common.nuspec", packSettings);
 });
 
