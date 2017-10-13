@@ -34,5 +34,5 @@ artifacts:
      auth_token:
        secure: 9uAqwz07wsvnlfr0vvwMLRU0sTRg9mDN+CR+UcNQq3G34mBmsE/witNYuI2u8WVC
      on:
-       appveyor_repo_tag: true
+       appveyor_repo_tag: false
      artifact: /.*\.nupkg/, /.*\.zip/, /.*\.chm/
