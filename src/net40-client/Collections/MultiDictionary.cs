@@ -256,7 +256,7 @@ namespace VDS.Common.Collections
                 if (removed && tree.Root == null)
                 {
                   // Clear up empty trees
-                  this._dict.Remove(key);
+                  this._dict.Remove(hash);
                 }
                 return removed;
             }
