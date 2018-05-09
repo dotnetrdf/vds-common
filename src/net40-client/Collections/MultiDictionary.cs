@@ -252,7 +252,13 @@ namespace VDS.Common.Collections
             int hash = this._hashFunc(key);
             if (this._dict.TryGetValue(hash, out tree))
             {
-                return tree.Remove(key);
+                bool removed = tree.Remove(key);
+                if (removed && tree.Root == null)
+                {
+                  // Clear up empty trees
+                  this._dict.Remove(hash);
+                }
+                return removed;
             }
             else
             {
