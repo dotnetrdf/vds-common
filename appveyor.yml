@@ -13,6 +13,7 @@ install:
 
 
 before_build:
+  - dotnet restore VDS.Common.sln
   - ps: gitversion /l console /output buildserver /updateassemblyinfo
 
 configuration: Release
