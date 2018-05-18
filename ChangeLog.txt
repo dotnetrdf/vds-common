@@ -3,6 +3,11 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+1.10.0
+------
+
+- BUGFIX: Fix for memory usage on remove from MultiDictionary. When removing from a MultiDictionary check if the tree used for the hash code is now empty and if so remove that tree.
+
 1.9.0
 -----
 
