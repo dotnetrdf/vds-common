@@ -3,7 +3,7 @@
     <AssemblyTitle>VDS.Common.Test</AssemblyTitle>
     <AssemblyName>VDS.Common.Test</AssemblyName>
     <RootNamespace>VDS.Common</RootNamespace>
-    <TargetFrameworks>net6;net7;net472</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net472</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../src/VDS.Common.csproj" />
