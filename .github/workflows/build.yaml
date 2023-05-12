@@ -37,7 +37,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: code-coverage-windows test ${{matrix.framework}}
-        path: Test\VDS.Common.Test\TestResults\**\coverage.cobertura.xml
+        path: test\TestResults\**\coverage.cobertura.xml
   report:
     needs: [ "test-windows", "test-linux" ]
     runs-on: windows-latest
