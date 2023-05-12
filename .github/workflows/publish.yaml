@@ -53,7 +53,7 @@ jobs:
       run: choco install sandcastle --version 2022.2.6.0
       
     - name: Build Assemblies
-      run: dotnet build VDS.Common.sln
+      run: dotnet build --configuration=Release VDS.Common.sln
       
     - name: Build Docs
       run: dotnet build doc\vds-common.shfbproj /p:SHFBROOT="C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder"
