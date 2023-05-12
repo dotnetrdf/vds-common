@@ -15,12 +15,12 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Tests
-      run: dotnet test -c Release --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" Test/VDS.Common.Test
+      run: dotnet test -c Release --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" test
     - name: Upload Code Coverage
       uses: actions/upload-artifact@v3
       with:
-        name: code-coverage-windows ${{matrix.suite}} ${{matrix.framework}}
-        path: Test\VDS.Common.Test\TestResults\**\coverage.cobertura.xml
+        name: code-coverage-windows test ${{matrix.framework}}
+        path: test\TestResults\**\coverage.cobertura.xml
   test-linux:
     runs-on: ubuntu-latest
     strategy:
@@ -32,11 +32,11 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Tests
-      run: dotnet test -c Release --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" Test/VDS.Common.Test
+      run: dotnet test -c Release --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" test
     - name: Upload Code Coverage
       uses: actions/upload-artifact@v3
       with:
-        name: code-coverage-windows ${{matrix.suite}} ${{matrix.framework}}
+        name: code-coverage-windows test ${{matrix.framework}}
         path: Test\VDS.Common.Test\TestResults\**\coverage.cobertura.xml
   report:
     needs: [ "test-windows", "test-linux" ]
