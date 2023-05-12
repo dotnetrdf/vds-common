@@ -32,145 +32,149 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryInstantiation1()
         {
-            MultiDictionary<String, int> dict = new MultiDictionary<string, int>();
+            MultiDictionary<string, int> dict = new MultiDictionary<string, int>();
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling1()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            dict.Add(null, 1);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => dict.Add(null, 1));
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling2()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            int i = dict[null];
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var _ = dict[null];
+            });
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling3()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            int i;
-            dict.TryGetValue(null, out i);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out var i));
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling4()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            dict[null] = 1;
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => { dict[null] = 1; });
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling5()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            dict.Add(new KeyValuePair<Object, int>(null, 1));
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => { dict.Add(new KeyValuePair<object, int>(null, 1)); });
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling6()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            dict.Remove(null);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => dict.Remove(null));
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling7()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            dict.Remove(new KeyValuePair<Object, int>(null, 1));
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => dict.Remove(new KeyValuePair<object, int>(null, 1)));
         }
 
-        [Test, ExpectedException(typeof (ArgumentNullException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling8()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>();
-            dict.ContainsKey(null);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => { dict.ContainsKey(null); });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling10()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Contains(new KeyValuePair<Object, int>(null, 1));
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            dict.Contains(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling11()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Add(null, 1);
         }
 
-        [Test, ExpectedException(typeof (KeyNotFoundException))]
+        [Test]
         public void MultiDictionaryNullKeyHandling12()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            int i = dict[null];
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var _ = dict[null];
+            });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling13()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            int i;
-            dict.TryGetValue(null, out i);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            dict.TryGetValue(null, out var i);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling14()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict[null] = 1;
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling15()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Add(new KeyValuePair<Object, int>(null, 1));
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            dict.Add(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling16()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.Remove(null);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling17()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Remove(new KeyValuePair<Object, int>(null, 1));
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            dict.Remove(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling18()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
             dict.ContainsKey(null);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling19()
         {
-            MultiDictionary<Object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Contains(new KeyValuePair<Object, int>(null, 1));
+            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            dict.Contains(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryVsDictionaryInsertBasic1()
         {
-            Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>();
-            MultiDictionary<TestKey<String>, int> mDict = new MultiDictionary<TestKey<String>, int>(new TestKeyComparer<String>());
+            Dictionary<TestKey<string>, int> dict = new Dictionary<TestKey<string>, int>();
+            MultiDictionary<TestKey<string>, int> mDict = new MultiDictionary<TestKey<string>, int>(new TestKeyComparer<string>());
 
-            TestKey<String> a = new TestKey<String>(1, "a");
-            TestKey<String> b = new TestKey<String>(1, "b");
+            TestKey<string> a = new TestKey<string>(1, "a");
+            TestKey<string> b = new TestKey<string>(1, "b");
 
             dict.Add(a, 1);
             try
@@ -196,11 +200,11 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryVsDictionaryInsertBasic2()
         {
-            Dictionary<TestKey<String>, int> dict = new Dictionary<TestKey<String>, int>(new TestKeyComparer<String>());
-            MultiDictionary<TestKey<String>, int> mDict = new MultiDictionary<TestKey<String>, int>(new TestKeyComparer<String>());
+            Dictionary<TestKey<string>, int> dict = new Dictionary<TestKey<string>, int>(new TestKeyComparer<string>());
+            MultiDictionary<TestKey<string>, int> mDict = new MultiDictionary<TestKey<string>, int>(new TestKeyComparer<string>());
 
-            TestKey<String> a = new TestKey<String>(1, "a");
-            TestKey<String> b = new TestKey<String>(1, "b");
+            TestKey<string> a = new TestKey<string>(1, "a");
+            TestKey<string> b = new TestKey<string>(1, "b");
 
             dict.Add(a, 1);
             dict.Add(b, 2);

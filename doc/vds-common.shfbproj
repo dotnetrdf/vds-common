@@ -13,14 +13,15 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>VDS.Common.API</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\src\net40-client\bin\Release\VDS.Common.dll" />
-      <DocumentationSource sourceFile="..\src\net40-client\bin\Release\VDS.Common.xml" />
+      <DocumentationSource sourceFile="..\src\bin\Release\netstandard2.0\VDS.Common.dll" />
+      <DocumentationSource sourceFile="..\src\bin\Release\netstandard2.0\VDS.Common.xml" />
     </DocumentationSources>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <HelpFileVersion>1.8.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>

@@ -33,146 +33,152 @@ namespace VDS.Common.Collections
         /// Gets the instance of a dictionary for use in a test
         /// </summary>
         /// <returns></returns>
-        protected abstract IDictionary<String, int> GetInstance();
+        protected abstract IDictionary<string, int> GetInstance();
 
-        [TestAttribute, ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void DictionaryContractAdd1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
-            dict.Add("key", 2);
+            Assert.Throws<ArgumentException>(() => dict.Add("key", 2));
         }
         
-        [TestAttribute, ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void DictionaryContractAdd2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            dict.Add(new KeyValuePair<String, int>("key", 1));
-            dict.Add(new KeyValuePair<String, int>("key", 2));
+            dict.Add(new KeyValuePair<string, int>("key", 1));
+            Assert.Throws<ArgumentException>(() => dict.Add(new KeyValuePair<string, int>("key", 2)));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractRemove1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Remove("key"));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractRemove2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.Remove("key"));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractRemove3()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
-            Assert.IsTrue(dict.Remove(new KeyValuePair<String, int>("key", 1)));
+            Assert.IsTrue(dict.Remove(new KeyValuePair<string, int>("key", 1)));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractRemove4()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
-            Assert.IsFalse(dict.Remove(new KeyValuePair<String, int>("key", 2)));
+            Assert.IsFalse(dict.Remove(new KeyValuePair<string, int>("key", 2)));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractContains1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.ContainsKey("key"));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractContains2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.ContainsKey("key"));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractContains3()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
-            Assert.IsTrue(dict.Contains(new KeyValuePair<String, int>("key", 1)));
+            Assert.IsTrue(dict.Contains(new KeyValuePair<string, int>("key", 1)));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractContains4()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
-            Assert.IsFalse(dict.Contains(new KeyValuePair<String, int>("key", 2)));
+            Assert.IsFalse(dict.Contains(new KeyValuePair<string, int>("key", 2)));
         }
 
-        [TestAttribute, ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void DictionaryContractItemGet1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value = dict["key"];
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var _ = dict["key"];
+            });
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemGet2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             Assert.AreEqual(1, dict["key"]);
         }
 
-        [TestAttribute,ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void DictionaryContractItemGet3()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             dict.Remove("key");
-            int value = dict["key"];
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var _ = dict["key"];
+            });
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemSet1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict["key"] = 1;
             Assert.AreEqual(1, dict["key"]);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemSet2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             dict["key"] = 2;
             Assert.AreEqual(2, dict["key"]);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemSet3()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict["key"] = 1;
             dict.Remove("key");
@@ -180,98 +186,97 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, dict["key"]);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractTryGetValue1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value;
-            Assert.IsFalse(dict.TryGetValue("key", out value));
+            Assert.IsFalse(dict.TryGetValue("key", out _));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractTryGetValue2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value;
             dict.Add("key", 1);
-            Assert.IsTrue(dict.TryGetValue("key", out value));
+            Assert.IsTrue(dict.TryGetValue("key", out var value));
             Assert.AreEqual(1, value);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractKeys1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.Keys.Any());
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractKeys2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Keys.Any());
             Assert.IsTrue(dict.Keys.Contains("key"));
         }
 
-        [TestAttribute,ExpectedException(typeof(NotSupportedException))]
+        [Test]
+        // ,ExpectedException(typeof(NotSupportedException))
         public void DictionaryContractKeys3()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.Keys.Any());
-            dict.Keys.Add("key");
+            Assert.Throws<NotSupportedException>(() => dict.Keys.Add("key"));
             Assert.IsFalse(dict.ContainsKey("key"));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractKeys4()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            ICollection<String> keys = dict.Keys;
+            ICollection<string> keys = dict.Keys;
             Assert.AreEqual(0, keys.Count);
             dict.Add("key", 1);
             Assert.AreEqual(1, keys.Count);
             Assert.AreEqual(1, dict.Count);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractValues1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.Values.Any());
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractValues2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Values.Any());
             Assert.IsTrue(dict.Values.Contains(1));
         }
 
-        [TestAttribute, ExpectedException(typeof(NotSupportedException))]
+        [Test]
         public void DictionaryContractValues3()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.Values.Any());
-            dict.Values.Add(1);
+            Assert.Throws<NotSupportedException>(() => dict.Values.Add(1));
             Assert.IsFalse(dict.Values.Contains(1));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractValues4()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             ICollection<int> values = dict.Values;
             Assert.AreEqual(0, values.Count);
@@ -285,80 +290,83 @@ namespace VDS.Common.Collections
     public abstract class AbstractDictionaryWithNullKeysAllowedContractTests
         : AbstractDictionaryContractTests
     {
-        [TestAttribute]
+        [Test]
         public void DictionaryContractAddNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add(null, 1);
             Assert.AreEqual(1, dict[null]);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractRemoveNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.Remove(null));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractRemoveNullKey2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add(null, 1);
             Assert.IsTrue(dict.Remove(null));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractContainsNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             Assert.IsFalse(dict.ContainsKey(null));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractContainsNullKey2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add(null, 1);
             Assert.IsTrue(dict.ContainsKey(null));
         }
 
-        [TestAttribute, ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void DictionaryContractItemGetNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value = dict[null];
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var _= dict[null];
+            });
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemGetNullKey2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add(null, 1);
             int value = dict[null];
             Assert.AreEqual(1, value);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemSetNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict[null] = 1;
             Assert.AreEqual(1, dict[null]);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractItemSetNullKey2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict[null] = 1;
             Assert.AreEqual(1, dict[null]);
@@ -366,23 +374,21 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, dict[null]);
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractTryGetValueNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value;
-            Assert.IsFalse(dict.TryGetValue(null, out value));
+            Assert.IsFalse(dict.TryGetValue(null, out _));
         }
 
-        [TestAttribute]
+        [Test]
         public void DictionaryContractTryGetValueNullKey2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add(null, 1);
-            int value;
-            Assert.IsTrue(dict.TryGetValue(null, out value));
+            Assert.IsTrue(dict.TryGetValue(null, out var value));
             Assert.AreEqual(1, value);
         }
     }
@@ -391,53 +397,55 @@ namespace VDS.Common.Collections
     public abstract class AbstractDictionaryWithNullKeysForbiddenContractTests
         : AbstractDictionaryContractTests
     {
-        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void DictionaryContractAddNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            dict.Add(null, 1);
+            Assert.Throws<ArgumentNullException>(() => dict.Add(null, 1));
         }
 
-        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void DictionaryContractRemoveNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            Assert.IsFalse(dict.Remove(null));
+            Assert.Throws<ArgumentNullException>(() =>dict.Remove(null));
         }
 
-        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void DictionaryContractContainsNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            Assert.IsFalse(dict.ContainsKey(null));
+            Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
         }
 
-        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void DictionaryContractItemGetNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value = dict[null];
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var _= dict[null];
+            });
         }
 
-        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void DictionaryContractItemSetNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            dict[null] = 1;
+            Assert.Throws<ArgumentNullException>(() => dict[null] = 1);
         }
 
-        [TestAttribute, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void DictionaryContractTryGetValueNullKey1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
-            int value;
-            Assert.IsFalse(dict.TryGetValue(null, out value));
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out var value));
         }
     }
 
@@ -477,7 +485,7 @@ namespace VDS.Common.Collections
     {
         protected override IDictionary<string, int> GetInstance()
         {
-            return new TreeSortedDictionary<String, int>();
+            return new TreeSortedDictionary<string, int>();
         }
     }
 }

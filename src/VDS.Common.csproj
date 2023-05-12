@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>VDS.Common</AssemblyName>
+        <AssemblyTitle>VDS.Common</AssemblyTitle>
+        <RootNamespace>VDS.Common</RootNamespace>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+        <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>../VDS.Common.snk</AssemblyOriginatorKeyFile>
+        <PublicSign>true</PublicSign>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>VDS.Common</PackageId>
+        <Title>VDS.Common</Title>
+        <Description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</Description>
+        <PackageProjectUrl>http://www.dotnetrdf.org</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RequiresLicenseAcceptance>false</RequiresLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/dotnetrdf/vds-common</RepositoryUrl>
+        <Authors>RobVesse;kal_ahmed</Authors>
+        <PackageTags>Data Structures;Tree;Trie;Binary AVL;Scapegoat Dictionary;Collections;Sparse Arrays;Bloom Filters;Enumerations;Comparers</PackageTags>
+    </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="System.Threading.Thread" Version="4.0.0" />
+  </ItemGroup>
+</Project>

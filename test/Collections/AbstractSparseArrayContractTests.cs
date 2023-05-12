@@ -36,10 +36,10 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public abstract ISparseArray<int> CreateInstance(int length);
 
-        [Test, ExpectedException(typeof (ArgumentException))]
+        [Test]
         public void SparseArrayBadInstantiation()
         {
-            this.CreateInstance(-1);
+            Assert.Throws<ArgumentException>(()=> this.CreateInstance(-1));
         }
 
         [Test]
@@ -49,18 +49,24 @@ namespace VDS.Common.Collections
             Assert.AreEqual(0, array.Length);
         }
 
-        [Test, ExpectedException(typeof (IndexOutOfRangeException))]
+        [Test]
         public void SparseArrayEmpty2()
         {
             ISparseArray<int> array = this.CreateInstance(0);
-            int i = array[0];
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                var _ = array[0];
+            });
         }
 
-        [Test, ExpectedException(typeof (IndexOutOfRangeException))]
+        [Test]
         public void SparseArrayEmpty3()
         {
             ISparseArray<int> array = this.CreateInstance(0);
-            int i = array[-1];
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                var _ = array[-1];
+            });
         }
 
         [TestCase(1),
@@ -94,12 +100,14 @@ namespace VDS.Common.Collections
          TestCase(250),
          TestCase(500),
          TestCase(1000),
-         TestCase(10000),
-         ExpectedException(typeof (IndexOutOfRangeException))]
+         TestCase(10000)]
         public void SparseArrayGetSet2(int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
-            int i = array[-1];
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                var _ = array[-1];
+            });
         }
 
         [TestCase(1),
@@ -109,12 +117,14 @@ namespace VDS.Common.Collections
          TestCase(250),
          TestCase(500),
          TestCase(1000),
-         TestCase(10000),
-         ExpectedException(typeof (IndexOutOfRangeException))]
+         TestCase(10000)]
         public void SparseArrayGetSet3(int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
-            int i = array[length];
+            Assert.Throws<IndexOutOfRangeException>(() =>
+            {
+                var _ = array[length];
+            });
         }
 
         [TestCase(1),

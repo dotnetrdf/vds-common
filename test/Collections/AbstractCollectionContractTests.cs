@@ -33,53 +33,53 @@ namespace VDS.Common.Collections
         /// Method to be implemented by deriving classes to provide the instance to test
         /// </summary>
         /// <returns>Instance to test</returns>
-        protected abstract ICollection<String> GetInstance();
+        protected abstract ICollection<string> GetInstance();
 
         /// <summary>
         /// Method to be implemented by deriving classes to provide the instance to test
         /// </summary>
         /// <param name="contents">Contents for the collection</param>
         /// <returns>Instance to test</returns>
-        protected abstract ICollection<String> GetInstance(IEnumerable<String> contents);
+        protected abstract ICollection<string> GetInstance(IEnumerable<string> contents);
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void CollectionContractCopyTo1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
-            c.CopyTo(null, 0);
+            Assert.Throws<ArgumentNullException>(()=>c.CopyTo(null, 0));
         }
 
-        [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void CollectionContractCopyTo2()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
-            c.CopyTo(new String[10], -1);
+            Assert.Throws<ArgumentOutOfRangeException>(()=>c.CopyTo(new string[10], -1));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void CollectionContractCopyTo3()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
-            c.CopyTo(new String[1], 2);
+            Assert.Throws<ArgumentException>(() => c.CopyTo(new string[1], 2));
         }
 
         [Test]
         public void CollectionContractCopyTo4()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
-            c.CopyTo(new String[1], 0);
+            c.CopyTo(new string[1], 0);
         }
 
         [Test]
         public void CollectionContractCopyTo5()
         {
-            ICollection<String> c = this.GetInstance(new String[] { "test" });
+            ICollection<string> c = this.GetInstance(new string[] { "test" });
 
-            String[] dest = new String[1];
+            string[] dest = new string[1];
             c.CopyTo(dest, 0);
             Assert.AreEqual("test", dest[0]);
         }
@@ -87,10 +87,10 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCopyTo6()
         {
-            String[] data = new String[] { "a", "a", "b", "c" };
-            ICollection<String> c = this.GetInstance(data);
+            string[] data = new string[] { "a", "a", "b", "c" };
+            ICollection<string> c = this.GetInstance(data);
 
-            String[] dest = new String[data.Length];
+            string[] dest = new string[data.Length];
             c.CopyTo(dest, 0);
             Assert.AreEqual(data, dest);
         }
@@ -98,9 +98,9 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractEnumerate1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
-            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            using (IEnumerator<string> enumerator = c.GetEnumerator())
             {
                 Assert.IsFalse(enumerator.MoveNext());
             }
@@ -109,9 +109,9 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractEnumerate2()
         {
-            ICollection<String> c = this.GetInstance(new String[] { "test" });
+            ICollection<string> c = this.GetInstance(new string[] { "test" });
 
-            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            using (IEnumerator<string> enumerator = c.GetEnumerator())
             {
                 Assert.IsTrue(enumerator.MoveNext());
                 Assert.AreEqual("test", enumerator.Current);
@@ -122,9 +122,9 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractEnumerate3()
         {
-            ICollection<String> c = this.GetInstance(new String[] { "a", "b" });
+            ICollection<string> c = this.GetInstance(new string[] { "a", "b" });
 
-            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            using (IEnumerator<string> enumerator = c.GetEnumerator())
             {
                 Assert.IsTrue(enumerator.MoveNext());
                 Assert.AreEqual("a", enumerator.Current);
@@ -137,10 +137,10 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractEnumerate4()
         {
-            String[] values = new String[] { "a", "a", "b", "c", "d", "e", "e" };
-            ICollection<String> c = this.GetInstance(values);
+            string[] values = new string[] { "a", "a", "b", "c", "d", "e", "e" };
+            ICollection<string> c = this.GetInstance(values);
 
-            using (IEnumerator<String> enumerator = c.GetEnumerator())
+            using (IEnumerator<string> enumerator = c.GetEnumerator())
             {
                 int index = 0;
                 while (index < values.Length)
@@ -155,28 +155,28 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCount1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
             Assert.AreEqual(0, c.Count);
         }
 
         [Test]
         public void CollectionContractCount2()
         {
-            ICollection<String> c = this.GetInstance(new String[] { "test" });
+            ICollection<string> c = this.GetInstance(new string[] { "test" });
             Assert.AreEqual(1, c.Count);
         }
 
         [Test]
         public void CollectionContractContains1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
             Assert.IsFalse(c.Contains("test"));
         }
 
         [Test]
         public void CollectionContractContains2()
         {
-            ICollection<String> c = this.GetInstance(new String[] { "test" });
+            ICollection<string> c = this.GetInstance(new string[] { "test" });
             Assert.IsTrue(c.Contains("test"));
         }
     }
@@ -185,25 +185,25 @@ namespace VDS.Common.Collections
     public abstract class AbstractImmutableCollectionContractTests
         : AbstractCollectionContractTests
     {
-        [Test, ExpectedException(typeof(NotSupportedException))]
+        [Test]
         public void CollectionContractAdd1()
         {
-            ICollection<String> c = this.GetInstance();
-            c.Add("test");
+            ICollection<string> c = this.GetInstance();
+            Assert.Throws<NotSupportedException>(()=>c.Add("test"));
         }
 
-        [Test, ExpectedException(typeof(NotSupportedException))]
+        [Test]
         public void CollectionContractRemove1()
         {
-            ICollection<String> c = this.GetInstance();
-            c.Remove("test");
+            ICollection<string> c = this.GetInstance();
+            Assert.Throws<NotSupportedException>(() => c.Remove("test"));
         }
 
-        [Test, ExpectedException(typeof(NotSupportedException))]
+        [Test]
         public void CollectionContractClear1()
         {
-            ICollection<String> c = this.GetInstance();
-            c.Clear();
+            ICollection<string> c = this.GetInstance();
+            Assert.Throws<NotSupportedException>(() => c.Clear());
         }
     }
 
@@ -214,7 +214,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractAdd1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
             c.Add("test");
             Assert.IsTrue(c.Contains("test"));
@@ -224,7 +224,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractAdd2()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
             for (int i = 0; i < 100; i++)
             {
@@ -237,7 +237,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractRemove1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
             c.Add("test");
             Assert.IsTrue(c.Contains("test"));
@@ -248,7 +248,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractRemove2()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
             c.Add("test");
             c.Add("test");
@@ -262,7 +262,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractClear1()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
             Assert.AreEqual(0, c.Count);
             c.Clear();
@@ -272,7 +272,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractClear2()
         {
-            ICollection<String> c = this.GetInstance();
+            ICollection<string> c = this.GetInstance();
 
             c.Add("test");
             Assert.IsTrue(c.Contains("test"));
@@ -289,12 +289,12 @@ namespace VDS.Common.Collections
     {
         protected override ICollection<string> GetInstance()
         {
-            return new List<String>();
+            return new List<string>();
         }
 
         protected override ICollection<string> GetInstance(IEnumerable<string> contents)
         {
-            return new List<String>(contents);
+            return new List<string>(contents);
         }
     }
 
@@ -304,12 +304,12 @@ namespace VDS.Common.Collections
     {
         protected override ICollection<string> GetInstance()
         {
-            return new ImmutableView<String>();
+            return new ImmutableView<string>();
         }
 
         protected override ICollection<string> GetInstance(IEnumerable<string> contents)
         {
-            return new ImmutableView<String>(contents);
+            return new ImmutableView<string>(contents);
         }
     }
 
@@ -319,12 +319,12 @@ namespace VDS.Common.Collections
     {
         protected override ICollection<string> GetInstance()
         {
-            return new MaterializedImmutableView<String>();
+            return new MaterializedImmutableView<string>();
         }
 
         protected override ICollection<string> GetInstance(IEnumerable<string> contents)
         {
-            return new MaterializedImmutableView<String>(contents);
+            return new MaterializedImmutableView<string>(contents);
         }
     }
 
