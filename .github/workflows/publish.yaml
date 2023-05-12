@@ -1,0 +1,107 @@
+name: Publish
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  nuget:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.10
+      with:
+        versionSpec: '5.x'
+
+    - name: GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.10
+      with:
+        useConfigFile: true
+      
+    - name: Show GitVersion Value
+      run: |
+        echo "NuGetVersionV2: ${{ steps.gitversion.outputs.NuGetVersionV2 }}"
+        echo "NuGetVersion: ${{ steps.gitversion.outputs.NuGetVersion }}"
+        echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.NuGetPreReleaseTagV2 }}"
+        echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.NuGetPreReleaseTag }}"
+        
+    - name: Build solution
+      run: dotnet pack --configuration=Release -p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
+      
+    - name: Upload NuGet Packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: nuget
+        path: src\bin\Release\*.nupkg
+
+    - name: Publish NuGet Packages
+      run: nuget push src\bin\Release\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{ secrets.NUGET_API_KEY }}
+
+  docs:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Install Sandcastle
+      run: choco install sandcastle --version 2022.2.6.0
+      
+    - name: Build Assemblies
+      run: dotnet build VDS.Common.sln
+      
+    - name: Build Docs
+      run: dotnet build doc\vds-common.shfbproj /p:SHFBROOT="C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder"
+   
+    - name: Get version tag
+      id: version_tag
+      run: |
+        [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
+        echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
+      shell: bash
+        
+    - name: Create Relase Zip
+      run: 7z a -tzip vds_common_apidocs_${{ steps.version_tag.outputs.value }}.zip Help
+      working-directory: doc
+      
+    - name: Upload Release zip
+      uses: actions/upload-artifact@v3
+      with:
+        name: help
+        path: doc\*.zip
+          
+  
+  release:
+    runs-on: windows-latest
+    needs: [nuget, docs]
+    
+    steps:
+    - name: Get Binaries
+      id: get_binaries
+      uses: actions/download-artifact@v3
+      with:
+        name: nuget
+    - name: Get Help
+      id: get_help
+      uses: actions/download-artifact@v3
+      with:
+        name: help
+    - name: List downloads
+      run: ls -R
+      shell: bash
+    - name: Create Relase
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        prerelease: true
+        files: |
+          *.zip
+          *.nupkg
