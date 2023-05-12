@@ -1,0 +1,62 @@
+name: Unit Tests
+on: [push, pull_request, workflow_dispatch]
+env:
+    VSTEST_CONNECTION_TIMEOUT: 180
+
+jobs:
+  test-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        framework: ["net6.0", "net7.0", "net472"]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Run Tests
+      run: dotnet test -c Release --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" Test/VDS.Common.Test
+    - name: Upload Code Coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-windows ${{matrix.suite}} ${{matrix.framework}}
+        path: Test\VDS.Common.Test\TestResults\**\coverage.cobertura.xml
+  test-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        framework: ["net6.0", "net7.0"]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Run Tests
+      run: dotnet test -c Release --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" Test/VDS.Common.Test
+    - name: Upload Code Coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-windows ${{matrix.suite}} ${{matrix.framework}}
+        path: Test\VDS.Common.Test\TestResults\**\coverage.cobertura.xml
+  report:
+    needs: [ "test-windows", "test-linux" ]
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Download coverage artifacts
+      uses: actions/download-artifact@v3
+    - name: Generate coverage report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.10
+      with:
+        reports: '*\*\*.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'HtmlInline;Cobertura;Badges'
+        tag: '${{ github.run_number }}_${{ github.run_id }}'
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coveragereport\*
