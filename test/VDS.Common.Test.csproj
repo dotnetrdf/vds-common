@@ -3,13 +3,15 @@
     <AssemblyTitle>VDS.Common.Test</AssemblyTitle>
     <AssemblyName>VDS.Common.Test</AssemblyName>
     <RootNamespace>VDS.Common</RootNamespace>
-    <TargetFramework>net6</TargetFramework>
+    <TargetFrameworks>net6;net7;net472</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../src/VDS.Common.csproj"/>
+    <ProjectReference Include="../src/VDS.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="2.6.4"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
   </ItemGroup>
 </Project>
 <!--

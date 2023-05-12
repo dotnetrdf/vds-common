@@ -30,12 +30,12 @@ namespace VDS.Common.Collections
     public abstract class AbstractSortedDictionaryContractTests
         : AbstractDictionaryContractTests
     {
-        protected abstract IDictionary<String, int> GetInstance(IComparer<String> comparer);
+        protected abstract IDictionary<string, int> GetInstance(IComparer<string> comparer);
 
         [Test]
         public void DictionaryContractSortedKeys1()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("a", 1);
             dict.Add("b", 2);
@@ -43,7 +43,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(dict["a"], 1);
             Assert.AreEqual(dict["b"], 2);
 
-            ICollection<String> keys = dict.Keys;
+            ICollection<string> keys = dict.Keys;
             Assert.AreEqual("a", keys.First());
             Assert.AreEqual("b", keys.Last());
         }
@@ -51,7 +51,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractSortedKeys2()
         {
-            IDictionary<String, int> dict = this.GetInstance();
+            IDictionary<string, int> dict = this.GetInstance();
 
             dict.Add("b", 1);
             dict.Add("a", 2);
@@ -59,7 +59,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(dict["b"], 1);
             Assert.AreEqual(dict["a"], 2);
 
-            ICollection<String> keys = dict.Keys;
+            ICollection<string> keys = dict.Keys;
             Assert.AreEqual("a", keys.First());
             Assert.AreEqual("b", keys.Last());
         }
@@ -71,12 +71,12 @@ namespace VDS.Common.Collections
     {
         protected override IDictionary<string, int> GetInstance()
         {
-            return new SortedDictionary<String, int>();
+            return new SortedDictionary<string, int>();
         }
 
         protected override IDictionary<string, int> GetInstance(IComparer<string> comparer)
         {
-            return new SortedDictionary<String, int>(comparer);
+            return new SortedDictionary<string, int>(comparer);
         }
     }
 
@@ -86,12 +86,12 @@ namespace VDS.Common.Collections
     {
         protected override IDictionary<string, int> GetInstance()
         {
-            return new TreeSortedDictionary<String, int>();
+            return new TreeSortedDictionary<string, int>();
         }
 
         protected override IDictionary<string, int> GetInstance(IComparer<string> comparer)
         {
-            return new TreeSortedDictionary<String, int>(comparer);
+            return new TreeSortedDictionary<string, int>(comparer);
         }
     }
 }

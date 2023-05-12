@@ -29,12 +29,12 @@ namespace VDS.Common.Tries
     [TestFixture, Category("Tries")]
     public abstract class AbstractTrieContractTests
     {
-        protected abstract ITrie<String, char, String> GetInstance();
+        protected abstract ITrie<string, char, string> GetInstance();
 
         [Test]
         public void TrieContractAdd1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
 
             Assert.AreEqual("a", trie["test"]);
@@ -43,7 +43,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractAdd2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
@@ -54,7 +54,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractClear1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
 
             Assert.AreEqual("a", trie["test"]);
@@ -67,7 +67,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractClear2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
@@ -83,7 +83,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractContains1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
@@ -94,8 +94,8 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractContains2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
-            String key = "test";
+            ITrie<string, char, string> trie = this.GetInstance();
+            string key = "test";
             trie.Add(key, "a");
 
             Assert.IsTrue(trie.ContainsKey(key));
@@ -109,7 +109,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractRemove1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
@@ -125,7 +125,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractRemove2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
@@ -141,21 +141,19 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractTryGetValue1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            String value;
-            Assert.IsFalse(trie.TryGetValue("test", out value));
+            Assert.IsFalse(trie.TryGetValue("test", out _));
         }
 
         [Test]
         public void TrieContractTryGetValue2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
-            String value;
-            Assert.IsTrue(trie.TryGetValue("test", out value));
+            Assert.IsTrue(trie.TryGetValue("test", out var value));
             Assert.AreEqual("a", value);
             Assert.IsTrue(trie.TryGetValue("testing", out value));
             Assert.AreEqual("b", value);
@@ -164,12 +162,11 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractTryGetValue3()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
-            String key = "test";
+            ITrie<string, char, string> trie = this.GetInstance();
+            string key = "test";
             trie.Add(key, "a");
 
-            String value;
-            Assert.IsTrue(trie.TryGetValue(key, out value));
+            Assert.IsTrue(trie.TryGetValue(key, out var value));
             Assert.AreEqual("a", value);
             for (int i = 1; i < key.Length; i++)
             {
@@ -181,7 +178,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractItemGet1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
 
             Assert.AreEqual("a", trie["test"]);
@@ -190,7 +187,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractItemGet2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
             trie.Add("test", "a");
             trie.Add("testing", "b");
 
@@ -198,18 +195,19 @@ namespace VDS.Common.Tries
             Assert.AreEqual("b", trie["testing"]);
         }
 
-        [Test, ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void TrieContractItemGet3()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
-
-            Assert.AreEqual(null, trie["test"]);
+            ITrie<string, char, string> trie = this.GetInstance();
+            string result = null;
+            Assert.Throws<KeyNotFoundException>(() => result = trie["test"]);
+            Assert.AreEqual(null, result);
         }
 
         [Test]
         public void TrieContractItemSet1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.ContainsKey("test"));
 
@@ -222,7 +220,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractItemSet2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.ContainsKey("test"));
 
@@ -239,7 +237,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractValues1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.Values.Any());
         }
@@ -247,7 +245,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractValues2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.Values.Any());
 
@@ -260,9 +258,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractValues3()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            IEnumerable<String> values = trie.Values;
+            IEnumerable<string> values = trie.Values;
 
             Assert.IsFalse(values.Any());
 
@@ -275,7 +273,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractValues4()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.Values.Any());
 
@@ -293,9 +291,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractValues5()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            IEnumerable<String> values = trie.Values;
+            IEnumerable<string> values = trie.Values;
 
             Assert.IsFalse(values.Any());
 
@@ -313,7 +311,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractDescendants1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.Root.Descendants.Any());
         }
@@ -321,7 +319,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractDescendants2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.Root.Descendants.Any());
 
@@ -334,9 +332,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractDescendants3()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            IEnumerable<ITrieNode<char, String>> descendants = trie.Root.Descendants;
+            IEnumerable<ITrieNode<char, string>> descendants = trie.Root.Descendants;
 
             Assert.IsFalse(descendants.Any());
 
@@ -349,7 +347,7 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractDescendants4()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
             Assert.IsFalse(trie.Root.Descendants.Any());
 
@@ -367,9 +365,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractDescendants5()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            IEnumerable<ITrieNode<char, String>> descendants = trie.Root.Descendants;
+            IEnumerable<ITrieNode<char, string>> descendants = trie.Root.Descendants;
 
             Assert.IsFalse(descendants.Any());
 
@@ -387,18 +385,18 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractMoveToNode1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.MoveToNode("test");
+            ITrieNode<char, string> node = trie.MoveToNode("test");
             Assert.IsNotNull(node);
         }
 
         [Test]
         public void TrieContractMoveToNode2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.MoveToNode("test");
+            ITrieNode<char, string> node = trie.MoveToNode("test");
             Assert.IsNotNull(node);
             Assert.AreEqual(4, trie.Count);
 
@@ -410,18 +408,18 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractFind1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.Find("test");
+            ITrieNode<char, string> node = trie.Find("test");
             Assert.IsNull(node);
         }
 
         [Test]
         public void TrieContractFind2()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.Find("test");
+            ITrieNode<char, string> node = trie.Find("test");
             Assert.IsNull(node);
 
             trie.Add("test", "a");
@@ -434,9 +432,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractFind3()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.Find("test");
+            ITrieNode<char, string> node = trie.Find("test");
             Assert.IsNull(node);
 
             trie.Add("test", "a");
@@ -448,9 +446,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractFind4()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.Find("test");
+            ITrieNode<char, string> node = trie.Find("test");
             Assert.IsNull(node);
 
             trie.Add("test", "a");
@@ -464,9 +462,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractFindPredecessor1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.FindPredecessor("test");
+            ITrieNode<char, string> node = trie.FindPredecessor("test");
             Assert.IsNull(node);
 
             trie.Add("test", "a");
@@ -504,9 +502,9 @@ namespace VDS.Common.Tries
         [Test]
         public void TrieContractFindSuccessor1()
         {
-            ITrie<String, char, String> trie = this.GetInstance();
+            ITrie<string, char, string> trie = this.GetInstance();
 
-            ITrieNode<char, String> node = trie.FindSuccessor("test");
+            ITrieNode<char, string> node = trie.FindSuccessor("test");
             Assert.IsNull(node);
 
             trie.Add("test", "a");
@@ -547,9 +545,9 @@ namespace VDS.Common.Tries
     public class TrieContractTests
         : AbstractTrieContractTests
     {
-        protected override ITrie<string, char, String> GetInstance()
+        protected override ITrie<string, char, string> GetInstance()
         {
-            return new StringTrie<String>();
+            return new StringTrie<string>();
         }
     }
 
@@ -557,9 +555,9 @@ namespace VDS.Common.Tries
     public class TrieContractTests2
         : AbstractTrieContractTests
     {
-        protected override ITrie<string, char, String> GetInstance()
+        protected override ITrie<string, char, string> GetInstance()
         {
-            return new Trie<String, char, String>(StringTrie<String>.KeyMapper);
+            return new Trie<string, char, string>(StringTrie<string>.KeyMapper);
         }
     }
 
@@ -569,7 +567,7 @@ namespace VDS.Common.Tries
     {
         protected override ITrie<string, char, string> GetInstance()
         {
-            return new SparseStringTrie<String>();
+            return new SparseStringTrie<string>();
         }
     }
 
@@ -579,7 +577,7 @@ namespace VDS.Common.Tries
     {
         protected override ITrie<string, char, string> GetInstance()
         {
-            return new SparseCharacterTrie<String, String>(StringTrie<String>.KeyMapper);
+            return new SparseCharacterTrie<string, string>(StringTrie<string>.KeyMapper);
         }
     }
 
@@ -589,7 +587,7 @@ namespace VDS.Common.Tries
     {
         protected override ITrie<string, char, string> GetInstance()
         {
-            return new SparseValueTrie<String, char, String>(StringTrie<String>.KeyMapper);
+            return new SparseValueTrie<string, char, string>(StringTrie<string>.KeyMapper);
         }
     }
 }

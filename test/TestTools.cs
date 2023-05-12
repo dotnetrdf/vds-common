@@ -28,7 +28,7 @@ namespace VDS.Common
 {
     public static class TestTools
     {
-        public static void PrintEnumerable<T>(IEnumerable<T> items, String sep)
+        public static void PrintEnumerable<T>(IEnumerable<T> items, string sep)
             where T : class
         {
             bool first = true;
@@ -42,11 +42,11 @@ namespace VDS.Common
                 {
                     first = false;
                 }
-                Console.Write((item != null ? item.ToString() : String.Empty));
+                Console.Write((item != null ? item.ToString() : string.Empty));
             }
         }
 
-        public static void PrintEnumerableStruct<T>(IEnumerable<T> items, String sep)
+        public static void PrintEnumerableStruct<T>(IEnumerable<T> items, string sep)
             where T : struct
         {
             bool first = true;

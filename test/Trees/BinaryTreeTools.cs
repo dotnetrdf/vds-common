@@ -36,7 +36,7 @@ namespace VDS.Common.Trees
             Console.WriteLine();
         }
 
-        public static String PrintBinaryTreeNodeStructs<TNode, TKey>(TNode node)
+        public static string PrintBinaryTreeNodeStructs<TNode, TKey>(TNode node)
             where TNode : class, IBinaryTreeNode<TKey, TKey>
             where TKey : struct
         {
@@ -48,7 +48,7 @@ namespace VDS.Common.Trees
             builder.AppendLine("{");
             builder.AppendLine("  Key: " + node.Key);
             builder.AppendLine("  Value: " + node.Value);
-            String lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
+            string lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
             if (lhs.Contains('\n'))
             {
                 builder.Append("  Left Child: ");
@@ -58,7 +58,7 @@ namespace VDS.Common.Trees
             {
                 builder.AppendLine("  Left Child: " + lhs);
             }
-            String rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
+            string rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
             if (rhs.Contains('\n'))
             {
                 builder.Append("  Right Child: ");
@@ -72,9 +72,9 @@ namespace VDS.Common.Trees
             return builder.ToString();
         }
 
-        private static String AddIndent(String input)
+        private static string AddIndent(string input)
         {
-            String[] lines = input.Split('\n');
+            string[] lines = input.Split('\n');
             StringBuilder output = new StringBuilder();
             for (int i = 0; i < lines.Length; i++)
             {
