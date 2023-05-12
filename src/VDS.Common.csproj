@@ -8,6 +8,7 @@
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>../VDS.Common.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup>
