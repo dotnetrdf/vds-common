@@ -139,7 +139,7 @@ namespace VDS.Common.Trees
             }
             //Iteratively binary search for the key
             IBinaryTreeNode<TKey, TValue> current = this.Root;
-            IBinaryTreeNode<TKey, TValue> parent = null;
+            IBinaryTreeNode<TKey, TValue> parent;
             int c;
             do
             {
