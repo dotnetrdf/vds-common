@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>VDS.Common</AssemblyName>
         <AssemblyTitle>VDS.Common</AssemblyTitle>
@@ -9,7 +9,7 @@
         <PublicSign>true</PublicSign>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
-	    <TargetFrameworks>net6.0;net7.0;net480;net472</TargetFrameworks>
+	    <TargetFrameworks>net6.0;net7.0;net480;net481;net472</TargetFrameworks>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
