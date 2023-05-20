@@ -53,7 +53,7 @@ namespace VDS.Common.Collections
         public void SparseArrayEmpty2()
         {
             ISparseArray<int> array = this.CreateInstance(0);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var _ = array[0];
             });
@@ -63,7 +63,7 @@ namespace VDS.Common.Collections
         public void SparseArrayEmpty3()
         {
             ISparseArray<int> array = this.CreateInstance(0);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var _ = array[-1];
             });
@@ -104,7 +104,7 @@ namespace VDS.Common.Collections
         public void SparseArrayGetSet2(int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var _ = array[-1];
             });
@@ -121,7 +121,7 @@ namespace VDS.Common.Collections
         public void SparseArrayGetSet3(int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var _ = array[length];
             });

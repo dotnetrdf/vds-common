@@ -84,7 +84,7 @@ namespace VDS.Common.Collections
         public void MultiDictionaryNullKeyHandling7()
         {
             MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
-            Assert.Throws<ArgumentNullException>(() => dict.Remove(new KeyValuePair<object, int>(null, 1)));
+            Assert.Throws<InvalidOperationException>(() => dict.Remove(new KeyValuePair<object, int>(null, 1)));
         }
 
         [Test]
