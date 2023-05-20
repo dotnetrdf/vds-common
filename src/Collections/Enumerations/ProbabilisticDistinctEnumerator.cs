@@ -60,7 +60,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         protected override bool TryMoveNext(out T item)
         {
-            item = default(T);
+            item = default;
             while (this.InnerEnumerator.MoveNext())
             {
                 item = this.InnerEnumerator.Current;

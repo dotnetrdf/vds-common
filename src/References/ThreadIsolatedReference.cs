@@ -191,7 +191,7 @@ namespace VDS.Common.References
                     int id = Thread.CurrentThread.ManagedThreadId;
                     if (!this._refs.ContainsKey(id))
                     {
-                        T value = (this._init != null) ? this._init() : default(T);
+                        T value = (this._init != null) ? this._init() : default;
                         this._refs.Add(id, value);
                     }
                     return this._refs[id];

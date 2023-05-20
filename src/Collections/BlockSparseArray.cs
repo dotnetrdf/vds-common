@@ -94,7 +94,7 @@ namespace VDS.Common.Collections
                 if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
-                return block != null ? block[index] : default(T);
+                return block != null ? block[index] : default;
             }
             set
             {
@@ -212,7 +212,7 @@ namespace VDS.Common.Collections
 
                 // If no current block return default value
                 SparseBlock<T> currentBlock = (SparseBlock<T>) this.Blocks.Current;
-                if (currentBlock == null) return default(T);
+                if (currentBlock == null) return default;
 
                 // Otherwise return the value within the block
                 return currentBlock[this.Index];

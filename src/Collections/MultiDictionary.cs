@@ -263,7 +263,7 @@ namespace VDS.Common.Collections
             }
             else
             {
-                value = default(TValue);
+                value = default;
                 return false;
             }
         }
@@ -283,7 +283,7 @@ namespace VDS.Common.Collections
                 IBinaryTreeNode<TKey, TValue> node = tree.Find(key);
                 if (node == null)
                 {
-                    actualKey = default(TKey);
+                    actualKey = default;
                     return false;
                 }
                 else
@@ -294,7 +294,7 @@ namespace VDS.Common.Collections
             }
             else
             {
-                actualKey = default(TKey);
+                actualKey = default;
                 return false;
             }
         }

@@ -133,7 +133,7 @@ namespace VDS.Common.Trees
         {
             if (this.Root == null)
             {
-                this.Root = this.CreateNode(null, key, default(TValue));
+                this.Root = this.CreateNode(null, key, default);
                 created = true;
                 return this.Root;
             }
@@ -163,7 +163,7 @@ namespace VDS.Common.Trees
             } while (current != null);
 
             //Key doesn't exist so need to do an insert
-            current = this.CreateNode(parent, key, default(TValue));
+            current = this.CreateNode(parent, key, default);
             created = true;
             if (c < 0)
             {
@@ -433,7 +433,7 @@ namespace VDS.Common.Trees
                 value = n.Value;
                 return true;
             }
-            value = default(TValue);
+            value = default;
             return false;
         }
 

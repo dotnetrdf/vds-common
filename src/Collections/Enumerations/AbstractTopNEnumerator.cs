@@ -72,7 +72,7 @@ namespace VDS.Common.Collections.Enumerations
             }
 
             // Afterwards we just pull items from that list
-            item = default(T);
+            item = default;
             if (!this.TopItemsEnumerator.MoveNext()) return false;
             item = this.TopItemsEnumerator.Current;
             return true;

@@ -65,7 +65,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </remarks>
         protected override bool TryMoveNext(out T item)
         {
-            item = default(T);
+            item = default;
             if (this.Taken >= this.ToTake) return false;
             if (!this.InnerEnumerator.MoveNext()) return false;
 

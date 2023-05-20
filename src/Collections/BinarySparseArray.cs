@@ -79,7 +79,7 @@ namespace VDS.Common.Collections
             get
             {
                 if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
-                return this._tree.TryGetValue(index, out T value) ? value : default(T);
+                return this._tree.TryGetValue(index, out T value) ? value : default;
             }
             set
             {
@@ -157,9 +157,9 @@ namespace VDS.Common.Collections
                 if (this.Index >= this.Length) throw new InvalidOperationException("Past the end of the enumerator");
 
                 // If no node either the linked list is empty or we've reached the end of it in which case simply return the default value
-                if (this.CurrentNode == null) return default(T);
+                if (this.CurrentNode == null) return default;
                 // If we reached the index of the current node then return the value otherwise we have not reached it yet and we return the default value
-                return this.CurrentNode.Key == this.Index ? this.CurrentNode.Value : default(T);
+                return this.CurrentNode.Key == this.Index ? this.CurrentNode.Value : default;
             }
         }
 

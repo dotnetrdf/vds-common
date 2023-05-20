@@ -82,7 +82,7 @@ namespace VDS.Common.Collections
             {
                 if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in range 0 to {this.Length - 1}");
                 LinkedListNode<SparseArrayEntry<T>> node = this.MoveToNode(index, false);
-                return node == null ? default(T) : node.Value.Value;
+                return node == null ? default : node.Value.Value;
             }
             set
             {
@@ -135,7 +135,7 @@ namespace VDS.Common.Collections
     class SparseArrayEntry<T>
     {
         public SparseArrayEntry(int index)
-            : this(index, default(T)) { }
+            : this(index, default) { }
 
         public SparseArrayEntry(int index, T value)
         {
@@ -202,9 +202,9 @@ namespace VDS.Common.Collections
                 if (this.Index >= this.Length) throw new InvalidOperationException("Past the end of the enumerator");
 
                 // If no node either the linked list is empty or we've reached the end of it in which case simply return the default value
-                if (this.CurrentNode == null) return default(T);
+                if (this.CurrentNode == null) return default;
                 // If we reached the index of the current node then return the value otherwise we have not reached it yet and we return the default value
-                return this.CurrentNode.Value.Index == this.Index ? this.CurrentNode.Value.Value : default(T);
+                return this.CurrentNode.Value.Index == this.Index ? this.CurrentNode.Value.Value : default;
             }
         }
 

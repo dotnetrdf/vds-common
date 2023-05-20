@@ -60,7 +60,7 @@ namespace VDS.Common.Tries
         {
             if (keyMapper == null) throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
             this._keyMapper = keyMapper;
-            this._root = this.CreateRoot(default(TKeyBit));
+            this._root = this.CreateRoot(default);
             this.KeyBitComparer = Comparer<TKeyBit>.Default;
         }
 

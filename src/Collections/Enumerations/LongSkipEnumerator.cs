@@ -79,7 +79,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </remarks>
         protected override bool TryMoveNext(out T item)
         {
-            item = default(T);
+            item = default;
 
             // If we've previously done the skipping so can just defer to inner enumerator
             if (this.Skipped == this.ToSkip)
