@@ -262,9 +262,9 @@ namespace VDS.Common.Tries
         /// <returns>If given key already exists then return the existing child node, else return the new child node.</returns>
         public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
-            ITrieNode<TKeyBit, TValue> child;
             lock (_nodeLock)
             {
+                ITrieNode<TKeyBit, TValue> child;
                 if (this._children != null)
                 {
                     // Get from existing children adding new child if necessary
