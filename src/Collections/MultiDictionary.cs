@@ -178,7 +178,7 @@ namespace VDS.Common.Collections
         /// <param name="value">Value</param>
         public void Add(TKey key, TValue value)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -203,7 +203,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the given key exists in the dictionary, false otherwise</returns>
         public bool ContainsKey(TKey key)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -237,7 +237,7 @@ namespace VDS.Common.Collections
         /// <returns>True if a key value pair was removed, false otherwise</returns>
         public bool Remove(TKey key)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -265,7 +265,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the key exists in the dictionary and a value can be returned, false otherwise</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
@@ -335,7 +335,7 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+                if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
                 TValue value;
                 if (this.TryGetValue(key, out value))
@@ -349,7 +349,7 @@ namespace VDS.Common.Collections
             }
             set
             {
-                if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+                if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
                 ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
                 int hash = this._hashFunc(key);
@@ -420,8 +420,8 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start copying at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Cannot start copying at index < 0");
+            if (array == null) throw new ArgumentNullException(nameof(array),"Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex),"Cannot start copying at index < 0");
             if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
             int i = arrayIndex;
