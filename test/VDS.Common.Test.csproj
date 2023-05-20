@@ -1,9 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>VDS.Common.Test</AssemblyTitle>
     <AssemblyName>VDS.Common.Test</AssemblyName>
     <RootNamespace>VDS.Common</RootNamespace>
-    <TargetFrameworks>net6.0;net7.0;net472</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net480;net481;net472</TargetFrameworks>
+    <Nullable>disable</Nullable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Configurations>Debug;Release</Configurations>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../src/VDS.Common.csproj" />

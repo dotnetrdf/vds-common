@@ -103,7 +103,7 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public bool TryGetChild(TKeyBit key, out ITrieNode<TKeyBit, TValue> child)
         {
-            lock (this)
+            lock (_nodeLock)
             {
                 if (this._children != null)
                 {
@@ -148,7 +148,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     if (this._children != null)
                     {
@@ -184,7 +184,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     if (this._children != null)
                     {
@@ -232,15 +232,15 @@ namespace VDS.Common.Tries
         {
             if (depth == 0)
             {
-                lock (this)
+                lock (_nodeLock)
                 {
-                    if (this._children != null) this._children.Clear();
+                    this._children?.Clear();
                     this.ClearSingleton();
                 }
             }
             else if (depth > 0)
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     foreach (ITrieNode<TKeyBit, TValue> node in this.Children)
                     {
@@ -254,6 +254,7 @@ namespace VDS.Common.Tries
             }
         }
 
+        private readonly object _nodeLock = new object(); 
         /// <summary>
         /// Add a child node associated with a key to this node and return the node.
         /// </summary>
@@ -261,9 +262,9 @@ namespace VDS.Common.Tries
         /// <returns>If given key already exists then return the existing child node, else return the new child node.</returns>
         public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
-            ITrieNode<TKeyBit, TValue> child;
-            lock (this)
+            lock (_nodeLock)
             {
+                ITrieNode<TKeyBit, TValue> child;
                 if (this._children != null)
                 {
                     // Get from existing children adding new child if necessary
@@ -286,8 +287,7 @@ namespace VDS.Common.Tries
                 else if (this.SingletonChild != null)
                 {
                     // Make non-singleton
-                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
-                    this._children.Add(this.SingletonChild.KeyBit, this.SingletonChild);
+                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> { { this.SingletonChild.KeyBit, this.SingletonChild } };
                     child = this.CreateNewChild(key);
                     this._children.Add(key, child);
                     return child;
@@ -307,7 +307,7 @@ namespace VDS.Common.Tries
         /// <param name="key">The key associated with the child to remove.</param>
         public void RemoveChild(TKeyBit key)
         {
-            lock (this)
+            lock (_nodeLock)
             {
                 if (this._children != null)
                 {
@@ -354,7 +354,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
+    internal class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
         : IEnumerable<ITrieNode<TKeyBit, TValue>>
         where TKeyBit : IEquatable<TKeyBit>
         where TValue : class
@@ -363,8 +363,7 @@ namespace VDS.Common.Tries
 
         public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException("node");
-            this._node = node;
+            this._node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()

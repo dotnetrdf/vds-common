@@ -64,7 +64,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns>True if an item is available, false otherwise</returns>
         protected override bool TryMoveNext(out T item)
         {
-            item = default(T);
+            item = default;
             if (this.InnerEnumerator.MoveNext())
             {
                 this.AnyItemsSeen = true;

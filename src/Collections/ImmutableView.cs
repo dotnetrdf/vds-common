@@ -33,25 +33,25 @@ namespace VDS.Common.Collections
     public class ImmutableView<T>
         : ICollection<T>
     {
-        private const String DefaultErrorMessage = "This collection is immutable";
+        private const string DefaultErrorMessage = "This collection is immutable";
 
         /// <summary>
         /// The enumerable being wrapped
         /// </summary>
         protected IEnumerable<T> _items;
-        private readonly String _errMsg;
+        private readonly string _errMsg;
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
         /// </summary>
         public ImmutableView()
-            : this(Enumerable.Empty<T>(), DefaultErrorMessage) { }
+            : this(Enumerable.Empty<T>()) { }
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
         /// </summary>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(String message)
+        public ImmutableView(string message)
             : this(Enumerable.Empty<T>(), message) { }
 
         /// <summary>
@@ -59,18 +59,11 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(IEnumerable<T> items, String message)
+        public ImmutableView(IEnumerable<T> items, string message = DefaultErrorMessage)
         {
             this._items = items;
-            this._errMsg = (!String.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
+            this._errMsg = !string.IsNullOrEmpty(message) ? message : DefaultErrorMessage;
         }
-
-        /// <summary>
-        /// Creates a new immutable view
-        /// </summary>
-        /// <param name="items">Enumerable to provide view over</param>
-        public ImmutableView(IEnumerable<T> items)
-            : this(items, DefaultErrorMessage) { }
 
         /// <summary>
         /// Throws an error as this collection is immutable
@@ -108,9 +101,9 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start the copying at</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
-            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array", "array");
+            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
+            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array", nameof(array));
 
             int i = arrayIndex;
             foreach (T item in this._items)
@@ -188,7 +181,7 @@ namespace VDS.Common.Collections
         /// Creates a new immutable view over an empty collection
         /// </summary>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public MaterializedImmutableView(String message)
+        public MaterializedImmutableView(string message)
             : base(new List<T>(), message) { }
 
         /// <summary>
@@ -196,7 +189,7 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public MaterializedImmutableView(IEnumerable<T> items, String message)
+        public MaterializedImmutableView(IEnumerable<T> items, string message)
             : base(items.ToList(), message) { }
 
         /// <summary>

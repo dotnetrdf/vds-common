@@ -40,7 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         public LongTakeEnumerable(IEnumerable<T> enumerable, long toTake)
             : base(enumerable)
         {
-            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", "toTake");
+            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
             this.ToTake = toTake;
         }
 

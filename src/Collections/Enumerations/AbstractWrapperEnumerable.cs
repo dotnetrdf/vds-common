@@ -39,8 +39,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <param name="enumerable">Enumerable to wrap</param>
         protected AbstractWrapperEnumerable(IEnumerable<T> enumerable)
         {
-            if (enumerable == null) throw new ArgumentNullException("enumerable");
-            this.InnerEnumerable = enumerable;
+            this.InnerEnumerable = enumerable ?? throw new ArgumentNullException(nameof(enumerable));
         }
         
         /// <summary>

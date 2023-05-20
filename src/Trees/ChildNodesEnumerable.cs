@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
@@ -45,8 +44,7 @@ namespace VDS.Common.Trees
         /// <param name="tree">Binary Tree</param>
         public NodesEnumerable(IBinaryTree<TKey, TValue> tree)
         {
-            if (tree == null) throw new ArgumentNullException("tree", "Tree cannot be null");
-            this._tree = tree;
+            this._tree = tree ?? throw new ArgumentNullException(nameof(tree), "Tree cannot be null");
         }
 
         /// <summary>
@@ -102,8 +100,7 @@ namespace VDS.Common.Trees
         /// <param name="parent">Parent node</param>
         public ChildNodesEnumerable(IBinaryTreeNode<TKey, TValue> parent)
         {
-            if (parent == null) throw new ArgumentNullException("parent", "Parent cannot be null");
-            this._parent = parent;
+            this._parent = parent ?? throw new ArgumentNullException(nameof(parent), "Parent cannot be null");
         }
 
         /// <summary>
@@ -121,8 +118,7 @@ namespace VDS.Common.Trees
         public IEnumerator<IBinaryTreeNode<TKey, TValue>> GetEnumerator()
         {
             IBinaryTreeNode<TKey, TValue> child = this.Child;
-            if (child == null) return Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator();
-            return child.Nodes.GetEnumerator();
+            return child == null ? Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator() : child.Nodes.GetEnumerator();
         }
 
         /// <summary>

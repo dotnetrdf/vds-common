@@ -20,10 +20,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
@@ -59,8 +56,7 @@ namespace VDS.Common.Trees
         /// <returns></returns>
         public static long GetHeight<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return 0;
-            return node.Height;
+            return node?.Height ?? 0;
             //return 1 + Math.Max(node.LeftChild.GetHeight(), node.RightChild.GetHeight());
         }
 
@@ -90,7 +86,7 @@ namespace VDS.Common.Trees
         {
             if (node.Parent == null) return null;
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            return (ReferenceEquals(node, parent.LeftChild) ? parent.RightChild : parent.LeftChild);
+            return ReferenceEquals(node, parent.LeftChild) ? parent.RightChild : parent.LeftChild;
         }
 
         /// <summary>
@@ -102,8 +98,7 @@ namespace VDS.Common.Trees
         /// <returns></returns>
         public static long GetSize<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return 0;
-            return node.Nodes.LongCount();
+            return node == null ? 0 : node.Nodes.LongCount();
         }
 
         /// <summary>

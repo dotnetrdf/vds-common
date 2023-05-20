@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Tries
 {
@@ -44,8 +43,7 @@ namespace VDS.Common.Tries
         /// <param name="node">Node to start enumeration from</param>
         public TrieValuesEnumerable(ITrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException("node");
-            this._node = node;
+            this._node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         /// <summary>
@@ -54,14 +52,11 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public IEnumerator<TValue> GetEnumerator()
         {
-            if (this._node.HasValue)
+            return this._node.HasValue switch
             {
-                return this._node.Value.AsEnumerable().Concat(this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator();
-            }
-            else
-            {
-                return this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator();
-            }
+                true => this._node.Value.AsEnumerable().Concat(this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator(),
+                _ => this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator()
+            };
         }
 
         /// <summary>

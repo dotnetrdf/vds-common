@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
@@ -36,14 +35,14 @@ namespace VDS.Common.Trees
         : BinaryTree<TKey, TValue>
     {
         private readonly double _balanceFactor = 0.75d;
-        private long _nodeCount = 0, _maxNodeCount = 0;
+        private long _nodeCount, _maxNodeCount;
         private readonly double _logBase = 1d / 0.75d;
 
         /// <summary>
         /// Creates a new Scapegoat Tree
         /// </summary>
         public ScapegoatTree()
-            : base() { }
+        { }
 
         /// <summary>
         /// Creates a new Scapegoat Tree
@@ -67,7 +66,7 @@ namespace VDS.Common.Trees
         public ScapegoatTree(IComparer<TKey> comparer, double balanceFactor)
             : base(comparer)
         {
-            if (balanceFactor < 0.5d || balanceFactor > 1.0d) throw new ArgumentOutOfRangeException("balanceFactor", "Must meet the condition 0.5 < balanceFactor < 1");
+            if (balanceFactor is < 0.5d or > 1.0d) throw new ArgumentOutOfRangeException(nameof(balanceFactor), "Must meet the condition 0.5 < balanceFactor < 1");
             this._balanceFactor = balanceFactor;
             this._logBase = 1d / this._balanceFactor;
         }
@@ -89,7 +88,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly inserted nodes</param>
-        protected sealed override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this._nodeCount++;
             this._maxNodeCount = Math.Max(this._maxNodeCount, this._nodeCount);
@@ -106,7 +105,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly inserted nodes</param>
-        protected sealed override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this._nodeCount++;
             this._maxNodeCount = Math.Max(this._maxNodeCount, this._nodeCount);
@@ -133,7 +132,7 @@ namespace VDS.Common.Trees
         /// <param name="node">Node the delete occurred at</param>
         private void RebalanceAfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
-            this.Rebalance(node, node.GetSize<TKey, TValue>());
+            this.Rebalance(node, node.GetSize());
         }
 
         /// <summary>
@@ -145,21 +144,20 @@ namespace VDS.Common.Trees
         {
             //Find the scapegoat
             long currSize = selfSize;
-            long siblingSize, nodeSize;
             IBinaryTreeNode<TKey, TValue> current = node;
             do
             {
                 //Get the sibling subtree size
-                siblingSize = current.GetSibling<TKey, TValue>().GetSize<TKey, TValue>();
+                long siblingSize = current.GetSibling().GetSize();
                 if (current.Parent != null)
                 {
                     //Total size of the Node is Current size of this subtree plus size of
                     //sibling subtree plus one for the current node
-                    nodeSize = currSize + siblingSize + 1;
+                    long nodeSize = currSize + siblingSize + 1;
                     current = current.Parent;
 
                     //Is the current node weight balanced?
-                    if (currSize <= (this._balanceFactor * nodeSize) && siblingSize <= (this._balanceFactor * siblingSize))
+                    if (currSize <= this._balanceFactor * nodeSize && siblingSize <= this._balanceFactor * siblingSize)
                     {
                         //Weight balanced so continue on
                         currSize = nodeSize;
@@ -235,29 +233,31 @@ namespace VDS.Common.Trees
         {
             if (start > end) return null;
             if (end == start) return nodes[start];
-            if (end - start == 1)
+            switch (end - start)
             {
-                IBinaryTreeNode<TKey, TValue> root = nodes[end];
-                root.LeftChild = nodes[start];
-                return root;
-            }
-            else if (end - start == 2)
-            {
-                IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
-                root.LeftChild = nodes[start];
-                root.RightChild = nodes[end];
-                return root;
-            }
-            else
-            {
-
-                //Rebuild the tree
-                int median = start + ((end - start) / 2);
-                //Console.WriteLine("m = " + median);
-                IBinaryTreeNode<TKey, TValue> root = nodes[median];
-                root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
-                root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
-                return root;
+                case 1:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[end];
+                    root.LeftChild = nodes[start];
+                    return root;
+                }
+                case 2:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
+                    root.LeftChild = nodes[start];
+                    root.RightChild = nodes[end];
+                    return root;
+                }
+                default:
+                {
+                    //Rebuild the tree
+                    int median = start + (end - start) / 2;
+                    //Console.WriteLine("m = " + median);
+                    IBinaryTreeNode<TKey, TValue> root = nodes[median];
+                    root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
+                    root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
+                    return root;
+                }
             }
         }
 
@@ -272,28 +272,31 @@ namespace VDS.Common.Trees
         {
             if (start > end) return null;
             if (end == start) return nodes[start];
-            if (end - start == 1)
+            switch (end - start)
             {
-                IBinaryTreeNode<TKey, TValue> root = nodes[start];
-                root.RightChild = nodes[end];
-                return root;
-            }
-            else if (end - start == 2)
-            {
-                IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
-                root.LeftChild = nodes[start];
-                root.RightChild = nodes[end];
-                return root;
-            }
-            else
-            {
-                //Rebuild the tree
-                int median = start + ((end - start) / 2);
-                //Console.WriteLine("m = " + median);
-                IBinaryTreeNode<TKey, TValue> root = nodes[median];
-                root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
-                root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
-                return root;
+                case 1:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[start];
+                    root.RightChild = nodes[end];
+                    return root;
+                }
+                case 2:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
+                    root.LeftChild = nodes[start];
+                    root.RightChild = nodes[end];
+                    return root;
+                }
+                default:
+                {
+                    //Rebuild the tree
+                    int median = start + (end - start) / 2;
+                    //Console.WriteLine("m = " + median);
+                    IBinaryTreeNode<TKey, TValue> root = nodes[median];
+                    root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
+                    root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
+                    return root;
+                }
             }
         }
 
@@ -301,11 +304,11 @@ namespace VDS.Common.Trees
         /// Applies rebalances after deletes
         /// </summary>
         /// <param name="node">Node the delete occurred at</param>
-        protected sealed override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
             this._nodeCount--;
 
-            if (this._nodeCount <= (this._maxNodeCount / 2))
+            if (this._nodeCount <= this._maxNodeCount / 2)
             {
                 this.RebalanceAfterDelete(node);
             }
@@ -314,7 +317,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Resets node counts after a clear
         /// </summary>
-        protected sealed override void AfterClear()
+        protected override void AfterClear()
         {
             this._nodeCount = 0;
             this._maxNodeCount = 0;

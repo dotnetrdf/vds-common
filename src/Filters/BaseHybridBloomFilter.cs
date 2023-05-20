@@ -47,12 +47,12 @@ namespace VDS.Common.Filters
         protected BaseHybridBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
             : base(storage)
         {
-            if (parameters.NumberOfBits < 1) throw new ArgumentException("Number of bits must be >= 1", "parameters");
-            if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
+            if (parameters.NumberOfBits < 1) throw new ArgumentException("Number of bits must be >= 1", nameof(parameters));
+            if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
             this._hashFunctions = new List<Func<T, int>>(hashFunctions);
             this._hashFunctions.RemoveAll(f => f == null);
-            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", "hashFunctions");
-            if (parameters.NumberOfBits <= this._hashFunctions.Count) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", "parameters");
+            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
+            if (parameters.NumberOfBits <= this._hashFunctions.Count) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
 
             this.NumberOfBits = parameters.NumberOfBits;
             this._parameters = parameters;
@@ -96,7 +96,7 @@ namespace VDS.Common.Filters
                         else
                         {
                             // Use arithmetic combination of the first two hash functions
-                            indices[i] = Math.Abs(a + (i*b))%this.NumberOfBits;
+                            indices[i] = Math.Abs(a + i*b)%this.NumberOfBits;
                         }
                         break;
                 }

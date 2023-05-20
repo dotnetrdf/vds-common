@@ -39,8 +39,8 @@ namespace VDS.Common.Filters.Storage
         /// <param name="parameters">Parameters</param>
         public SparseArrayStorage(IBloomFilterParameters parameters)
         {
-            if (parameters == null) throw new ArgumentNullException("parameters");
-            if (parameters.NumberOfBits <= 0) throw new ArgumentException("Number of bits must be > 0", "parameters");
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (parameters.NumberOfBits <= 0) throw new ArgumentException("Number of bits must be > 0", nameof(parameters));
             this._bits = new BlockSparseArray<bool>(parameters.NumberOfBits);
         }
         
@@ -50,7 +50,7 @@ namespace VDS.Common.Filters.Storage
         /// <param name="bits">Sparse array to use as storage</param>
         public SparseArrayStorage(ISparseArray<bool> bits)
         {
-            if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", "bits");
+            if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", nameof(bits));
             this._bits = bits;
         }
 

@@ -28,8 +28,6 @@ namespace VDS.Common.Filters
     public class BloomFilterParameters
         : BaseBloomFilterParameters
     {
-        private readonly int _numHashFunctions;
-
         /// <summary>
         /// Creates new parameters
         /// </summary>
@@ -38,12 +36,12 @@ namespace VDS.Common.Filters
         public BloomFilterParameters(int numBits, int numHashFunctions)
         {
             this.NumberOfBits = numBits;
-            this._numHashFunctions = numHashFunctions;
+            this.NumberOfHashFunctions = numHashFunctions;
         }
 
         /// <summary>
         /// Gets the number of hash functions
         /// </summary>
-        public override int NumberOfHashFunctions { get { return this._numHashFunctions; } }
+        public override int NumberOfHashFunctions { get; }
     }
 }

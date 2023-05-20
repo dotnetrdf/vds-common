@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using VDS.Common.Trees;
 
 namespace VDS.Common.Collections
@@ -77,15 +76,15 @@ namespace VDS.Common.Collections
 
         private Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>> _dict;
         private IComparer<TKey> _comparer = Comparer<TKey>.Default;
-        private Func<TKey, int> _hashFunc = (k => k.GetHashCode());
-        private MultiDictionaryMode _mode = DefaultMode;
-        private bool _allowNullKeys = false;
+        private Func<TKey, int> _hashFunc = k => k.GetHashCode();
+        private MultiDictionaryMode _mode;
+        private readonly bool _allowNullKeys;
 
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
         public MultiDictionary()
-            : this(null, false, null, DefaultMode) { }
+            : this(null, false) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
@@ -97,25 +96,9 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
-        /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
-        [Obsolete("You must use the two argument form of the constructor and explicitly state whether your hash function supports null keys", true)]
-        public MultiDictionary(Func<TKey, int> hashFunction)
-            : this(hashFunction, false, null, DefaultMode) { }
-
-        /// <summary>
-        /// Creates a new multi-dictionary
-        /// </summary>
-        /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
-        /// <param name="allowNullKeys">Whether to allow null keys</param>
-        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys)
-            : this(hashFunction, allowNullKeys, null, DefaultMode) { }
-
-        /// <summary>
-        /// Creates a new multi-dictionary
-        /// </summary>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         public MultiDictionary(IComparer<TKey> comparer)
-            : this(null, false, comparer, DefaultMode) { }
+            : this(null, false, comparer) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
@@ -150,10 +133,10 @@ namespace VDS.Common.Collections
         /// <param name="allowNullKeys">Whether null keys are allowed</param>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         /// <param name="mode">Mode to use for the buckets</param>
-        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys, IComparer<TKey> comparer, MultiDictionaryMode mode)
+        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys = false, IComparer<TKey> comparer = null, MultiDictionaryMode mode = DefaultMode)
         {
-            this._comparer = (comparer != null ? comparer : this._comparer);
-            this._hashFunc = (hashFunction != null ? hashFunction : this._hashFunc);
+            this._comparer = comparer ?? this._comparer;
+            this._hashFunc = hashFunction ?? this._hashFunc;
             this._allowNullKeys = allowNullKeys;
             this._dict = new Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>>();
             this._mode = mode;
@@ -187,11 +170,10 @@ namespace VDS.Common.Collections
         /// <param name="value">Value</param>
         public void Add(TKey key, TValue value)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 //Add into existing tree
                 tree.Add(key, value);
@@ -212,11 +194,10 @@ namespace VDS.Common.Collections
         /// <returns>True if the given key exists in the dictionary, false otherwise</returns>
         public bool ContainsKey(TKey key)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 return tree.ContainsKey(key);
             }
@@ -246,11 +227,10 @@ namespace VDS.Common.Collections
         /// <returns>True if a key value pair was removed, false otherwise</returns>
         public bool Remove(TKey key)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 bool removed = tree.Remove(key);
                 if (removed && tree.Root == null)
@@ -274,17 +254,16 @@ namespace VDS.Common.Collections
         /// <returns>True if the key exists in the dictionary and a value can be returned, false otherwise</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 return tree.TryGetValue(key, out value);
             }
             else
             {
-                value = default(TValue);
+                value = default;
                 return false;
             }
         }
@@ -298,14 +277,13 @@ namespace VDS.Common.Collections
         [Obsolete("TryGetKey() is included for historical reasons and will be removed in future versions")]
         public bool TryGetKey(TKey key, out TKey actualKey)
         {
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 IBinaryTreeNode<TKey, TValue> node = tree.Find(key);
                 if (node == null)
                 {
-                    actualKey = default(TKey);
+                    actualKey = default;
                     return false;
                 }
                 else
@@ -316,7 +294,7 @@ namespace VDS.Common.Collections
             }
             else
             {
-                actualKey = default(TKey);
+                actualKey = default;
                 return false;
             }
         }
@@ -344,10 +322,9 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+                if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-                TValue value;
-                if (this.TryGetValue(key, out value))
+                if (this.TryGetValue(key, out TValue value))
                 {
                     return value;
                 }
@@ -358,15 +335,13 @@ namespace VDS.Common.Collections
             }
             set
             {
-                if (!this._allowNullKeys && key == null) throw new ArgumentNullException("key", "Key cannot be null");
+                if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-                ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
                 int hash = this._hashFunc(key);
-                bool created = false;
-                if (this._dict.TryGetValue(hash, out tree))
+                if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
                 {
                     //Move to appropriate node
-                    IBinaryTreeNode<TKey, TValue> node = tree.MoveToNode(key, out created);
+                    IBinaryTreeNode<TKey, TValue> node = tree.MoveToNode(key, out bool _);
                     node.Value = value;
                 }
                 else
@@ -407,10 +382,8 @@ namespace VDS.Common.Collections
         /// <returns>True if the given key value pair exists in the dictionary</returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-
-            if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
-            if (this.TryGetValue(item.Key, out value))
+            if (!this._allowNullKeys && item.Key == null) throw new InvalidOperationException( "item.Key cannot be null" );
+            if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null) return value.Equals(item.Value);
                 if (item.Value == null) return true; //Both null so equal
@@ -429,8 +402,8 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start copying at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Cannot start copying at index < 0");
+            if (array == null) throw new ArgumentNullException(nameof(array),"Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex),"Cannot start copying at index < 0");
             if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
             int i = arrayIndex;
@@ -473,10 +446,8 @@ namespace VDS.Common.Collections
         /// <returns>True if the key value pair was removed from the dictionary</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-
-            if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
-            if (this.TryGetValue(item.Key, out value))
+            if (!this._allowNullKeys && item.Key == null) throw new InvalidOperationException("item.Key cannot be null");
+            if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null && value.Equals(item.Value)) return this.Remove(item.Key);
                 if (item.Value == null) return this.Remove(item.Key);

@@ -49,22 +49,15 @@ namespace VDS.Common.Collections
         private readonly SparseBlock<T>[] _blocks;
 
         /// <summary>
-        /// Creates a new sparse array with the default block size
-        /// </summary>
-        /// <param name="length">Length of the array</param>
-        public BlockSparseArray(int length)
-            : this(length, DefaultBlockSize) { }
-
-        /// <summary>
         /// Creates a new sparse array
         /// </summary>
         /// <param name="length">Length</param>
         /// <param name="blockSize">Block Size</param>
-        public BlockSparseArray(int length, int blockSize)
+        public BlockSparseArray(int length, int blockSize = DefaultBlockSize)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
-            if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", "blockSize");
-            int numBlocks = (length/blockSize) + (length%blockSize);
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
+            if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", nameof(blockSize));
+            int numBlocks = length/blockSize + length%blockSize;
             this._blocks = new SparseBlock<T>[numBlocks];
 
             this.BlockSize = blockSize;
@@ -98,14 +91,14 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
-                return block != null ? block[index] : default(T);
+                return block != null ? block[index] : default;
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
                 if (block == null)
@@ -141,14 +134,14 @@ namespace VDS.Common.Collections
         }
     }
 
-    class SparseBlock<T>
+    internal class SparseBlock<T>
     {
         private readonly T[] _block;
 
         public SparseBlock(int startIndex, int length)
         {
-            if (startIndex < 0) throw new ArgumentException("Start Index must be >= 0", "startIndex");
-            if (length <= 0) throw new ArgumentException("Length must be >= 1", "length");
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex),"Start Index must be >= 0");
+            if (length <= 0) throw new ArgumentOutOfRangeException(nameof(length),"Length must be >= 1");
             this.StartIndex = startIndex;
             this.Length = length;
             this._block = new T[length];
@@ -160,12 +153,12 @@ namespace VDS.Common.Collections
 
         public T this[int index]
         {
-            get { return this._block[index - this.StartIndex]; }
-            set { this._block[index - this.StartIndex] = value; }
+            get => this._block[index - this.StartIndex];
+            set => this._block[index - this.StartIndex] = value;
         }
     }
 
-    class BlockSparseArrayEnumerator<T>
+    internal class BlockSparseArrayEnumerator<T>
         : IEnumerator<T>
     {
         public BlockSparseArrayEnumerator(IEnumerator blocks, int length, int blockSize)
@@ -219,16 +212,13 @@ namespace VDS.Common.Collections
 
                 // If no current block return default value
                 SparseBlock<T> currentBlock = (SparseBlock<T>) this.Blocks.Current;
-                if (currentBlock == null) return default(T);
+                if (currentBlock == null) return default;
 
                 // Otherwise return the value within the block
                 return currentBlock[this.Index];
             }
         }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

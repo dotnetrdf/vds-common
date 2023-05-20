@@ -39,7 +39,7 @@ namespace VDS.Common.Collections
         public DiscardingBoundedList(int capacity)
             : base(new List<T>(SelectInitialCapacity(capacity)))
         {
-            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", "capacity");
+            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", nameof(capacity));
             this.MaxCapacity = capacity;
         }
 
@@ -79,7 +79,7 @@ namespace VDS.Common.Collections
         /// Adds an item
         /// </summary>
         /// <param name="item">Item</param>
-        public override sealed void Add(T item)
+        public sealed override void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) return;
             this._list.Add(item);
@@ -88,14 +88,11 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the overflow policy for this bounded list which is <see cref="BoundedListOverflowPolicy.Discard"/>
         /// </summary>
-        public override BoundedListOverflowPolicy OverflowPolicy
-        {
-            get { return BoundedListOverflowPolicy.Discard; }
-        }
+        public override BoundedListOverflowPolicy OverflowPolicy => BoundedListOverflowPolicy.Discard;
 
         /// <summary>
         /// Gets the maximum capacity of the list
         /// </summary>
-        public override sealed int MaxCapacity { get; protected set; }
+        public sealed override int MaxCapacity { get; protected set; }
     }
 }

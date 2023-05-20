@@ -40,7 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         public LongSkipEnumerator(IEnumerator<T> enumerator, long toSkip)
             : base(enumerator)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
+            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", nameof(toSkip));
             this.ToSkip = toSkip;
             this.Skipped = 0;
         }
@@ -79,18 +79,17 @@ namespace VDS.Common.Collections.Enumerations
         /// </remarks>
         protected override bool TryMoveNext(out T item)
         {
-            item = default(T);
+            item = default;
 
             // If we've previously done the skipping so can just defer to inner enumerator
-            if (this.Skipped == this.ToSkip)
-            {
-                if (!this.InnerEnumerator.MoveNext()) return false;
-                item = this.InnerEnumerator.Current;
-                return true;
-            }
+            if (this.Skipped != this.ToSkip)
+                return this.TrySkip() && this.TryMoveNext(out item);
+            if (!this.InnerEnumerator.MoveNext())
+                return false;
+            item = this.InnerEnumerator.Current;
+            return true;
 
             // First time being accessed so attempt to skip if possible
-            return this.TrySkip() && this.TryMoveNext(out item);
         }
 
         /// <summary>

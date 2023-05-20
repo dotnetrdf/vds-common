@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.References
 {
@@ -35,7 +33,7 @@ namespace VDS.Common.References
         where T : class
     {
         private Dictionary<int, T> _values = new Dictionary<int, T>();
-        private int _currLevel = 0;
+        private int _currLevel;
         private T _currRef;
 
         /// <summary>
@@ -68,14 +66,7 @@ namespace VDS.Common.References
             }
             set
             {
-                if (this._values.ContainsKey(this._currLevel))
-                {
-                    this._values[this._currLevel] = value;
-                }
-                else
-                {
-                    this._values.Add(this._currLevel, value);
-                }
+                this._values[this._currLevel] = value;
                 this._currRef = value;
             }
         }
@@ -96,22 +87,19 @@ namespace VDS.Common.References
             if (this._currLevel == 0) throw new InvalidOperationException("Cannot decrement nesting when current nesting level is 0");
 
             //Revert to the most recent reference
-            if (this._values.ContainsKey(this._currLevel))
+            if (this._values.Remove(this._currLevel))
             {
-                this._values.Remove(this._currLevel);
                 int i = this._currLevel;
                 while (i > 1)
                 {
                     i--;
-                    if (this._values.ContainsKey(i))
+                    if (this._values.TryGetValue(i, out T theRef))
                     {
-                        this._currRef = this._values[i];
+                        this._currRef = theRef;
                         break;
                     }
-                    else
-                    {
-                        this._currRef = null;
-                    }
+
+                    this._currRef = null;
                 }
             }
             //Finally decrement the level

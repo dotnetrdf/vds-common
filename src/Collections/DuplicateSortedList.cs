@@ -40,7 +40,7 @@ namespace VDS.Common.Collections
     {
         private readonly IBinaryTree<T, int> _data;
         private readonly IComparer<T> _comparer; 
-        private int _total = 0;
+        private int _total;
 
         /// <summary>
         /// Creates a new list
@@ -56,18 +56,11 @@ namespace VDS.Common.Collections
             : this(null, items) { }
 
         /// <summary>
-        /// Creates a new list that uses the given comparer
-        /// </summary>
-        /// <param name="comparer">Comparer</param>
-        public DuplicateSortedList(IComparer<T> comparer)
-            : this(comparer, null) { }
-
-        /// <summary>
         /// Creates a new list that uses the given comparer and has the given items
         /// </summary>
         /// <param name="comparer">Comparer</param>
         /// <param name="items">Items</param>
-        public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items)
+        public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items = null)
         {
             this._comparer = comparer ?? Comparer<T>.Default;
             this._data = new AVLTree<T, int>(this._comparer);
@@ -102,8 +95,7 @@ namespace VDS.Common.Collections
         /// <param name="item">Item to add</param>
         public void Add(T item)
         {
-            bool created;
-            IBinaryTreeNode<T, int> node = this._data.MoveToNode(item, out created);
+            IBinaryTreeNode<T, int> node = this._data.MoveToNode(item, out bool created);
             if (created)
             {
                 node.Value = 1;
@@ -141,8 +133,8 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Array Index to start the copy at</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
+            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
             if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
             int i = arrayIndex;
@@ -160,8 +152,7 @@ namespace VDS.Common.Collections
         /// <returns>True if item was removed, false otherwise</returns>
         public bool Remove(T item)
         {
-            int count;
-            if (!this._data.TryGetValue(item, out count)) return false;
+            if (!this._data.TryGetValue(item, out int count)) return false;
             if (count == 1)
             {
                 this._data.Remove(item);
@@ -177,23 +168,17 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the number of items in the list
         /// </summary>
-        public int Count
-        {
-            get { return this._total; }
-        }
+        public int Count => this._total;
 
         /// <summary>
         /// Gets whether the list is read only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         private IBinaryTreeNode<T, int> MoveToIndex(int index)
         {
-            if (this._data.Root == null) throw new IndexOutOfRangeException();
-            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException();
+            if (this._data.Root == null) throw new InvalidOperationException("Root node is null");
+            if (index < 0 || index >= this.Count) throw new ArgumentOutOfRangeException(nameof(index));
 
             // Special cases
             // Index 0 and only one node, return the root
@@ -207,7 +192,7 @@ namespace VDS.Common.Collections
             IBinaryTreeNode<T, int> currentNode = this._data.Root;
             while (true)
             {
-                long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
+                long currentIndex = currentNode!.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
                 if (currentIndex == index) return currentNode;
                 if (currentNode.LeftChild != null && index > currentIndex && index < currentIndex + currentNode.LeftChild.Value) return currentNode;
 
@@ -239,10 +224,12 @@ namespace VDS.Common.Collections
         {
             if (this._data.Root == null) return -1;
 
-            IEnumerator<IBinaryTreeNode<T, int>> enumerator = this._data.Nodes.GetEnumerator();
+            using IEnumerator<IBinaryTreeNode<T, int>> enumerator = this._data.Nodes.GetEnumerator();
             int index = 0;
             while (enumerator.MoveNext())
             {
+                if(enumerator.Current is null)
+                    throw new InvalidOperationException("Attempted to enumerate a null object");
                 if (this._comparer.Compare(item, enumerator.Current.Key) == 0) return index;
                 index += enumerator.Current.Value;
             }
@@ -284,8 +271,8 @@ namespace VDS.Common.Collections
         /// <returns>Value</returns>
         public T this[int index]
         {
-            get { return this.MoveToIndex(index).Key; }
-            set { throw new NotSupportedException("Cannot set value at a specific index in a sorted list"); }
+            get => this.MoveToIndex(index).Key;
+            set => throw new NotSupportedException("Cannot set value at a specific index in a sorted list");
         }
     }
 }

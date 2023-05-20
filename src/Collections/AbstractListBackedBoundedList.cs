@@ -43,8 +43,7 @@ namespace VDS.Common.Collections
         /// <param name="list">List</param>
         protected AbstractListBackedBoundedList(IList<T> list)
         {
-            if (list == null) throw new ArgumentNullException("list");
-            this._list = list;
+            this._list = list ?? throw new ArgumentNullException(nameof(list));
         }
 
         /// <summary>
@@ -60,18 +59,12 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the size of the list
         /// </summary>
-        public virtual int Count
-        {
-            get { return this._list.Count; }
-        }
+        public virtual int Count => this._list.Count;
 
         /// <summary>
         /// Gets whether the list is ready only
         /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return this._list.IsReadOnly; }
-        }
+        public virtual bool IsReadOnly => this._list.IsReadOnly;
 
         /// <summary>
         /// Gets the index of the given item
@@ -97,8 +90,8 @@ namespace VDS.Common.Collections
         /// <returns>Value</returns>
         public virtual T this[int index]
         {
-            get { return this._list[index]; }
-            set { this._list[index] = value; }
+            get => this._list[index];
+            set => this._list[index] = value;
         }
 
         /// <summary>

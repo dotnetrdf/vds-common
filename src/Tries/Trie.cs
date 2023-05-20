@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace VDS.Common.Tries
 {
@@ -43,6 +42,9 @@ namespace VDS.Common.Tries
         /// </summary>
         public Trie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
             : base(keyMapper) { }
+
+        /// <inheritdoc />
+        protected override ITrieNode<TKeyBit, TValue> _root { get; init; } = new TrieNode<TKeyBit, TValue>(null, default);
 
         /// <summary>
         /// Method which creates a new child node

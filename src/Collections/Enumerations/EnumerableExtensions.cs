@@ -254,8 +254,8 @@ namespace VDS.Common.Collections.Enumerations
         public static IEnumerable<T> ProbabilisticDistinct<T>(this IEnumerable<T> enumerable, long expectedItems, long errorRate, Func<T, int> h1, Func<T, int> h2)
         {
             IBloomFilterParameters parameters = BloomUtils.CalculateBloomParameters(expectedItems, errorRate);
-            Func<IBloomFilter<T>> filterFactory = () => new SparseFastBloomFilter<T>(parameters, h1, h2);
-            return new ProbabilisticDistinctEnumerable<T>(enumerable, filterFactory);
+            IBloomFilter<T> FilterFactory() => new SparseFastBloomFilter<T>(parameters, h1, h2);
+            return new ProbabilisticDistinctEnumerable<T>(enumerable, FilterFactory);
         }
 
         /// <summary>

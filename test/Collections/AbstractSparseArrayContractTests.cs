@@ -27,6 +27,7 @@ using NUnit.Framework;
 namespace VDS.Common.Collections
 {
     [TestFixture,Category("Arrays")]
+    [Parallelizable(ParallelScope.All)]
     public abstract class AbstractSparseArrayContractTests
     {
         /// <summary>
@@ -53,7 +54,7 @@ namespace VDS.Common.Collections
         public void SparseArrayEmpty2()
         {
             ISparseArray<int> array = this.CreateInstance(0);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var _ = array[0];
             });
@@ -63,21 +64,15 @@ namespace VDS.Common.Collections
         public void SparseArrayEmpty3()
         {
             ISparseArray<int> array = this.CreateInstance(0);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var _ = array[-1];
             });
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayGetSet1(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayGetSet1([Range(0,10000,1000)]int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
             Assert.AreEqual(length, array.Length);
@@ -93,49 +88,31 @@ namespace VDS.Common.Collections
             }
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayGetSet2(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayGetSet2([Range(0,10000,1000)]int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var _ = array[-1];
+                int _ = array[-1];
             });
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayGetSet3(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayGetSet3([Range(0,10000,1000)]int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
-            Assert.Throws<IndexOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var _ = array[length];
+                int _ = array[length];
             });
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayEnumerator1(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayEnumerator1([Range(0,500,10000)]int length)
         {
             Assert.AreNotEqual(default(int), 1);
 
@@ -155,7 +132,7 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(1, array[i]);
             }
 
-            IEnumerator<int> sparsEnumerator = array.GetEnumerator();
+            using IEnumerator<int> sparsEnumerator = array.GetEnumerator();
             IEnumerator actualEnumerator = actualArray.GetEnumerator();
 
             int index = -1;
@@ -168,48 +145,40 @@ namespace VDS.Common.Collections
             Assert.AreEqual(length - 1, index);
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayEnumerator2(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayEnumerator2([Range(0,500,10000)]int length)
         {
             Assert.AreNotEqual(default(int), 1);
 
             // Completely sparse array i.e. no actual data
             ISparseArray<int> array = this.CreateInstance(length);
-            Assert.AreEqual(length, array.Length);
-
-            for (int i = 0; i < array.Length; i++)
+            Assert.Multiple(() =>
             {
-                // Should have default value
-                Assert.AreEqual(default(int), array[i]);
-            }
+                Assert.AreEqual(length, array.Length);
 
-            IEnumerator<int> enumerator = array.GetEnumerator();
+                foreach (int item in array)
+                {
+                    // Should have default value
+                    Assert.That(item, Is.EqualTo(0));
+                }
 
-            int index = -1;
-            while (enumerator.MoveNext())
-            {
-                index++;
-                Assert.AreEqual(default(int), enumerator.Current, "Incorrect value at index " + index);
-            }
-            Assert.AreEqual(length - 1, index);
+                using IEnumerator<int> enumerator = array.GetEnumerator();
+
+                int index = -1;
+                while (enumerator.MoveNext())
+                {
+                    index++;
+                    Assert.That(enumerator.Current,Is.EqualTo(0), "Incorrect value at index {0}", index);
+                }
+
+                Assert.AreEqual(length - 1, index);
+            });
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayEnumerator3(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayEnumerator3([Range(0,500,10000)]int length)
         {
             Assert.AreNotEqual(default(int), 1);
 

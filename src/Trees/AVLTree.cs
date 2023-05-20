@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
@@ -45,7 +43,7 @@ namespace VDS.Common.Trees
         /// Creates a new AVL Tree
         /// </summary>
         public AVLTree()
-            : base() { }
+        { }
 
         /// <summary>
         /// Creates a new AVL Tree using the given key comparer
@@ -71,7 +69,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly isnerted node</param>
-        protected sealed override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this.RebalanceAfterInsert(node);
         }
@@ -81,7 +79,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly isnerted node</param>
-        protected sealed override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this.RebalanceAfterInsert(node);   
         }
@@ -118,7 +116,7 @@ namespace VDS.Common.Trees
         /// Applies rebalances after deletes
         /// </summary>
         /// <param name="node">Node at which the delete occurred</param>
-        protected sealed override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
             IBinaryTreeNode<TKey, TValue> current = node.Parent;
             while (current != null)
@@ -183,14 +181,12 @@ namespace VDS.Common.Trees
         /// <param name="node">Node</param>
         private void RotateLeft(IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return;
-
-            IBinaryTreeNode<TKey, TValue> pivot = node.RightChild;
+            IBinaryTreeNode<TKey, TValue> pivot = node?.RightChild;
             if (pivot == null) return;
 
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
-            bool atRoot = (parent == null);
+            bool left = parent != null && ReferenceEquals(node, parent.LeftChild);
+            bool atRoot = parent == null;
 
             //Update Parents
             node.Parent = pivot;
@@ -218,14 +214,12 @@ namespace VDS.Common.Trees
         /// <param name="node">Node</param>
         private void RotateRight(IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return;
-
-            IBinaryTreeNode<TKey, TValue> pivot = node.LeftChild;
+            IBinaryTreeNode<TKey, TValue> pivot = node?.LeftChild;
             if (pivot == null) return;
 
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
-            bool atRoot = (parent == null);
+            bool left = parent != null && ReferenceEquals(node, parent.LeftChild);
+            bool atRoot = parent == null;
 
             //Update Parents
             node.Parent = pivot;

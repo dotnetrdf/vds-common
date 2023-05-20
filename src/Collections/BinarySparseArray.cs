@@ -45,8 +45,8 @@ namespace VDS.Common.Collections
         /// <param name="length">Length</param>
         public BinarySparseArray(int length)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
-            this._tree = new AVLTree<int, T>(Comparer<Int32>.Default);
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
+            this._tree = new AVLTree<int, T>(Comparer<int>.Default);
             this.Length = length;
         }
 
@@ -78,13 +78,12 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
-                T value;
-                return this._tree.TryGetValue(index, out value) ? value : default(T);
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
+                return this._tree.TryGetValue(index, out T value) ? value : default;
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
                 this._tree.Add(index, value);
             }
         }
@@ -103,7 +102,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    class BinarySparseArrayEnumerator<T>
+    internal class BinarySparseArrayEnumerator<T>
         : IEnumerator<T>
     {
         public BinarySparseArrayEnumerator(int length, IEnumerator<IBinaryTreeNode<int, T>> nodesEnumerator)
@@ -158,15 +157,12 @@ namespace VDS.Common.Collections
                 if (this.Index >= this.Length) throw new InvalidOperationException("Past the end of the enumerator");
 
                 // If no node either the linked list is empty or we've reached the end of it in which case simply return the default value
-                if (this.CurrentNode == null) return default(T);
+                if (this.CurrentNode == null) return default;
                 // If we reached the index of the current node then return the value otherwise we have not reached it yet and we return the default value
-                return this.CurrentNode.Key == this.Index ? this.CurrentNode.Value : default(T);
+                return this.CurrentNode.Key == this.Index ? this.CurrentNode.Value : default;
             }
         }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

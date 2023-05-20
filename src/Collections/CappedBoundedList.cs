@@ -39,7 +39,7 @@ namespace VDS.Common.Collections
         public CappedBoundedList(int capacity)
             : base(new List<T>(SelectInitialCapacity(capacity)))
         {
-            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", "capacity");
+            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", nameof(capacity));
             this.MaxCapacity = capacity;
         }
 
@@ -63,15 +63,12 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the overflow policy for this bounded list which is <see cref="BoundedListOverflowPolicy.Error"/>
         /// </summary>
-        public override BoundedListOverflowPolicy OverflowPolicy
-        {
-            get { return BoundedListOverflowPolicy.Error; }
-        }
+        public override BoundedListOverflowPolicy OverflowPolicy => BoundedListOverflowPolicy.Error;
 
         /// <summary>
         /// Gets the maximum capacity of the list
         /// </summary>
-        public override int MaxCapacity { get; protected set; }
+        public sealed override int MaxCapacity { get; protected set; }
 
         /// <summary>
         /// Inserts an item into the list at the given index
@@ -88,7 +85,7 @@ namespace VDS.Common.Collections
         /// Adds an item to the list
         /// </summary>
         /// <param name="item">Item</param>
-        public override void Add(T item)
+        public sealed override void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) throw new InvalidOperationException("Cannot add an item to this bounded list since it would cause the configured capacity of " + this.MaxCapacity + " to be exceeded");
             this._list.Add(item);

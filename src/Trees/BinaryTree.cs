@@ -51,7 +51,7 @@ namespace VDS.Common.Trees
         /// <param name="comparer">Comparer for keys</param>
         protected BinaryTree(IComparer<TKey> comparer)
         {
-            this._comparer = (comparer ?? this._comparer);
+            this._comparer = comparer ?? this._comparer;
         }
 
         /// <summary>
@@ -76,8 +76,7 @@ namespace VDS.Common.Trees
                 return true;
             }
             //Move to the node
-            bool created = false;
-            IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out created);
+            IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out bool created);
             if (!created) throw new ArgumentException("Duplicate keys are not permitted");
             node.Value = value;
             return true;
@@ -106,18 +105,17 @@ namespace VDS.Common.Trees
             do
             {
                 int c = this._comparer.Compare(key, current.Key);
-                if (c < 0)
+                switch (c)
                 {
-                    current = current.LeftChild;
-                }
-                else if (c > 0)
-                {
-                    current = current.RightChild;
-                }
-                else
-                {
-                    //If we find a match on the key then return it
-                    return current;
+                    case < 0:
+                        current = current.LeftChild;
+                        break;
+                    case > 0:
+                        current = current.RightChild;
+                        break;
+                    default:
+                        //If we find a match on the key then return it
+                        return current;
                 }
             } while (current != null);
 
@@ -134,37 +132,36 @@ namespace VDS.Common.Trees
         {
             if (this.Root == null)
             {
-                this.Root = this.CreateNode(null, key, default(TValue));
+                this.Root = this.CreateNode(null, key, default);
                 created = true;
                 return this.Root;
             }
             //Iteratively binary search for the key
             IBinaryTreeNode<TKey, TValue> current = this.Root;
-            IBinaryTreeNode<TKey, TValue> parent = null;
+            IBinaryTreeNode<TKey, TValue> parent;
             int c;
             do
             {
                 c = this._comparer.Compare(key, current.Key);
-                if (c < 0)
+                switch (c)
                 {
-                    parent = current;
-                    current = current.LeftChild;
-                }
-                else if (c > 0)
-                {
-                    parent = current;
-                    current = current.RightChild;
-                }
-                else
-                {
-                    //If we find a match on the key then return it
-                    created = false;
-                    return current;
+                    case < 0:
+                        parent = current;
+                        current = current.LeftChild;
+                        break;
+                    case > 0:
+                        parent = current;
+                        current = current.RightChild;
+                        break;
+                    default:
+                        //If we find a match on the key then return it
+                        created = false;
+                        return current;
                 }
             } while (current != null);
 
             //Key doesn't exist so need to do an insert
-            current = this.CreateNode(parent, key, default(TValue));
+            current = this.CreateNode(parent, key, default);
             created = true;
             if (c < 0)
             {
@@ -224,7 +221,7 @@ namespace VDS.Common.Trees
                     //If we find a match on the key then stop searching
                     //Calculate the comparison with the parent key (if there is a parent) as we need this info
                     //for the deletion implementation
-                    c = (current.Parent != null ? this._comparer.Compare(current.Key, current.Parent.Key) : c);
+                    c = current.Parent != null ? this._comparer.Compare(current.Key, current.Parent.Key) : c;
                     break;
                 }
             } while (current != null);
@@ -272,20 +269,20 @@ namespace VDS.Common.Trees
             }
             if (current.HasChildren)
             {
-                //Is an internal node with a single child
-                //Thus just set the appropriate child of the parent to the appropriate child of the node we are deleting
-                if (c < 0)
+                switch (c)
                 {
-                    current.Parent.LeftChild = (current.LeftChild ?? current.RightChild);
-                    this.AfterDelete(current.Parent);
-                    return true;
+                    //Is an internal node with a single child
+                    //Thus just set the appropriate child of the parent to the appropriate child of the node we are deleting
+                    case < 0:
+                        current.Parent.LeftChild = current.LeftChild ?? current.RightChild;
+                        this.AfterDelete(current.Parent);
+                        return true;
+                    case > 0:
+                        current.Parent.RightChild = current.RightChild ?? current.LeftChild;
+                        this.AfterDelete(current.Parent);
+                        return true;
                 }
-                if (c > 0)
-                {
-                    current.Parent.RightChild = (current.RightChild ?? current.LeftChild);
-                    this.AfterDelete(current.Parent);
-                    return true;
-                }
+
                 IBinaryTreeNode<TKey, TValue> successor;
                 if (current.LeftChild != null)
                 {
@@ -399,24 +396,12 @@ namespace VDS.Common.Trees
             get
             {
                 IBinaryTreeNode<TKey, TValue> n = this.Find(key);
-                if (n != null)
-                {
-                    return n.Value;
-                }
-                throw new KeyNotFoundException();
+                return n != null ? n.Value : throw new KeyNotFoundException();
             }
             set
             {
-                bool created = false;
-                IBinaryTreeNode<TKey, TValue> n = this.MoveToNode(key, out created);
-                if (n != null)
-                {
-                    n.Value = value;
-                }
-                else
-                {
-                    throw new KeyNotFoundException();
-                }
+                IBinaryTreeNode<TKey, TValue> n = this.MoveToNode(key, out bool _);
+                n.Value = n != null ? value : throw new KeyNotFoundException();
             }
         }
 
@@ -434,7 +419,7 @@ namespace VDS.Common.Trees
                 value = n.Value;
                 return true;
             }
-            value = default(TValue);
+            value = default;
             return false;
         }
 
@@ -446,9 +431,9 @@ namespace VDS.Common.Trees
         /// <exception cref="IndexOutOfRangeException">Thrown if the index is out of range</exception>
         protected IBinaryTreeNode<TKey, TValue> MoveToIndex(int index)
         {
-            if (this.Root == null) throw new IndexOutOfRangeException();
+            if (this.Root == null) throw new InvalidOperationException("Root node is null");
             int count = this.Root.Size;
-            if (index < 0 || index >= count) throw new IndexOutOfRangeException();
+            if (index < 0 || index >= count) throw new ArgumentOutOfRangeException(nameof(index));
 
             // Special cases
             // Index 0 and only one node, return the root
@@ -462,7 +447,10 @@ namespace VDS.Common.Trees
             IBinaryTreeNode<TKey, TValue> currentNode = this.Root;
             while (true)
             {
-                long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size : baseIndex;
+                #warning Possible NullReferenceException below
+                // Simplified this to an equivalent expression, but there is a possible
+                // NullReferenceException if currentNode is null past this point
+                long currentIndex = baseIndex + currentNode?.LeftChild?.Size ?? baseIndex;
                 if (currentIndex == index) return currentNode;
 
                 if (currentIndex > index)
@@ -532,8 +520,8 @@ namespace VDS.Common.Trees
         {
             get
             {
-                return (from n in this.Nodes
-                    select n.Key);
+                return from n in this.Nodes
+                    select n.Key;
             }
         }
 
@@ -544,8 +532,8 @@ namespace VDS.Common.Trees
         {
             get
             {
-                return (from n in this.Nodes
-                    select n.Value);
+                return from n in this.Nodes
+                    select n.Value;
             }
         }
 

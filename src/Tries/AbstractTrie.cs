@@ -51,16 +51,21 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Root of the Trie
         /// </summary>
-        protected readonly ITrieNode<TKeyBit, TValue> _root;
+        protected abstract ITrieNode<TKeyBit, TValue> _root { get; init; }
         
         /// <summary>
         /// Create an empty trie with an empty root node.
         /// </summary>
-        public AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
-            if (keyMapper == null) throw new ArgumentNullException("keyMapper", "Key Mapper function cannot be null");
-            this._keyMapper = keyMapper;
-            this._root = this.CreateRoot(default(TKeyBit));
+            this._keyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
+            #warning This is potentially dangerous and error-prone. See https://learn.microsoft.com/en-us/archive/blogs/ericlippert/why-do-initializers-run-in-the-opposite-order-as-constructors-part-one
+            // To mitigate this issue on derived types within this library, I have overridden the _root field on derived types, with initializers.
+            // Since initializers in derived types happen before the base type constructor is called, this will guarantee that the derived type's
+            // _root is the one being created.
+            // This constructor now uses the null-coalescing assignment operator, so that behavior of existing user-derived types will not be changed,
+            // but types defined within this library will now have root initialized by their own local definitions.
+            this._root ??= this.CreateRoot(default);
             this.KeyBitComparer = Comparer<TKeyBit>.Default;
         }
 
@@ -96,10 +101,7 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = _root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
-            {
-                node = node.MoveToChild(b);
-            }
+            node = bs.Aggregate(node, (current, b) => current.MoveToChild(b));
             node.Value = value;
         }
 
@@ -111,10 +113,9 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
-                //Bail out early if the key doesn't go anywhere
-                if (!node.TryGetChild(b, out node)) return;
+                return;
             }
             node.Value = null;
 
@@ -138,9 +139,14 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this.Find(key);
             if (node == null) return false;
-            if (node.HasValue && node.Value.Equals(value)) return true;
-            if (!node.HasValue && value == null) return true;
-            return false;
+            switch (node.HasValue)
+            {
+                case true when node.Value.Equals(value):
+                case false when value == null:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
@@ -163,7 +169,7 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this.Find(key);
             if (node == null) return false;
-            return (!requireValue || node.HasValue);
+            return !requireValue || node.HasValue;
         }
 
         /// <summary>
@@ -201,12 +207,7 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> Find(IEnumerable<TKeyBit> bs)
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
-            foreach (TKeyBit b in bs)
-            {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node)) return null;
-            }
-            return node;
+            return bs.Any(b => !node.TryGetChild(b, out node)) ? null : node;
         }
 
         /// <summary>
@@ -299,13 +300,9 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
 
-            foreach (TKeyBit b in bs)
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node))
-                {
-                    return null;
-                }
+                return null;
             }
             
             Queue<ITrieNode<TKeyBit, TValue>> depthFirstQueue = new Queue<ITrieNode<TKeyBit, TValue>>();
@@ -337,11 +334,7 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = _root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
-            {
-                node = node.MoveToChild(b);
-            }
-            return node;
+            return bs.Aggregate(node, (current, b) => current.MoveToChild(b));
         }
 
         /// <summary>
@@ -355,13 +348,9 @@ namespace VDS.Common.Tries
             get
             {
                 ITrieNode<TKeyBit, TValue> node = this.Find(key);
-                if (node == null) throw new KeyNotFoundException();
-                return node.Value;
+                return node == null ? throw new KeyNotFoundException() : node.Value;
             }
-            set
-            {
-                this.Add(key, value);
-            }
+            set => this.Add(key, value);
         }
 
         /// <summary>
@@ -376,13 +365,9 @@ namespace VDS.Common.Tries
 
             ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node))
-                {
-                    return false;
-                }
+                return false;
             }
             if (node.HasValue)
             {

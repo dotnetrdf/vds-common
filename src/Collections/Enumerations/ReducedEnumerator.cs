@@ -59,7 +59,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         protected override bool TryMoveNext(out T item)
         {
-            item = default(T);
+            item = default;
             if (this.InnerEnumerator.MoveNext()) return false;
             item = this.InnerEnumerator.Current;
 
@@ -90,7 +90,7 @@ namespace VDS.Common.Collections.Enumerations
         protected override void ResetInternal()
         {
             this.First = true;
-            this.LastItem = default(T);
+            this.LastItem = default;
         }
     }
 }
