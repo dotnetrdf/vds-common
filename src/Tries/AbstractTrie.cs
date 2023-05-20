@@ -207,12 +207,7 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> Find(IEnumerable<TKeyBit> bs)
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
-            foreach (TKeyBit b in bs)
-            {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node)) return null;
-            }
-            return node;
+            return bs.Any(b => !node.TryGetChild(b, out node)) ? null : node;
         }
 
         /// <summary>
