@@ -66,13 +66,6 @@ namespace VDS.Common.Collections
         }
 
         /// <summary>
-        /// Creates a new immutable view
-        /// </summary>
-        /// <param name="items">Enumerable to provide view over</param>
-        public ImmutableView(IEnumerable<T> items)
-            : this(items, DefaultErrorMessage) { }
-
-        /// <summary>
         /// Throws an error as this collection is immutable
         /// </summary>
         /// <param name="item">Item</param>
