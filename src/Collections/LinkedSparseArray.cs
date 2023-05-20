@@ -132,7 +132,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    class SparseArrayEntry<T>
+    internal class SparseArrayEntry<T>
     {
         public SparseArrayEntry(int index)
             : this(index, default) { }
@@ -148,7 +148,7 @@ namespace VDS.Common.Collections
         public T Value { get; set; }
     }
 
-    class LinkedSparseArrayEnumerator<T>
+    internal class LinkedSparseArrayEnumerator<T>
         : IEnumerator<T>
     {
         public LinkedSparseArrayEnumerator(LinkedList<SparseArrayEntry<T>> linkedList, int length)

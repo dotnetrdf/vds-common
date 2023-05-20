@@ -354,7 +354,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
+    internal class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
         : IEnumerable<ITrieNode<TKeyBit, TValue>>
         where TKeyBit : IEquatable<TKeyBit>
         where TValue : class

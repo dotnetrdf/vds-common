@@ -463,7 +463,7 @@ namespace VDS.Common.Tries
         }
     }
 
-    class TrieNodeChildrenEnumerable<TKeyBit, TValue>
+    internal class TrieNodeChildrenEnumerable<TKeyBit, TValue>
         : IEnumerable<ITrieNode<TKeyBit, TValue>>
         where TValue : class
     {
