@@ -287,8 +287,7 @@ namespace VDS.Common.Tries
                 else if (this.SingletonChild != null)
                 {
                     // Make non-singleton
-                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
-                    this._children.Add(this.SingletonChild.KeyBit, this.SingletonChild);
+                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> { { this.SingletonChild.KeyBit, this.SingletonChild } };
                     child = this.CreateNewChild(key);
                     this._children.Add(key, child);
                     return child;
