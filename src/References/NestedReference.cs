@@ -101,9 +101,9 @@ namespace VDS.Common.References
                 while (i > 1)
                 {
                     i--;
-                    if (this._values.ContainsKey(i))
+                    if (this._values.TryGetValue(i, out T theRef))
                     {
-                        this._currRef = this._values[i];
+                        this._currRef = theRef;
                         break;
                     }
                     else
