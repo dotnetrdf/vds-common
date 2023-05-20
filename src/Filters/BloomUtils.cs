@@ -76,7 +76,7 @@ namespace VDS.Common.Filters
             }
             catch (OverflowException)
             {
-                throw new ArgumentException(String.Format("The given parameters would result in a Bloom filter that required more than {0} bits/hash functions", Int32.MaxValue));
+                throw new ArgumentException(string.Format("The given parameters would result in a Bloom filter that required more than {0} bits/hash functions", int.MaxValue));
             }
         }
 

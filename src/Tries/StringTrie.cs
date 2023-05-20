@@ -30,7 +30,7 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="T">Type of values to be stored</typeparam>
     public class StringTrie<T>
-        : Trie<String, char, T>
+        : Trie<string, char, T>
         where T : class
     {
         /// <summary>
@@ -44,7 +44,7 @@ namespace VDS.Common.Tries
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Array of characters</returns>
-        public static IEnumerable<char> KeyMapper(String key)
+        public static IEnumerable<char> KeyMapper(string key)
         {
             return key.ToCharArray();
         }
@@ -58,7 +58,7 @@ namespace VDS.Common.Tries
     /// This is a sparse implementation so should be more memory efficient than the <see cref="StringTrie{T}"/> for many use cases
     /// </remarks>
     public class SparseStringTrie<T>
-        : SparseCharacterTrie<String, T>
+        : SparseCharacterTrie<string, T>
         where T : class
     {
         /// <summary>

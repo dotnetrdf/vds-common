@@ -46,9 +46,9 @@ namespace VDS.Common
         /// </summary>
         /// <param name="obj">Object</param>
         /// <returns></returns>
-        internal static String ToSafeString(this Object obj)
+        internal static string ToSafeString(this object obj)
         {
-            return (obj != null ? obj.ToString() : String.Empty);
+            return (obj != null ? obj.ToString() : string.Empty);
         }
     }
 }

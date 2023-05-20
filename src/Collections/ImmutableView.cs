@@ -33,13 +33,13 @@ namespace VDS.Common.Collections
     public class ImmutableView<T>
         : ICollection<T>
     {
-        private const String DefaultErrorMessage = "This collection is immutable";
+        private const string DefaultErrorMessage = "This collection is immutable";
 
         /// <summary>
         /// The enumerable being wrapped
         /// </summary>
         protected IEnumerable<T> _items;
-        private readonly String _errMsg;
+        private readonly string _errMsg;
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
@@ -51,7 +51,7 @@ namespace VDS.Common.Collections
         /// Creates a new immutable view over an empty collection
         /// </summary>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(String message)
+        public ImmutableView(string message)
             : this(Enumerable.Empty<T>(), message) { }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(IEnumerable<T> items, String message)
+        public ImmutableView(IEnumerable<T> items, string message = DefaultErrorMessage)
         {
             this._items = items;
-            this._errMsg = (!String.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
+            this._errMsg = (!string.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace VDS.Common.Collections
         /// Creates a new immutable view over an empty collection
         /// </summary>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public MaterializedImmutableView(String message)
+        public MaterializedImmutableView(string message)
             : base(new List<T>(), message) { }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public MaterializedImmutableView(IEnumerable<T> items, String message)
+        public MaterializedImmutableView(IEnumerable<T> items, string message)
             : base(items.ToList(), message) { }
 
         /// <summary>
