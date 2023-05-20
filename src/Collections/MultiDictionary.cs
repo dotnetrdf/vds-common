@@ -96,17 +96,9 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
-        /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
-        [Obsolete("You must use the two argument form of the constructor and explicitly state whether your hash function supports null keys", true)]
-        public MultiDictionary(Func<TKey, int> hashFunction)
-            : this(hashFunction, false, null, DefaultMode) { }
-
-        /// <summary>
-        /// Creates a new multi-dictionary
-        /// </summary>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         public MultiDictionary(IComparer<TKey> comparer)
-            : this(null, false, comparer, DefaultMode) { }
+            : this(null, false, comparer) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
@@ -141,10 +133,10 @@ namespace VDS.Common.Collections
         /// <param name="allowNullKeys">Whether null keys are allowed</param>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         /// <param name="mode">Mode to use for the buckets</param>
-        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys, IComparer<TKey> comparer = null, MultiDictionaryMode mode = DefaultMode)
+        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys = false, IComparer<TKey> comparer = null, MultiDictionaryMode mode = DefaultMode)
         {
-            this._comparer = (comparer != null ? comparer : this._comparer);
-            this._hashFunc = (hashFunction != null ? hashFunction : this._hashFunc);
+            this._comparer = comparer ?? this._comparer;
+            this._hashFunc = hashFunction ?? this._hashFunc;
             this._allowNullKeys = allowNullKeys;
             this._dict = new Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>>();
             this._mode = mode;
