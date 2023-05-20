@@ -134,10 +134,7 @@ namespace VDS.Common.Collections
 
     internal class SparseArrayEntry<T>
     {
-        public SparseArrayEntry(int index)
-            : this(index, default) { }
-
-        public SparseArrayEntry(int index, T value)
+        public SparseArrayEntry(int index, T value = default)
         {
             this.Index = index;
             this.Value = value;
