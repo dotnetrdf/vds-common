@@ -49,18 +49,11 @@ namespace VDS.Common.Collections
         private readonly SparseBlock<T>[] _blocks;
 
         /// <summary>
-        /// Creates a new sparse array with the default block size
-        /// </summary>
-        /// <param name="length">Length of the array</param>
-        public BlockSparseArray(int length)
-            : this(length, DefaultBlockSize) { }
-
-        /// <summary>
         /// Creates a new sparse array
         /// </summary>
         /// <param name="length">Length</param>
         /// <param name="blockSize">Block Size</param>
-        public BlockSparseArray(int length, int blockSize)
+        public BlockSparseArray(int length, int blockSize = DefaultBlockSize)
         {
             if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
             if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", "blockSize");
