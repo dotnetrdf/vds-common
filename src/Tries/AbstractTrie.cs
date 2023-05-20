@@ -113,10 +113,9 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
-                //Bail out early if the key doesn't go anywhere
-                if (!node.TryGetChild(b, out node)) return;
+                return;
             }
             node.Value = null;
 
