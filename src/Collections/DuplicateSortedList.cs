@@ -192,8 +192,8 @@ namespace VDS.Common.Collections
 
         private IBinaryTreeNode<T, int> MoveToIndex(int index)
         {
-            if (this._data.Root == null) throw new IndexOutOfRangeException();
-            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException();
+            if (this._data.Root == null) throw new InvalidOperationException("Root node is null");
+            if (index < 0 || index >= this.Count) throw new ArgumentOutOfRangeException(nameof(index));
 
             // Special cases
             // Index 0 and only one node, return the root
