@@ -300,13 +300,9 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this._root;
 
-            foreach (TKeyBit b in bs)
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node))
-                {
-                    return null;
-                }
+                return null;
             }
             
             Queue<ITrieNode<TKeyBit, TValue>> depthFirstQueue = new Queue<ITrieNode<TKeyBit, TValue>>();
@@ -338,11 +334,7 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = _root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
-            {
-                node = node.MoveToChild(b);
-            }
-            return node;
+            return bs.Aggregate(node, (current, b) => current.MoveToChild(b));
         }
 
         /// <summary>
@@ -373,13 +365,9 @@ namespace VDS.Common.Tries
 
             ITrieNode<TKeyBit, TValue> node = this._root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node))
-                {
-                    return false;
-                }
+                return false;
             }
             if (node.HasValue)
             {
