@@ -62,7 +62,7 @@ namespace VDS.Common.Collections.Enumerations
                 if (this.TopItems.ContainsKey(item)) continue;
 
                 this.TopItems.Add(this.InnerEnumerator.Current, true);
-                int count = this.TopItems.Root != null ? this.TopItems.Root.Size : 0;
+                int count = this.TopItems.Root?.Size ?? 0;
                 if (count > this.N) this.TopItems.RemoveAt(count - 1);
             }
             return this.TopItems.Keys.GetEnumerator();
