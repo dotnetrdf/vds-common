@@ -163,9 +163,6 @@ namespace VDS.Common.Collections
             }
         }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }
