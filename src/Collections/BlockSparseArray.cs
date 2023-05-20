@@ -55,8 +55,8 @@ namespace VDS.Common.Collections
         /// <param name="blockSize">Block Size</param>
         public BlockSparseArray(int length, int blockSize = DefaultBlockSize)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
-            if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", "blockSize");
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
+            if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", nameof(blockSize));
             int numBlocks = (length/blockSize) + (length%blockSize);
             this._blocks = new SparseBlock<T>[numBlocks];
 
@@ -91,14 +91,14 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index),String.Format("Index must be in the range 0 to {0}", this.Length - 1));
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
                 return block != null ? block[index] : default(T);
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index),String.Format("Index must be in the range 0 to {0}", this.Length - 1));
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
                 if (block == null)
@@ -140,8 +140,8 @@ namespace VDS.Common.Collections
 
         public SparseBlock(int startIndex, int length)
         {
-            if (startIndex < 0) throw new ArgumentException("Start Index must be >= 0", "startIndex");
-            if (length <= 0) throw new ArgumentException("Length must be >= 1", "length");
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex),"Start Index must be >= 0");
+            if (length <= 0) throw new ArgumentOutOfRangeException(nameof(length),"Length must be >= 1");
             this.StartIndex = startIndex;
             this.Length = length;
             this._block = new T[length];
