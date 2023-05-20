@@ -382,7 +382,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the given key value pair exists in the dictionary</returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && item.Key == null) throw new InvalidOperationException( "item.Key cannot be null" );
             if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null) return value.Equals(item.Value);
@@ -446,7 +446,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the key value pair was removed from the dictionary</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!this._allowNullKeys && item.Key == null) throw new InvalidOperationException("item.Key cannot be null");
             if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null && value.Equals(item.Value)) return this.Remove(item.Key);
