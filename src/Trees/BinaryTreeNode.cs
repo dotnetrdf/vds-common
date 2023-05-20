@@ -156,10 +156,10 @@ namespace VDS.Common.Trees
         /// </summary>
         public void RecalculateHeight()
         {
-            long newHeight = Math.Max((this._left != null ? this._left.Height : 0), (this._right != null ? this._right.Height : 0)) + 1;
+            long newHeight = Math.Max(this._left?.Height ?? 0, this._right?.Height ?? 0) + 1;
             if (newHeight == this._height) return;
             this._height = newHeight;
-            if (this.Parent != null) this.Parent.RecalculateHeight();
+            this.Parent?.RecalculateHeight();
         }
 
         /// <summary>

@@ -360,13 +360,9 @@ namespace VDS.Common.Tries
             get
             {
                 ITrieNode<TKeyBit, TValue> node = this.Find(key);
-                if (node == null) throw new KeyNotFoundException();
-                return node.Value;
+                return node == null ? throw new KeyNotFoundException() : node.Value;
             }
-            set
-            {
-                this.Add(key, value);
-            }
+            set => this.Add(key, value);
         }
 
         /// <summary>
