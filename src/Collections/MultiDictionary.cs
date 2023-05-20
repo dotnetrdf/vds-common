@@ -78,7 +78,7 @@ namespace VDS.Common.Collections
         private IComparer<TKey> _comparer = Comparer<TKey>.Default;
         private Func<TKey, int> _hashFunc = (k => k.GetHashCode());
         private MultiDictionaryMode _mode;
-        private bool _allowNullKeys;
+        private readonly bool _allowNullKeys;
 
         /// <summary>
         /// Creates a new multi-dictionary
