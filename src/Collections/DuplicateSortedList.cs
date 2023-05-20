@@ -207,7 +207,7 @@ namespace VDS.Common.Collections
             IBinaryTreeNode<T, int> currentNode = this._data.Root;
             while (true)
             {
-                long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
+                long currentIndex = currentNode!.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
                 if (currentIndex == index) return currentNode;
                 if (currentNode.LeftChild != null && index > currentIndex && index < currentIndex + currentNode.LeftChild.Value) return currentNode;
 
