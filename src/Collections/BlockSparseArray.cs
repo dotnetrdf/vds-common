@@ -91,14 +91,14 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index),String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
                 return block != null ? block[index] : default(T);
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index),String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
                 int blockIndex = index / this.BlockSize;
                 SparseBlock<T> block = this._blocks[blockIndex];
                 if (block == null)
