@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 #if !NO_THREAD
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -45,7 +46,7 @@ namespace VDS.Common.References
         : IDisposable
         where T : class
     {
-        private Dictionary<int, T> _refs = new Dictionary<int, T>();
+        private ConcurrentDictionary<int, T> _refs = new ConcurrentDictionary<int, T>();
 
         /// <summary>
         /// Creates a new ThreadSafeReference where the initial value of the reference on each thread is null
@@ -78,10 +79,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(this._refs);
                     int id = Thread.CurrentThread.ManagedThreadId;
-                    if (this._refs.ContainsKey(id))
-                        return this._refs[id];
-                    this._refs.Add(id, this.Initialiser?.Invoke());
-                    return this._refs[id];
+                    return this._refs.GetOrAdd(id, this.Initialiser?.Invoke());
                 }
                 finally
                 {
@@ -94,14 +92,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(this._refs);
                     int id = Thread.CurrentThread.ManagedThreadId;
-                    if (this._refs.ContainsKey(id))
-                    {
-                        this._refs[id] = value;
-                    }
-                    else
-                    {
-                        this._refs.Add(id, value);
-                    }
+                    this._refs.AddOrUpdate(id, _ => value, (_, _) => value);
                 }
                 finally
                 {
@@ -138,7 +129,7 @@ namespace VDS.Common.References
         : IDisposable
         where T : struct
     {
-        private Dictionary<int, T> _refs = new Dictionary<int, T>();
+        private ConcurrentDictionary<int, T> _refs = new ConcurrentDictionary<int, T>();
         private Func<T> _init;
 
         /// <summary>
@@ -158,13 +149,7 @@ namespace VDS.Common.References
         /// <summary>
         /// Gets the initialiser function
         /// </summary>
-        public Func<T> Initialiser
-        {
-            get
-            {
-                return this._init;
-            }
-        }
+        public Func<T> Initialiser => this._init;
 
         /// <summary>
         /// Gets/Sets the value for the current thread
@@ -177,12 +162,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(this._refs);
                     int id = Thread.CurrentThread.ManagedThreadId;
-                    if (!this._refs.ContainsKey(id))
-                    {
-                        T value = (this._init != null) ? this._init() : default;
-                        this._refs.Add(id, value);
-                    }
-                    return this._refs[id];
+                    return this._refs.GetOrAdd(id, this._init?.Invoke() ?? default);
                 }
                 finally
                 {
@@ -195,14 +175,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(this._refs);
                     int id = Thread.CurrentThread.ManagedThreadId;
-                    if (this._refs.ContainsKey(id))
-                    {
-                        this._refs[id] = value;
-                    }
-                    else
-                    {
-                        this._refs.Add(id, value);
-                    }
+                    this._refs.AddOrUpdate(id, _ => value, (_, _) => value);
                 }
                 finally
                 {
