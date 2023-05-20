@@ -71,7 +71,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the maximum capacity of the list
         /// </summary>
-        public override int MaxCapacity { get; protected set; }
+        public sealed override int MaxCapacity { get; protected set; }
 
         /// <summary>
         /// Inserts an item into the list at the given index
@@ -88,7 +88,7 @@ namespace VDS.Common.Collections
         /// Adds an item to the list
         /// </summary>
         /// <param name="item">Item</param>
-        public override void Add(T item)
+        public sealed override void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) throw new InvalidOperationException("Cannot add an item to this bounded list since it would cause the configured capacity of " + this.MaxCapacity + " to be exceeded");
             this._list.Add(item);
