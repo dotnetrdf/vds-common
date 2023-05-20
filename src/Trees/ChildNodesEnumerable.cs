@@ -118,8 +118,7 @@ namespace VDS.Common.Trees
         public IEnumerator<IBinaryTreeNode<TKey, TValue>> GetEnumerator()
         {
             IBinaryTreeNode<TKey, TValue> child = this.Child;
-            if (child == null) return Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator();
-            return child.Nodes.GetEnumerator();
+            return child == null ? Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator() : child.Nodes.GetEnumerator();
         }
 
         /// <summary>

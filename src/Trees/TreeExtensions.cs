@@ -98,8 +98,7 @@ namespace VDS.Common.Trees
         /// <returns></returns>
         public static long GetSize<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return 0;
-            return node.Nodes.LongCount();
+            return node == null ? 0 : node.Nodes.LongCount();
         }
 
         /// <summary>

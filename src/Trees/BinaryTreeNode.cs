@@ -161,8 +161,8 @@ namespace VDS.Common.Trees
         /// </summary>
         public void RecalculateSize()
         {
-            int leftSize = this._left != null ? this._left.Size : 0;
-            int rightSize = this._right != null ? this._right.Size : 0;
+            int leftSize = this._left?.Size ?? 0;
+            int rightSize = this._right?.Size ?? 0;
             this.Size = leftSize + rightSize + 1;
             if (this.Parent != null) this.Parent.RecalculateSize();
         }
