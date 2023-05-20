@@ -181,9 +181,7 @@ namespace VDS.Common.Trees
         /// <param name="node">Node</param>
         private void RotateLeft(IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return;
-
-            IBinaryTreeNode<TKey, TValue> pivot = node.RightChild;
+            IBinaryTreeNode<TKey, TValue> pivot = node?.RightChild;
             if (pivot == null) return;
 
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
@@ -216,9 +214,7 @@ namespace VDS.Common.Trees
         /// <param name="node">Node</param>
         private void RotateRight(IBinaryTreeNode<TKey, TValue> node)
         {
-            if (node == null) return;
-
-            IBinaryTreeNode<TKey, TValue> pivot = node.LeftChild;
+            IBinaryTreeNode<TKey, TValue> pivot = node?.LeftChild;
             if (pivot == null) return;
 
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
