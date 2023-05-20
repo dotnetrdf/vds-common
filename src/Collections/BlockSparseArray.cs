@@ -57,7 +57,7 @@ namespace VDS.Common.Collections
         {
             if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
             if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", nameof(blockSize));
-            int numBlocks = (length/blockSize) + (length%blockSize);
+            int numBlocks = length/blockSize + length%blockSize;
             this._blocks = new SparseBlock<T>[numBlocks];
 
             this.BlockSize = blockSize;
@@ -153,8 +153,8 @@ namespace VDS.Common.Collections
 
         public T this[int index]
         {
-            get { return this._block[index - this.StartIndex]; }
-            set { this._block[index - this.StartIndex] = value; }
+            get => this._block[index - this.StartIndex];
+            set => this._block[index - this.StartIndex] = value;
         }
     }
 
@@ -219,9 +219,6 @@ namespace VDS.Common.Collections
             }
         }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }
