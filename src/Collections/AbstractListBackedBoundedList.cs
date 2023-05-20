@@ -43,8 +43,7 @@ namespace VDS.Common.Collections
         /// <param name="list">List</param>
         protected AbstractListBackedBoundedList(IList<T> list)
         {
-            if (list == null) throw new ArgumentNullException("list");
-            this._list = list;
+            this._list = list ?? throw new ArgumentNullException(nameof(list));
         }
 
         /// <summary>
