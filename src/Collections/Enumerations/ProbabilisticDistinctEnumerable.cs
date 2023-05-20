@@ -44,8 +44,7 @@ namespace VDS.Common.Collections.Enumerations
         public ProbabilisticDistinctEnumerable(IEnumerable<T> enumerable, Func<IBloomFilter<T>> filterFactory)
             : base(enumerable)
         {
-            if (filterFactory == null) throw new ArgumentNullException(nameof(filterFactory));
-            this.FilterFactory = filterFactory;
+            this.FilterFactory = filterFactory ?? throw new ArgumentNullException(nameof(filterFactory));
         }
 
         /// <summary>

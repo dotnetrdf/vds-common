@@ -43,8 +43,7 @@ namespace VDS.Common.Tries
         /// <param name="node">Node to start enumeration from</param>
         public TrieValuesEnumerable(ITrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            this._node = node;
+            this._node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         /// <summary>

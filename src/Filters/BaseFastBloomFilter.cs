@@ -49,14 +49,12 @@ namespace VDS.Common.Filters
             : base(storage)
         {
             if (parameters == null) throw new ArgumentNullException(nameof(parameters), "Paramaeters cannot be null");
-            if (h1 == null) throw new ArgumentException("Hash functions cannot be null", nameof(h1));
-            if (h2 == null) throw new ArgumentException("Hash functions cannot be null", nameof(h2));
             if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
 
             this._parameters = parameters;
             this.NumberOfBits = parameters.NumberOfBits;
-            this._h1 = h1;
-            this._h2 = h2;
+            this._h1 = h1 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h1));
+            this._h2 = h2 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h2));
         }
 
         /// <summary>

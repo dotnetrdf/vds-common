@@ -44,8 +44,7 @@ namespace VDS.Common.Trees
         /// <param name="tree">Binary Tree</param>
         public NodesEnumerable(IBinaryTree<TKey, TValue> tree)
         {
-            if (tree == null) throw new ArgumentNullException(nameof(tree), "Tree cannot be null");
-            this._tree = tree;
+            this._tree = tree ?? throw new ArgumentNullException(nameof(tree), "Tree cannot be null");
         }
 
         /// <summary>
@@ -101,8 +100,7 @@ namespace VDS.Common.Trees
         /// <param name="parent">Parent node</param>
         public ChildNodesEnumerable(IBinaryTreeNode<TKey, TValue> parent)
         {
-            if (parent == null) throw new ArgumentNullException(nameof(parent), "Parent cannot be null");
-            this._parent = parent;
+            this._parent = parent ?? throw new ArgumentNullException(nameof(parent), "Parent cannot be null");
         }
 
         /// <summary>

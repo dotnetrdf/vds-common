@@ -44,8 +44,7 @@ namespace VDS.Common.Comparers
         /// <param name="comparer">Comparer</param>
         public ReversedComparer(IComparer<T> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
-            this.InnerComparer = comparer;
+            this.InnerComparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
         }
 
         /// <summary>

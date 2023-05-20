@@ -472,10 +472,8 @@ namespace VDS.Common.Tries
 
         public TrieNodeChildrenEnumerable(TrieNode<TKeyBit, TValue> node, Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> children)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            if (children == null) throw new ArgumentNullException(nameof(children));
-            this._node = node;
-            this._children = children;
+            this._node = node ?? throw new ArgumentNullException(nameof(node));
+            this._children = children ?? throw new ArgumentNullException(nameof(children));
         }
 
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()

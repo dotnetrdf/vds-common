@@ -39,8 +39,7 @@ namespace VDS.Common.Filters
         /// <param name="storage">Storage to use</param>
         protected BaseBloomFilter(IBloomFilterStorage storage)
         {
-            if (storage == null) throw new ArgumentNullException(nameof(storage), "Storage cannot be null");
-            this.Storage = storage;
+            this.Storage = storage ?? throw new ArgumentNullException(nameof(storage), "Storage cannot be null");
         }
 
         /// <summary>

@@ -41,8 +41,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <param name="enumerator">Enumerator to wrap</param>
         protected AbstractWrapperEnumerator(IEnumerator<T> enumerator)
         {
-            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            this.InnerEnumerator = enumerator;
+            this.InnerEnumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
         }
 
         /// <summary>
