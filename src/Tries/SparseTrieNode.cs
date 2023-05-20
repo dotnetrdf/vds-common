@@ -34,7 +34,7 @@ namespace VDS.Common.Tries
         where TKeyBit : struct, IEquatable<TKeyBit>
         where TValue : class
     {
-        private Nullable<TKeyBit> _singleton;
+        private TKeyBit? _singleton;
         private ITrieNode<TKeyBit, TValue> _singletonNode;
 
         /// <summary>
