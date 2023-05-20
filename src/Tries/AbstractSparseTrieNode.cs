@@ -363,8 +363,7 @@ namespace VDS.Common.Tries
 
         public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            this._node = node;
+            this._node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
