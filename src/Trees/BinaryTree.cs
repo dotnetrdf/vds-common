@@ -445,9 +445,9 @@ namespace VDS.Common.Trees
         /// <exception cref="IndexOutOfRangeException">Thrown if the index is out of range</exception>
         protected IBinaryTreeNode<TKey, TValue> MoveToIndex(int index)
         {
-            if (this.Root == null) throw new IndexOutOfRangeException();
+            if (this.Root == null) throw new InvalidOperationException("Root node is null");
             int count = this.Root.Size;
-            if (index < 0 || index >= count) throw new IndexOutOfRangeException();
+            if (index < 0 || index >= count) throw new ArgumentOutOfRangeException(nameof(index));
 
             // Special cases
             // Index 0 and only one node, return the root
