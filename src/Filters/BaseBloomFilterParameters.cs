@@ -31,7 +31,7 @@ namespace VDS.Common.Filters
         /// <summary>
         /// Gets the number of bits
         /// </summary>
-        public int NumberOfBits { get; protected set; }
+        public int NumberOfBits { get; protected init; }
 
         /// <summary>
         /// Gets the number of hash functions
