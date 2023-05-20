@@ -42,7 +42,7 @@ namespace VDS.Common.Trees
         /// Creates a new Scapegoat Tree
         /// </summary>
         public ScapegoatTree()
-            : base() { }
+        { }
 
         /// <summary>
         /// Creates a new Scapegoat Tree
@@ -88,7 +88,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly inserted nodes</param>
-        protected sealed override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this._nodeCount++;
             this._maxNodeCount = Math.Max(this._maxNodeCount, this._nodeCount);
@@ -105,7 +105,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly inserted nodes</param>
-        protected sealed override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this._nodeCount++;
             this._maxNodeCount = Math.Max(this._maxNodeCount, this._nodeCount);
@@ -132,7 +132,7 @@ namespace VDS.Common.Trees
         /// <param name="node">Node the delete occurred at</param>
         private void RebalanceAfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
-            this.Rebalance(node, node.GetSize<TKey, TValue>());
+            this.Rebalance(node, node.GetSize());
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace VDS.Common.Trees
             do
             {
                 //Get the sibling subtree size
-                siblingSize = current.GetSibling<TKey, TValue>().GetSize<TKey, TValue>();
+                long siblingSize = current.GetSibling().GetSize();
                 if (current.Parent != null)
                 {
                     //Total size of the Node is Current size of this subtree plus size of
@@ -300,7 +300,7 @@ namespace VDS.Common.Trees
         /// Applies rebalances after deletes
         /// </summary>
         /// <param name="node">Node the delete occurred at</param>
-        protected sealed override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
             this._nodeCount--;
 
@@ -313,7 +313,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Resets node counts after a clear
         /// </summary>
-        protected sealed override void AfterClear()
+        protected override void AfterClear()
         {
             this._nodeCount = 0;
             this._maxNodeCount = 0;
