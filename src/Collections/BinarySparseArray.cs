@@ -78,13 +78,13 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index),String.Format("Index must be in the range 0 to {0}", this.Length - 1));
                 T value;
                 return this._tree.TryGetValue(index, out value) ? value : default(T);
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index),String.Format("Index must be in the range 0 to {0}", this.Length - 1));
                 this._tree.Add(index, value);
             }
         }
