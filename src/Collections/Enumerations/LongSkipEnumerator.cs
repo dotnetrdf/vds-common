@@ -82,15 +82,14 @@ namespace VDS.Common.Collections.Enumerations
             item = default;
 
             // If we've previously done the skipping so can just defer to inner enumerator
-            if (this.Skipped == this.ToSkip)
-            {
-                if (!this.InnerEnumerator.MoveNext()) return false;
-                item = this.InnerEnumerator.Current;
-                return true;
-            }
+            if (this.Skipped != this.ToSkip)
+                return this.TrySkip() && this.TryMoveNext(out item);
+            if (!this.InnerEnumerator.MoveNext())
+                return false;
+            item = this.InnerEnumerator.Current;
+            return true;
 
             // First time being accessed so attempt to skip if possible
-            return this.TrySkip() && this.TryMoveNext(out item);
         }
 
         /// <summary>
