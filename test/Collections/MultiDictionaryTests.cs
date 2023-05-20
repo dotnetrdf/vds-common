@@ -23,10 +23,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace VDS.Common.Collections
 {
     [TestFixture, Category("Dictionaries")]
+    [Parallelizable(ParallelScope.All)]
     public class MultiDictionaryTests
     {
         [Test]
@@ -366,9 +368,10 @@ namespace VDS.Common.Collections
             Warn.If(mDictTime < dictTime, Is.False);
         }
 
-        [TestCase(50000), TestCase(100000), TestCase(250000)]
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
         [Category("Timing")]
-        public void MultiDictionaryVsDictionaryInsertNormal1(int numKeys)
+        public void MultiDictionaryVsDictionaryInsertNormal1([Range(50000,50000,250000)]int numKeys)
         {
             Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
             MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
