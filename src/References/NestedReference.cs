@@ -66,14 +66,7 @@ namespace VDS.Common.References
             }
             set
             {
-                if (this._values.ContainsKey(this._currLevel))
-                {
-                    this._values[this._currLevel] = value;
-                }
-                else
-                {
-                    this._values.Add(this._currLevel, value);
-                }
+                this._values[this._currLevel] = value;
                 this._currRef = value;
             }
         }
