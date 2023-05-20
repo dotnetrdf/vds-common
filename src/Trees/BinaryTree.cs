@@ -143,21 +143,20 @@ namespace VDS.Common.Trees
             do
             {
                 c = this._comparer.Compare(key, current.Key);
-                if (c < 0)
+                switch (c)
                 {
-                    parent = current;
-                    current = current.LeftChild;
-                }
-                else if (c > 0)
-                {
-                    parent = current;
-                    current = current.RightChild;
-                }
-                else
-                {
-                    //If we find a match on the key then return it
-                    created = false;
-                    return current;
+                    case < 0:
+                        parent = current;
+                        current = current.LeftChild;
+                        break;
+                    case > 0:
+                        parent = current;
+                        current = current.RightChild;
+                        break;
+                    default:
+                        //If we find a match on the key then return it
+                        created = false;
+                        return current;
                 }
             } while (current != null);
 

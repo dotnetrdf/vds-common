@@ -143,9 +143,14 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this.Find(key);
             if (node == null) return false;
-            if (node.HasValue && node.Value.Equals(value)) return true;
-            if (!node.HasValue && value == null) return true;
-            return false;
+            switch (node.HasValue)
+            {
+                case true when node.Value.Equals(value):
+                case false when value == null:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
