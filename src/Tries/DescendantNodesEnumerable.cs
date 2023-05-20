@@ -43,7 +43,7 @@ namespace VDS.Common.Tries
         /// <param name="node">Node</param>
         public DescendantNodesEnumerable(ITrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException("node");
+            if (node == null) throw new ArgumentNullException(nameof(node));
             this._node = node;
         }
 

@@ -44,7 +44,7 @@ namespace VDS.Common.Collections.Enumerations
         public ProbabilisticDistinctEnumerator(IEnumerator<T> enumerator, IBloomFilter<T> filter)
             : base(enumerator)
         {
-            if (filter == null) throw new ArgumentNullException("filter");
+            if (filter == null) throw new ArgumentNullException(nameof(filter));
             this.Filter = filter;
         }
 

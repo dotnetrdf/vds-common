@@ -49,7 +49,7 @@ namespace VDS.Common.Collections
         /// <param name="length">Length</param>
         public LinkedSparseArray(int length)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
             this.Length = length;
         }
 

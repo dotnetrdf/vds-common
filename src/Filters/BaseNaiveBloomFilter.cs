@@ -46,12 +46,12 @@ namespace VDS.Common.Filters
         protected BaseNaiveBloomFilter(IBloomFilterStorage storage, int bits, IEnumerable<Func<T, int>> hashFunctions)
             : base(storage)
         {
-            if (bits <= 0) throw new ArgumentException("Bits must be a positive value", "bits");
-            if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
+            if (bits <= 0) throw new ArgumentException("Bits must be a positive value", nameof(bits));
+            if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
             this._hashFunctions = new List<Func<T, int>>(hashFunctions);
             this._hashFunctions.RemoveAll(f => f == null);
-            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", "hashFunctions");
-            if (bits <= this._hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", "bits");
+            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
+            if (bits <= this._hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", nameof(bits));
 
             this.NumberOfBits = bits;
         }

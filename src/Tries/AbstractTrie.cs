@@ -58,7 +58,7 @@ namespace VDS.Common.Tries
         /// </summary>
         public AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
-            if (keyMapper == null) throw new ArgumentNullException("keyMapper", "Key Mapper function cannot be null");
+            if (keyMapper == null) throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
             this._keyMapper = keyMapper;
             this._root = this.CreateRoot(default(TKeyBit));
             this.KeyBitComparer = Comparer<TKeyBit>.Default;

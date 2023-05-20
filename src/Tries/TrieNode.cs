@@ -473,8 +473,8 @@ namespace VDS.Common.Tries
 
         public TrieNodeChildrenEnumerable(TrieNode<TKeyBit, TValue> node, Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> children)
         {
-            if (node == null) throw new ArgumentNullException("node");
-            if (children == null) throw new ArgumentNullException("children");
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (children == null) throw new ArgumentNullException(nameof(children));
             this._node = node;
             this._children = children;
         }

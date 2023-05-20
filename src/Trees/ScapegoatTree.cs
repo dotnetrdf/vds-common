@@ -66,7 +66,7 @@ namespace VDS.Common.Trees
         public ScapegoatTree(IComparer<TKey> comparer, double balanceFactor)
             : base(comparer)
         {
-            if (balanceFactor < 0.5d || balanceFactor > 1.0d) throw new ArgumentOutOfRangeException("balanceFactor", "Must meet the condition 0.5 < balanceFactor < 1");
+            if (balanceFactor < 0.5d || balanceFactor > 1.0d) throw new ArgumentOutOfRangeException(nameof(balanceFactor), "Must meet the condition 0.5 < balanceFactor < 1");
             this._balanceFactor = balanceFactor;
             this._logBase = 1d / this._balanceFactor;
         }

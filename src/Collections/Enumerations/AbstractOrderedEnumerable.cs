@@ -40,7 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         protected AbstractOrderedEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer)
             : base(enumerable)
         {
-            if (comparer == null) throw new ArgumentNullException("comparer");
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
             this.Comparer = comparer;
         }
 

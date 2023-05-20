@@ -48,10 +48,10 @@ namespace VDS.Common.Filters
         protected BaseFastBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
             : base(storage)
         {
-            if (parameters == null) throw new ArgumentNullException("parameters", "Paramaeters cannot be null");
-            if (h1 == null) throw new ArgumentException("Hash functions cannot be null", "h1");
-            if (h2 == null) throw new ArgumentException("Hash functions cannot be null", "h2");
-            if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", "parameters");
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters), "Paramaeters cannot be null");
+            if (h1 == null) throw new ArgumentException("Hash functions cannot be null", nameof(h1));
+            if (h2 == null) throw new ArgumentException("Hash functions cannot be null", nameof(h2));
+            if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
 
             this._parameters = parameters;
             this.NumberOfBits = parameters.NumberOfBits;

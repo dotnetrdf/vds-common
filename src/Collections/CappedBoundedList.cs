@@ -39,7 +39,7 @@ namespace VDS.Common.Collections
         public CappedBoundedList(int capacity)
             : base(new List<T>(SelectInitialCapacity(capacity)))
         {
-            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", "capacity");
+            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", nameof(capacity));
             this.MaxCapacity = capacity;
         }
 

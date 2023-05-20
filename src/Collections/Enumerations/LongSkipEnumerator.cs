@@ -40,7 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         public LongSkipEnumerator(IEnumerator<T> enumerator, long toSkip)
             : base(enumerator)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
+            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", nameof(toSkip));
             this.ToSkip = toSkip;
             this.Skipped = 0;
         }
