@@ -35,7 +35,6 @@ namespace VDS.Common.Trees
         : IBinaryTreeNode<TKey, TValue>
     {
         private IBinaryTreeNode<TKey, TValue> _left, _right;
-        private long _height = 1;
 
         /// <summary>
         /// Creates a new Binary Tree Node
@@ -139,17 +138,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets the height of the subtree
         /// </summary>
-        public long Height
-        {
-            get
-            {
-                return this._height;
-            }
-            private set
-            {
-                this._height = value;
-            }
-        }
+        public long Height { get; private set; } = 1;
 
         /// <summary>
         /// Recalculates the height of the subtree
@@ -157,8 +146,8 @@ namespace VDS.Common.Trees
         public void RecalculateHeight()
         {
             long newHeight = Math.Max(this._left?.Height ?? 0, this._right?.Height ?? 0) + 1;
-            if (newHeight == this._height) return;
-            this._height = newHeight;
+            if (newHeight == this.Height) return;
+            this.Height = newHeight;
             this.Parent?.RecalculateHeight();
         }
 
