@@ -172,9 +172,8 @@ namespace VDS.Common.Collections
         {
             if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 //Add into existing tree
                 tree.Add(key, value);
@@ -197,9 +196,8 @@ namespace VDS.Common.Collections
         {
             if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 return tree.ContainsKey(key);
             }
@@ -231,9 +229,8 @@ namespace VDS.Common.Collections
         {
             if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 bool removed = tree.Remove(key);
                 if (removed && tree.Root == null)
@@ -259,9 +256,8 @@ namespace VDS.Common.Collections
         {
             if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 return tree.TryGetValue(key, out value);
             }
@@ -281,9 +277,8 @@ namespace VDS.Common.Collections
         [Obsolete("TryGetKey() is included for historical reasons and will be removed in future versions")]
         public bool TryGetKey(TKey key, out TKey actualKey)
         {
-            ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
             int hash = this._hashFunc(key);
-            if (this._dict.TryGetValue(hash, out tree))
+            if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
             {
                 IBinaryTreeNode<TKey, TValue> node = tree.Find(key);
                 if (node == null)
@@ -329,8 +324,7 @@ namespace VDS.Common.Collections
             {
                 if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-                TValue value;
-                if (this.TryGetValue(key, out value))
+                if (this.TryGetValue(key, out TValue value))
                 {
                     return value;
                 }
@@ -343,13 +337,11 @@ namespace VDS.Common.Collections
             {
                 if (!this._allowNullKeys && key == null) throw new ArgumentNullException(nameof(key), "Key cannot be null");
 
-                ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;
                 int hash = this._hashFunc(key);
-                bool created = false;
-                if (this._dict.TryGetValue(hash, out tree))
+                if (this._dict.TryGetValue(hash, out ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree))
                 {
                     //Move to appropriate node
-                    IBinaryTreeNode<TKey, TValue> node = tree.MoveToNode(key, out created);
+                    IBinaryTreeNode<TKey, TValue> node = tree.MoveToNode(key, out bool _);
                     node.Value = value;
                 }
                 else
@@ -390,10 +382,8 @@ namespace VDS.Common.Collections
         /// <returns>True if the given key value pair exists in the dictionary</returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-
             if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
-            if (this.TryGetValue(item.Key, out value))
+            if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null) return value.Equals(item.Value);
                 if (item.Value == null) return true; //Both null so equal
@@ -456,10 +446,8 @@ namespace VDS.Common.Collections
         /// <returns>True if the key value pair was removed from the dictionary</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-
             if (!this._allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
-            if (this.TryGetValue(item.Key, out value))
+            if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null && value.Equals(item.Value)) return this.Remove(item.Key);
                 if (item.Value == null) return this.Remove(item.Key);
