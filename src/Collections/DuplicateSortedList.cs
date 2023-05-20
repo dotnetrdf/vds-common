@@ -228,6 +228,8 @@ namespace VDS.Common.Collections
             int index = 0;
             while (enumerator.MoveNext())
             {
+                if(enumerator.Current is null)
+                    throw new InvalidOperationException("Attempted to enumerate a null object");
                 if (this._comparer.Compare(item, enumerator.Current.Key) == 0) return index;
                 index += enumerator.Current.Value;
             }

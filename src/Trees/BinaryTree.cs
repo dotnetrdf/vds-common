@@ -447,7 +447,10 @@ namespace VDS.Common.Trees
             IBinaryTreeNode<TKey, TValue> currentNode = this.Root;
             while (true)
             {
-                long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size : baseIndex;
+                #warning Possible NullReferenceException below
+                // Simplified this to an equivalent expression, but there is a possible
+                // NullReferenceException if currentNode is null past this point
+                long currentIndex = baseIndex + currentNode?.LeftChild?.Size ?? baseIndex;
                 if (currentIndex == index) return currentNode;
 
                 if (currentIndex > index)
