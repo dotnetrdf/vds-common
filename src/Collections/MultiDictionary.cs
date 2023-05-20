@@ -77,14 +77,14 @@ namespace VDS.Common.Collections
         private Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>> _dict;
         private IComparer<TKey> _comparer = Comparer<TKey>.Default;
         private Func<TKey, int> _hashFunc = (k => k.GetHashCode());
-        private MultiDictionaryMode _mode = DefaultMode;
-        private bool _allowNullKeys = false;
+        private MultiDictionaryMode _mode;
+        private bool _allowNullKeys;
 
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
         public MultiDictionary()
-            : this(null, false, null, DefaultMode) { }
+            : this(null, false) { }
 
         /// <summary>
         /// Creates a new multi-dictionary
