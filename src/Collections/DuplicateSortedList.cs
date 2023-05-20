@@ -224,7 +224,7 @@ namespace VDS.Common.Collections
         {
             if (this._data.Root == null) return -1;
 
-            IEnumerator<IBinaryTreeNode<T, int>> enumerator = this._data.Nodes.GetEnumerator();
+            using IEnumerator<IBinaryTreeNode<T, int>> enumerator = this._data.Nodes.GetEnumerator();
             int index = 0;
             while (enumerator.MoveNext())
             {
