@@ -76,8 +76,7 @@ namespace VDS.Common.Trees
                 return true;
             }
             //Move to the node
-            bool created = false;
-            IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out created);
+            IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out bool created);
             if (!created) throw new ArgumentException("Duplicate keys are not permitted");
             node.Value = value;
             return true;
