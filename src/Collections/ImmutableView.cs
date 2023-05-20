@@ -45,7 +45,7 @@ namespace VDS.Common.Collections
         /// Creates a new immutable view over an empty collection
         /// </summary>
         public ImmutableView()
-            : this(Enumerable.Empty<T>(), DefaultErrorMessage) { }
+            : this(Enumerable.Empty<T>()) { }
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
