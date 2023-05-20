@@ -80,13 +80,13 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in range 0 to {this.Length - 1}");
                 LinkedListNode<SparseArrayEntry<T>> node = this.MoveToNode(index, false);
                 return node == null ? default(T) : node.Value.Value;
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in range 0 to {0}", this.Length - 1));
+                if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in range 0 to {this.Length - 1}");
                 LinkedListNode<SparseArrayEntry<T>> node = this.MoveToNode(index, true);
                 node.Value.Value = value;
             }
