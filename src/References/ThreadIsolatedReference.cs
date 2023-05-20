@@ -46,7 +46,6 @@ namespace VDS.Common.References
         where T : class
     {
         private Dictionary<int, T> _refs = new Dictionary<int, T>();
-        private Func<T> _init;
 
         /// <summary>
         /// Creates a new ThreadSafeReference where the initial value of the reference on each thread is null
@@ -60,19 +59,13 @@ namespace VDS.Common.References
         /// <param name="init">Initialiser Function</param>
         public ThreadIsolatedReference(Func<T> init)
         {
-            this._init = init;
+            this.Initialiser = init;
         }
 
         /// <summary>
         /// Gets the initialiser function
         /// </summary>
-        public Func<T> Initialiser
-        {
-            get
-            {
-                return this._init;
-            }
-        }
+        public Func<T> Initialiser { get; }
 
         /// <summary>
         /// Gets/Sets the value for the current thread
@@ -88,9 +81,9 @@ namespace VDS.Common.References
                     if (!this._refs.ContainsKey(id))
                     {
                         this._refs.Add(id, null);
-                        if (this._init != null)
+                        if (this.Initialiser != null)
                         {
-                            this._refs[id] = this._init();
+                            this._refs[id] = this.Initialiser();
                         }
                     }
                     return this._refs[id];
