@@ -102,7 +102,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    class BinarySparseArrayEnumerator<T>
+    internal class BinarySparseArrayEnumerator<T>
         : IEnumerator<T>
     {
         public BinarySparseArrayEnumerator(int length, IEnumerator<IBinaryTreeNode<int, T>> nodesEnumerator)
