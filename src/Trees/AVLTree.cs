@@ -43,7 +43,7 @@ namespace VDS.Common.Trees
         /// Creates a new AVL Tree
         /// </summary>
         public AVLTree()
-            : base() { }
+        { }
 
         /// <summary>
         /// Creates a new AVL Tree using the given key comparer
