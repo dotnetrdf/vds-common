@@ -69,15 +69,9 @@ namespace VDS.Common.Collections
             });
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayGetSet1(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayGetSet1([Range(0,10000,1000)]int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
             Assert.AreEqual(length, array.Length);
@@ -93,37 +87,25 @@ namespace VDS.Common.Collections
             }
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayGetSet2(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayGetSet2([Range(0,10000,1000)]int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var _ = array[-1];
+                int _ = array[-1];
             });
         }
 
-        [TestCase(1),
-         TestCase(10),
-         TestCase(50),
-         TestCase(100),
-         TestCase(250),
-         TestCase(500),
-         TestCase(1000),
-         TestCase(10000)]
-        public void SparseArrayGetSet3(int length)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void SparseArrayGetSet3([Range(0,10000,1000)]int length)
         {
             ISparseArray<int> array = this.CreateInstance(length);
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var _ = array[length];
+                int _ = array[length];
             });
         }
 

@@ -76,14 +76,9 @@ namespace VDS.Common.Collections
             Assert.Throws(typeof(InvalidOperationException), () => list.Add("b"));
         }
 
-        [TestCase(10, 100),
-         TestCase(10, 1000),
-         TestCase(1, 100),
-         TestCase(100, 10),
-         TestCase(100, 1000),
-         TestCase(2, 100),
-         TestCase(2, 1000)]
-        public void BoundedListContractAddError2(int capacity, int iterations)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void BoundedListContractAddError2([Values(1,2,10,100)]int capacity, [Values(10,100,1000)]int iterations)
         {
             IBoundedList<string> list = this.GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
@@ -147,14 +142,9 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, list.Count);
         }
 
-        [TestCase(10, 100),
-         TestCase(10, 1000),
-         TestCase(1, 100),
-         TestCase(100, 10),
-         TestCase(100, 1000),
-         TestCase(2, 100),
-         TestCase(2, 1000)]
-        public void BoundedListContractAddDiscard2(int capacity, int iterations)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void BoundedListContractAddDiscard2([Values(1,2,10,100)]int capacity, [Values(10,100,1000)]int iterations)
         {
             IBoundedList<string> list = this.GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
@@ -414,14 +404,9 @@ namespace VDS.Common.Collections
             Assert.Throws<InvalidOperationException>(() => list.Insert(1, "b"));
         }
 
-        [TestCase(10, 100),
-         TestCase(10, 1000),
-         TestCase(1, 100),
-         TestCase(100, 10),
-         TestCase(100, 1000),
-         TestCase(2, 100),
-         TestCase(2, 1000)]
-        public void BoundedListContractInsertError3(int capacity, int iterations)
+        [Test]
+        [Parallelizable(ParallelScope.Children)]
+        public void BoundedListContractInsertError3([Values( 1, 2, 10, 100 )] int capacity, [Values( 10, 100, 1000 )] int iterations )
         {
             IBoundedList<string> list = this.GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
