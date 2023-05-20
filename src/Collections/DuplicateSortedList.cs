@@ -95,8 +95,7 @@ namespace VDS.Common.Collections
         /// <param name="item">Item to add</param>
         public void Add(T item)
         {
-            bool created;
-            IBinaryTreeNode<T, int> node = this._data.MoveToNode(item, out created);
+            IBinaryTreeNode<T, int> node = this._data.MoveToNode(item, out bool created);
             if (created)
             {
                 node.Value = 1;
@@ -153,8 +152,7 @@ namespace VDS.Common.Collections
         /// <returns>True if item was removed, false otherwise</returns>
         public bool Remove(T item)
         {
-            int count;
-            if (!this._data.TryGetValue(item, out count)) return false;
+            if (!this._data.TryGetValue(item, out int count)) return false;
             if (count == 1)
             {
                 this._data.Remove(item);
@@ -170,18 +168,12 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the number of items in the list
         /// </summary>
-        public int Count
-        {
-            get { return this._total; }
-        }
+        public int Count => this._total;
 
         /// <summary>
         /// Gets whether the list is read only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         private IBinaryTreeNode<T, int> MoveToIndex(int index)
         {
@@ -277,8 +269,8 @@ namespace VDS.Common.Collections
         /// <returns>Value</returns>
         public T this[int index]
         {
-            get { return this.MoveToIndex(index).Key; }
-            set { throw new NotSupportedException("Cannot set value at a specific index in a sorted list"); }
+            get => this.MoveToIndex(index).Key;
+            set => throw new NotSupportedException("Cannot set value at a specific index in a sorted list");
         }
     }
 }
