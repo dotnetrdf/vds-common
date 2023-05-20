@@ -29,7 +29,7 @@ namespace VDS.Common.Filters
     /// <remarks>
     /// A bloom filter is a data structure that can be used to determine whether an item may have previously been seen in a memory efficient way that does not require storing the actual items.  The trade off is that it may yield false positives however it is guaranteed to never yield false negatives.  This makes it an ideal data structure for implementings things like distinctness where it doesn't matter if a few non-distinct items are discarded.
     /// </remarks>
-    public interface IBloomFilter<T> : IBloomFilterParameters
+    public interface IBloomFilter<in T> : IBloomFilterParameters
     {
         /// <summary>
         /// Adds an item to the filter
