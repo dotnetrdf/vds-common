@@ -69,7 +69,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly isnerted node</param>
-        protected sealed override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this.RebalanceAfterInsert(node);
         }
@@ -79,7 +79,7 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly isnerted node</param>
-        protected sealed override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
             this.RebalanceAfterInsert(node);   
         }
@@ -116,7 +116,7 @@ namespace VDS.Common.Trees
         /// Applies rebalances after deletes
         /// </summary>
         /// <param name="node">Node at which the delete occurred</param>
-        protected sealed override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
             IBinaryTreeNode<TKey, TValue> current = node.Parent;
             while (current != null)
