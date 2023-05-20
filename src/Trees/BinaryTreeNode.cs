@@ -184,7 +184,7 @@ namespace VDS.Common.Trees
         /// <returns></returns>
         public override string ToString()
         {
-            return "Key: " + this.Key.ToString() + " Value: " + this.Value.ToSafeString();
+            return $"Key: {this.Key} Value: {this.Value.ToSafeString()}";
         }
     }
 }
