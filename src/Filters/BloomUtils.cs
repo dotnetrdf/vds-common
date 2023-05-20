@@ -65,7 +65,7 @@ namespace VDS.Common.Filters
         public static IBloomFilterParameters CalculateBloomParameters(long expectedItems, double errorRate)
         {
             if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", nameof(expectedItems));
-            if (errorRate < 0d || errorRate > 1d) throw new ArgumentException("errorRate must be in the range 0-1", nameof(errorRate));
+            if (errorRate is < 0d or > 1d) throw new ArgumentException("errorRate must be in the range 0-1", nameof(errorRate));
 
             double numBits = Math.Ceiling((expectedItems*Math.Log(errorRate))/Math.Log(1d/Math.Pow(2d, Math.Log(2))));
             double numHashFunctions = Math.Round(Math.Log(2d)*(numBits/expectedItems));
