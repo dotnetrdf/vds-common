@@ -45,7 +45,7 @@ namespace VDS.Common.Collections
         /// <param name="length">Length</param>
         public BinarySparseArray(int length)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
             this._tree = new AVLTree<int, T>(Comparer<Int32>.Default);
             this.Length = length;
         }
