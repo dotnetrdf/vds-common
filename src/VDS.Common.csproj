@@ -10,6 +10,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
 	    <TargetFrameworks>net6.0;net7.0;net480;net472</TargetFrameworks>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup>
