@@ -101,10 +101,7 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = _root;
             IEnumerable<TKeyBit> bs = this._keyMapper(key);
-            foreach (TKeyBit b in bs)
-            {
-                node = node.MoveToChild(b);
-            }
+            node = bs.Aggregate(node, (current, b) => current.MoveToChild(b));
             node.Value = value;
         }
 
