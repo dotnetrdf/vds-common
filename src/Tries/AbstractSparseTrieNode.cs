@@ -234,7 +234,7 @@ namespace VDS.Common.Tries
             {
                 lock (_nodeLock)
                 {
-                    if (this._children != null) this._children.Clear();
+                    this._children?.Clear();
                     this.ClearSingleton();
                 }
             }

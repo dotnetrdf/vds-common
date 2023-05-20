@@ -177,13 +177,11 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-
-            if (this.TryGetValue(item.Key, out value))
+            if (this.TryGetValue(item.Key, out TValue value))
             {
                 if (value != null) return value.Equals(item.Value);
-                if (item.Value == null) return true; //Both null so equal
-                return false; //One is null so not equal
+                return item.Value == null; //Both null so equal
+                //One is null so not equal
             }
             else
             {

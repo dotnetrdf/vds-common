@@ -398,24 +398,12 @@ namespace VDS.Common.Trees
             get
             {
                 IBinaryTreeNode<TKey, TValue> n = this.Find(key);
-                if (n != null)
-                {
-                    return n.Value;
-                }
-                throw new KeyNotFoundException();
+                return n != null ? n.Value : throw new KeyNotFoundException();
             }
             set
             {
-                bool created = false;
-                IBinaryTreeNode<TKey, TValue> n = this.MoveToNode(key, out created);
-                if (n != null)
-                {
-                    n.Value = value;
-                }
-                else
-                {
-                    throw new KeyNotFoundException();
-                }
+                IBinaryTreeNode<TKey, TValue> n = this.MoveToNode(key, out bool _);
+                n.Value = n != null ? value : throw new KeyNotFoundException();
             }
         }
 
