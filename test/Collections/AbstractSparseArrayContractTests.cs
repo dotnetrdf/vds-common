@@ -172,7 +172,7 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(default(int), array[i]);
             }
 
-            IEnumerator<int> enumerator = array.GetEnumerator();
+            using IEnumerator<int> enumerator = array.GetEnumerator();
 
             int index = -1;
             while (enumerator.MoveNext())
