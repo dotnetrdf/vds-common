@@ -79,7 +79,7 @@ namespace VDS.Common.Collections
         /// Adds an item
         /// </summary>
         /// <param name="item">Item</param>
-        public override sealed void Add(T item)
+        public sealed override void Add(T item)
         {
             if (this._list.Count == this.MaxCapacity) return;
             this._list.Add(item);
@@ -96,6 +96,6 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the maximum capacity of the list
         /// </summary>
-        public override sealed int MaxCapacity { get; protected set; }
+        public sealed override int MaxCapacity { get; protected set; }
     }
 }
