@@ -52,14 +52,7 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
         {
-            if (this._node.IsLeaf)
-            {
-                return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
-            }
-            else
-            {
-                return this._node.Children.Concat(this._node.Children.SelectMany(c => c.Descendants)).GetEnumerator();
-            }
+            return this._node.IsLeaf ? Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator() : this._node.Children.Concat(this._node.Children.SelectMany(c => c.Descendants)).GetEnumerator();
         }
 
         /// <summary>
