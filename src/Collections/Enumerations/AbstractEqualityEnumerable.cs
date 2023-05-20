@@ -40,8 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         protected AbstractEqualityEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
             : base(enumerable)
         {
-            if (equalityComparer == null) throw new ArgumentNullException("equalityComparer");
-            this.EqualityComparer = equalityComparer;
+            this.EqualityComparer = equalityComparer ?? throw new ArgumentNullException("equalityComparer");
         }
 
         /// <summary>
