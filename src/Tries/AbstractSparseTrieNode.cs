@@ -103,7 +103,7 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public bool TryGetChild(TKeyBit key, out ITrieNode<TKeyBit, TValue> child)
         {
-            lock (this)
+            lock (_nodeLock)
             {
                 if (this._children != null)
                 {
@@ -148,7 +148,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     if (this._children != null)
                     {
@@ -184,7 +184,7 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     if (this._children != null)
                     {
@@ -232,7 +232,7 @@ namespace VDS.Common.Tries
         {
             if (depth == 0)
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     if (this._children != null) this._children.Clear();
                     this.ClearSingleton();
@@ -240,7 +240,7 @@ namespace VDS.Common.Tries
             }
             else if (depth > 0)
             {
-                lock (this)
+                lock (_nodeLock)
                 {
                     foreach (ITrieNode<TKeyBit, TValue> node in this.Children)
                     {
@@ -254,6 +254,7 @@ namespace VDS.Common.Tries
             }
         }
 
+        private readonly object _nodeLock = new object(); 
         /// <summary>
         /// Add a child node associated with a key to this node and return the node.
         /// </summary>
@@ -262,7 +263,7 @@ namespace VDS.Common.Tries
         public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
             ITrieNode<TKeyBit, TValue> child;
-            lock (this)
+            lock (_nodeLock)
             {
                 if (this._children != null)
                 {
@@ -307,7 +308,7 @@ namespace VDS.Common.Tries
         /// <param name="key">The key associated with the child to remove.</param>
         public void RemoveChild(TKeyBit key)
         {
-            lock (this)
+            lock (_nodeLock)
             {
                 if (this._children != null)
                 {
