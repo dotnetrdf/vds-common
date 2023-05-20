@@ -56,18 +56,11 @@ namespace VDS.Common.Collections
             : this(null, items) { }
 
         /// <summary>
-        /// Creates a new list that uses the given comparer
-        /// </summary>
-        /// <param name="comparer">Comparer</param>
-        public DuplicateSortedList(IComparer<T> comparer)
-            : this(comparer, null) { }
-
-        /// <summary>
         /// Creates a new list that uses the given comparer and has the given items
         /// </summary>
         /// <param name="comparer">Comparer</param>
         /// <param name="items">Items</param>
-        public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items)
+        public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items = null)
         {
             this._comparer = comparer ?? Comparer<T>.Default;
             this._data = new AVLTree<T, int>(this._comparer);
