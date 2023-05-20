@@ -102,10 +102,22 @@ namespace VDS.Common.Collections
         }
 
         [Test]
-        public void MultiDictionaryNullKeyHandling11()
+        public void MultiDictionaryNullKeyAddExplicit([Values(true,false)]bool allowNullKeys)
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Add(null, 1);
+            Assert.Multiple(() =>
+            {
+                MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, allowNullKeys);
+                if (allowNullKeys)
+                {
+                    Assert.That(() => { dict.Add(null, 1); }, Throws.Nothing);
+                }
+                else
+                {
+                    Assert.That(() => { dict.Add(null, 1); }, Throws.ArgumentNullException);
+                }
+
+                Assert.That(dict.Count == 1, Is.EqualTo(allowNullKeys));
+            });
         }
 
         [Test]
