@@ -62,7 +62,7 @@ namespace VDS.Common.Collections
         public ImmutableView(IEnumerable<T> items, string message = DefaultErrorMessage)
         {
             this._items = items;
-            this._errMsg = (!string.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
+            this._errMsg = !string.IsNullOrEmpty(message) ? message : DefaultErrorMessage;
         }
 
         /// <summary>

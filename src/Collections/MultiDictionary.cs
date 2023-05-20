@@ -76,7 +76,7 @@ namespace VDS.Common.Collections
 
         private Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>> _dict;
         private IComparer<TKey> _comparer = Comparer<TKey>.Default;
-        private Func<TKey, int> _hashFunc = (k => k.GetHashCode());
+        private Func<TKey, int> _hashFunc = k => k.GetHashCode();
         private MultiDictionaryMode _mode;
         private readonly bool _allowNullKeys;
 

@@ -157,7 +157,7 @@ namespace VDS.Common.Trees
                     current = current.Parent;
 
                     //Is the current node weight balanced?
-                    if (currSize <= (this._balanceFactor * nodeSize) && siblingSize <= (this._balanceFactor * siblingSize))
+                    if (currSize <= this._balanceFactor * nodeSize && siblingSize <= this._balanceFactor * siblingSize)
                     {
                         //Weight balanced so continue on
                         currSize = nodeSize;
@@ -251,7 +251,7 @@ namespace VDS.Common.Trees
                 default:
                 {
                     //Rebuild the tree
-                    int median = start + ((end - start) / 2);
+                    int median = start + (end - start) / 2;
                     //Console.WriteLine("m = " + median);
                     IBinaryTreeNode<TKey, TValue> root = nodes[median];
                     root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
@@ -290,7 +290,7 @@ namespace VDS.Common.Trees
                 default:
                 {
                     //Rebuild the tree
-                    int median = start + ((end - start) / 2);
+                    int median = start + (end - start) / 2;
                     //Console.WriteLine("m = " + median);
                     IBinaryTreeNode<TKey, TValue> root = nodes[median];
                     root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
@@ -308,7 +308,7 @@ namespace VDS.Common.Trees
         {
             this._nodeCount--;
 
-            if (this._nodeCount <= (this._maxNodeCount / 2))
+            if (this._nodeCount <= this._maxNodeCount / 2)
             {
                 this.RebalanceAfterDelete(node);
             }

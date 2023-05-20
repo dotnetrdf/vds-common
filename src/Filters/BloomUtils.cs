@@ -67,7 +67,7 @@ namespace VDS.Common.Filters
             if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", nameof(expectedItems));
             if (errorRate is < 0d or > 1d) throw new ArgumentException("errorRate must be in the range 0-1", nameof(errorRate));
 
-            double numBits = Math.Ceiling((expectedItems*Math.Log(errorRate))/Math.Log(1d/Math.Pow(2d, Math.Log(2))));
+            double numBits = Math.Ceiling(expectedItems*Math.Log(errorRate)/Math.Log(1d/Math.Pow(2d, Math.Log(2))));
             double numHashFunctions = Math.Round(Math.Log(2d)*(numBits/expectedItems));
 
             try
@@ -95,7 +95,7 @@ namespace VDS.Common.Filters
             if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", nameof(expectedItems));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            double lnP = (-1d*((double) parameters.NumberOfBits / expectedItems))*Math.Pow(Math.Log(2), 2d);
+            double lnP = -1d*((double) parameters.NumberOfBits / expectedItems)*Math.Pow(Math.Log(2), 2d);
             return Math.Pow(Math.E, lnP);
         }
     }

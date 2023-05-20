@@ -51,7 +51,7 @@ namespace VDS.Common.Trees
         /// <param name="comparer">Comparer for keys</param>
         protected BinaryTree(IComparer<TKey> comparer)
         {
-            this._comparer = (comparer ?? this._comparer);
+            this._comparer = comparer ?? this._comparer;
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace VDS.Common.Trees
                     //If we find a match on the key then stop searching
                     //Calculate the comparison with the parent key (if there is a parent) as we need this info
                     //for the deletion implementation
-                    c = (current.Parent != null ? this._comparer.Compare(current.Key, current.Parent.Key) : c);
+                    c = current.Parent != null ? this._comparer.Compare(current.Key, current.Parent.Key) : c;
                     break;
                 }
             } while (current != null);
@@ -274,11 +274,11 @@ namespace VDS.Common.Trees
                     //Is an internal node with a single child
                     //Thus just set the appropriate child of the parent to the appropriate child of the node we are deleting
                     case < 0:
-                        current.Parent.LeftChild = (current.LeftChild ?? current.RightChild);
+                        current.Parent.LeftChild = current.LeftChild ?? current.RightChild;
                         this.AfterDelete(current.Parent);
                         return true;
                     case > 0:
-                        current.Parent.RightChild = (current.RightChild ?? current.LeftChild);
+                        current.Parent.RightChild = current.RightChild ?? current.LeftChild;
                         this.AfterDelete(current.Parent);
                         return true;
                 }
@@ -517,8 +517,8 @@ namespace VDS.Common.Trees
         {
             get
             {
-                return (from n in this.Nodes
-                    select n.Key);
+                return from n in this.Nodes
+                    select n.Key;
             }
         }
 
@@ -529,8 +529,8 @@ namespace VDS.Common.Trees
         {
             get
             {
-                return (from n in this.Nodes
-                    select n.Value);
+                return from n in this.Nodes
+                    select n.Value;
             }
         }
 

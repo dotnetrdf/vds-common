@@ -96,7 +96,7 @@ namespace VDS.Common.Filters
                         else
                         {
                             // Use arithmetic combination of the first two hash functions
-                            indices[i] = Math.Abs(a + (i*b))%this.NumberOfBits;
+                            indices[i] = Math.Abs(a + i*b)%this.NumberOfBits;
                         }
                         break;
                 }

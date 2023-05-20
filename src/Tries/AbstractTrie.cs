@@ -169,7 +169,7 @@ namespace VDS.Common.Tries
         {
             ITrieNode<TKeyBit, TValue> node = this.Find(key);
             if (node == null) return false;
-            return (!requireValue || node.HasValue);
+            return !requireValue || node.HasValue;
         }
 
         /// <summary>

@@ -75,7 +75,7 @@ namespace VDS.Common.Filters
             int[] bits = new int[this._parameters.NumberOfHashFunctions];
             for (int i = 0; i < bits.Length; i++)
             {
-                bits[i] = Math.Abs(a + (i*b)) % this.NumberOfBits;
+                bits[i] = Math.Abs(a + i*b) % this.NumberOfBits;
             }
             return bits;
         }

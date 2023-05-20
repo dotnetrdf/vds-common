@@ -185,8 +185,8 @@ namespace VDS.Common.Trees
             if (pivot == null) return;
 
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
-            bool atRoot = (parent == null);
+            bool left = parent != null && ReferenceEquals(node, parent.LeftChild);
+            bool atRoot = parent == null;
 
             //Update Parents
             node.Parent = pivot;
@@ -218,8 +218,8 @@ namespace VDS.Common.Trees
             if (pivot == null) return;
 
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
-            bool atRoot = (parent == null);
+            bool left = parent != null && ReferenceEquals(node, parent.LeftChild);
+            bool atRoot = parent == null;
 
             //Update Parents
             node.Parent = pivot;

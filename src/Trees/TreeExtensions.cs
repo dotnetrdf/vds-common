@@ -86,7 +86,7 @@ namespace VDS.Common.Trees
         {
             if (node.Parent == null) return null;
             IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            return (ReferenceEquals(node, parent.LeftChild) ? parent.RightChild : parent.LeftChild);
+            return ReferenceEquals(node, parent.LeftChild) ? parent.RightChild : parent.LeftChild;
         }
 
         /// <summary>
