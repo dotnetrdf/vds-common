@@ -36,7 +36,7 @@ namespace VDS.Common.Tries
         /// Creates a new String Trie
         /// </summary>
         public StringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
+            : base(KeyMapper) { }
 
         /// <summary>
         /// Key Mapper function for String Trie
