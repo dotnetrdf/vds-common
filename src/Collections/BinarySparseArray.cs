@@ -79,8 +79,7 @@ namespace VDS.Common.Collections
             get
             {
                 if (index < 0 || index >= this.Length) throw new ArgumentOutOfRangeException(nameof(index), $"Index must be in the range 0 to {this.Length - 1}");
-                T value;
-                return this._tree.TryGetValue(index, out value) ? value : default(T);
+                return this._tree.TryGetValue(index, out T value) ? value : default(T);
             }
             set
             {
