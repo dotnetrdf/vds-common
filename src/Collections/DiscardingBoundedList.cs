@@ -88,10 +88,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the overflow policy for this bounded list which is <see cref="BoundedListOverflowPolicy.Discard"/>
         /// </summary>
-        public override BoundedListOverflowPolicy OverflowPolicy
-        {
-            get { return BoundedListOverflowPolicy.Discard; }
-        }
+        public override BoundedListOverflowPolicy OverflowPolicy => BoundedListOverflowPolicy.Discard;
 
         /// <summary>
         /// Gets the maximum capacity of the list
