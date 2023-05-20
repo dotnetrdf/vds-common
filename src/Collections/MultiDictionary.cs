@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using VDS.Common.Trees;
 
 namespace VDS.Common.Collections
@@ -105,14 +104,6 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Creates a new multi-dictionary
         /// </summary>
-        /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
-        /// <param name="allowNullKeys">Whether to allow null keys</param>
-        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys)
-            : this(hashFunction, allowNullKeys, null, DefaultMode) { }
-
-        /// <summary>
-        /// Creates a new multi-dictionary
-        /// </summary>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         public MultiDictionary(IComparer<TKey> comparer)
             : this(null, false, comparer, DefaultMode) { }
@@ -150,7 +141,7 @@ namespace VDS.Common.Collections
         /// <param name="allowNullKeys">Whether null keys are allowed</param>
         /// <param name="comparer">Comparer used for keys within the binary search trees</param>
         /// <param name="mode">Mode to use for the buckets</param>
-        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys, IComparer<TKey> comparer, MultiDictionaryMode mode)
+        public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys, IComparer<TKey> comparer = null, MultiDictionaryMode mode = DefaultMode)
         {
             this._comparer = (comparer != null ? comparer : this._comparer);
             this._hashFunc = (hashFunction != null ? hashFunction : this._hashFunc);
