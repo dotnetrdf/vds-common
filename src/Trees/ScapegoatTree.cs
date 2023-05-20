@@ -144,7 +144,6 @@ namespace VDS.Common.Trees
         {
             //Find the scapegoat
             long currSize = selfSize;
-            long siblingSize, nodeSize;
             IBinaryTreeNode<TKey, TValue> current = node;
             do
             {
@@ -154,7 +153,7 @@ namespace VDS.Common.Trees
                 {
                     //Total size of the Node is Current size of this subtree plus size of
                     //sibling subtree plus one for the current node
-                    nodeSize = currSize + siblingSize + 1;
+                    long nodeSize = currSize + siblingSize + 1;
                     current = current.Parent;
 
                     //Is the current node weight balanced?
