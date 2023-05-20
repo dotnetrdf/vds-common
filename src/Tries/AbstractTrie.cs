@@ -51,15 +51,21 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Root of the Trie
         /// </summary>
-        protected readonly ITrieNode<TKeyBit, TValue> _root;
+        protected abstract ITrieNode<TKeyBit, TValue> _root { get; init; }
         
         /// <summary>
         /// Create an empty trie with an empty root node.
         /// </summary>
-        public AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
             this._keyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
-            this._root = this.CreateRoot(default);
+            #warning This is potentially dangerous and error-prone. See https://learn.microsoft.com/en-us/archive/blogs/ericlippert/why-do-initializers-run-in-the-opposite-order-as-constructors-part-one
+            // To mitigate this issue on derived types within this library, I have overridden the _root field on derived types, with initializers.
+            // Since initializers in derived types happen before the base type constructor is called, this will guarantee that the derived type's
+            // _root is the one being created.
+            // This constructor now uses the null-coalescing assignment operator, so that behavior of existing user-derived types will not be changed,
+            // but types defined within this library will now have root initialized by their own local definitions.
+            this._root ??= this.CreateRoot(default);
             this.KeyBitComparer = Comparer<TKeyBit>.Default;
         }
 

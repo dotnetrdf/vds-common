@@ -43,6 +43,8 @@ namespace VDS.Common.Tries
         public Trie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
             : base(keyMapper) { }
 
+        protected override ITrieNode<TKeyBit, TValue> _root { get; init; } = new TrieNode<TKeyBit, TValue>(null, default);
+
         /// <summary>
         /// Method which creates a new child node
         /// </summary>
