@@ -105,18 +105,17 @@ namespace VDS.Common.Trees
             do
             {
                 int c = this._comparer.Compare(key, current.Key);
-                if (c < 0)
+                switch (c)
                 {
-                    current = current.LeftChild;
-                }
-                else if (c > 0)
-                {
-                    current = current.RightChild;
-                }
-                else
-                {
-                    //If we find a match on the key then return it
-                    return current;
+                    case < 0:
+                        current = current.LeftChild;
+                        break;
+                    case > 0:
+                        current = current.RightChild;
+                        break;
+                    default:
+                        //If we find a match on the key then return it
+                        return current;
                 }
             } while (current != null);
 
