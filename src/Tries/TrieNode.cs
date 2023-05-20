@@ -307,36 +307,37 @@ namespace VDS.Common.Tries
         /// <exception cref="ArgumentException">Thrown if depth is less than zero</exception>
         public void Trim(int depth)
         {
-            if (depth == 0)
+            switch (depth)
             {
-                try
-                {
-                    this.EnterWriteLock();
-                    this._children.Clear();
-                }
-                finally
-                {
-                    this.ExitWriteLock();
-                }
-            }
-            else if (depth > 0)
-            {
-                try
-                {
-                    this.EnterReadLock();
-                    foreach (ITrieNode<TKeyBit, TValue> node in this._children.Values)
+                case 0:
+                    try
                     {
-                        node.Trim(depth - 1);
+                        this.EnterWriteLock();
+                        this._children.Clear();
                     }
-                }
-                finally
-                {
-                    this.ExitReadLock();
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Depth must be >= 0");
+                    finally
+                    {
+                        this.ExitWriteLock();
+                    }
+
+                    break;
+                case > 0:
+                    try
+                    {
+                        this.EnterReadLock();
+                        foreach (ITrieNode<TKeyBit, TValue> node in this._children.Values)
+                        {
+                            node.Trim(depth - 1);
+                        }
+                    }
+                    finally
+                    {
+                        this.ExitReadLock();
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentException("Depth must be >= 0");
             }
         }
 

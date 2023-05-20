@@ -269,20 +269,20 @@ namespace VDS.Common.Trees
             }
             if (current.HasChildren)
             {
-                //Is an internal node with a single child
-                //Thus just set the appropriate child of the parent to the appropriate child of the node we are deleting
-                if (c < 0)
+                switch (c)
                 {
-                    current.Parent.LeftChild = (current.LeftChild ?? current.RightChild);
-                    this.AfterDelete(current.Parent);
-                    return true;
+                    //Is an internal node with a single child
+                    //Thus just set the appropriate child of the parent to the appropriate child of the node we are deleting
+                    case < 0:
+                        current.Parent.LeftChild = (current.LeftChild ?? current.RightChild);
+                        this.AfterDelete(current.Parent);
+                        return true;
+                    case > 0:
+                        current.Parent.RightChild = (current.RightChild ?? current.LeftChild);
+                        this.AfterDelete(current.Parent);
+                        return true;
                 }
-                if (c > 0)
-                {
-                    current.Parent.RightChild = (current.RightChild ?? current.LeftChild);
-                    this.AfterDelete(current.Parent);
-                    return true;
-                }
+
                 IBinaryTreeNode<TKey, TValue> successor;
                 if (current.LeftChild != null)
                 {

@@ -233,29 +233,31 @@ namespace VDS.Common.Trees
         {
             if (start > end) return null;
             if (end == start) return nodes[start];
-            if (end - start == 1)
+            switch (end - start)
             {
-                IBinaryTreeNode<TKey, TValue> root = nodes[end];
-                root.LeftChild = nodes[start];
-                return root;
-            }
-            else if (end - start == 2)
-            {
-                IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
-                root.LeftChild = nodes[start];
-                root.RightChild = nodes[end];
-                return root;
-            }
-            else
-            {
-
-                //Rebuild the tree
-                int median = start + ((end - start) / 2);
-                //Console.WriteLine("m = " + median);
-                IBinaryTreeNode<TKey, TValue> root = nodes[median];
-                root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
-                root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
-                return root;
+                case 1:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[end];
+                    root.LeftChild = nodes[start];
+                    return root;
+                }
+                case 2:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
+                    root.LeftChild = nodes[start];
+                    root.RightChild = nodes[end];
+                    return root;
+                }
+                default:
+                {
+                    //Rebuild the tree
+                    int median = start + ((end - start) / 2);
+                    //Console.WriteLine("m = " + median);
+                    IBinaryTreeNode<TKey, TValue> root = nodes[median];
+                    root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
+                    root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
+                    return root;
+                }
             }
         }
 
@@ -270,28 +272,31 @@ namespace VDS.Common.Trees
         {
             if (start > end) return null;
             if (end == start) return nodes[start];
-            if (end - start == 1)
+            switch (end - start)
             {
-                IBinaryTreeNode<TKey, TValue> root = nodes[start];
-                root.RightChild = nodes[end];
-                return root;
-            }
-            else if (end - start == 2)
-            {
-                IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
-                root.LeftChild = nodes[start];
-                root.RightChild = nodes[end];
-                return root;
-            }
-            else
-            {
-                //Rebuild the tree
-                int median = start + ((end - start) / 2);
-                //Console.WriteLine("m = " + median);
-                IBinaryTreeNode<TKey, TValue> root = nodes[median];
-                root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
-                root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
-                return root;
+                case 1:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[start];
+                    root.RightChild = nodes[end];
+                    return root;
+                }
+                case 2:
+                {
+                    IBinaryTreeNode<TKey, TValue> root = nodes[start + 1];
+                    root.LeftChild = nodes[start];
+                    root.RightChild = nodes[end];
+                    return root;
+                }
+                default:
+                {
+                    //Rebuild the tree
+                    int median = start + ((end - start) / 2);
+                    //Console.WriteLine("m = " + median);
+                    IBinaryTreeNode<TKey, TValue> root = nodes[median];
+                    root.LeftChild = this.RebalanceLeftSubtree(nodes, start, median - 1);
+                    root.RightChild = this.RebalanceRightSubtree(nodes, median + 1, end);
+                    return root;
+                }
             }
         }
 
