@@ -66,10 +66,7 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             // First time this is accessed need to populate the Top N items list
-            if (this.TopItemsEnumerator == null)
-            {
-                this.TopItemsEnumerator = this.BuildTopItems();
-            }
+            this.TopItemsEnumerator ??= this.BuildTopItems();
 
             // Afterwards we just pull items from that list
             item = default;
