@@ -155,11 +155,10 @@ namespace VDS.Common.Tries
         /// <returns>The child or null if no child is associated with the given key</returns>
         internal ITrieNode<TKeyBit, TValue> GetChild(TKeyBit key)
         {
-            ITrieNode<TKeyBit, TValue> child;
             try
             {
                 this.EnterReadLock();
-                if (this._children.TryGetValue(key, out child)) return child;
+                if (this._children.TryGetValue(key, out ITrieNode<TKeyBit, TValue> child)) return child;
             } 
             finally
             {
