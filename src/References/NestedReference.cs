@@ -87,9 +87,8 @@ namespace VDS.Common.References
             if (this._currLevel == 0) throw new InvalidOperationException("Cannot decrement nesting when current nesting level is 0");
 
             //Revert to the most recent reference
-            if (this._values.ContainsKey(this._currLevel))
+            if (this._values.Remove(this._currLevel))
             {
-                this._values.Remove(this._currLevel);
                 int i = this._currLevel;
                 while (i > 1)
                 {
@@ -99,10 +98,8 @@ namespace VDS.Common.References
                         this._currRef = theRef;
                         break;
                     }
-                    else
-                    {
-                        this._currRef = null;
-                    }
+
+                    this._currRef = null;
                 }
             }
             //Finally decrement the level
