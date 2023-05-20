@@ -38,6 +38,7 @@ namespace VDS.Common.Tries
         where TKeyBit : struct, IEquatable<TKeyBit>
         where TValue : class
     {
+        /// <inheritdoc />
         protected override ITrieNode<TKeyBit, TValue> _root { get; init; } = new SparseValueTrieNode<TKeyBit, TValue>(null, default);
 
         /// <summary>
@@ -77,6 +78,7 @@ namespace VDS.Common.Tries
         public SparseReferenceTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
             : base(keyMapper) { }
 
+        /// <inheritdoc />
         protected override ITrieNode<TKeyBit, TValue> _root { get; init; } = new SparseReferenceTrieNode<TKeyBit, TValue>(null, default);
 
         /// <summary>
@@ -106,6 +108,7 @@ namespace VDS.Common.Tries
         public SparseCharacterTrie(Func<TKey, IEnumerable<char>> keyMapper)
             : base(keyMapper) { }
 
+        /// <inheritdoc />
         protected override ITrieNode<char, TValue> _root { get; init; } = new SparseCharacterTrieNode<TValue>(null, default);
 
         /// <summary>
