@@ -129,7 +129,6 @@ namespace VDS.Common.References
         where T : struct
     {
         private ConcurrentDictionary<int, T> _refs = new ConcurrentDictionary<int, T>();
-        private Func<T> _init;
 
         /// <summary>
         /// Creates a new ThreadSafeValue where the initial value of the struct on each thread is default
@@ -142,13 +141,13 @@ namespace VDS.Common.References
         /// <param name="init">Initialiser Function</param>
         public ThreadIsolatedValue(Func<T> init)
         {
-            this._init = init;
+            this.Initialiser = init;
         }
 
         /// <summary>
         /// Gets the initialiser function
         /// </summary>
-        public Func<T> Initialiser => this._init;
+        public Func<T> Initialiser { get; }
 
         /// <summary>
         /// Gets/Sets the value for the current thread
@@ -161,7 +160,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(this._refs);
                     int id = Thread.CurrentThread.ManagedThreadId;
-                    return this._refs.GetOrAdd(id, this._init?.Invoke() ?? default);
+                    return this._refs.GetOrAdd(id, this.Initialiser?.Invoke() ?? default);
                 }
                 finally
                 {
