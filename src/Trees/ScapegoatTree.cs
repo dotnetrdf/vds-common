@@ -35,7 +35,7 @@ namespace VDS.Common.Trees
         : BinaryTree<TKey, TValue>
     {
         private readonly double _balanceFactor = 0.75d;
-        private long _nodeCount = 0, _maxNodeCount = 0;
+        private long _nodeCount, _maxNodeCount;
         private readonly double _logBase = 1d / 0.75d;
 
         /// <summary>

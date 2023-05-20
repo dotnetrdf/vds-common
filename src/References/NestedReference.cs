@@ -33,7 +33,7 @@ namespace VDS.Common.References
         where T : class
     {
         private Dictionary<int, T> _values = new Dictionary<int, T>();
-        private int _currLevel = 0;
+        private int _currLevel;
         private T _currRef;
 
         /// <summary>

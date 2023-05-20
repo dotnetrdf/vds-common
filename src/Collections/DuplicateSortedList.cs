@@ -40,7 +40,7 @@ namespace VDS.Common.Collections
     {
         private readonly IBinaryTree<T, int> _data;
         private readonly IComparer<T> _comparer; 
-        private int _total = 0;
+        private int _total;
 
         /// <summary>
         /// Creates a new list

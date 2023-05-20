@@ -36,7 +36,7 @@ namespace VDS.Common.Collections
         : IDictionary<TKey, TValue>, IEnumerable<TValue>
     {
         private ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
-        private int _count = 0;
+        private int _count;
 
         /// <summary>
         /// Creates a new dictionary using the default comparer for the key type
