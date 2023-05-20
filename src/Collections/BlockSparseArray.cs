@@ -134,7 +134,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    class SparseBlock<T>
+    internal class SparseBlock<T>
     {
         private readonly T[] _block;
 
@@ -158,7 +158,7 @@ namespace VDS.Common.Collections
         }
     }
 
-    class BlockSparseArrayEnumerator<T>
+    internal class BlockSparseArrayEnumerator<T>
         : IEnumerator<T>
     {
         public BlockSparseArrayEnumerator(IEnumerator blocks, int length, int blockSize)
