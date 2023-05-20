@@ -137,7 +137,7 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(1, array[i]);
             }
 
-            IEnumerator<int> sparsEnumerator = array.GetEnumerator();
+            using IEnumerator<int> sparsEnumerator = array.GetEnumerator();
             IEnumerator actualEnumerator = actualArray.GetEnumerator();
 
             int index = -1;
