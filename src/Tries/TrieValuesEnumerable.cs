@@ -52,14 +52,11 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public IEnumerator<TValue> GetEnumerator()
         {
-            if (this._node.HasValue)
+            return this._node.HasValue switch
             {
-                return this._node.Value.AsEnumerable().Concat(this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator();
-            }
-            else
-            {
-                return this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator();
-            }
+                true => this._node.Value.AsEnumerable().Concat(this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator(),
+                _ => this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator()
+            };
         }
 
         /// <summary>
