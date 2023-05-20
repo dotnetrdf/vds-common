@@ -80,11 +80,7 @@ namespace VDS.Common.References
                     int id = Thread.CurrentThread.ManagedThreadId;
                     if (!this._refs.ContainsKey(id))
                     {
-                        this._refs.Add(id, null);
-                        if (this.Initialiser != null)
-                        {
-                            this._refs[id] = this.Initialiser();
-                        }
+                        this._refs.Add(id, this.Initialiser?.Invoke());
                     }
                     return this._refs[id];
                 }
