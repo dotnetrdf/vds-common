@@ -74,7 +74,11 @@ namespace VDS.Common.Tries
 
         private static List<List<string>> CreateThreadWordLists( List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads )
         {
-            if (threadsPerWord > numThreads) throw new ArgumentException("threadsPerWord must be <= numThreads", "threadsPerWord");
+            if ( threadsPerWord > numThreads )
+            {
+                threadsPerWord = numThreads;
+                Console.WriteLine( "threadsPerWord clamped to numThreads" );
+            }
 
             List<List<string>> threadWords = new List<List<string>>();
             for (int i = 0; i < numThreads; i++)
