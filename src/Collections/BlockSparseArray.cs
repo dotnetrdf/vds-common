@@ -55,8 +55,8 @@ namespace VDS.Common.Collections
         /// <param name="blockSize">Block Size</param>
         public BlockSparseArray(int length, int blockSize = DefaultBlockSize)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
-            if (blockSize < 1) throw new ArgumentException("Block Size must be >= 1", nameof(blockSize));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof( length ), "Length must be >= 0" );
+            if (blockSize < 1) throw new ArgumentOutOfRangeException(nameof( blockSize ), "Block Size must be >= 1" );
             int numBlocks = length/blockSize + length%blockSize;
             this._blocks = new SparseBlock<T>[numBlocks];
 
