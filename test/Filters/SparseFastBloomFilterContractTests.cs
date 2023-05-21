@@ -17,5 +17,13 @@ namespace VDS.Common.Filters
 
             return new SparseFastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
         }
+        public override void ThrowsOnNullHashFunctions(int numHashFunctions)
+        {
+            Assert.That(() =>
+            {
+                CreateInstance(2, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
     }
 }

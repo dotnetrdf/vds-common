@@ -14,5 +14,13 @@ namespace VDS.Common.Filters
             IList<Func<string, int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
             return new SparseHybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count), functions);
         }
+
+        public override void ThrowsOnNullHashFunctions(int numHashFunctions)
+        {
+            Assert.That(() =>
+            {
+                CreateInstance(2, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
     }
 }

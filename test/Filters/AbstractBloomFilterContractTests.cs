@@ -43,14 +43,7 @@ namespace VDS.Common.Filters
             Assert.Throws<ArgumentOutOfRangeException>(() => CreateInstance(numBits, Enumerable.Empty<Func<string, int>>()));
         }
 
-        [Test]
-        public void ThrowsOnNullHashFunctions([Values(0,1)]int numHashFunctions)
-        {
-            Assert.That(() =>
-            {
-                CreateInstance(2, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
-            }, Throws.TypeOf<ArgumentOutOfRangeException>());
-        }
+        public abstract void ThrowsOnNullHashFunctions([Values(0, 1)] int numHashFunctions);
 
         [Test]
         [TestCase(2,2)]

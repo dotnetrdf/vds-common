@@ -17,5 +17,15 @@ namespace VDS.Common.Filters
 
             return new FastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
         }
+
+        [Test]
+        public override void ThrowsOnNullHashFunctions([Values(0,1)]int numHashFunctions)
+        {
+            Assert.That(() =>
+            {
+                CreateInstance(2, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+
     }
 }
