@@ -148,16 +148,12 @@ namespace VDS.Common.Tries
                 threads.Add(t);
             }
 
+
             // Wait for threads to finish
-            while (threads.Count > 0)
+            for (int i = threads.Count - 1; i >= 0; i--)
             {
-                for (int i = 0; i < threads.Count; i++)
-                {
-                    TrieFiller<string, char> filler = fillers[i];
-                    if (filler.IsFinished) threads.RemoveAt(i);
-                    i--;
-                }
-                Thread.Sleep(50);
+                threads[i].Join();
+                threads.RemoveAt(i);
             }
 
             // Report Performance
