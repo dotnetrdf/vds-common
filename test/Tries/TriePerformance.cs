@@ -30,6 +30,7 @@ using NUnit.Framework;
 namespace VDS.Common.Tries
 {
     [TestFixture, Category("Tries")]
+    [Parallelizable( ParallelScope.Children )]
     public class TriePerformance
     {
         private static List<string> GenerateWords(int numWords, int minLength, int maxLength)
@@ -71,7 +72,7 @@ namespace VDS.Common.Tries
             return fillers;
         }
 
-        private static List<List<string>> CreateThreadWordLists(List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads)
+        private static List<List<string>> CreateThreadWordLists( List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads )
         {
             if (threadsPerWord > numThreads) throw new ArgumentException("threadsPerWord must be <= numThreads", "threadsPerWord");
 
