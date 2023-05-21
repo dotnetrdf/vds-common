@@ -253,7 +253,7 @@ namespace VDS.Common.Tries
 
             Assert.That(trie.Values, Is.Not.Empty);
 
-            Assert.That(trie.Values, Has.Count.EqualTo(1));
+            Assert.That(trie.Values.Count(), Is.EqualTo(1));
         }
 
         [Test]
