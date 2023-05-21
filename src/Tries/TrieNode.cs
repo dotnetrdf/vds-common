@@ -38,7 +38,7 @@ namespace VDS.Common.Tries
     /// </para>
     /// </remarks>
     public class TrieNode<TKeyBit, TValue> 
-        : ITrieNode<TKeyBit, TValue>
+        : ITrieNode<TKeyBit, TValue>, IDisposable
         where TValue : class
     {
         private readonly Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
@@ -461,6 +461,25 @@ namespace VDS.Common.Tries
             {
                 return new TrieValuesEnumerable<TKeyBit, TValue>(this);
             }
+        }
+
+        /// <summary>
+        /// Releases all unmanaged resources owned by this object.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _lock?.Dispose();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 
