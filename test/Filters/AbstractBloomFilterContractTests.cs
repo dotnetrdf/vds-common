@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -38,42 +37,42 @@ namespace VDS.Common.Filters
         /// <returns>Bloom Filter</returns>
         protected abstract IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions);
 
-        [TestCase(-1), 
-         TestCase(0), 
-         TestCase(1)]
-        public void BloomFilterInstantiation1(int numBits)
+        [Test]
+        public void ThrowsOnNumberOfBitsOutOfRange([Values(-1,0)]int numBits)
         {
-            Assert.Throws<ArgumentException>(() => CreateInstance(numBits, Enumerable.Empty<Func<string, int>>()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CreateInstance(numBits, Enumerable.Empty<Func<string, int>>()));
         }
 
         [Test]
-        public void BloomFilterInstantiation2()
+        public void ThrowsOnNullHashFunctions([Values(0,1)]int numHashFunctions)
         {
-            Assert.Throws<ArgumentException>(() => { CreateInstance(2, Enumerable.Empty<Func<string, int>>()); });
-        }
-
-        [Test]
-        public void BloomFilterInstantiation3()
-        {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.That(() =>
             {
-                CreateInstance(2, Enumerable.Repeat((Func<string, int>)(s => s.GetHashCode()), 1));
-            });
+                CreateInstance(2, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
-        public void BloomFilterInstantiation4()
+        [TestCase(2,2)]
+        [TestCase(2,3)]
+        public void ThrowsOnFewerOrEqualHashFunctions(int numBits,int numHashFunctions)
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.That(() =>
             {
-                CreateInstance(2, Enumerable.Repeat((Func<string, int>)(s => s.GetHashCode()), 2));
-            });
+                CreateInstance(numBits, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
-        public void BloomFilterInstantiation5()
+        [TestCase(3,2)]
+        [TestCase(4,2)]
+        [TestCase(4,3)]
+        public void DoesNotThrowOnValidParameters(int numBits,int numHashFunctions)
         {
-            CreateInstance(3, Enumerable.Repeat((Func<string, int>)(s => s.GetHashCode()), 2));
+            Assert.That(() =>
+            {
+                CreateInstance(numBits, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.Nothing);
         }
 
         [Test]
