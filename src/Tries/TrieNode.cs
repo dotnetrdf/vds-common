@@ -78,9 +78,11 @@ namespace VDS.Common.Tries
         protected internal void ExitReadLock()
         {
 #if !PORTABLE
-            this._lock.ExitReadLock();
+            if(this._lock.IsReadLockHeld)
+                this._lock.ExitReadLock();
 #else
-            Monitor.Exit(this._monitorObject);
+            if(Monitor.IsEntered(this._monitorObject))
+                Monitor.Exit(this._monitorObject);
 #endif
         }
 
