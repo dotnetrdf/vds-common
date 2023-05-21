@@ -30,6 +30,7 @@ using NUnit.Framework;
 namespace VDS.Common.Tries
 {
     [TestFixture, Category("Tries")]
+    [Parallelizable( ParallelScope.Children )]
     public class TriePerformance
     {
         private static List<string> GenerateWords(int numWords, int minLength, int maxLength)
@@ -71,9 +72,13 @@ namespace VDS.Common.Tries
             return fillers;
         }
 
-        private static List<List<string>> CreateThreadWordLists(List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads)
+        private static List<List<string>> CreateThreadWordLists( List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads )
         {
-            if (threadsPerWord > numThreads) throw new ArgumentException("threadsPerWord must be <= numThreads", "threadsPerWord");
+            if ( threadsPerWord > numThreads )
+            {
+                threadsPerWord = numThreads;
+                Console.WriteLine( "threadsPerWord clamped to numThreads" );
+            }
 
             List<List<string>> threadWords = new List<List<string>>();
             for (int i = 0; i < numThreads; i++)
@@ -143,16 +148,12 @@ namespace VDS.Common.Tries
                 threads.Add(t);
             }
 
+
             // Wait for threads to finish
-            while (threads.Count > 0)
+            for (int i = threads.Count - 1; i >= 0; i--)
             {
-                for (int i = 0; i < threads.Count; i++)
-                {
-                    TrieFiller<string, char> filler = fillers[i];
-                    if (filler.IsFinished) threads.RemoveAt(i);
-                    i--;
-                }
-                Thread.Sleep(50);
+                threads[i].Join();
+                threads.RemoveAt(i);
             }
 
             // Report Performance

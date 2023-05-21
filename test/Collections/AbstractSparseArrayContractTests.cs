@@ -40,7 +40,10 @@ namespace VDS.Common.Collections
         [Test]
         public void SparseArrayBadInstantiation()
         {
-            Assert.Throws<ArgumentException>(()=> this.CreateInstance(-1));
+            Assert.That(() =>
+            {
+                this.CreateInstance(-1);
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -208,47 +211,6 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(actualEnumerator.Current, sparsEnumerator.Current, "Incorrect value at index " + index);
             }
             Assert.AreEqual(length - 1, index);
-        }
-    }
-
-    [TestFixture,Category("Arrays")]
-    public class LinkedSparseArrayTests
-        : AbstractSparseArrayContractTests
-    {
-        public override ISparseArray<int> CreateInstance(int length)
-        {
-            return new LinkedSparseArray<int>(length);
-        }
-    }
-
-    [TestFixture(1),
-     TestFixture(10),
-     TestFixture(250),
-     TestFixture(1000),
-     Category("Arrays")]
-    public class BlockSparseArrayTests
-        : AbstractSparseArrayContractTests
-    {
-        public BlockSparseArrayTests(int blockSize)
-        {
-            this.BlockSize = blockSize;
-        }
-
-        private int BlockSize { get; set; }
-
-        public override ISparseArray<int> CreateInstance(int length)
-        {
-            return new BlockSparseArray<int>(length, this.BlockSize);
-        }
-    }
-
-    [TestFixture, Category("Arrays")]
-    public class BinarySparseArrayTests
-        : AbstractSparseArrayContractTests
-    {
-        public override ISparseArray<int> CreateInstance(int length)
-        {
-            return new BinarySparseArray<int>(length);
         }
     }
 }

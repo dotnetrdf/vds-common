@@ -247,12 +247,13 @@ namespace VDS.Common.Tries
         {
             ITrie<string, char, string> trie = this.GetInstance();
 
-            Assert.IsFalse(trie.Values.Any());
+            Assert.That(trie.Values, Is.Empty);
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(trie.Values.Any());
-            Assert.AreEqual(1, trie.Values.Count());
+            Assert.That(trie.Values, Is.Not.Empty);
+
+            Assert.That(trie.Values.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -260,52 +261,24 @@ namespace VDS.Common.Tries
         {
             ITrie<string, char, string> trie = this.GetInstance();
 
-            IEnumerable<string> values = trie.Values;
-
-            Assert.IsFalse(values.Any());
+            Assert.That(trie.Values, Is.Empty);
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(1, values.Count());
-        }
-
-        [Test]
-        public void TrieContractValues4()
-        {
-            ITrie<string, char, string> trie = this.GetInstance();
-
-            Assert.IsFalse(trie.Values.Any());
-
-            trie.Add("test", "a");
-
-            Assert.IsTrue(trie.Values.Any());
-            Assert.AreEqual(1, trie.Values.Count());
+            Assert.Multiple(() =>
+            {
+                Assert.That(trie.Values, Is.Not.Empty);
+                Assert.That(trie.Values.Count(), Is.EqualTo(1));
+            });
 
             trie.Add("testing", "b");
 
-            Assert.IsTrue(trie.Values.Any());
-            Assert.AreEqual(2, trie.Values.Count());
-        }
-
-        [Test]
-        public void TrieContractValues5()
-        {
-            ITrie<string, char, string> trie = this.GetInstance();
-
-            IEnumerable<string> values = trie.Values;
-
-            Assert.IsFalse(values.Any());
-
-            trie.Add("test", "a");
-
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(1, values.Count());
-
-            trie.Add("testing", "b");
-
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(2, values.Count());
+            Assert.Multiple(() =>
+            {
+                Assert.That(trie.Values, Is.Not.Empty);
+                Assert.That(trie.Values.Count(), Is.EqualTo(2));
+                Assert.That(trie.Values, Is.Unique);
+            });
         }
 
         [Test]

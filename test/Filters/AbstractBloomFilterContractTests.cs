@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -38,42 +37,35 @@ namespace VDS.Common.Filters
         /// <returns>Bloom Filter</returns>
         protected abstract IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions);
 
-        [TestCase(-1), 
-         TestCase(0), 
-         TestCase(1)]
-        public void BloomFilterInstantiation1(int numBits)
+        [Test]
+        public void ThrowsOnNumberOfBitsOutOfRange([Values(-1,0)]int numBits)
         {
-            Assert.Throws<ArgumentException>(() => CreateInstance(numBits, Enumerable.Empty<Func<string, int>>()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CreateInstance(numBits, Enumerable.Empty<Func<string, int>>()));
         }
 
-        [Test]
-        public void BloomFilterInstantiation2()
-        {
-            Assert.Throws<ArgumentException>(() => { CreateInstance(2, Enumerable.Empty<Func<string, int>>()); });
-        }
+        public abstract void ThrowsOnNullHashFunctions([Values(0, 1)] int numHashFunctions);
 
         [Test]
-        public void BloomFilterInstantiation3()
+        [TestCase(2,2)]
+        [TestCase(2,3)]
+        public void ThrowsOnFewerOrEqualHashFunctions(int numBits,int numHashFunctions)
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.That(() =>
             {
-                CreateInstance(2, Enumerable.Repeat((Func<string, int>)(s => s.GetHashCode()), 1));
-            });
+                CreateInstance(numBits, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
-        public void BloomFilterInstantiation4()
+        [TestCase(3,2)]
+        [TestCase(4,2)]
+        [TestCase(4,3)]
+        public void DoesNotThrowOnValidParameters(int numBits,int numHashFunctions)
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.That(() =>
             {
-                CreateInstance(2, Enumerable.Repeat((Func<string, int>)(s => s.GetHashCode()), 2));
-            });
-        }
-
-        [Test]
-        public void BloomFilterInstantiation5()
-        {
-            CreateInstance(3, Enumerable.Repeat((Func<string, int>)(s => s.GetHashCode()), 2));
+                CreateInstance(numBits, Enumerable.Repeat((Func<string, int>)( s => s.GetHashCode() ), numHashFunctions));
+            }, Throws.Nothing);
         }
 
         [Test]
@@ -282,76 +274,6 @@ namespace VDS.Common.Filters
             // This is a false positive
             Assert.IsFalse(filter.Add(item2));
             Assert.IsTrue(filter.MayContain(item2));
-        }
-    }
-
-    [TestFixture,Category("Filters")]
-    public class NaiveBloomFilterContractTests
-        : AbstractBloomFilterContractTests
-    {
-        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
-        {
-            return new NaiveBloomFilter<string>(numBits, hashFunctions);
-        }
-    }
-
-    [TestFixture,Category("Filters")]
-    public class SparseNaiveBloomFilterContractTests
-        : AbstractBloomFilterContractTests
-    {
-        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
-        {
-            return new SparseNaiveBloomFilter<string>(numBits, hashFunctions);
-        }
-    }
-
-    [TestFixture, Category("Filters")]
-    public class FastBloomFilterContractTests
-        : AbstractBloomFilterContractTests
-    {
-        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
-        {
-            IList<Func<string, int>> funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
-            Func<string, int> h1 = funcs.FirstOrDefault();
-            Func<string, int> h2 = funcs.Skip(1).FirstOrDefault();
-
-            return new FastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
-        }
-    }
-
-    [TestFixture, Category("Filters")]
-    public class SparseFastBloomFilterContractTests
-        : AbstractBloomFilterContractTests
-    {
-        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
-        {
-            IList<Func<string, int>> funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
-            Func<string, int> h1 = funcs.FirstOrDefault();
-            Func<string, int> h2 = funcs.Skip(1).FirstOrDefault();
-
-            return new SparseFastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
-        }
-    }
-
-    [TestFixture, Category("Filters")]
-    public class HybridBloomFilterContractTests
-        : AbstractBloomFilterContractTests
-    {
-        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
-        {
-            IList<Func<string,int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
-            return new HybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count()), functions);
-        }
-    }
-
-    [TestFixture, Category("Filters")]
-    public class SparseHybridBloomFilterContractTests
-        : AbstractBloomFilterContractTests
-    {
-        protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
-        {
-            IList<Func<string, int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
-            return new SparseHybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count), functions);
         }
     }
 }

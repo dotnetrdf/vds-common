@@ -47,12 +47,12 @@ namespace VDS.Common.Filters
         protected BaseHybridBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
             : base(storage)
         {
-            if (parameters.NumberOfBits < 1) throw new ArgumentException("Number of bits must be >= 1", nameof(parameters));
+            if (parameters.NumberOfBits < 1) throw new ArgumentOutOfRangeException(nameof(parameters), "Number of bits must be >= 1");
             if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
             this._hashFunctions = new List<Func<T, int>>(hashFunctions);
             this._hashFunctions.RemoveAll(f => f == null);
-            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
-            if (parameters.NumberOfBits <= this._hashFunctions.Count) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
+            if (this._hashFunctions.Count < 2) throw new ArgumentOutOfRangeException(nameof(hashFunctions), "A bloom filter requires at least 2 hash functions");
+            if (parameters.NumberOfBits <= this._hashFunctions.Count) throw new ArgumentOutOfRangeException(nameof(parameters), "Number of bits must be bigger than the number of hash functions");
 
             this.NumberOfBits = parameters.NumberOfBits;
             this._parameters = parameters;

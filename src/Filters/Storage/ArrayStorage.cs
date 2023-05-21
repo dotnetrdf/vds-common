@@ -38,7 +38,7 @@ namespace VDS.Common.Filters.Storage
         /// <param name="size">Size in bits of the storage</param>
         public ArrayStorage(int size)
         {
-            if (size <= 0) throw new ArgumentException("Size must be > 0", nameof(size));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size), "Size must be > 0");
             this._bits = new bool[size];
         }
 

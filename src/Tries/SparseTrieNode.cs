@@ -83,7 +83,7 @@ namespace VDS.Common.Tries
             {
                 return this._singletonNode;
             }
-            set
+            protected set
             {
                 this._singleton = value.KeyBit;
                 this._singletonNode = value;
@@ -151,7 +151,7 @@ namespace VDS.Common.Tries
             {
                 return this._singletonNode;
             }
-            set
+            protected set
             {
                 this._singleton = value.KeyBit;
                 this._singletonNode = value;
@@ -217,7 +217,7 @@ namespace VDS.Common.Tries
             {
                 return this._singletonNode;
             }
-            set
+            protected set
             {
                 this._singleton = value.KeyBit;
                 this._singletonNode = value;
