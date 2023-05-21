@@ -40,7 +40,10 @@ namespace VDS.Common.Collections
         [Test]
         public void SparseArrayBadInstantiation()
         {
-            Assert.Throws<ArgumentException>(()=> this.CreateInstance(-1));
+            Assert.That(() =>
+            {
+                this.CreateInstance(-1);
+            }, Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
