@@ -210,45 +210,4 @@ namespace VDS.Common.Collections
             Assert.AreEqual(length - 1, index);
         }
     }
-
-    [TestFixture,Category("Arrays")]
-    public class LinkedSparseArrayTests
-        : AbstractSparseArrayContractTests
-    {
-        public override ISparseArray<int> CreateInstance(int length)
-        {
-            return new LinkedSparseArray<int>(length);
-        }
-    }
-
-    [TestFixture(1),
-     TestFixture(10),
-     TestFixture(250),
-     TestFixture(1000),
-     Category("Arrays")]
-    public class BlockSparseArrayTests
-        : AbstractSparseArrayContractTests
-    {
-        public BlockSparseArrayTests(int blockSize)
-        {
-            this.BlockSize = blockSize;
-        }
-
-        private int BlockSize { get; set; }
-
-        public override ISparseArray<int> CreateInstance(int length)
-        {
-            return new BlockSparseArray<int>(length, this.BlockSize);
-        }
-    }
-
-    [TestFixture, Category("Arrays")]
-    public class BinarySparseArrayTests
-        : AbstractSparseArrayContractTests
-    {
-        public override ISparseArray<int> CreateInstance(int length)
-        {
-            return new BinarySparseArray<int>(length);
-        }
-    }
 }
