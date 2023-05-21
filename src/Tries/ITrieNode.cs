@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VDS.Common.Tries
@@ -29,7 +30,7 @@ namespace VDS.Common.Tries
     /// Interface for Trie nodes, this is the node in a <see cref="ITrie{Tkey,TKeyBit,TValue}"/>
     /// </summary>
     /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
-    /// <typeparam name="TValue">Value Type</typeparam>
+    /// <typeparam name="TValue">The node value's Type</typeparam>
     public interface ITrieNode<TKeyBit, TValue>
         where TValue : class
     {

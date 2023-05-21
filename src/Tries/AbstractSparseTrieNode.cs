@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,19 +34,19 @@ namespace VDS.Common.Tries
     /// <typeparam name="TValue">Value Type</typeparam>
     /// <remarks>
     /// </remarks>
-    public abstract class AbstractSparseTrieNode<TKeyBit, TValue> 
+    public abstract class AbstractSparseTrieNode<TKeyBit, TValue>
         : ITrieNode<TKeyBit, TValue>
         where TKeyBit : IEquatable<TKeyBit>
         where TValue : class
     {
-        internal Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+        internal ConcurrentDictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
         /// </summary>
         /// <param name="parent">Parent node of this node</param>
         /// <param name="key">Key Bit</param>
-        public AbstractSparseTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
+        protected internal AbstractSparseTrieNode( ITrieNode<TKeyBit, TValue> parent, TKeyBit key )
         {
             this.KeyBit = key;
             this.Value = null;
@@ -72,7 +73,7 @@ namespace VDS.Common.Tries
         protected internal abstract ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get;
-            set;
+            protected set;
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the key bit that is associated with this node
         /// </summary>
-        public TKeyBit KeyBit { get; private set; }
+        public TKeyBit KeyBit { get; }
 
         /// <summary>
         /// Get the parent of this node
@@ -122,24 +123,12 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Check whether this Node is the Root Node
         /// </summary>
-        public bool IsRoot
-        {
-            get
-            {
-                return this.Parent == null;
-            }
-        }
+        public bool IsRoot => this.Parent == null;
 
         /// <summary>
         /// Check whether or not this node has a value associated with it
         /// </summary>
-        public bool HasValue
-        {
-            get
-            {
-                return this.Value != null;
-            }
-        }
+        public bool HasValue => this.Value != null;
 
         /// <summary>
         /// Gets the number of immediate child nodes this node has
@@ -148,20 +137,9 @@ namespace VDS.Common.Tries
         {
             get
             {
-                lock (_nodeLock)
+                lock ( _nodeLock )
                 {
-                    if (this._children != null)
-                    {
-                        return this._children.Count;
-                    }
-                    else if (this.SingletonChild != null)
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                    return this._children?.Count ?? ( this.SingletonChild == null ? 0 : 1 );
                 }
             }
         }
@@ -169,13 +147,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the number of descendant nodes this node has
         /// </summary>
-        public int CountAll
-        {
-            get
-            {
-                return this.Descendants.Count();
-            }
-        }
+        public int CountAll => this.Descendants.Count( );
 
         /// <summary>
         /// Check whether or not this node has any children.
@@ -188,7 +160,7 @@ namespace VDS.Common.Tries
                 {
                     if (this._children != null)
                     {
-                        return this._children.Count == 0;
+                        return this._children.IsEmpty;
                     }
                     else
                     {
@@ -227,77 +199,73 @@ namespace VDS.Common.Tries
         /// Removes all descendant nodes which are at the given depth below the current node
         /// </summary>
         /// <param name="depth">Depth</param>
-        /// <exception cref="ArgumentException">Thrown if depth is less than zero</exception>
-        public void Trim(int depth)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if depth is less than zero</exception>
+        public void Trim( int depth )
         {
-            if (depth == 0)
+            switch (depth)
             {
-                lock (_nodeLock)
+                case 0:
                 {
-                    this._children?.Clear();
-                    this.ClearSingleton();
-                }
-            }
-            else if (depth > 0)
-            {
-                lock (_nodeLock)
-                {
-                    foreach (ITrieNode<TKeyBit, TValue> node in this.Children)
+                    lock ( _nodeLock )
                     {
-                        node.Trim(depth - 1);
+                        this._children?.Clear( );
+                        this.ClearSingleton( );
                     }
+
+                    break;
                 }
-            }
-            else
-            {
-                throw new ArgumentException("Depth must be >= 0");
+                case > 0:
+                {
+                    lock ( _nodeLock )
+                    {
+                        foreach ( ITrieNode<TKeyBit, TValue> node in this.Children )
+                        {
+                            node.Trim( depth - 1 );
+                        }
+                    }
+
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException( nameof( depth ), "Depth must be >= 0" );
             }
         }
 
-        private readonly object _nodeLock = new object(); 
+        private readonly object _nodeLock = new object();
         /// <summary>
         /// Add a child node associated with a key to this node and return the node.
         /// </summary>
         /// <param name="key">Key to associated with the child node.</param>
         /// <returns>If given key already exists then return the existing child node, else return the new child node.</returns>
-        public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
+        public ITrieNode<TKeyBit, TValue> MoveToChild( TKeyBit key )
         {
-            lock (_nodeLock)
+            lock ( _nodeLock )
             {
-                ITrieNode<TKeyBit, TValue> child;
-                if (this._children != null)
+                if ( this._children != null )
                 {
                     // Get from existing children adding new child if necessary
-                    if (this._children.TryGetValue(key, out child))
-                    {
-                        return child;
-                    }
-                    else
-                    {
-                        child = this.CreateNewChild(key);
-                        this._children.Add(key, child);
-                        return child;
-                    }
+                    return this._children.GetOrAdd( key, this.CreateNewChild( key ) );
                 }
-                else if (this.MatchesSingleton(key))
+
+                if ( this.MatchesSingleton( key ) )
                 {
                     // Can use existing singleton
                     return this.SingletonChild;
                 }
-                else if (this.SingletonChild != null)
+
+                if ( this.SingletonChild != null )
                 {
                     // Make non-singleton
-                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> { { this.SingletonChild.KeyBit, this.SingletonChild } };
-                    child = this.CreateNewChild(key);
-                    this._children.Add(key, child);
-                    return child;
+                    this._children = new ConcurrentDictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>
+                    {
+                        [ this.SingletonChild.KeyBit ] = this.SingletonChild
+                    };
+                    return this._children[ key ] = this.CreateNewChild( key );
                 }
-                else
-                {
-                    // Make singleton
-                    this.SingletonChild = this.CreateNewChild(key);
-                    return this.SingletonChild;
-                }
+
+                // Make singleton
+                this.SingletonChild = this.CreateNewChild( key );
+                return this.SingletonChild;
             }
         }
 
@@ -305,17 +273,14 @@ namespace VDS.Common.Tries
         /// Remove the child of a node associated with a key along with all its descendents.
         /// </summary>
         /// <param name="key">The key associated with the child to remove.</param>
-        public void RemoveChild(TKeyBit key)
+        public void RemoveChild( TKeyBit key )
         {
-            lock (_nodeLock)
+            lock ( _nodeLock )
             {
-                if (this._children != null)
+                this._children?.TryRemove( key, out _ );
+                if ( this.MatchesSingleton( key ) )
                 {
-                    this._children.Remove(key);
-                }
-                else if (this.MatchesSingleton(key))
-                {
-                    this.ClearSingleton();
+                    this.ClearSingleton( );
                 }
             }
         }
