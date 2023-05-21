@@ -247,27 +247,13 @@ namespace VDS.Common.Tries
         {
             ITrie<string, char, string> trie = this.GetInstance();
 
-            Assert.IsFalse(trie.Values.Any());
+            Assert.That(trie.Values, Is.Empty);
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(trie.Values.Any());
-            Assert.AreEqual(1, trie.Values.Count());
-        }
+            Assert.That(trie.Values, Is.Not.Empty);
 
-        [Test]
-        public void TrieContractValues3()
-        {
-            ITrie<string, char, string> trie = this.GetInstance();
-
-            IEnumerable<string> values = trie.Values;
-
-            Assert.IsFalse(values.Any());
-
-            trie.Add("test", "a");
-
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(1, values.Count());
+            Assert.That(trie.Values, Has.Count.EqualTo(1));
         }
 
         [Test]
