@@ -44,8 +44,9 @@ namespace VDS.Common.Tries
         private readonly Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 #if !PORTABLE
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+#else
+        private readonly object _monitorObject = new object();
 #endif
-
         /// <summary>
         /// Create an empty node with no children and null value
         /// </summary>
@@ -67,7 +68,7 @@ namespace VDS.Common.Tries
 #if !PORTABLE
             this._lock.EnterReadLock();
 #else
-            Monitor.Enter(this._children);
+            Monitor.Enter(this._monitorObject);
 #endif
         }
 
@@ -79,7 +80,7 @@ namespace VDS.Common.Tries
 #if !PORTABLE
             this._lock.ExitReadLock();
 #else
-            Monitor.Exit(this._children);
+            Monitor.Exit(this._monitorObject);
 #endif
         }
 
@@ -91,7 +92,7 @@ namespace VDS.Common.Tries
 #if !PORTABLE
             this._lock.EnterUpgradeableReadLock();
 #else
-            Monitor.Enter(this._children);
+            Monitor.Enter(this._monitorObject );
 #endif
         }
 
@@ -101,9 +102,11 @@ namespace VDS.Common.Tries
         protected internal void ExitUpgradeableReadLock()
         {
 #if !PORTABLE
-            this._lock.ExitUpgradeableReadLock();
+            if(this._lock.IsUpgradeableReadLockHeld)
+                this._lock.ExitUpgradeableReadLock();
 #else
-            Monitor.Enter(this._children);
+            if(Monitor.IsEntered(this._monitorObject))
+                Monitor.Exit(this._monitorObject );
 #endif
         }
 
