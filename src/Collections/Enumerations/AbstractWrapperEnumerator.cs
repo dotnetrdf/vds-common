@@ -41,8 +41,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <param name="enumerator">Enumerator to wrap</param>
         protected AbstractWrapperEnumerator(IEnumerator<T> enumerator)
         {
-            if (enumerator == null) throw new ArgumentNullException("enumerator");
-            this.InnerEnumerator = enumerator;
+            InnerEnumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
         }
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         public virtual void Dispose()
         {
-            this.InnerEnumerator.Dispose();
+            InnerEnumerator.Dispose();
         }
 
         /// <summary>
@@ -77,15 +76,14 @@ namespace VDS.Common.Collections.Enumerations
         /// </remarks>
         public bool MoveNext()
         {
-            this.Started = true;
-            if (this.Finished) return false;
-            T item;
-            if (this.TryMoveNext(out item))
+            Started = true;
+            if (Finished) return false;
+            if (TryMoveNext(out var item))
             {
-                this.Current = item;
+                Current = item;
                 return true;
             }
-            this.Finished = true;
+            Finished = true;
             return false;
         }
 
@@ -101,10 +99,10 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         public void Reset()
         {
-            this.Started = false;
-            this.Finished = false;
-            this.InnerEnumerator.Reset();
-            this.ResetInternal();
+            Started = false;
+            Finished = false;
+            InnerEnumerator.Reset();
+            ResetInternal();
         }
 
         /// <summary>
@@ -119,19 +117,16 @@ namespace VDS.Common.Collections.Enumerations
         {
             get
             {
-                if (!this.Started) throw new InvalidOperationException("Currently before the start of the enumerator, call MoveNext() before accessing Current");
-                if (this.Finished) throw new InvalidOperationException("Currently after end of the enumerator");
-                return this._current;
+                if (!Started) throw new InvalidOperationException("Currently before the start of the enumerator, call MoveNext() before accessing Current");
+                if (Finished) throw new InvalidOperationException("Currently after end of the enumerator");
+                return _current;
             }
-            private set { this._current = value; }
+            private set => _current = value;
         }
 
         /// <summary>
         /// Gets the current item
         /// </summary>
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

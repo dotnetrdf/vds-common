@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Trees
 {
@@ -31,7 +29,7 @@ namespace VDS.Common.Trees
     /// An AVL tree implementation
     /// </summary>
     /// <typeparam name="TKey">Key Type</typeparam>
-    /// <typeparam name="TValue">Valye Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
     /// <remarks>
     /// <para>
     /// Code based in part on various examples from around the web including (but not limited to) <a href="http://www.vcskicks.com/AVL-tree.php">VCSKicks</a> and <a href="http://en.wikipedia.org/wiki/AVL_tree">Wikipedia</a>
@@ -45,7 +43,7 @@ namespace VDS.Common.Trees
         /// Creates a new AVL Tree
         /// </summary>
         public AVLTree()
-            : base() { }
+        { }
 
         /// <summary>
         /// Creates a new AVL Tree using the given key comparer
@@ -71,9 +69,9 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly isnerted node</param>
-        protected sealed override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterLeftInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
-            this.RebalanceAfterInsert(node);
+            RebalanceAfterInsert(node);
         }
 
         /// <summary>
@@ -81,9 +79,9 @@ namespace VDS.Common.Trees
         /// </summary>
         /// <param name="parent">Parent</param>
         /// <param name="node">Newly isnerted node</param>
-        protected sealed override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterRightInsert(IBinaryTreeNode<TKey, TValue> parent, IBinaryTreeNode<TKey, TValue> node)
         {
-            this.RebalanceAfterInsert(node);   
+            RebalanceAfterInsert(node);   
         }
 
         /// <summary>
@@ -92,15 +90,15 @@ namespace VDS.Common.Trees
         /// <param name="node">Newly isnerted node</param>
         private void RebalanceAfterInsert(IBinaryTreeNode<TKey, TValue> node)
         {
-            IBinaryTreeNode<TKey, TValue> current = node.Parent;
+            var current = node.Parent;
             while (current != null)
             {
-                long balance = current.GetBalance();
+                var balance = current.GetBalance();
                 switch (balance)
                 {
                     case -2:
                     case 2:
-                        this.Rebalance(current, balance);
+                        Rebalance(current, balance);
                         break;
                     case -1:
                     case 0:
@@ -118,16 +116,16 @@ namespace VDS.Common.Trees
         /// Applies rebalances after deletes
         /// </summary>
         /// <param name="node">Node at which the delete occurred</param>
-        protected sealed override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
+        protected override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
         {
-            IBinaryTreeNode<TKey, TValue> current = node.Parent;
+            var current = node.Parent;
             while (current != null)
             {
-                long balance = current.GetBalance();
+                var balance = current.GetBalance();
                 if (Math.Abs(balance) == 1) break; //Short circuit where possible
                 if (Math.Abs(balance) == 2)
                 {
-                    this.Rebalance(current, balance);
+                    Rebalance(current, balance);
                 }
                 current = current.Parent;
             }
@@ -143,34 +141,34 @@ namespace VDS.Common.Trees
             switch (balance) {
                 case 2:
                     //Right subtree is heavier
-                    long rightBalance = node.RightChild.GetBalance();
+                    var rightBalance = node.RightChild.GetBalance();
                     switch (rightBalance)
                     {
                         case 1:
                         case 0:
                             //Left Rotation
-                            this.RotateLeft(node);
+                            RotateLeft(node);
                             break;
                         case -1:
                             //Right Rotation of right child followed by left rotation
-                            this.RotateRight(node.RightChild);
-                            this.RotateLeft(node);
+                            RotateRight(node.RightChild);
+                            RotateLeft(node);
                             break;
                     }
                     break;
                 case -2:
                     //Left subtree is heavier
-                    long leftBalance = node.LeftChild.GetBalance();
+                    var leftBalance = node.LeftChild.GetBalance();
                     switch (leftBalance) {
                         case 1:
                             //Left rotation of left child followed by right rotation
-                            this.RotateLeft(node.LeftChild);
-                            this.RotateRight(node);
+                            RotateLeft(node.LeftChild);
+                            RotateRight(node);
                             break;
                         case -1:
                         case 0:
                             //Right rotation
-                            this.RotateRight(node);
+                            RotateRight(node);
                             break;
                     }
                     break;
@@ -185,12 +183,12 @@ namespace VDS.Common.Trees
         {
             if (node == null) return;
 
-            IBinaryTreeNode<TKey, TValue> pivot = node.RightChild;
+            var pivot = node.RightChild;
             if (pivot == null) return;
 
-            IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
-            bool atRoot = (parent == null);
+            var parent = node.Parent;
+            var left = parent != null && ReferenceEquals(node, parent.LeftChild);
+            var atRoot = parent == null;
 
             //Update Parents
             node.Parent = pivot;
@@ -201,7 +199,7 @@ namespace VDS.Common.Trees
             pivot.LeftChild = node;
 
             if (node.RightChild != null) node.RightChild.Parent = node;
-            if (atRoot) this.Root = pivot;
+            if (atRoot) Root = pivot;
             if (left)
             {
                 parent.LeftChild = pivot;
@@ -220,12 +218,12 @@ namespace VDS.Common.Trees
         {
             if (node == null) return;
 
-            IBinaryTreeNode<TKey, TValue> pivot = node.LeftChild;
+            var pivot = node.LeftChild;
             if (pivot == null) return;
 
-            IBinaryTreeNode<TKey, TValue> parent = node.Parent;
-            bool left = (parent != null && ReferenceEquals(node, parent.LeftChild));
-            bool atRoot = (parent == null);
+            var parent = node.Parent;
+            var left = parent != null && ReferenceEquals(node, parent.LeftChild);
+            var atRoot = parent == null;
 
             //Update Parents
             node.Parent = pivot;
@@ -236,7 +234,7 @@ namespace VDS.Common.Trees
             pivot.RightChild = node;
 
             if (node.LeftChild != null) node.LeftChild.Parent = node;
-            if (atRoot) this.Root = pivot;
+            if (atRoot) Root = pivot;
             if (left)
             {
                 parent.LeftChild = pivot;

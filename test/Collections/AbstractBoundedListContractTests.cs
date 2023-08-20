@@ -49,7 +49,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractAdd1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             list.Add("a");
             Assert.AreEqual(1, list.Count);
             Assert.IsTrue(list.Contains("a"));
@@ -64,7 +64,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractAddError1()
         {
-            IBoundedList<string> list = this.GetInstance(1);
+            var list = GetInstance(1);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
 
             list.Add("a");
@@ -85,13 +85,13 @@ namespace VDS.Common.Collections
          TestCase(2, 1000)]
         public void BoundedListContractAddError2(int capacity, int iterations)
         {
-            IBoundedList<string> list = this.GetInstance(capacity);
+            var list = GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
 
-            List<string> items = new List<string>();
-            for (int i = 0; i < iterations; i++)
+            var items = new List<string>();
+            for (var i = 0; i < iterations; i++)
             {
-                string newItem = i.ToString(CultureInfo.InvariantCulture);
+                var newItem = i.ToString(CultureInfo.InvariantCulture);
                 Assert.IsFalse(list.Contains(newItem));
                 items.Add(newItem);
 
@@ -111,14 +111,14 @@ namespace VDS.Common.Collections
                 }
 
                 // Check expected items are in list
-                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                for (var index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
                 {
                     Assert.IsTrue(list.Contains(items[index]));
                     Assert.AreEqual(items[index], list[index]);
                 }
                 // Check additional items are not in list
                 if (items.Count <= list.MaxCapacity) continue;
-                for (int index = list.MaxCapacity; index < items.Count; index++)
+                for (var index = list.MaxCapacity; index < items.Count; index++)
                 {
                     Assert.IsFalse(list.Contains(items[index]));
                 }
@@ -128,7 +128,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractAddDiscard1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
 
             list.Add("a");
@@ -156,26 +156,26 @@ namespace VDS.Common.Collections
          TestCase(2, 1000)]
         public void BoundedListContractAddDiscard2(int capacity, int iterations)
         {
-            IBoundedList<string> list = this.GetInstance(capacity);
+            var list = GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
 
-            List<string> items = new List<string>();
-            for (int i = 0; i < iterations; i++)
+            var items = new List<string>();
+            for (var i = 0; i < iterations; i++)
             {
-                string newItem = i.ToString(CultureInfo.InvariantCulture);
+                var newItem = i.ToString(CultureInfo.InvariantCulture);
                 Assert.IsFalse(list.Contains(newItem));
                 items.Add(newItem);
                 list.Add(newItem);
 
                 // Check expected items are in list
-                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                for (var index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
                 {
                     Assert.IsTrue(list.Contains(items[index]));
                     Assert.AreEqual(items[index], list[index]);
                 }
                 // Check additional items are not in list
                 if (items.Count <= list.MaxCapacity) continue;
-                for (int index = list.MaxCapacity; index < items.Count; index++)
+                for (var index = list.MaxCapacity; index < items.Count; index++)
                 {
                     Assert.IsFalse(list.Contains(items[index]));
                 }
@@ -185,7 +185,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractRemove1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             list.Add("a");
             Assert.AreEqual(1, list.Count);
             Assert.IsTrue(list.Contains("a"));
@@ -211,7 +211,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractRemove2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             list.Add("a");
             Assert.AreEqual(1, list.Count);
             Assert.IsTrue(list.Contains("a"));
@@ -237,7 +237,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractRemove3()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             // Can't remove non-existent items
             Assert.IsFalse(list.Remove("a"));
@@ -246,7 +246,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractRemove4()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             list.Add("a");
             Assert.AreEqual(1, list.Count);
             Assert.IsTrue(list.Contains("a"));
@@ -258,7 +258,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListRemoveAt1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             list.Add("a");
             Assert.AreEqual(1, list.Count);
@@ -272,7 +272,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListRemoveAt2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             list.Add("a");
             Assert.AreEqual(1, list.Count);
@@ -290,7 +290,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListRemoveAt3()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             list.Add("a");
             Assert.AreEqual(1, list.Count);
@@ -308,7 +308,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListRemoveAtOutOfRange1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             // Remove out of range due to empty list
             Assert.Throws<ArgumentOutOfRangeException>(()=> list.RemoveAt(0));
@@ -317,7 +317,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListRemoveAtOutOfRange2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             // Remove out of range
             Assert.Throws<ArgumentOutOfRangeException>(() =>  list.RemoveAt(-1));
@@ -326,7 +326,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListRemoveAtOutOfRange3()
         {
-            IBoundedList<string> list = this.GetInstance(2, new string[] {"a", "b"});
+            var list = GetInstance(2, new[] {"a", "b"});
 
             // Remove out of range due to being >= current size of list
             Assert.Throws<ArgumentOutOfRangeException>(()=>list.RemoveAt(2));
@@ -335,7 +335,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsert1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             list.Add("a");
             Assert.AreEqual(1, list.Count);
             Assert.IsTrue(list.Contains("a"));
@@ -352,7 +352,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsert2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
             list.Add("a");
             Assert.AreEqual(1, list.Count);
             Assert.IsTrue(list.Contains("a"));
@@ -369,7 +369,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsertOutOfRange1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             // Insert out of range
             Assert.Throws<ArgumentOutOfRangeException>(() => list.Insert(2, "b"));
@@ -378,7 +378,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsertOutOfRange2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             // Insert out of range
             Assert.Throws<ArgumentOutOfRangeException>(() => list.Insert(-1, "b"));
@@ -387,7 +387,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsertError1()
         {
-            IBoundedList<string> list = this.GetInstance(1);
+            var list = GetInstance(1);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
 
             list.Add("a");
@@ -402,7 +402,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsertError2()
         {
-            IBoundedList<string> list = this.GetInstance(1);
+            var list = GetInstance(1);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
 
             list.Add("a");
@@ -423,13 +423,13 @@ namespace VDS.Common.Collections
          TestCase(2, 1000)]
         public void BoundedListContractInsertError3(int capacity, int iterations)
         {
-            IBoundedList<string> list = this.GetInstance(capacity);
+            var list = GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
 
-            List<string> items = new List<string>();
-            for (int i = 0; i < iterations; i++)
+            var items = new List<string>();
+            for (var i = 0; i < iterations; i++)
             {
-                string newItem = i.ToString(CultureInfo.InvariantCulture);
+                var newItem = i.ToString(CultureInfo.InvariantCulture);
                 Assert.IsFalse(list.Contains(newItem));
                 items.Add(newItem);
 
@@ -449,14 +449,14 @@ namespace VDS.Common.Collections
                 }
 
                 // Check expected items are in list
-                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                for (var index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
                 {
                     Assert.IsTrue(list.Contains(items[index]));
                     Assert.AreEqual(items[Math.Min(items.Count, list.MaxCapacity) - 1 - index], list[index]);
                 }
                 // Check additional items are not in list
                 if (items.Count <= list.MaxCapacity) continue;
-                for (int index = list.MaxCapacity; index < items.Count; index++)
+                for (var index = list.MaxCapacity; index < items.Count; index++)
                 {
                     Assert.IsFalse(list.Contains(items[index]));
                 }
@@ -472,13 +472,13 @@ namespace VDS.Common.Collections
          TestCase(2, 1000)]
         public void BoundedListContractInsertError4(int capacity, int iterations)
         {
-            IBoundedList<string> list = this.GetInstance(capacity);
+            var list = GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Error) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Error");
 
-            List<string> items = new List<string>();
+            var items = new List<string>();
             for (int i = 0, insert = 0; i < iterations; i++, insert = (insert + 1)%(capacity + 1))
             {
-                string newItem = i.ToString(CultureInfo.InvariantCulture);
+                var newItem = i.ToString(CultureInfo.InvariantCulture);
                 Assert.IsFalse(list.Contains(newItem));
                 items.Add(newItem);
 
@@ -499,13 +499,13 @@ namespace VDS.Common.Collections
                 }
 
                 // Check expected items are in list
-                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                for (var index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
                 {
                     Assert.IsTrue(list.Contains(items[index]));
                 }
                 // Check additional items are not in list
                 if (items.Count <= list.MaxCapacity) continue;
-                for (int index = list.MaxCapacity; index < items.Count; index++)
+                for (var index = list.MaxCapacity; index < items.Count; index++)
                 {
                     Assert.IsFalse(list.Contains(items[index]));
                 }
@@ -515,7 +515,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsertDiscard1()
         {
-            IBoundedList<string> list = this.GetInstance(1);
+            var list = GetInstance(1);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
 
             list.Add("a");
@@ -534,7 +534,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractInsertDiscard2()
         {
-            IBoundedList<string> list = this.GetInstance(1);
+            var list = GetInstance(1);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
 
             list.Add("a");
@@ -559,13 +559,13 @@ namespace VDS.Common.Collections
          TestCase(2, 1000)]
         public void BoundedListContractInsertDiscard3(int capacity, int iterations)
         {
-            IBoundedList<string> list = this.GetInstance(capacity);
+            var list = GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
 
-            List<string> items = new List<string>();
-            for (int i = 0; i < iterations; i++)
+            var items = new List<string>();
+            for (var i = 0; i < iterations; i++)
             {
-                string newItem = i.ToString(CultureInfo.InvariantCulture);
+                var newItem = i.ToString(CultureInfo.InvariantCulture);
                 Assert.IsFalse(list.Contains(newItem));
                 items.Insert(0, newItem);
 
@@ -577,14 +577,14 @@ namespace VDS.Common.Collections
                 Assert.IsFalse(list.Count > list.MaxCapacity);
 
                 // Check expected items are in list
-                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                for (var index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
                 {
                     Assert.IsTrue(list.Contains(items[index]));
                     Assert.AreEqual(items[index], list[index]);
                 }
                 // Check additional items are not in list
                 if (items.Count <= list.MaxCapacity) continue;
-                for (int index = list.MaxCapacity; index < items.Count; index++)
+                for (var index = list.MaxCapacity; index < items.Count; index++)
                 {
                     Assert.IsFalse(list.Contains(items[index]));
                 }
@@ -600,13 +600,13 @@ namespace VDS.Common.Collections
          TestCase(2, 1000)]
         public void BoundedListContractInsertDiscard4(int capacity, int iterations)
         {
-            IBoundedList<string> list = this.GetInstance(capacity);
+            var list = GetInstance(capacity);
             if (list.OverflowPolicy != BoundedListOverflowPolicy.Discard) Assert.Ignore("Test is only applicable to implementations with an OverflowPolicy of Discard");
 
-            List<string> items = new List<string>();
+            var items = new List<string>();
             for (int i = 0, insert = 0; i < iterations; i++, insert = (insert + 1)%(capacity + 1))
             {
-                string newItem = i.ToString(CultureInfo.InvariantCulture);
+                var newItem = i.ToString(CultureInfo.InvariantCulture);
                 Assert.IsFalse(list.Contains(newItem));
                 items.Insert(insert, newItem);
 
@@ -625,14 +625,14 @@ namespace VDS.Common.Collections
                 Assert.IsFalse(list.Count > list.MaxCapacity);
 
                 // Check expected items are in list
-                for (int index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
+                for (var index = 0; index < Math.Min(items.Count, list.MaxCapacity); index++)
                 {
                     Assert.IsTrue(list.Contains(items[index]));
                     Assert.AreEqual(items[index], list[index]);
                 }
                 // Check additional items are not in list
                 if (items.Count <= list.MaxCapacity) continue;
-                for (int index = list.MaxCapacity; index < items.Count; index++)
+                for (var index = list.MaxCapacity; index < items.Count; index++)
                 {
                     Assert.IsFalse(list.Contains(items[index]));
                 }
@@ -642,7 +642,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractGet1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             Assert.Throws<ArgumentOutOfRangeException>(()=>
             {
@@ -653,7 +653,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractGet2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             // ReSharper disable once UnusedVariable
             Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -665,7 +665,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractGet3()
         {
-            IBoundedList<string> list = this.GetInstance(2, new string[] {"a", "b"});
+            var list = GetInstance(2, new[] {"a", "b"});
 
             // ReSharper disable once UnusedVariable
             Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -677,7 +677,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractGet4()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             list.Add("a");
             Assert.AreEqual(1, list.Count);
@@ -688,7 +688,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractSet1()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => list[0] = "a");
         }
@@ -696,7 +696,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractSet2()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             Assert.Throws<ArgumentOutOfRangeException>(()=> list[-1] = "a");
         }
@@ -704,7 +704,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractSet3()
         {
-            IBoundedList<string> list = this.GetInstance(2, new string[] {"a", "b"});
+            var list = GetInstance(2, new[] {"a", "b"});
 
             Assert.Throws<ArgumentOutOfRangeException>(() => list[2] = "a");
         }
@@ -712,7 +712,7 @@ namespace VDS.Common.Collections
         [Test]
         public void BoundedListContractSet4()
         {
-            IBoundedList<string> list = this.GetInstance(2);
+            var list = GetInstance(2);
 
             list.Add("a");
             Assert.AreEqual(1, list.Count);

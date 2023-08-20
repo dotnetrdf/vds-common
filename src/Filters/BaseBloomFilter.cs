@@ -39,8 +39,7 @@ namespace VDS.Common.Filters
         /// <param name="storage">Storage to use</param>
         protected BaseBloomFilter(IBloomFilterStorage storage)
         {
-            if (storage == null) throw new ArgumentNullException("storage", "Storage cannot be null");
-            this.Storage = storage;
+            Storage = storage ?? throw new ArgumentNullException(nameof(storage), "Storage cannot be null");
         }
 
         /// <summary>
@@ -65,8 +64,8 @@ namespace VDS.Common.Filters
         /// </remarks>
         public bool MayContain(T item)
         {
-            IEnumerable<int> indices = this.GetBitIndices(item);
-            return indices.All(index => this.Storage.IsSet(index));
+            var indices = GetBitIndices(item);
+            return indices.All(index => Storage.IsSet(index));
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace VDS.Common.Filters
         /// </summary>
         public void Clear()
         {
-            this.Storage.Clear();
+            Storage.Clear();
         }
 
         /// <summary>
@@ -84,13 +83,13 @@ namespace VDS.Common.Filters
         /// <returns>True if the item was added to the filter, false if item may already have been present and was not added</returns>
         public bool Add(T item)
         {
-            IEnumerable<int> indices = this.GetBitIndices(item);
-            bool alreadySeen = true;
-            foreach (int index in indices)
+            var indices = GetBitIndices(item);
+            var alreadySeen = true;
+            foreach (var index in indices)
             {
-                if (this.Storage.IsSet(index)) continue;
+                if (Storage.IsSet(index)) continue;
                 alreadySeen = false;
-                this.Storage.Set(index);
+                Storage.Set(index);
             }
             return !alreadySeen;
         }

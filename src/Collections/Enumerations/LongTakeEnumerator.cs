@@ -40,9 +40,9 @@ namespace VDS.Common.Collections.Enumerations
         public LongTakeEnumerator(IEnumerator<T> enumerator, long toTake)
             : base(enumerator)
         {
-            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", "toTake");
-            this.ToTake = toTake;
-            this.Taken = 0;
+            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
+            ToTake = toTake;
+            Taken = 0;
         }
 
         /// <summary>
@@ -66,11 +66,11 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             item = default(T);
-            if (this.Taken >= this.ToTake) return false;
-            if (!this.InnerEnumerator.MoveNext()) return false;
+            if (Taken >= ToTake) return false;
+            if (!InnerEnumerator.MoveNext()) return false;
 
-            this.Taken++;
-            item = this.InnerEnumerator.Current;
+            Taken++;
+            item = InnerEnumerator.Current;
             return true;
         }
 
@@ -79,7 +79,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            this.Taken = 0;
+            Taken = 0;
         }
     }
 }

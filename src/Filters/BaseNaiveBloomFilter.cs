@@ -46,23 +46,20 @@ namespace VDS.Common.Filters
         protected BaseNaiveBloomFilter(IBloomFilterStorage storage, int bits, IEnumerable<Func<T, int>> hashFunctions)
             : base(storage)
         {
-            if (bits <= 0) throw new ArgumentException("Bits must be a positive value", "bits");
-            if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
-            this._hashFunctions = new List<Func<T, int>>(hashFunctions);
-            this._hashFunctions.RemoveAll(f => f == null);
-            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", "hashFunctions");
-            if (bits <= this._hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", "bits");
+            if (bits <= 0) throw new ArgumentException("Bits must be a positive value", nameof(bits));
+            if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
+            _hashFunctions = new List<Func<T, int>>(hashFunctions);
+            _hashFunctions.RemoveAll(f => f == null);
+            if (_hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
+            if (bits <= _hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", nameof(bits));
 
-            this.NumberOfBits = bits;
+            NumberOfBits = bits;
         }
 
         /// <summary>
         /// Gets the number of hash functions
         /// </summary>
-        public override int NumberOfHashFunctions
-        {
-            get { return this._hashFunctions.Count; }
-        }
+        public override int NumberOfHashFunctions => _hashFunctions.Count;
 
         /// <summary>
         /// Converts an item into a number of bit indexes
@@ -71,10 +68,10 @@ namespace VDS.Common.Filters
         /// <returns>Bit Indices</returns>
         protected override IEnumerable<int> GetBitIndices(T item)
         {
-            int[] indices = new int[this._hashFunctions.Count];
-            for (int i = 0; i < indices.Length; i++)
+            var indices = new int[_hashFunctions.Count];
+            for (var i = 0; i < indices.Length; i++)
             {
-                indices[i] = Math.Abs(this._hashFunctions[i](item)) % this.NumberOfBits;
+                indices[i] = Math.Abs(_hashFunctions[i](item)) % NumberOfBits;
             }
             return indices;
         }

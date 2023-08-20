@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -45,15 +44,16 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCopyTo1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
+            // ReSharper disable once AssignNullToNotNullAttribute
             Assert.Throws<ArgumentNullException>(()=>c.CopyTo(null, 0));
         }
 
         [Test]
         public void CollectionContractCopyTo2()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             Assert.Throws<ArgumentOutOfRangeException>(()=>c.CopyTo(new string[10], -1));
         }
@@ -61,7 +61,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCopyTo3()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             Assert.Throws<ArgumentException>(() => c.CopyTo(new string[1], 2));
         }
@@ -69,7 +69,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCopyTo4()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             c.CopyTo(new string[1], 0);
         }
@@ -77,9 +77,9 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCopyTo5()
         {
-            ICollection<string> c = this.GetInstance(new string[] { "test" });
+            var c = GetInstance(new[] { "test" });
 
-            string[] dest = new string[1];
+            var dest = new string[1];
             c.CopyTo(dest, 0);
             Assert.AreEqual("test", dest[0]);
         }
@@ -87,10 +87,10 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractCopyTo6()
         {
-            string[] data = new string[] { "a", "a", "b", "c" };
-            ICollection<string> c = this.GetInstance(data);
+            var data = new[] { "a", "a", "b", "c" };
+            var c = GetInstance(data);
 
-            string[] dest = new string[data.Length];
+            var dest = new string[data.Length];
             c.CopyTo(dest, 0);
             Assert.AreEqual(data, dest);
         }
@@ -98,85 +98,77 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractEnumerate1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
-            using (IEnumerator<string> enumerator = c.GetEnumerator())
-            {
-                Assert.IsFalse(enumerator.MoveNext());
-            }
+            using var enumerator = c.GetEnumerator();
+            Assert.IsFalse(enumerator.MoveNext());
         }
 
         [Test]
         public void CollectionContractEnumerate2()
         {
-            ICollection<string> c = this.GetInstance(new string[] { "test" });
+            var c = GetInstance(new[] { "test" });
 
-            using (IEnumerator<string> enumerator = c.GetEnumerator())
-            {
-                Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual("test", enumerator.Current);
-                Assert.IsFalse(enumerator.MoveNext());
-            }
+            using var enumerator = c.GetEnumerator();
+            Assert.IsTrue(enumerator.MoveNext());
+            Assert.AreEqual("test", enumerator.Current);
+            Assert.IsFalse(enumerator.MoveNext());
         }
 
         [Test]
         public void CollectionContractEnumerate3()
         {
-            ICollection<string> c = this.GetInstance(new string[] { "a", "b" });
+            var c = GetInstance(new[] { "a", "b" });
 
-            using (IEnumerator<string> enumerator = c.GetEnumerator())
-            {
-                Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual("a", enumerator.Current);
-                Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual("b", enumerator.Current);
-                Assert.IsFalse(enumerator.MoveNext());
-            }
+            using var enumerator = c.GetEnumerator();
+            Assert.IsTrue(enumerator.MoveNext());
+            Assert.AreEqual("a", enumerator.Current);
+            Assert.IsTrue(enumerator.MoveNext());
+            Assert.AreEqual("b", enumerator.Current);
+            Assert.IsFalse(enumerator.MoveNext());
         }
 
         [Test]
         public void CollectionContractEnumerate4()
         {
-            string[] values = new string[] { "a", "a", "b", "c", "d", "e", "e" };
-            ICollection<string> c = this.GetInstance(values);
+            var values = new[] { "a", "a", "b", "c", "d", "e", "e" };
+            var c = GetInstance(values);
 
-            using (IEnumerator<string> enumerator = c.GetEnumerator())
+            using var enumerator = c.GetEnumerator();
+            var index = 0;
+            while (index < values.Length)
             {
-                int index = 0;
-                while (index < values.Length)
-                {
-                    Assert.IsTrue(enumerator.MoveNext(), "Failed to move next at Index " + index);
-                    Assert.AreEqual(values[index], enumerator.Current);
-                    index++;
-                }
+                Assert.IsTrue(enumerator.MoveNext(), "Failed to move next at Index " + index);
+                Assert.AreEqual(values[index], enumerator.Current);
+                index++;
             }
         }
 
         [Test]
         public void CollectionContractCount1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
             Assert.AreEqual(0, c.Count);
         }
 
         [Test]
         public void CollectionContractCount2()
         {
-            ICollection<string> c = this.GetInstance(new string[] { "test" });
+            var c = GetInstance(new[] { "test" });
             Assert.AreEqual(1, c.Count);
         }
 
         [Test]
         public void CollectionContractContains1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
             Assert.IsFalse(c.Contains("test"));
         }
 
         [Test]
         public void CollectionContractContains2()
         {
-            ICollection<string> c = this.GetInstance(new string[] { "test" });
+            var c = GetInstance(new[] { "test" });
             Assert.IsTrue(c.Contains("test"));
         }
     }
@@ -188,21 +180,21 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractAdd1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
             Assert.Throws<NotSupportedException>(()=>c.Add("test"));
         }
 
         [Test]
         public void CollectionContractRemove1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
             Assert.Throws<NotSupportedException>(() => c.Remove("test"));
         }
 
         [Test]
         public void CollectionContractClear1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
             Assert.Throws<NotSupportedException>(() => c.Clear());
         }
     }
@@ -214,7 +206,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractAdd1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             c.Add("test");
             Assert.IsTrue(c.Contains("test"));
@@ -224,9 +216,9 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractAdd2()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
-            for (int i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
             {
                 c.Add("test" + i);
                 Assert.IsTrue(c.Contains("test" + i));
@@ -237,7 +229,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractRemove1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             c.Add("test");
             Assert.IsTrue(c.Contains("test"));
@@ -248,7 +240,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractRemove2()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             c.Add("test");
             c.Add("test");
@@ -262,7 +254,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractClear1()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             Assert.AreEqual(0, c.Count);
             c.Clear();
@@ -272,7 +264,7 @@ namespace VDS.Common.Collections
         [Test]
         public void CollectionContractClear2()
         {
-            ICollection<string> c = this.GetInstance();
+            var c = GetInstance();
 
             c.Add("test");
             Assert.IsTrue(c.Contains("test"));

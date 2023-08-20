@@ -47,9 +47,9 @@ namespace VDS.Common.Tries
         /// <param name="key">Key Bit</param>
         public AbstractSparseTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
         {
-            this.KeyBit = key;
-            this.Value = null;
-            this.Parent = parent;
+            KeyBit = key;
+            Value = null;
+            Parent = parent;
         }
 
         /// <summary>
@@ -105,13 +105,13 @@ namespace VDS.Common.Tries
         {
             lock (this)
             {
-                if (this._children != null)
+                if (_children != null)
                 {
-                    return this._children.TryGetValue(key, out child);
+                    return _children.TryGetValue(key, out child);
                 }
-                else if (this.MatchesSingleton(key))
+                else if (MatchesSingleton(key))
                 {
-                    child = this.SingletonChild;
+                    child = SingletonChild;
                     return true;
                 }
             }
@@ -122,24 +122,12 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Check whether this Node is the Root Node
         /// </summary>
-        public bool IsRoot
-        {
-            get
-            {
-                return this.Parent == null;
-            }
-        }
+        public bool IsRoot => Parent == null;
 
         /// <summary>
         /// Check whether or not this node has a value associated with it
         /// </summary>
-        public bool HasValue
-        {
-            get
-            {
-                return this.Value != null;
-            }
-        }
+        public bool HasValue => Value != null;
 
         /// <summary>
         /// Gets the number of immediate child nodes this node has
@@ -150,11 +138,11 @@ namespace VDS.Common.Tries
             {
                 lock (this)
                 {
-                    if (this._children != null)
+                    if (_children != null)
                     {
-                        return this._children.Count;
+                        return _children.Count;
                     }
-                    else if (this.SingletonChild != null)
+                    else if (SingletonChild != null)
                     {
                         return 1;
                     }
@@ -169,13 +157,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the number of descendant nodes this node has
         /// </summary>
-        public int CountAll
-        {
-            get
-            {
-                return this.Descendants.Count();
-            }
-        }
+        public int CountAll => Descendants.Count();
 
         /// <summary>
         /// Check whether or not this node has any children.
@@ -186,13 +168,13 @@ namespace VDS.Common.Tries
             {
                 lock (this)
                 {
-                    if (this._children != null)
+                    if (_children != null)
                     {
-                        return this._children.Count == 0;
+                        return _children.Count == 0;
                     }
                     else
                     {
-                        return this.SingletonChild == null;
+                        return SingletonChild == null;
                     }
                 }
             }
@@ -203,7 +185,7 @@ namespace VDS.Common.Tries
         /// </summary>
         public void ClearValue()
         {
-            this.Value = null;
+            Value = null;
         }
 
         /// <summary>
@@ -211,8 +193,8 @@ namespace VDS.Common.Tries
         /// </summary>
         public void Clear()
         {
-            this.ClearValue();
-            this.Trim();
+            ClearValue();
+            Trim();
         }
 
         /// <summary>
@@ -220,7 +202,7 @@ namespace VDS.Common.Tries
         /// </summary>
         public void Trim()
         {
-            this.Trim(0);
+            Trim(0);
         }
 
         /// <summary>
@@ -234,15 +216,15 @@ namespace VDS.Common.Tries
             {
                 lock (this)
                 {
-                    if (this._children != null) this._children.Clear();
-                    this.ClearSingleton();
+                    if (_children != null) _children.Clear();
+                    ClearSingleton();
                 }
             }
             else if (depth > 0)
             {
                 lock (this)
                 {
-                    foreach (ITrieNode<TKeyBit, TValue> node in this.Children)
+                    foreach (var node in Children)
                     {
                         node.Trim(depth - 1);
                     }
@@ -264,39 +246,39 @@ namespace VDS.Common.Tries
             ITrieNode<TKeyBit, TValue> child;
             lock (this)
             {
-                if (this._children != null)
+                if (_children != null)
                 {
                     // Get from existing children adding new child if necessary
-                    if (this._children.TryGetValue(key, out child))
+                    if (_children.TryGetValue(key, out child))
                     {
                         return child;
                     }
                     else
                     {
-                        child = this.CreateNewChild(key);
-                        this._children.Add(key, child);
+                        child = CreateNewChild(key);
+                        _children.Add(key, child);
                         return child;
                     }
                 }
-                else if (this.MatchesSingleton(key))
+                else if (MatchesSingleton(key))
                 {
                     // Can use existing singleton
-                    return this.SingletonChild;
+                    return SingletonChild;
                 }
-                else if (this.SingletonChild != null)
+                else if (SingletonChild != null)
                 {
                     // Make non-singleton
-                    this._children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
-                    this._children.Add(this.SingletonChild.KeyBit, this.SingletonChild);
-                    child = this.CreateNewChild(key);
-                    this._children.Add(key, child);
+                    _children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
+                    _children.Add(SingletonChild.KeyBit, SingletonChild);
+                    child = CreateNewChild(key);
+                    _children.Add(key, child);
                     return child;
                 }
                 else
                 {
                     // Make singleton
-                    this.SingletonChild = this.CreateNewChild(key);
-                    return this.SingletonChild;
+                    SingletonChild = CreateNewChild(key);
+                    return SingletonChild;
                 }
             }
         }
@@ -309,13 +291,13 @@ namespace VDS.Common.Tries
         {
             lock (this)
             {
-                if (this._children != null)
+                if (_children != null)
                 {
-                    this._children.Remove(key);
+                    _children.Remove(key);
                 }
-                else if (this.MatchesSingleton(key))
+                else if (MatchesSingleton(key))
                 {
-                    this.ClearSingleton();
+                    ClearSingleton();
                 }
             }
         }
@@ -323,35 +305,17 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the immediate children of this Node
         /// </summary>
-        public IEnumerable<ITrieNode<TKeyBit, TValue>> Children
-        {
-            get
-            {
-                return new AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>(this);
-            }
-        }
+        public IEnumerable<ITrieNode<TKeyBit, TValue>> Children => new AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>(this);
 
         /// <summary>
         /// Gets all descended children of this Node
         /// </summary>
-        public IEnumerable<ITrieNode<TKeyBit, TValue>> Descendants
-        {
-            get
-            {
-                return new DescendantNodesEnumerable<TKeyBit, TValue>(this);
-            }
-        }
+        public IEnumerable<ITrieNode<TKeyBit, TValue>> Descendants => new DescendantNodesEnumerable<TKeyBit, TValue>(this);
 
         /// <summary>
         /// Get an enumerable of values contained in this node and all its descendants
         /// </summary>
-        public IEnumerable<TValue> Values
-        {
-            get
-            {
-                return new TrieValuesEnumerable<TKeyBit, TValue>(this);
-            }
-        }
+        public IEnumerable<TValue> Values => new TrieValuesEnumerable<TKeyBit, TValue>(this);
     }
 
     class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
@@ -363,31 +327,30 @@ namespace VDS.Common.Tries
 
         public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException("node");
-            this._node = node;
+            _node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
         {
-            if (this._node.IsLeaf)
+            if (_node.IsLeaf)
             {
                 return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
             }
-            else if (this._node._children != null)
+            else if (_node._children != null)
             {
                 //May be mutliple children present
-                return this._node._children.Values.GetEnumerator();
+                return _node._children.Values.GetEnumerator();
             }
             else 
             {
                 //Must be singleton child
-                return this._node.SingletonChild.AsEnumerable().GetEnumerator();
+                return _node.SingletonChild.AsEnumerable().GetEnumerator();
             }
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

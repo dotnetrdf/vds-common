@@ -48,21 +48,19 @@ namespace VDS.Common.Filters
         protected BaseFastBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
             : base(storage)
         {
-            if (parameters == null) throw new ArgumentNullException("parameters", "Paramaeters cannot be null");
-            if (h1 == null) throw new ArgumentException("Hash functions cannot be null", "h1");
-            if (h2 == null) throw new ArgumentException("Hash functions cannot be null", "h2");
-            if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", "parameters");
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters), "Paramaeters cannot be null");
+            if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
 
-            this._parameters = parameters;
-            this.NumberOfBits = parameters.NumberOfBits;
-            this._h1 = h1;
-            this._h2 = h2;
+            _parameters = parameters;
+            NumberOfBits = parameters.NumberOfBits;
+            _h1 = h1 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h1));
+            _h2 = h2 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h2));
         }
 
         /// <summary>
         /// Gets the number of hash functions
         /// </summary>
-        public override int NumberOfHashFunctions { get { return this._parameters.NumberOfHashFunctions; } }
+        public override int NumberOfHashFunctions => _parameters.NumberOfHashFunctions;
 
         /// <summary>
         /// Converts the item into a number of bit indices
@@ -71,13 +69,13 @@ namespace VDS.Common.Filters
         /// <returns>Bit Indices</returns>
         protected override IEnumerable<int> GetBitIndices(T item)
         {
-            int a = this._h1(item);
-            int b = this._h2(item);
+            var a = _h1(item);
+            var b = _h2(item);
 
-            int[] bits = new int[this._parameters.NumberOfHashFunctions];
-            for (int i = 0; i < bits.Length; i++)
+            var bits = new int[_parameters.NumberOfHashFunctions];
+            for (var i = 0; i < bits.Length; i++)
             {
-                bits[i] = Math.Abs(a + (i*b)) % this.NumberOfBits;
+                bits[i] = Math.Abs(a + (i*b)) % NumberOfBits;
             }
             return bits;
         }

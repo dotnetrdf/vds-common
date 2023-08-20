@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Tries
 {
@@ -31,12 +30,12 @@ namespace VDS.Common.Tries
     /// An enumerable over the values of a Trie which ensures that the latest state of the Trie is always enumerated
     /// </summary>
     /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
-    /// <typeparam name="TValue">Valye Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
     public class TrieValuesEnumerable<TKeyBit, TValue>
         : IEnumerable<TValue>
         where TValue : class
     {
-        private ITrieNode<TKeyBit, TValue> _node;
+        private readonly ITrieNode<TKeyBit, TValue> _node;
 
         /// <summary>
         /// Creates a new values enumerator
@@ -44,8 +43,7 @@ namespace VDS.Common.Tries
         /// <param name="node">Node to start enumeration from</param>
         public TrieValuesEnumerable(ITrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException("node");
-            this._node = node;
+            _node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         /// <summary>
@@ -54,13 +52,13 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public IEnumerator<TValue> GetEnumerator()
         {
-            if (this._node.HasValue)
+            if (_node.HasValue)
             {
-                return this._node.Value.AsEnumerable().Concat(this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator();
+                return _node.Value.AsEnumerable().Concat(_node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator();
             }
             else
             {
-                return this._node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator();
+                return _node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator();
             }
         }
 
@@ -70,7 +68,7 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

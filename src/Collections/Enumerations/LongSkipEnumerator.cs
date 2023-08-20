@@ -40,9 +40,9 @@ namespace VDS.Common.Collections.Enumerations
         public LongSkipEnumerator(IEnumerator<T> enumerator, long toSkip)
             : base(enumerator)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
-            this.Skipped = 0;
+            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", nameof(toSkip));
+            ToSkip = toSkip;
+            Skipped = 0;
         }
 
         /// <summary>
@@ -61,12 +61,12 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         private bool TrySkip()
         {
-            while (this.Skipped < this.ToSkip)
+            while (Skipped < ToSkip)
             {
-                if (!this.InnerEnumerator.MoveNext()) return false;
-                this.Skipped++;
+                if (!InnerEnumerator.MoveNext()) return false;
+                Skipped++;
             }
-            return this.Skipped == this.ToSkip;
+            return Skipped == ToSkip;
         }
 
         /// <summary>
@@ -82,15 +82,15 @@ namespace VDS.Common.Collections.Enumerations
             item = default(T);
 
             // If we've previously done the skipping so can just defer to inner enumerator
-            if (this.Skipped == this.ToSkip)
+            if (Skipped == ToSkip)
             {
-                if (!this.InnerEnumerator.MoveNext()) return false;
-                item = this.InnerEnumerator.Current;
+                if (!InnerEnumerator.MoveNext()) return false;
+                item = InnerEnumerator.Current;
                 return true;
             }
 
             // First time being accessed so attempt to skip if possible
-            return this.TrySkip() && this.TryMoveNext(out item);
+            return TrySkip() && TryMoveNext(out item);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            this.Skipped = 0;
+            Skipped = 0;
         }
     }
 }

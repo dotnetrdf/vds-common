@@ -37,13 +37,13 @@ namespace VDS.Common.Filters
         /// <param name="numHashFunctions">Number of hash functions</param>
         public BloomFilterParameters(int numBits, int numHashFunctions)
         {
-            this.NumberOfBits = numBits;
-            this._numHashFunctions = numHashFunctions;
+            NumberOfBits = numBits;
+            _numHashFunctions = numHashFunctions;
         }
 
         /// <summary>
         /// Gets the number of hash functions
         /// </summary>
-        public override int NumberOfHashFunctions { get { return this._numHashFunctions; } }
+        public override int NumberOfHashFunctions => _numHashFunctions;
     }
 }

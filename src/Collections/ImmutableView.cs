@@ -33,13 +33,13 @@ namespace VDS.Common.Collections
     public class ImmutableView<T>
         : ICollection<T>
     {
-        private const String DefaultErrorMessage = "This collection is immutable";
+        private const string DefaultErrorMessage = "This collection is immutable";
 
         /// <summary>
         /// The enumerable being wrapped
         /// </summary>
         protected IEnumerable<T> _items;
-        private readonly String _errMsg;
+        private readonly string _errMsg;
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
@@ -51,7 +51,7 @@ namespace VDS.Common.Collections
         /// Creates a new immutable view over an empty collection
         /// </summary>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(String message)
+        public ImmutableView(string message)
             : this(Enumerable.Empty<T>(), message) { }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(IEnumerable<T> items, String message)
+        public ImmutableView(IEnumerable<T> items, string message)
         {
-            this._items = items;
-            this._errMsg = (!String.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
+            _items = items;
+            _errMsg = (!string.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace VDS.Common.Collections
         /// <exception cref="NotSupportedException">Thrown because the collection is immutable</exception>
         public void Add(T item)
         {
-            throw new NotSupportedException(this._errMsg);
+            throw new NotSupportedException(_errMsg);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace VDS.Common.Collections
         /// <exception cref="NotSupportedException">Thrown because the collection is immutable</exception>
         public void Clear()
         {
-            throw new NotSupportedException(this._errMsg);
+            throw new NotSupportedException(_errMsg);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the item is contained in the collection, false otherwise</returns>
         public virtual bool Contains(T item)
         {
-            return this._items.Contains(item);
+            return _items.Contains(item);
         }
 
         /// <summary>
@@ -108,12 +108,12 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start the copying at</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
-            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array", "array");
+            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
+            if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array", nameof(array));
 
-            int i = arrayIndex;
-            foreach (T item in this._items)
+            var i = arrayIndex;
+            foreach (var item in _items)
             {
                 array[i] = item;
                 i++;
@@ -123,24 +123,12 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the count of items in the collection
         /// </summary>
-        public virtual int Count
-        {
-            get 
-            {
-                return this._items.Count();
-            }
-        }
+        public virtual int Count => _items.Count();
 
         /// <summary>
         /// Returns that the collection is read-only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsReadOnly => true;
 
         /// <summary>
         /// Throws an error as this collection is immutable
@@ -149,7 +137,7 @@ namespace VDS.Common.Collections
         /// <exception cref="NotSupportedException">Thrown because the collection is immutable</exception>
         public bool Remove(T item)
         {
-            throw new NotSupportedException(this._errMsg);
+            throw new NotSupportedException(_errMsg);
         }
 
         /// <summary>
@@ -158,7 +146,7 @@ namespace VDS.Common.Collections
         /// <returns>Enumerator over the collection</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return this._items.GetEnumerator();
+            return _items.GetEnumerator();
         }
 
         /// <summary>
@@ -167,7 +155,7 @@ namespace VDS.Common.Collections
         /// <returns>Enumerator over the collection</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 
@@ -188,7 +176,7 @@ namespace VDS.Common.Collections
         /// Creates a new immutable view over an empty collection
         /// </summary>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public MaterializedImmutableView(String message)
+        public MaterializedImmutableView(string message)
             : base(new List<T>(), message) { }
 
         /// <summary>
@@ -196,7 +184,7 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public MaterializedImmutableView(IEnumerable<T> items, String message)
+        public MaterializedImmutableView(IEnumerable<T> items, string message)
             : base(items.ToList(), message) { }
 
         /// <summary>
@@ -209,13 +197,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the count of items in the collection
         /// </summary>
-        public override int Count
-        {
-            get
-            {
-                return ((IList<T>)this._items).Count;
-            }
-        }
+        public override int Count => ((IList<T>)_items).Count;
 
         /// <summary>
         /// Checks whether the collection contains a given item
@@ -224,7 +206,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the item is contained in the collection, false otherwise</returns>
         public override bool Contains(T item)
         {
-            return ((IList<T>) this._items).Contains(item);
+            return ((IList<T>) _items).Contains(item);
         }
     }
 }

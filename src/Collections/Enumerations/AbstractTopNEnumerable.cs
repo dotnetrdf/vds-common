@@ -41,8 +41,8 @@ namespace VDS.Common.Collections.Enumerations
         protected AbstractTopNEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
             : base(enumerable, comparer)
         {
-            if (n < 1) throw new ArgumentException("N must be >= 1", "n");
-            this.N = n;
+            if (n < 1) throw new ArgumentException("N must be >= 1", nameof(n));
+            N = n;
         }
 
         /// <summary>

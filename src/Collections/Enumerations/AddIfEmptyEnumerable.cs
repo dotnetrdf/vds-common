@@ -39,7 +39,7 @@ namespace VDS.Common.Collections.Enumerations
         public AddIfEmptyEnumerable(IEnumerable<T> enumerable, T item)
             : base(enumerable)
         {
-            this.AdditionalItem = item;
+            AdditionalItem = item;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new AddIfEmptyEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.AdditionalItem);
+            return new AddIfEmptyEnumerator<T>(InnerEnumerable.GetEnumerator(), AdditionalItem);
         }
     }
 }

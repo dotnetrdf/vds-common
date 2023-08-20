@@ -51,7 +51,7 @@ namespace VDS.Common.Trees
         /// <param name="comparer">Comparer for keys</param>
         protected BinaryTree(IComparer<TKey> comparer)
         {
-            this._comparer = (comparer ?? this._comparer);
+            _comparer = (comparer ?? _comparer);
         }
 
         /// <summary>
@@ -69,15 +69,14 @@ namespace VDS.Common.Trees
         /// <exception cref="ArgumentException">Thrown if a duplicate key is used</exception>
         public virtual bool Add(TKey key, TValue value)
         {
-            if (this.Root == null)
+            if (Root == null)
             {
                 //No root yet so just insert at the root
-                this.Root = this.CreateNode(null, key, value);
+                Root = CreateNode(null, key, value);
                 return true;
             }
             //Move to the node
-            bool created = false;
-            IBinaryTreeNode<TKey, TValue> node = this.MoveToNode(key, out created);
+            var node = MoveToNode(key, out var created);
             if (!created) throw new ArgumentException("Duplicate keys are not permitted");
             node.Value = value;
             return true;
@@ -99,13 +98,13 @@ namespace VDS.Common.Trees
         /// <returns>Node associated with the given Key or null if the key is not present in the tree</returns>
         public virtual IBinaryTreeNode<TKey, TValue> Find(TKey key)
         {
-            if (this.Root == null) return null;
+            if (Root == null) return null;
 
             //Iteratively binary search for the key
-            IBinaryTreeNode<TKey, TValue> current = this.Root;
+            var current = Root;
             do
             {
-                int c = this._comparer.Compare(key, current.Key);
+                var c = _comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
                     current = current.LeftChild;
@@ -132,19 +131,19 @@ namespace VDS.Common.Trees
         /// <returns></returns>
         public virtual IBinaryTreeNode<TKey, TValue> MoveToNode(TKey key, out bool created)
         {
-            if (this.Root == null)
+            if (Root == null)
             {
-                this.Root = this.CreateNode(null, key, default(TValue));
+                Root = CreateNode(null, key, default(TValue));
                 created = true;
-                return this.Root;
+                return Root;
             }
             //Iteratively binary search for the key
-            IBinaryTreeNode<TKey, TValue> current = this.Root;
+            var current = Root;
             IBinaryTreeNode<TKey, TValue> parent = null;
             int c;
             do
             {
-                c = this._comparer.Compare(key, current.Key);
+                c = _comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
                     parent = current;
@@ -164,17 +163,17 @@ namespace VDS.Common.Trees
             } while (current != null);
 
             //Key doesn't exist so need to do an insert
-            current = this.CreateNode(parent, key, default(TValue));
+            current = CreateNode(parent, key, default(TValue));
             created = true;
             if (c < 0)
             {
                 parent.LeftChild = current;
-                this.AfterLeftInsert(parent, current);
+                AfterLeftInsert(parent, current);
             }
             else
             {
                 parent.RightChild = current;
-                this.AfterRightInsert(parent, current);
+                AfterRightInsert(parent, current);
             }
 
             //Return the newly inserted node
@@ -203,14 +202,14 @@ namespace VDS.Common.Trees
         public virtual bool Remove(TKey key)
         {
             //If empty tree any remove always returns false
-            if (this.Root == null) return false;
+            if (Root == null) return false;
 
             //Iteratively binary search for the key
-            IBinaryTreeNode<TKey, TValue> current = this.Root;
+            var current = Root;
             int c;
             do
             {
-                c = this._comparer.Compare(key, current.Key);
+                c = _comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
                     current = current.LeftChild;
@@ -224,7 +223,7 @@ namespace VDS.Common.Trees
                     //If we find a match on the key then stop searching
                     //Calculate the comparison with the parent key (if there is a parent) as we need this info
                     //for the deletion implementation
-                    c = (current.Parent != null ? this._comparer.Compare(current.Key, current.Parent.Key) : c);
+                    c = (current.Parent != null ? _comparer.Compare(current.Key, current.Parent.Key) : c);
                     break;
                 }
             } while (current != null);
@@ -249,7 +248,7 @@ namespace VDS.Common.Trees
                 //Has two children
                 //Therefore we need to get the in order successor of the left child (which must exist) and move it's key and value
                 //to this node and then delete the successor
-                IBinaryTreeNode<TKey, TValue> successor = current.LeftChild.FindRightmostChild();
+                var successor = current.LeftChild.FindRightmostChild();
                 if (ReferenceEquals(successor, current.LeftChild))
                 {
                     //If the successor is just the left child i.e. the left child has no right children
@@ -257,7 +256,7 @@ namespace VDS.Common.Trees
                     current.Key = successor.Key;
                     current.Value = successor.Value;
                     current.LeftChild = successor.LeftChild;
-                    this.AfterDelete(current);
+                    AfterDelete(current);
                     return true;
                 }
                 //We've found a successor which is a rightmost child of our left child
@@ -267,7 +266,7 @@ namespace VDS.Common.Trees
                 current.Key = successor.Key;
                 current.Value = successor.Value;
                 successor.Parent.RightChild = successor.HasChildren ? successor.LeftChild : null;
-                this.AfterDelete(current);
+                AfterDelete(current);
                 return true;
             }
             if (current.HasChildren)
@@ -277,13 +276,13 @@ namespace VDS.Common.Trees
                 if (c < 0)
                 {
                     current.Parent.LeftChild = (current.LeftChild ?? current.RightChild);
-                    this.AfterDelete(current.Parent);
+                    AfterDelete(current.Parent);
                     return true;
                 }
                 if (c > 0)
                 {
                     current.Parent.RightChild = (current.RightChild ?? current.LeftChild);
-                    this.AfterDelete(current.Parent);
+                    AfterDelete(current.Parent);
                     return true;
                 }
                 IBinaryTreeNode<TKey, TValue> successor;
@@ -298,14 +297,14 @@ namespace VDS.Common.Trees
                         if (current.Parent == null)
                         {
                             //At Root and no right child of left subtree so can move left child up to root
-                            this.Root = current.LeftChild;
-                            if (this.Root != null) this.Root.Parent = null;
-                            this.AfterDelete(this.Root);
+                            Root = current.LeftChild;
+                            if (Root != null) Root.Parent = null;
+                            AfterDelete(Root);
                             return true;
                         }
                         //Not at Root and no right child of left subtree so can move left child up
                         current.Parent.LeftChild = current.LeftChild;
-                        this.AfterDelete(current.Parent.LeftChild);
+                        AfterDelete(current.Parent.LeftChild);
                         return true;
                     }
                     //Move value up to this node and delete the rightmost child
@@ -321,7 +320,7 @@ namespace VDS.Common.Trees
                     {
                         successor.Parent.RightChild = null;
                     }
-                    this.AfterDelete(current);
+                    AfterDelete(current);
                     return true;
                 }
                 //Must have a right subtree so find the in order sucessor which is the
@@ -333,14 +332,14 @@ namespace VDS.Common.Trees
                     if (current.Parent == null)
                     {
                         //At Root and no left child of right subtree so can move right child up to root
-                        this.Root = current.RightChild;
-                        if (this.Root != null) this.Root.Parent = null;
-                        this.AfterDelete(this.Root);
+                        Root = current.RightChild;
+                        if (Root != null) Root.Parent = null;
+                        AfterDelete(Root);
                         return true;
                     }
                     //Not at Root and no left child of right subtree so can move right child up
                     current.Parent.RightChild = current.RightChild;
-                    this.AfterDelete(current.Parent.RightChild);
+                    AfterDelete(current.Parent.RightChild);
                     return true;
                 }
                 //Move value up to this node and delete the leftmost child
@@ -349,7 +348,7 @@ namespace VDS.Common.Trees
 
                 //Watch out for the case where the lefttmost child had a right child
                 successor.Parent.LeftChild = successor.Parent.LeftChild.HasChildren ? successor.RightChild : null;
-                this.AfterDelete(current);
+                AfterDelete(current);
                 return true;
             }
             //Must be an external node
@@ -357,18 +356,18 @@ namespace VDS.Common.Trees
             if (c < 0)
             {
                 current.Parent.LeftChild = null;
-                this.AfterDelete(current.Parent);
+                AfterDelete(current.Parent);
                 return true;
             }
             if (c > 0)
             {
                 current.Parent.RightChild = null;
-                this.AfterDelete(current.Parent);
+                AfterDelete(current.Parent);
                 return true;
             }
             //Root of tree is only way we can get here so just
             //set root to null
-            this.Root = null;
+            Root = null;
             return true;
         }
 
@@ -385,7 +384,7 @@ namespace VDS.Common.Trees
         /// <returns>True if the key exists in the Tree</returns>
         public virtual bool ContainsKey(TKey key)
         {
-            return this.Find(key) != null;
+            return Find(key) != null;
         }
 
         /// <summary>
@@ -398,7 +397,7 @@ namespace VDS.Common.Trees
         {
             get
             {
-                IBinaryTreeNode<TKey, TValue> n = this.Find(key);
+                var n = Find(key);
                 if (n != null)
                 {
                     return n.Value;
@@ -407,8 +406,8 @@ namespace VDS.Common.Trees
             }
             set
             {
-                bool created = false;
-                IBinaryTreeNode<TKey, TValue> n = this.MoveToNode(key, out created);
+                var created = false;
+                var n = MoveToNode(key, out created);
                 if (n != null)
                 {
                     n.Value = value;
@@ -428,7 +427,7 @@ namespace VDS.Common.Trees
         /// <returns>True if there is a value associated with the key</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            IBinaryTreeNode<TKey, TValue> n = this.Find(key);
+            var n = Find(key);
             if (n != null)
             {
                 value = n.Value;
@@ -446,23 +445,23 @@ namespace VDS.Common.Trees
         /// <exception cref="IndexOutOfRangeException">Thrown if the index is out of range</exception>
         protected IBinaryTreeNode<TKey, TValue> MoveToIndex(int index)
         {
-            if (this.Root == null) throw new IndexOutOfRangeException();
-            int count = this.Root.Size;
+            if (Root == null) throw new IndexOutOfRangeException();
+            var count = Root.Size;
             if (index < 0 || index >= count) throw new IndexOutOfRangeException();
 
             // Special cases
             // Index 0 and only one node, return the root
-            if (index == 0 && count == 1) return this.Root;
+            if (index == 0 && count == 1) return Root;
             // Index 0, return the left most child
-            if (index == 0) return this.Root.FindLeftmostChild();
+            if (index == 0) return Root.FindLeftmostChild();
             // Index == count - 1, return the right most child
-            if (index == count - 1) return this.Root.FindRightmostChild();
+            if (index == count - 1) return Root.FindRightmostChild();
 
             long baseIndex = 0;
-            IBinaryTreeNode<TKey, TValue> currentNode = this.Root;
+            var currentNode = Root;
             while (true)
             {
-                long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size : baseIndex;
+                var currentIndex = baseIndex + currentNode.LeftChild?.Size ?? baseIndex;
                 if (currentIndex == index) return currentNode;
 
                 if (currentIndex > index)
@@ -491,7 +490,7 @@ namespace VDS.Common.Trees
         /// <returns>Value</returns>
         public TValue GetValueAt(int index)
         {
-            IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
+            var node = MoveToIndex(index);
             return node.Value;
         }
 
@@ -502,7 +501,7 @@ namespace VDS.Common.Trees
         /// <param name="value">Value</param>
         public void SetValueAt(int index, TValue value)
         {
-            IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
+            var node = MoveToIndex(index);
             node.Value = value;
         }
 
@@ -512,50 +511,37 @@ namespace VDS.Common.Trees
         /// <param name="index">Index</param>
         public void RemoveAt(int index)
         {
-            IBinaryTreeNode<TKey, TValue> node = this.MoveToIndex(index);
-            int c = node.Parent != null ? this._comparer.Compare(node.Key, node.Parent.Key) : 0;
-            this.RemoveNode(node, c);
+            var node = MoveToIndex(index);
+            var c = node.Parent != null ? _comparer.Compare(node.Key, node.Parent.Key) : 0;
+            RemoveNode(node, c);
         }
 
         /// <summary>
         /// Gets the Nodes of the Tree
         /// </summary>
-        public IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
-        {
-            get { return new NodesEnumerable<IBinaryTreeNode<TKey, TValue>, TKey, TValue>(this); }
-        }
+        public IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes => new NodesEnumerable<IBinaryTreeNode<TKey, TValue>, TKey, TValue>(this);
 
         /// <summary>
         /// Gets the Keys of the Tree
         /// </summary>
-        public IEnumerable<TKey> Keys
-        {
-            get
-            {
-                return (from n in this.Nodes
-                    select n.Key);
-            }
-        }
+        public IEnumerable<TKey> Keys =>
+            (from n in Nodes
+                select n.Key);
 
         /// <summary>
         /// Gets the Values of the Tree
         /// </summary>
-        public IEnumerable<TValue> Values
-        {
-            get
-            {
-                return (from n in this.Nodes
-                    select n.Value);
-            }
-        }
+        public IEnumerable<TValue> Values =>
+            (from n in Nodes
+                select n.Value);
 
         /// <summary>
         /// Clears the tree
         /// </summary>
         public void Clear()
         {
-            this.Root = null;
-            this.AfterClear();
+            Root = null;
+            AfterClear();
         }
 
         /// <summary>

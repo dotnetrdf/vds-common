@@ -41,8 +41,8 @@ namespace VDS.Common.Collections.Enumerations
         protected AbstractTopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator, comparer)
         {
-            if (n < 1) throw new ArgumentException("N must be >= 1", "n");
-            this.N = n;
+            if (n < 1) throw new ArgumentException("N must be >= 1", nameof(n));
+            N = n;
         }
 
         /// <summary>
@@ -66,15 +66,15 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             // First time this is accessed need to populate the Top N items list
-            if (this.TopItemsEnumerator == null)
+            if (TopItemsEnumerator == null)
             {
-                this.TopItemsEnumerator = this.BuildTopItems();
+                TopItemsEnumerator = BuildTopItems();
             }
 
             // Afterwards we just pull items from that list
             item = default(T);
-            if (!this.TopItemsEnumerator.MoveNext()) return false;
-            item = this.TopItemsEnumerator.Current;
+            if (!TopItemsEnumerator.MoveNext()) return false;
+            item = TopItemsEnumerator.Current;
             return true;
         }
 
@@ -83,9 +83,9 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            if (this.TopItemsEnumerator == null) return;
-            this.TopItemsEnumerator.Dispose();
-            this.TopItemsEnumerator = null;
+            if (TopItemsEnumerator == null) return;
+            TopItemsEnumerator.Dispose();
+            TopItemsEnumerator = null;
         }
 
         /// <summary>

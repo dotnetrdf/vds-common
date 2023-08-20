@@ -40,7 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator, comparer, n)
         {
-            this.TopItems = new DuplicateSortedList<T>(comparer);
+            TopItems = new DuplicateSortedList<T>(comparer);
         }
 
         /// <summary>
@@ -54,13 +54,13 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         protected override IEnumerator<T> BuildTopItems()
         {
-            this.TopItems.Clear();
-            while (this.InnerEnumerator.MoveNext())
+            TopItems.Clear();
+            while (InnerEnumerator.MoveNext())
             {
-                this.TopItems.Add(this.InnerEnumerator.Current);
-                if (this.TopItems.Count > this.N) this.TopItems.RemoveAt(this.TopItems.Count - 1);
+                TopItems.Add(InnerEnumerator.Current);
+                if (TopItems.Count > N) TopItems.RemoveAt(TopItems.Count - 1);
             }
-            return this.TopItems.GetEnumerator();
+            return TopItems.GetEnumerator();
         }
     }
 }

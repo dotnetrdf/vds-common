@@ -129,7 +129,7 @@ namespace VDS.Common.Collections.Enumerations
         [Test]
         public void EnumeratorBeforeFirstElement2()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongTakeEnumerator<string>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
@@ -151,7 +151,7 @@ namespace VDS.Common.Collections.Enumerations
         [Test]
         public void EnumeratorBeforeFirstElement4()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongSkipEnumerator<string>(data.GetEnumerator(), 1);
             string i = null;
             Assert.Throws<InvalidOperationException>(() => { i = enumerator.Current; });
@@ -173,7 +173,7 @@ namespace VDS.Common.Collections.Enumerations
         [Test]
         public void EnumeratorAfterLastElement2()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongTakeEnumerator<string>(data.GetEnumerator(), 1);
             Exhaust(enumerator);
             string i = null;
@@ -196,7 +196,7 @@ namespace VDS.Common.Collections.Enumerations
         [Test]
         public void EnumeratorAfterLastElement4()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongSkipEnumerator<string>(data.GetEnumerator(), 1);
             Exhaust(enumerator);
             string i = null;
@@ -277,15 +277,15 @@ namespace VDS.Common.Collections.Enumerations
 
         public static readonly object[] TopNData =
         {
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 1 },
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 3 },
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 5 },
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 100 }
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 1 },
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 3 },
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 5 },
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 100 }
         };
 
         public static readonly object[] TopNStringData =
         {
-            new object[] { new string[] { "a", "b", "b", "a", "z", "m", "q", "m", "b", "c", "f" }, 1 }
+            new object[] { new[] { "a", "b", "b", "a", "z", "m", "q", "m", "b", "c", "f" }, 1 }
         };
 
         [TestCaseSource("TopNData")]

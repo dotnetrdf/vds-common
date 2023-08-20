@@ -32,86 +32,82 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryInstantiation1()
         {
-            MultiDictionary<string, int> dict = new MultiDictionary<string, int>();
+            _ = new MultiDictionary<string, int>();
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling1()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => dict.Add(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling2()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var _ = dict[null];
-            });
+            var dict = new MultiDictionary<object, int>();
+            Assert.Throws<ArgumentNullException>(() => { _ = dict[null]; });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling3()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out var i));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling4()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => { dict[null] = 1; });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling5()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => { dict.Add(new KeyValuePair<object, int>(null, 1)); });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling6()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => dict.Remove(null));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling7()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => dict.Remove(new KeyValuePair<object, int>(null, 1)));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling8()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>();
+            var dict = new MultiDictionary<object, int>();
             Assert.Throws<ArgumentNullException>(() => { dict.ContainsKey(null); });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling10()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             dict.Contains(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling11()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Add(null, 1);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true) { { null, 1 } };
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling12()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             Assert.Throws<KeyNotFoundException>(() =>
             {
                 var _ = dict[null];
@@ -121,49 +117,50 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryNullKeyHandling13()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             dict.TryGetValue(null, out var i);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling14()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict[null] = 1;
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true)
+            {
+                [null] = 1
+            };
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling15()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
-            dict.Add(new KeyValuePair<object, int>(null, 1));
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true) { new KeyValuePair<object, int>(null, 1) };
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling16()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             dict.Remove(null);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling17()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             dict.Remove(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling18()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             dict.ContainsKey(null);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling19()
         {
-            MultiDictionary<object, int> dict = new MultiDictionary<object, int>(x => (x == null ? 0 : x.GetHashCode()), true);
+            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             dict.Contains(new KeyValuePair<object, int>(null, 1));
         }
 
@@ -204,11 +201,11 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryVsDictionaryInsertBasic2()
         {
-            Dictionary<TestKey<string>, int> dict = new Dictionary<TestKey<string>, int>(new TestKeyComparer<string>());
-            MultiDictionary<TestKey<string>, int> mDict = new MultiDictionary<TestKey<string>, int>(new TestKeyComparer<string>());
+            var dict = new Dictionary<TestKey<string>, int>(new TestKeyComparer<string>());
+            var mDict = new MultiDictionary<TestKey<string>, int>(new TestKeyComparer<string>());
 
-            TestKey<string> a = new TestKey<string>(1, "a");
-            TestKey<string> b = new TestKey<string>(1, "b");
+            var a = new TestKey<string>(1, "a");
+            var b = new TestKey<string>(1, "b");
 
             dict.Add(a, 1);
             dict.Add(b, 2);
@@ -227,42 +224,42 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPathological1()
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Build dictionaries with 10000 keys in them
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(0, i);
+                var key = new TestKey<int>(0, i);
                 keys.Add(key);
                 dict.Add(key, i);
                 mDict.Add(key, i);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Lookup all keys in dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
             timer.Reset();
 
             //Lookup all keys in multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
+            var mDictTime = timer.Elapsed;
             Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime < dictTime);
@@ -272,43 +269,43 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPathological2()
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Build dictionaries with 10000 keys in them
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(0, i);
+                var key = new TestKey<int>(0, i);
                 keys.Add(key);
                 dict.Add(key, i);
                 mDict.Add(key, i);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Lookup all keys in multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
+            var mDictTime = timer.Elapsed;
             Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             timer.Reset();
 
             //Lookup all keys in dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime < dictTime);
@@ -318,42 +315,42 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryInsertPathological1()
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Generate 10000 keys
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(0, i);
+                var key = new TestKey<int>(0, i);
                 keys.Add(key);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Add to dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.Add(key, key.Value);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
 
             timer.Reset();
 
             //Add to multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.Add(key, key.Value);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
-            Console.WriteLine("MutliDictionary took " + timer.Elapsed);
+            var mDictTime = timer.Elapsed;
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime < dictTime);
         }
@@ -362,41 +359,41 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryInsertNormal1(int numKeys)
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Generate some number of keys
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < numKeys; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < numKeys; i++)
             {
-                TestKey<int> key = new TestKey<int>(i, i);
+                var key = new TestKey<int>(i, i);
                 keys.Add(key);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Add to dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.Add(key, key.Value);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
 
             timer.Reset();
 
             //Add to multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.Add(key, key.Value);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
+            var mDictTime = timer.Elapsed;
             Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime > dictTime);
@@ -406,42 +403,42 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPool1()
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Build dictionaries with 10000 keys in them
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(i%100, i);
+                var key = new TestKey<int>(i%100, i);
                 keys.Add(key);
                 dict.Add(key, i);
                 mDict.Add(key, i);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Lookup all keys in dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
             timer.Reset();
 
             //Lookup all keys in multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
+            var mDictTime = timer.Elapsed;
             Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime < dictTime);
@@ -451,43 +448,43 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryLookupPool2()
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Build dictionaries with 10000 keys in them
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < 10000; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < 10000; i++)
             {
-                TestKey<int> key = new TestKey<int>(i%100, i);
+                var key = new TestKey<int>(i%100, i);
                 keys.Add(key);
                 dict.Add(key, i);
                 mDict.Add(key, i);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Lookup all keys in multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
+            var mDictTime = timer.Elapsed;
             Console.WriteLine("MultiDictionary took " + timer.Elapsed);
 
             timer.Reset();
 
             //Lookup all keys in dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.ContainsKey(key);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
 
             Assert.IsTrue(mDictTime < dictTime);
@@ -497,41 +494,41 @@ namespace VDS.Common.Collections
         [Category("Timing")]
         public void MultiDictionaryVsDictionaryInsertPool1(int numKeys)
         {
-            Dictionary<TestKey<int>, int> dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
-            MultiDictionary<TestKey<int>, int> mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var dict = new Dictionary<TestKey<int>, int>(new TestKeyComparer<int>());
+            var mDict = new MultiDictionary<TestKey<int>, int>(new TestKeyComparer<int>());
 
             //Generate 10000 keys
-            List<TestKey<int>> keys = new List<TestKey<int>>();
-            for (int i = 0; i < numKeys; i++)
+            var keys = new List<TestKey<int>>();
+            for (var i = 0; i < numKeys; i++)
             {
-                TestKey<int> key = new TestKey<int>(i%100, i);
+                var key = new TestKey<int>(i%100, i);
                 keys.Add(key);
             }
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             //Add to dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 dict.Add(key, key.Value);
             }
             timer.Stop();
 
-            TimeSpan dictTime = timer.Elapsed;
+            var dictTime = timer.Elapsed;
             Console.WriteLine("Dictionary took " + timer.Elapsed);
 
             timer.Reset();
 
             //Add to multi-dictionary
             timer.Start();
-            foreach (TestKey<int> key in keys)
+            foreach (var key in keys)
             {
                 mDict.Add(key, key.Value);
             }
             timer.Stop();
 
-            TimeSpan mDictTime = timer.Elapsed;
+            var mDictTime = timer.Elapsed;
             Console.WriteLine("MutliDictionary took " + timer.Elapsed);
             Assert.IsTrue(mDictTime - dictTime < new TimeSpan(0, 0, 0, 0, 100));
         }

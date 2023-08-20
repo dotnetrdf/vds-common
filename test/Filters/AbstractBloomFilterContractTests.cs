@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -81,7 +80,7 @@ namespace VDS.Common.Filters
         {
             const string item1 = "test";
 
-            IBloomFilter<string> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<string, int>) (x => x.GetHashCode())), 2));
+            var filter = CreateInstance(100, Enumerable.Repeat(((Func<string, int>) (x => x.GetHashCode())), 2));
             Assert.IsFalse(filter.MayContain(item1));
 
             Assert.IsTrue(filter.Add(item1));
@@ -94,7 +93,7 @@ namespace VDS.Common.Filters
             const string item1 = "test";
             const string item2 = "other";
 
-            IBloomFilter<string> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(x => x.GetHashCode())), 2));
+            var filter = CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(x => x.GetHashCode())), 2));
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -110,7 +109,7 @@ namespace VDS.Common.Filters
             const string item2 = "other";
 
             // In this test use has functions that will map all items to the same hash values
-            IBloomFilter<string> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(_ => 0)), 2));
+            var filter = CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(_ => 0)), 2));
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -127,7 +126,7 @@ namespace VDS.Common.Filters
             const string item2 = "other";
 
             // In this test use hash functions that will map the first and last letters to their character values
-            IBloomFilter<string> filter = this.CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            var filter = CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -143,7 +142,7 @@ namespace VDS.Common.Filters
             const string item2 = "time";
 
             // In this test use hash functions that will map the first and last letters to their character values
-            IBloomFilter<string> filter = this.CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            var filter = CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -160,7 +159,7 @@ namespace VDS.Common.Filters
             const string item2 = "tat";
 
             // In this test use hash functions that will map the first and last letters to their character values
-            IBloomFilter<string> filter = this.CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            var filter = CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -175,7 +174,7 @@ namespace VDS.Common.Filters
         {
             const string item1 = "test";
 
-            IBloomFilter<string> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(x => x.GetHashCode())), 2));
+            var filter = CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(x => x.GetHashCode())), 2));
             Assert.IsFalse(filter.MayContain(item1));
 
             Assert.IsTrue(filter.Add(item1));
@@ -192,7 +191,7 @@ namespace VDS.Common.Filters
             const string item1 = "test";
             const string item2 = "other";
 
-            IBloomFilter<string> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(x => x.GetHashCode())), 2));
+            var filter = CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(x => x.GetHashCode())), 2));
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -211,7 +210,7 @@ namespace VDS.Common.Filters
             const string item2 = "other";
 
             // In this test use has functions that will map all items to the same hash values
-            IBloomFilter<string> filter = this.CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(_ => 0)), 2));
+            var filter = CreateInstance(100, Enumerable.Repeat(((Func<string, int>)(_ => 0)), 2));
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -231,7 +230,7 @@ namespace VDS.Common.Filters
             const string item2 = "other";
 
             // In this test use hash functions that will map the first and last letters to their character values
-            IBloomFilter<string> filter = this.CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            var filter = CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -251,7 +250,7 @@ namespace VDS.Common.Filters
             const string item2 = "time";
 
             // In this test use hash functions that will map the first and last letters to their character values
-            IBloomFilter<string> filter = this.CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            var filter = CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -271,7 +270,7 @@ namespace VDS.Common.Filters
             const string item2 = "tat";
 
             // In this test use hash functions that will map the first and last letters to their character values
-            IBloomFilter<string> filter = this.CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
+            var filter = CreateInstance(100, new Func<string, int>[] { x => x.ToCharArray()[0], x => x.ToCharArray()[x.Length - 1] });
             Assert.IsFalse(filter.MayContain(item1));
             Assert.IsFalse(filter.MayContain(item2));
 
@@ -311,9 +310,9 @@ namespace VDS.Common.Filters
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
-            IList<Func<string, int>> funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
-            Func<string, int> h1 = funcs.FirstOrDefault();
-            Func<string, int> h2 = funcs.Skip(1).FirstOrDefault();
+            var funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            var h1 = funcs.FirstOrDefault();
+            var h2 = funcs.Skip(1).FirstOrDefault();
 
             return new FastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
         }
@@ -325,9 +324,9 @@ namespace VDS.Common.Filters
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
-            IList<Func<string, int>> funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
-            Func<string, int> h1 = funcs.FirstOrDefault();
-            Func<string, int> h2 = funcs.Skip(1).FirstOrDefault();
+            var funcs = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            var h1 = funcs.FirstOrDefault();
+            var h2 = funcs.Skip(1).FirstOrDefault();
 
             return new SparseFastBloomFilter<string>(new BloomFilterParameters(numBits, funcs.Count), h1, h2);
         }
@@ -339,7 +338,7 @@ namespace VDS.Common.Filters
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
-            IList<Func<string,int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            var functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
             return new HybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count()), functions);
         }
     }
@@ -350,7 +349,7 @@ namespace VDS.Common.Filters
     {
         protected override IBloomFilter<string> CreateInstance(int numBits, IEnumerable<Func<string, int>> hashFunctions)
         {
-            IList<Func<string, int>> functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
+            var functions = hashFunctions as IList<Func<string, int>> ?? hashFunctions.ToList();
             return new SparseHybridBloomFilter<string>(new BloomFilterParameters(numBits, functions.Count), functions);
         }
     }

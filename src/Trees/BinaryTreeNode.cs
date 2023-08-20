@@ -45,10 +45,10 @@ namespace VDS.Common.Trees
         /// <param name="value">Value</param>
         public BinaryTreeNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value)
         {
-            this.Parent = parent;
-            this.Key = key;
-            this.Value = value;
-            this.Size = 1;
+            Parent = parent;
+            Key = key;
+            Value = value;
+            Size = 1;
         }
 
         /// <summary>
@@ -65,16 +65,13 @@ namespace VDS.Common.Trees
         /// </summary>
         public IBinaryTreeNode<TKey, TValue> LeftChild
         {
-            get
-            {
-                return this._left;
-            }
+            get => _left;
             set
             {
-                this._left = value;
-                if (this._left != null) this._left.Parent = this;
-                this.RecalculateHeight();
-                this.RecalculateSize();
+                _left = value;
+                if (_left != null) _left.Parent = this;
+                RecalculateHeight();
+                RecalculateSize();
             }
         }
 
@@ -83,16 +80,13 @@ namespace VDS.Common.Trees
         /// </summary>
         public IBinaryTreeNode<TKey, TValue> RightChild
         {
-            get
-            {
-                return this._right;
-            }
+            get => _right;
             set
             {
-                this._right = value;
-                if (this._right != null) this._right.Parent = this;
-                this.RecalculateHeight();
-                this.RecalculateSize();
+                _right = value;
+                if (_right != null) _right.Parent = this;
+                RecalculateHeight();
+                RecalculateSize();
             }
         }
 
@@ -117,38 +111,20 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets whether this Node has children
         /// </summary>
-        public bool HasChildren
-        {
-            get
-            {
-                return this.LeftChild != null || this.RightChild != null;
-            }
-        }
+        public bool HasChildren => LeftChild != null || RightChild != null;
 
         /// <summary>
         /// Gets the number of child nodes present (0, or 1)
         /// </summary>
-        public int ChildCount
-        {
-            get
-            {
-                return (this.LeftChild != null ? 1 : 0) + (this.RightChild != null ? 1 : 0);
-            }
-        }
+        public int ChildCount => (LeftChild != null ? 1 : 0) + (RightChild != null ? 1 : 0);
 
         /// <summary>
         /// Gets the height of the subtree
         /// </summary>
         public long Height
         {
-            get
-            {
-                return this._height;
-            }
-            private set
-            {
-                this._height = value;
-            }
+            get => _height;
+            private set => _height = value;
         }
 
         /// <summary>
@@ -156,10 +132,10 @@ namespace VDS.Common.Trees
         /// </summary>
         public void RecalculateHeight()
         {
-            long newHeight = Math.Max((this._left != null ? this._left.Height : 0), (this._right != null ? this._right.Height : 0)) + 1;
-            if (newHeight == this._height) return;
-            this._height = newHeight;
-            if (this.Parent != null) this.Parent.RecalculateHeight();
+            var newHeight = Math.Max(_left?.Height ?? 0, _right?.Height ?? 0) + 1;
+            if (newHeight == _height) return;
+            _height = newHeight;
+            if (Parent != null) Parent.RecalculateHeight();
         }
 
         /// <summary>
@@ -172,22 +148,16 @@ namespace VDS.Common.Trees
         /// </summary>
         public void RecalculateSize()
         {
-            int leftSize = this._left != null ? this._left.Size : 0;
-            int rightSize = this._right != null ? this._right.Size : 0;
-            this.Size = leftSize + rightSize + 1;
-            if (this.Parent != null) this.Parent.RecalculateSize();
+            var leftSize = _left?.Size ?? 0;
+            var rightSize = _right?.Size ?? 0;
+            Size = leftSize + rightSize + 1;
+            if (Parent != null) Parent.RecalculateSize();
         }
 
         /// <summary>
         /// Gets the nodes of the subtree including this node
         /// </summary>
-        public IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
-        {
-            get
-            {
-                return (this.LeftChild != null ? this.LeftChild.Nodes : Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>()).Concat(((IBinaryTreeNode<TKey, TValue>)this).AsEnumerable()).Concat(this.RightChild != null ? this.RightChild.Nodes : Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>());
-            }
-        }
+        public IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes => (LeftChild != null ? LeftChild.Nodes : Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>()).Concat(((IBinaryTreeNode<TKey, TValue>)this).AsEnumerable()).Concat(RightChild != null ? RightChild.Nodes : Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>());
 
         /// <summary>
         /// Gets a String representation of the node
@@ -195,7 +165,7 @@ namespace VDS.Common.Trees
         /// <returns></returns>
         public override string ToString()
         {
-            return "Key: " + this.Key.ToString() + " Value: " + this.Value.ToSafeString();
+            return "Key: " + Key.ToString() + " Value: " + Value.ToSafeString();
         }
     }
 }

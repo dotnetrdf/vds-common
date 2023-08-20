@@ -36,7 +36,7 @@ namespace VDS.Common.Trees
         /// Creates a new unbalanced tree
         /// </summary>
         public UnbalancedBinaryTree()
-            : base() { }
+        { }
 
         /// <summary>
         /// Creates a new unbalanced tree
@@ -52,7 +52,7 @@ namespace VDS.Common.Trees
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected sealed override IBinaryTreeNode<TKey, TValue> CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value)
+        protected override IBinaryTreeNode<TKey, TValue> CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value)
         {
             return new BinaryTreeNode<TKey, TValue>(parent, key, value);
         }

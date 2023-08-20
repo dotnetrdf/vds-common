@@ -44,11 +44,11 @@ namespace VDS.Common.Trees
             {
                 return " null";
             }
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.AppendLine("{");
             builder.AppendLine("  Key: " + node.Key);
             builder.AppendLine("  Value: " + node.Value);
-            string lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
+            var lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
             if (lhs.Contains('\n'))
             {
                 builder.Append("  Left Child: ");
@@ -58,7 +58,7 @@ namespace VDS.Common.Trees
             {
                 builder.AppendLine("  Left Child: " + lhs);
             }
-            string rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
+            var rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
             if (rhs.Contains('\n'))
             {
                 builder.Append("  Right Child: ");
@@ -74,9 +74,9 @@ namespace VDS.Common.Trees
 
         private static string AddIndent(string input)
         {
-            string[] lines = input.Split('\n');
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < lines.Length; i++)
+            var lines = input.Split('\n');
+            var output = new StringBuilder();
+            for (var i = 0; i < lines.Length; i++)
             {
                 if (i > 0)
                 {

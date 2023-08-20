@@ -39,9 +39,9 @@ namespace VDS.Common.Filters.Storage
         /// <param name="parameters">Parameters</param>
         public SparseArrayStorage(IBloomFilterParameters parameters)
         {
-            if (parameters == null) throw new ArgumentNullException("parameters");
-            if (parameters.NumberOfBits <= 0) throw new ArgumentException("Number of bits must be > 0", "parameters");
-            this._bits = new BlockSparseArray<bool>(parameters.NumberOfBits);
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (parameters.NumberOfBits <= 0) throw new ArgumentException("Number of bits must be > 0", nameof(parameters));
+            _bits = new BlockSparseArray<bool>(parameters.NumberOfBits);
         }
         
         /// <summary>
@@ -50,8 +50,8 @@ namespace VDS.Common.Filters.Storage
         /// <param name="bits">Sparse array to use as storage</param>
         public SparseArrayStorage(ISparseArray<bool> bits)
         {
-            if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", "bits");
-            this._bits = bits;
+            if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", nameof(bits));
+            _bits = bits;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace VDS.Common.Filters.Storage
         /// <returns>True if set, false otherwise</returns>
         public bool IsSet(int index)
         {
-            return this._bits[index];
+            return _bits[index];
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace VDS.Common.Filters.Storage
         /// <param name="index">Index</param>
         public void Set(int index)
         {
-            this._bits[index] = true;
+            _bits[index] = true;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace VDS.Common.Filters.Storage
         /// </summary>
         public void Clear()
         {
-            this._bits.Clear();
+            _bits.Clear();
         }
     }
 }

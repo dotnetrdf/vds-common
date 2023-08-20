@@ -39,9 +39,9 @@ namespace VDS.Common.Collections
         /// <param name="value">Value</param>
         public TestKey(int hashCode, T value)
         {
-            if (value == null) throw new ArgumentNullException("value");
-            this._hashCode = hashCode;
-            this.Value = value;
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            _hashCode = hashCode;
+            Value = value;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace VDS.Common.Collections
         /// <returns>Hash Code</returns>
         public override int GetHashCode()
         {
-            return this._hashCode;
+            return _hashCode;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public override string ToString()
         {
-            return this._hashCode.ToString();
+            return _hashCode.ToString();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace VDS.Common.Collections
         {
             if (obj == null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return this._hashCode.Equals(obj.GetHashCode());
+            return _hashCode.Equals(obj.GetHashCode());
         }
     }
 
@@ -108,7 +108,7 @@ namespace VDS.Common.Collections
 
         public bool Equals(TestKey<T> x, TestKey<T> y)
         {
-            return this.Compare(x, y) == 0;
+            return Compare(x, y) == 0;
         }
 
         public int GetHashCode(TestKey<T> obj)

@@ -20,8 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace VDS.Common.Collections
@@ -39,20 +37,20 @@ namespace VDS.Common.Collections
         [Test]
         public void SparseArrayBadInstantiation()
         {
-            Assert.Throws<ArgumentException>(()=> this.CreateInstance(-1));
+            Assert.Throws<ArgumentException>(()=> CreateInstance(-1));
         }
 
         [Test]
         public void SparseArrayEmpty1()
         {
-            ISparseArray<int> array = this.CreateInstance(0);
+            var array = CreateInstance(0);
             Assert.AreEqual(0, array.Length);
         }
 
         [Test]
         public void SparseArrayEmpty2()
         {
-            ISparseArray<int> array = this.CreateInstance(0);
+            var array = CreateInstance(0);
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
                 var _ = array[0];
@@ -62,7 +60,7 @@ namespace VDS.Common.Collections
         [Test]
         public void SparseArrayEmpty3()
         {
-            ISparseArray<int> array = this.CreateInstance(0);
+            var array = CreateInstance(0);
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
                 var _ = array[-1];
@@ -79,7 +77,7 @@ namespace VDS.Common.Collections
          TestCase(10000)]
         public void SparseArrayGetSet1(int length)
         {
-            ISparseArray<int> array = this.CreateInstance(length);
+            var array = CreateInstance(length);
             Assert.AreEqual(length, array.Length);
             for (int i = 0, j = 1; i < array.Length; i++, j *= 2)
             {
@@ -103,7 +101,7 @@ namespace VDS.Common.Collections
          TestCase(10000)]
         public void SparseArrayGetSet2(int length)
         {
-            ISparseArray<int> array = this.CreateInstance(length);
+            var array = CreateInstance(length);
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
                 var _ = array[-1];
@@ -120,7 +118,7 @@ namespace VDS.Common.Collections
          TestCase(10000)]
         public void SparseArrayGetSet3(int length)
         {
-            ISparseArray<int> array = this.CreateInstance(length);
+            var array = CreateInstance(length);
             Assert.Throws<IndexOutOfRangeException>(() =>
             {
                 var _ = array[length];
@@ -140,9 +138,9 @@ namespace VDS.Common.Collections
             Assert.AreNotEqual(default(int), 1);
 
             // Sparsely filled array
-            ISparseArray<int> array = this.CreateInstance(length);
+            var array = CreateInstance(length);
             Assert.AreEqual(length, array.Length);
-            int[] actualArray = new int[length];
+            var actualArray = new int[length];
             for (int i = 0, j = 1; i < array.Length; i++, j *= 2)
             {
                 // Should have default value
@@ -155,10 +153,10 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(1, array[i]);
             }
 
-            IEnumerator<int> sparsEnumerator = array.GetEnumerator();
-            IEnumerator actualEnumerator = actualArray.GetEnumerator();
+            var sparsEnumerator = array.GetEnumerator();
+            var actualEnumerator = actualArray.GetEnumerator();
 
-            int index = -1;
+            var index = -1;
             while (actualEnumerator.MoveNext())
             {
                 index++;
@@ -181,18 +179,18 @@ namespace VDS.Common.Collections
             Assert.AreNotEqual(default(int), 1);
 
             // Completely sparse array i.e. no actual data
-            ISparseArray<int> array = this.CreateInstance(length);
+            var array = CreateInstance(length);
             Assert.AreEqual(length, array.Length);
 
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 // Should have default value
                 Assert.AreEqual(default(int), array[i]);
             }
 
-            IEnumerator<int> enumerator = array.GetEnumerator();
+            var enumerator = array.GetEnumerator();
 
-            int index = -1;
+            var index = -1;
             while (enumerator.MoveNext())
             {
                 index++;
@@ -214,10 +212,10 @@ namespace VDS.Common.Collections
             Assert.AreNotEqual(default(int), 1);
 
             // Completely filled array
-            ISparseArray<int> array = this.CreateInstance(length);
+            var array = CreateInstance(length);
             Assert.AreEqual(length, array.Length);
-            int[] actualArray = new int[length];
-            for (int i = 0; i < array.Length; i++)
+            var actualArray = new int[length];
+            for (var i = 0; i < array.Length; i++)
             {
                 // Should have default value
                 Assert.AreEqual(default(int), array[i]);
@@ -228,10 +226,10 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(1, array[i]);
             }
 
-            IEnumerator<int> sparsEnumerator = array.GetEnumerator();
-            IEnumerator actualEnumerator = actualArray.GetEnumerator();
+            var sparsEnumerator = array.GetEnumerator();
+            var actualEnumerator = actualArray.GetEnumerator();
 
-            int index = -1;
+            var index = -1;
             while (actualEnumerator.MoveNext())
             {
                 index++;
@@ -262,14 +260,14 @@ namespace VDS.Common.Collections
     {
         public BlockSparseArrayTests(int blockSize)
         {
-            this.BlockSize = blockSize;
+            BlockSize = blockSize;
         }
 
         private int BlockSize { get; set; }
 
         public override ISparseArray<int> CreateInstance(int length)
         {
-            return new BlockSparseArray<int>(length, this.BlockSize);
+            return new BlockSparseArray<int>(length, BlockSize);
         }
     }
 

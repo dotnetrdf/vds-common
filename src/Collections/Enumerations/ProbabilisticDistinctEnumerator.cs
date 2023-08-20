@@ -44,8 +44,7 @@ namespace VDS.Common.Collections.Enumerations
         public ProbabilisticDistinctEnumerator(IEnumerator<T> enumerator, IBloomFilter<T> filter)
             : base(enumerator)
         {
-            if (filter == null) throw new ArgumentNullException("filter");
-            this.Filter = filter;
+            Filter = filter ?? throw new ArgumentNullException(nameof(filter));
         }
 
         /// <summary>
@@ -61,10 +60,10 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             item = default(T);
-            while (this.InnerEnumerator.MoveNext())
+            while (InnerEnumerator.MoveNext())
             {
-                item = this.InnerEnumerator.Current;
-                if (this.Filter.Add(item)) return true;
+                item = InnerEnumerator.Current;
+                if (Filter.Add(item)) return true;
             }
             return false;
         }
@@ -74,7 +73,7 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            this.Filter.Clear();
+            Filter.Clear();
         }
     }
 }

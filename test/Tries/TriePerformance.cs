@@ -34,21 +34,21 @@ namespace VDS.Common.Tries
     {
         private static List<string> GenerateWords(int numWords, int minLength, int maxLength)
         {
-            char[] pool = Enumerable.Range('a', 26).Select(c => (char)c).ToArray();
+            var pool = Enumerable.Range('a', 26).Select(c => (char)c).ToArray();
             return GenerateWords(numWords, pool, minLength, maxLength);
         }
 
         private static List<string> GenerateWords(int numWords, char[] pool, int minLength, int maxLength)
         {
-            List<string> words = new List<string>();
+            var words = new List<string>();
 
-            Random random = new Random();
+            var random = new Random();
             while (words.Count < numWords)
             {
-                StringBuilder builder = new StringBuilder();
+                var builder = new StringBuilder();
 
                 // Select word length
-                int wordLength = random.Next(minLength, maxLength + 1);
+                var wordLength = random.Next(minLength, maxLength + 1);
 
                 // Fill word with random characters from the pool
                 while (builder.Length < wordLength)
@@ -63,8 +63,8 @@ namespace VDS.Common.Tries
 
         private static List<TrieFiller<string, char>> CreateFillers(List<List<string>> threadWords, ITrie<string, char, string> trie)
         {
-            List<TrieFiller<string, char>> fillers = new List<TrieFiller<string, char>>();
-            foreach (List<string> threadWordList in threadWords)
+            var fillers = new List<TrieFiller<string, char>>();
+            foreach (var threadWordList in threadWords)
             {
                 fillers.Add(new TrieFiller<string, char>(trie, threadWordList));
             }
@@ -73,23 +73,23 @@ namespace VDS.Common.Tries
 
         private static List<List<string>> CreateThreadWordLists(List<string> words, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinctThreads)
         {
-            if (threadsPerWord > numThreads) throw new ArgumentException("threadsPerWord must be <= numThreads", "threadsPerWord");
+            if (threadsPerWord > numThreads) throw new ArgumentException("threadsPerWord must be <= numThreads", nameof(threadsPerWord));
 
-            List<List<string>> threadWords = new List<List<string>>();
-            for (int i = 0; i < numThreads; i++)
+            var threadWords = new List<List<string>>();
+            for (var i = 0; i < numThreads; i++)
             {
                 threadWords.Add(new List<string>());
             }
 
-            Random random = new Random();
-            foreach (string word in words)
+            var random = new Random();
+            foreach (var word in words)
             {
-                for (int i = 0; i < repeatsPerWord; i++)
+                for (var i = 0; i < repeatsPerWord; i++)
                 {
                     if (threadsPerWord == numThreads && requireDistinctThreads)
                     {
                         // Add to all threads
-                        foreach (List<string> threadWordList in threadWords)
+                        foreach (var threadWordList in threadWords)
                         {
                             threadWordList.Add(word);
                         }
@@ -97,7 +97,7 @@ namespace VDS.Common.Tries
                     }
 
                     // Add to one thread at random
-                    int thread = random.Next(threadWords.Count);
+                    var thread = random.Next(threadWords.Count);
                     threadWords[thread].Add(word);
 
                     if (threadsPerWord == 1) continue;
@@ -106,7 +106,7 @@ namespace VDS.Common.Tries
                     if (!requireDistinctThreads)
                     {
                         // Threads are not required to be distinct so add to any threads at random
-                        int added = 1;
+                        var added = 1;
                         while (added < threadsPerWord)
                         {
                             thread = random.Next(threadWords.Count);
@@ -117,7 +117,7 @@ namespace VDS.Common.Tries
                     else
                     {
                         // Threads are required to be distinct so track which threads we have added to
-                        HashSet<int> selectedThreads = new HashSet<int>();
+                        var selectedThreads = new HashSet<int>();
                         selectedThreads.Add(thread);
                         while (selectedThreads.Count < threadsPerWord)
                         {
@@ -134,11 +134,11 @@ namespace VDS.Common.Tries
         private static void RunFillers(List<TrieFiller<string, char>> fillers)
         {
             // Launch threads
-            List<Thread> threads = new List<Thread>();
-            foreach (TrieFiller<string, char> filler in fillers)
+            var threads = new List<Thread>();
+            foreach (var filler in fillers)
             {
-                ThreadStart start = new ThreadStart(filler.Run);
-                Thread t = new Thread(start);
+                var start = new ThreadStart(filler.Run);
+                var t = new Thread(start);
                 t.Start();
                 threads.Add(t);
             }
@@ -146,9 +146,9 @@ namespace VDS.Common.Tries
             // Wait for threads to finish
             while (threads.Count > 0)
             {
-                for (int i = 0; i < threads.Count; i++)
+                for (var i = 0; i < threads.Count; i++)
                 {
-                    TrieFiller<string, char> filler = fillers[i];
+                    var filler = fillers[i];
                     if (filler.IsFinished) threads.RemoveAt(i);
                     i--;
                 }
@@ -156,7 +156,7 @@ namespace VDS.Common.Tries
             }
 
             // Report Performance
-            foreach (TrieFiller<string, char> filler in fillers)
+            foreach (var filler in fillers)
             {
                 Console.Write(filler.HasError ? "[Error]" : "[Success]");
                 Console.WriteLine(" Added {0} objects and Read {1} in {2}", filler.Added, filler.Read, filler.Elapsed);
@@ -185,11 +185,11 @@ namespace VDS.Common.Tries
          TestCase(1000, 15, 100, 4, 8, 4, false)]
         public void TrieMultiThreadedPerformance(int numWords, int minLength, int maxLength, int numThreads, int repeatsPerWord, int threadsPerWord, bool requireDistinct)
         {
-            List<string> words = GenerateWords(numWords, minLength, maxLength);
-            List<List<string>> threadWords = CreateThreadWordLists(words, numThreads, repeatsPerWord, threadsPerWord, requireDistinct);
+            var words = GenerateWords(numWords, minLength, maxLength);
+            var threadWords = CreateThreadWordLists(words, numThreads, repeatsPerWord, threadsPerWord, requireDistinct);
 
             Console.WriteLine("StringTrie:");
-            List<TrieFiller<string, char>> fillers = CreateFillers(threadWords, new StringTrie<string>());
+            var fillers = CreateFillers(threadWords, new StringTrie<string>());
             RunFillers(fillers);
             Console.WriteLine();
             Console.WriteLine("SparseStringTrie:");
@@ -208,51 +208,51 @@ namespace VDS.Common.Tries
 
         public TrieFiller(ITrie<TKey, TKeyBit, TKey> trie, IEnumerable<TKey> keysToInsert)
         {
-            this._trie = trie;
-            foreach (TKey key in keysToInsert)
+            _trie = trie;
+            foreach (var key in keysToInsert)
             {
-                this._keysToInsert.Enqueue(key);
+                _keysToInsert.Enqueue(key);
             }
         }
 
         public void Run()
         {
-            this.Error = null;
-            this.IsFinished = false;
-            this.Added = 0;
-            this.Read = 0;
-            this._timer.Stop();
-            this._timer.Reset();
-            this._timer.Start();
+            Error = null;
+            IsFinished = false;
+            Added = 0;
+            Read = 0;
+            _timer.Stop();
+            _timer.Reset();
+            _timer.Start();
 
             try
             {
-                while (this._keysToInsert.Count > 0)
+                while (_keysToInsert.Count > 0)
                 {
-                    TKey key = this._keysToInsert.Dequeue();
-                    this._trie.Add(key, key);
-                    this.Added++;
-                    this._keysToRead.Enqueue(key);
+                    var key = _keysToInsert.Dequeue();
+                    _trie.Add(key, key);
+                    Added++;
+                    _keysToRead.Enqueue(key);
                 }
-                while (this._keysToRead.Count > 0)
+                while (_keysToRead.Count > 0)
                 {
-                    TKey key = this._keysToRead.Dequeue();
-                    TKey value = this._trie[key];
-                    this.Read++;
+                    var key = _keysToRead.Dequeue();
+                    var value = _trie[key];
+                    Read++;
                 }
             }
             catch (Exception ex)
             {
-                this.Error = ex;
+                Error = ex;
             }
             finally
             {
-                this._timer.Stop();
-                this.IsFinished = true;
+                _timer.Stop();
+                IsFinished = true;
             }
         }
 
-        public bool HasError { get { return this.Error != null; } }
+        public bool HasError { get { return Error != null; } }
 
         public Exception Error { get; private set; }
 
@@ -260,7 +260,7 @@ namespace VDS.Common.Tries
 
         public int Read { get; private set; }
 
-        public TimeSpan Elapsed { get { return this._timer.Elapsed; } }
+        public TimeSpan Elapsed { get { return _timer.Elapsed; } }
 
         public bool IsFinished { get; private set; }
     }
