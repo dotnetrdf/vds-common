@@ -38,14 +38,14 @@ namespace VDS.Common.Tries
         where TKeyBit : IEquatable<TKeyBit>
         where TValue : class
     {
-        internal Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
+        private Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> _children;
 
         /// <summary>
         /// Create an empty node with no children and null value
         /// </summary>
         /// <param name="parent">Parent node of this node</param>
         /// <param name="key">Key Bit</param>
-        public AbstractSparseTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
+        protected AbstractSparseTrieNode(ITrieNode<TKeyBit, TValue> parent, TKeyBit key)
         {
             KeyBit = key;
             Value = null;
@@ -69,10 +69,10 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child node
         /// </summary>
-        protected internal abstract ITrieNode<TKeyBit, TValue> SingletonChild
+        protected abstract ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get;
-            protected set;
+            set;
         }
 
         /// <summary>
@@ -88,12 +88,12 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the key bit that is associated with this node
         /// </summary>
-        public TKeyBit KeyBit { get; private set; }
+        public TKeyBit KeyBit { get; }
 
         /// <summary>
         /// Get the parent of this node
         /// </summary>
-        public ITrieNode<TKeyBit, TValue> Parent { get; private set; }
+        public ITrieNode<TKeyBit, TValue> Parent { get; }
 
         /// <summary>
         /// Tries to get a child of this node which is associated with a key bit
@@ -304,7 +304,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the immediate children of this Node
         /// </summary>
-        public IEnumerable<ITrieNode<TKeyBit, TValue>> Children => new AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>(this);
+        public IEnumerable<ITrieNode<TKeyBit, TValue>> Children => new AbstractSparseTrieNodeChildrenEnumerable(this);
 
         /// <summary>
         /// Gets all descended children of this Node
@@ -315,41 +315,41 @@ namespace VDS.Common.Tries
         /// Get an enumerable of values contained in this node and all its descendants
         /// </summary>
         public IEnumerable<TValue> Values => new TrieValuesEnumerable<TKeyBit, TValue>(this);
-    }
 
-    class AbstractSparseTrieNodeChildrenEnumerable<TKeyBit, TValue>
-        : IEnumerable<ITrieNode<TKeyBit, TValue>>
-        where TKeyBit : IEquatable<TKeyBit>
-        where TValue : class
-    {
-        private readonly AbstractSparseTrieNode<TKeyBit, TValue> _node;
-
-        public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
+        private class AbstractSparseTrieNodeChildrenEnumerable
+            : IEnumerable<ITrieNode<TKeyBit, TValue>>
         {
-            _node = node ?? throw new ArgumentNullException(nameof(node));
-        }
+            private readonly AbstractSparseTrieNode<TKeyBit, TValue> _node;
 
-        public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
-        {
-            if (_node.IsLeaf)
+            public AbstractSparseTrieNodeChildrenEnumerable(AbstractSparseTrieNode<TKeyBit, TValue> node)
             {
-                return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
+                _node = node ?? throw new ArgumentNullException(nameof(node));
             }
-            else if (_node._children != null)
-            {
-                //May be multiple children present
-                return _node._children.Values.GetEnumerator();
-            }
-            else 
-            {
-                //Must be singleton child
-                return _node.SingletonChild.AsEnumerable().GetEnumerator();
-            }
-        }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
+            {
+                if (_node.IsLeaf)
+                {
+                    return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
+                }
+                else if (_node._children != null)
+                {
+                    //May be multiple children present
+                    return _node._children.Values.GetEnumerator();
+                }
+                else
+                {
+                    //Must be singleton child
+                    return _node.SingletonChild.AsEnumerable().GetEnumerator();
+                }
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
     }
+
+    
 }

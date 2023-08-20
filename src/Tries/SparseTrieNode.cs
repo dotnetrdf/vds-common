@@ -77,10 +77,10 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child node
         /// </summary>
-        protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
+        protected override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get => _singletonNode;
-            protected set
+            set
             {
                 _singleton = value.KeyBit;
                 _singletonNode = value;
@@ -142,10 +142,10 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child
         /// </summary>
-        protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
+        protected override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get => _singletonNode;
-            protected set
+            set
             {
                 _singleton = value.KeyBit;
                 _singletonNode = value;
@@ -205,10 +205,10 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child
         /// </summary>
-        protected internal override ITrieNode<char, TValue> SingletonChild
+        protected override ITrieNode<char, TValue> SingletonChild
         {
             get => _singletonNode;
-            protected set
+            set
             {
                 _singleton = value.KeyBit;
                 _singletonNode = value;
