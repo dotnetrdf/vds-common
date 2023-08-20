@@ -295,7 +295,6 @@ namespace VDS.Common.Collections
         /// <param name="key">Key</param>
         /// <param name="actualKey">Actual Key</param>
         /// <returns>True if the key exists in the dictionary and the instance was returned, false otherwise</returns>
-        [Obsolete("TryGetKey() is included for historical reasons and will be removed in future versions")]
         public bool TryGetKey(TKey key, out TKey actualKey)
         {
             ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> tree;

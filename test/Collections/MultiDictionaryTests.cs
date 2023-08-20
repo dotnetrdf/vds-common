@@ -170,11 +170,12 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryVsDictionaryInsertBasic1()
         {
-            Dictionary<TestKey<string>, int> dict = new Dictionary<TestKey<string>, int>();
-            MultiDictionary<TestKey<string>, int> mDict = new MultiDictionary<TestKey<string>, int>(new TestKeyComparer<string>());
+            var dict = new Dictionary<TestKey<string>, int>();
+            var mDict = new MultiDictionary<TestKey<string>, int>(new TestKeyComparer<string>());
 
-            TestKey<string> a = new TestKey<string>(1, "a");
-            TestKey<string> b = new TestKey<string>(1, "b");
+            var a = new TestKey<string>(1, "a");
+            var b = new TestKey<string>(1, "b");
+            var c = new TestKey<string>(1, "a");
 
             dict.Add(a, 1);
             try
@@ -195,6 +196,9 @@ namespace VDS.Common.Collections
             Assert.AreEqual(2, mDict.Count);
             Assert.AreEqual(1, mDict[a]);
             Assert.AreEqual(2, mDict[b]);
+            Assert.IsFalse(ReferenceEquals(c, a));
+            Assert.IsTrue(mDict.TryGetKey(c, out var d));
+            Assert.IsTrue(ReferenceEquals(a, d));
         }
 
         [Test]
