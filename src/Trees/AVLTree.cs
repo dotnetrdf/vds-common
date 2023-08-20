@@ -35,21 +35,21 @@ namespace VDS.Common.Trees
     /// Code based in part on various examples from around the web including (but not limited to) <a href="http://www.vcskicks.com/AVL-tree.php">VCSKicks</a> and <a href="http://en.wikipedia.org/wiki/AVL_tree">Wikipedia</a>
     /// </para>
     /// </remarks>
-    public sealed class AVLTree<TKey, TValue>
+    public sealed class AvlTree<TKey, TValue>
         : BinaryTree<TKey, TValue>
     {
 
         /// <summary>
         /// Creates a new AVL Tree
         /// </summary>
-        public AVLTree()
+        public AvlTree()
         { }
 
         /// <summary>
         /// Creates a new AVL Tree using the given key comparer
         /// </summary>
         /// <param name="comparer">Key Comparer</param>
-        public AVLTree(IComparer<TKey> comparer)
+        public AvlTree(IComparer<TKey> comparer)
             : base(comparer) { }
 
         /// <summary>

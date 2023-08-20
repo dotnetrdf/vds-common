@@ -80,7 +80,7 @@ namespace VDS.Common.Tries
         protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get => _singletonNode;
-            set
+            protected set
             {
                 _singleton = value.KeyBit;
                 _singletonNode = value;
@@ -145,7 +145,7 @@ namespace VDS.Common.Tries
         protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get => _singletonNode;
-            set
+            protected set
             {
                 _singleton = value.KeyBit;
                 _singletonNode = value;
@@ -208,7 +208,7 @@ namespace VDS.Common.Tries
         protected internal override ITrieNode<char, TValue> SingletonChild
         {
             get => _singletonNode;
-            set
+            protected set
             {
                 _singleton = value.KeyBit;
                 _singletonNode = value;

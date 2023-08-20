@@ -121,11 +121,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Gets the height of the subtree
         /// </summary>
-        public long Height
-        {
-            get => _height;
-            private set => _height = value;
-        }
+        public long Height => _height;
 
         /// <summary>
         /// Recalculates the height of the subtree
@@ -135,7 +131,7 @@ namespace VDS.Common.Trees
             var newHeight = Math.Max(_left?.Height ?? 0, _right?.Height ?? 0) + 1;
             if (newHeight == _height) return;
             _height = newHeight;
-            if (Parent != null) Parent.RecalculateHeight();
+            Parent?.RecalculateHeight();
         }
 
         /// <summary>
@@ -151,7 +147,7 @@ namespace VDS.Common.Trees
             var leftSize = _left?.Size ?? 0;
             var rightSize = _right?.Size ?? 0;
             Size = leftSize + rightSize + 1;
-            if (Parent != null) Parent.RecalculateSize();
+            Parent?.RecalculateSize();
         }
 
         /// <summary>

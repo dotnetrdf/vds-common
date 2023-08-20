@@ -67,11 +67,11 @@ namespace VDS.Common.Collections
         /// <param name="item">Item</param>
         public override void Insert(int index, T item)
         {
-            if (_list.Count == MaxCapacity && index == _list.Count) return;
-            _list.Insert(index, item);
-            while (_list.Count > MaxCapacity)
+            if (List.Count == MaxCapacity && index == List.Count) return;
+            List.Insert(index, item);
+            while (List.Count > MaxCapacity)
             {
-                _list.RemoveAt(MaxCapacity);
+                List.RemoveAt(MaxCapacity);
             }
         }
 
@@ -81,8 +81,8 @@ namespace VDS.Common.Collections
         /// <param name="item">Item</param>
         public override sealed void Add(T item)
         {
-            if (_list.Count == MaxCapacity) return;
-            _list.Add(item);
+            if (List.Count == MaxCapacity) return;
+            List.Add(item);
         }
 
         /// <summary>

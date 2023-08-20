@@ -32,7 +32,7 @@ namespace VDS.Common.References
     public class NestedReference<T> 
         where T : class
     {
-        private readonly Dictionary<int, T> _values = new Dictionary<int, T>();
+        private readonly Dictionary<int, T> _values = new();
         private int _currLevel;
         private T _currRef;
 
@@ -63,14 +63,7 @@ namespace VDS.Common.References
             get => _currRef;
             set
             {
-                if (_values.ContainsKey(_currLevel))
-                {
-                    _values[_currLevel] = value;
-                }
-                else
-                {
-                    _values.Add(_currLevel, value);
-                }
+                _values[_currLevel] = value;
                 _currRef = value;
             }
         }
@@ -98,9 +91,9 @@ namespace VDS.Common.References
                 while (i > 1)
                 {
                     i--;
-                    if (_values.ContainsKey(i))
+                    if (_values.TryGetValue(i, out var value))
                     {
-                        _currRef = _values[i];
+                        _currRef = value;
                         break;
                     }
                     else

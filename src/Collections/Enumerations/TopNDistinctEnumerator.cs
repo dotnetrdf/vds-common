@@ -41,7 +41,7 @@ namespace VDS.Common.Collections.Enumerations
         public TopNDistinctEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator, comparer, n)
         {
-            TopItems = new AVLTree<T, bool>(comparer);
+            TopItems = new AvlTree<T, bool>(comparer);
         }
 
         /// <summary>

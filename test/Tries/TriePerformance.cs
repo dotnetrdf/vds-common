@@ -237,7 +237,7 @@ namespace VDS.Common.Tries
                 while (_keysToRead.Count > 0)
                 {
                     var key = _keysToRead.Dequeue();
-                    var value = _trie[key];
+                    _ = _trie[key];
                     Read++;
                 }
             }

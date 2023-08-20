@@ -21,10 +21,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace VDS.Common
 {
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public static class TestTools
     {
         public static void PrintEnumerable<T>(IEnumerable<T> items, string sep)

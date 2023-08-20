@@ -45,21 +45,12 @@ namespace VDS.Common.Tries
         where TValue : class
     {
         /// <summary>
-        /// Key Mapper function
-        /// </summary>
-        protected readonly Func<TKey, IEnumerable<TKeyBit>> _keyMapper;
-        /// <summary>
-        /// Root of the Trie
-        /// </summary>
-        protected readonly ITrieNode<TKeyBit, TValue> _root;
-        
-        /// <summary>
         /// Create an empty trie with an empty root node.
         /// </summary>
-        public AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
-            _keyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
-            _root = CreateRoot(default(TKeyBit));
+            KeyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
+            Root = CreateRoot(default(TKeyBit));
             KeyBitComparer = Comparer<TKeyBit>.Default;
         }
 
@@ -73,7 +64,12 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the Root Node of the Trie
         /// </summary>
-        public ITrieNode<TKeyBit, TValue> Root => _root;
+        public ITrieNode<TKeyBit, TValue> Root { get; }
+
+        /// <summary>
+        /// Key mapper function used to split a key into a sequence of Key Bits.
+        /// </summary>
+        public Func<TKey, IEnumerable<TKeyBit>> KeyMapper { get; }
 
         /// <summary>
         /// Key comparer used for ordered operations like FindSuccessor
@@ -87,8 +83,8 @@ namespace VDS.Common.Tries
         /// <param name="value">Value associated with key</param>
         public void Add(TKey key, TValue value)
         {
-            var node = _root;
-            var bs = _keyMapper(key);
+            var node = Root;
+            var bs = KeyMapper(key);
             foreach (var b in bs)
             {
                 node = node.MoveToChild(b);
@@ -102,8 +98,8 @@ namespace VDS.Common.Tries
         /// <param name="key">Key of the value to remove</param>
         public void Remove(TKey key)
         {
-            var node = _root;
-            var bs = _keyMapper(key);
+            var node = Root;
+            var bs = KeyMapper(key);
             foreach (var b in bs)
             {
                 //Bail out early if the key doesn't go anywhere
@@ -166,7 +162,7 @@ namespace VDS.Common.Tries
         /// <returns>Null if the Key does not map to a Node</returns>
         public ITrieNode<TKeyBit, TValue> Find(TKey key)
         {
-            return Find(key, _keyMapper);
+            return Find(key, KeyMapper);
         }
 
         /// <summary>
@@ -193,7 +189,7 @@ namespace VDS.Common.Tries
         /// </remarks>
         public ITrieNode<TKeyBit, TValue> Find(IEnumerable<TKeyBit> bs)
         {
-            var node = _root;
+            var node = Root;
             foreach (var b in bs)
             {
                 //Bail out early if key does not exist
@@ -209,7 +205,7 @@ namespace VDS.Common.Tries
         /// <returns>Null if the Key does not map to any nodes</returns>
         public ITrieNode<TKeyBit, TValue> FindPredecessor(TKey key)
         {
-            return FindPredecessor(key, _keyMapper);
+            return FindPredecessor(key, KeyMapper);
         }
 
         /// <summary>
@@ -236,7 +232,7 @@ namespace VDS.Common.Tries
         /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindPredecessor(IEnumerable<TKeyBit> bs)
         {
-            var node = _root;
+            var node = Root;
             ITrieNode<TKeyBit, TValue> predecessor = null;
 
             foreach (var b in bs)
@@ -263,7 +259,7 @@ namespace VDS.Common.Tries
         /// <returns>Null if the Key does not map to a Node</returns>
         public ITrieNode<TKeyBit, TValue> FindSuccessor(TKey key)
         {
-            return FindSuccessor(key, _keyMapper);
+            return FindSuccessor(key, KeyMapper);
         }
 
         /// <summary>
@@ -290,7 +286,7 @@ namespace VDS.Common.Tries
         /// </remarks>
         public ITrieNode<TKeyBit, TValue> FindSuccessor(IEnumerable<TKeyBit> bs)
         {
-            var node = _root;
+            var node = Root;
 
             foreach (var b in bs)
             {
@@ -328,8 +324,8 @@ namespace VDS.Common.Tries
         /// <returns>Trie Node</returns>
         public ITrieNode<TKeyBit, TValue> MoveToNode(TKey key)
         {
-            var node = _root;
-            var bs = _keyMapper(key);
+            var node = Root;
+            var bs = KeyMapper(key);
             foreach (var b in bs)
             {
                 node = node.MoveToChild(b);
@@ -364,8 +360,8 @@ namespace VDS.Common.Tries
         {
             value = null;
 
-            var node = _root;
-            var bs = _keyMapper(key);
+            var node = Root;
+            var bs = KeyMapper(key);
             foreach (var b in bs)
             {
                 //Bail out early if key does not exist
@@ -388,19 +384,19 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets the Count of all Nodes in the Trie
         /// </summary>
-        public int Count => _root.CountAll;
+        public int Count => Root.CountAll;
 
         /// <summary>
         /// Gets all the Values in the Trie
         /// </summary>
-        public IEnumerable<TValue> Values => _root.Values;
+        public IEnumerable<TValue> Values => Root.Values;
 
         /// <summary>
         /// Clears the Trie
         /// </summary>
         public void Clear()
         {
-            _root.Clear();
+            Root.Clear();
         }
     }
 }

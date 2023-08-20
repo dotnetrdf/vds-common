@@ -702,23 +702,23 @@ namespace VDS.Common.Trees
         #region AVL Tree
 
         [Test]
-        public void BinaryTreeAVLInsert1()
+        public void BinaryTreeAvlInsert1()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             TestOrderPreservationOnInsertStructs(Enumerable.Range(1, 10), tree);
         }
 
         [Test]
-        public void BinaryTreeAVLInsert2()
+        public void BinaryTreeAvlInsert2()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             TestOrderPreservationOnInsertStructs(Enumerable.Range(1, 100), tree);
         }
 
         [Test]
-        public void BinaryTreeAVLInsert3()
+        public void BinaryTreeAvlInsert3()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
 
             //Randomize the input order
             var pool = Enumerable.Range(1, 100).ToList();
@@ -734,9 +734,9 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLInsert4()
+        public void BinaryTreeAvlInsert4()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
 
             //Randomize the input order
             var pool = Enumerable.Range(1, 1000).ToList();
@@ -752,19 +752,19 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLInsert5()
+        public void BinaryTreeAvlInsert5()
         {
             for (var i = 1; i < 10; i++)
             {
-                var tree = new AVLTree<int, int>();
+                var tree = new AvlTree<int, int>();
                 TestOrderPreservationOnInsertStructs(Enumerable.Range(1, i), tree);
             }
         }
 
         [Test]
-        public void BinaryTreeAVLDelete1()
+        public void BinaryTreeAvlDelete1()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             var inputs = Enumerable.Range(1, 100).ToList();
             TestOrderPreservationOnInsertStructs(inputs, tree);
             Assert.IsTrue(tree.Remove(inputs[0]));
@@ -773,9 +773,9 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLDelete2()
+        public void BinaryTreeAvlDelete2()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             var inputs = Enumerable.Range(1, 100).ToList();
             TestOrderPreservationOnInsertStructs(inputs, tree);
             Assert.IsTrue(tree.Remove(inputs[50]));
@@ -784,27 +784,27 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLDelete3()
+        public void BinaryTreeAvlDelete3()
         {
             for (var i = 0; i < 10; i++)
             {
-                var tree = new AVLTree<int, int>();
+                var tree = new AvlTree<int, int>();
                 TestOrderPreservationOnDeleteStructs(Enumerable.Range(1, 10), tree);
             }
         }
 
         [Test]
-        public void BinaryTreeAVLDelete4()
+        public void BinaryTreeAvlDelete4()
         {
             for (var i = 0; i < 10; i++)
             {
-                var tree = new AVLTree<int, int>();
+                var tree = new AvlTree<int, int>();
                 TestOrderPreservationOnDeleteStructs(Enumerable.Range(1, 100), tree);
             }
         }
 
         [Test]
-        public void BinaryTreeAVLDelete5()
+        public void BinaryTreeAvlDelete5()
         {
             for (var i = 0; i < 10; i++)
             {
@@ -818,13 +818,13 @@ namespace VDS.Common.Trees
                     pool.RemoveAt(r);
                 }
 
-                var tree = new AVLTree<int, int>();
+                var tree = new AvlTree<int, int>();
                 TestOrderPreservationOnDeleteStructs(input, tree);
             }
         }
 
         [Test]
-        public void BinaryTreeAVLDelete6()
+        public void BinaryTreeAvlDelete6()
         {
             for (var i = 0; i < 10; i++)
             {
@@ -838,16 +838,16 @@ namespace VDS.Common.Trees
                     pool.RemoveAt(r);
                 }
 
-                var tree = new AVLTree<int, int>();
+                var tree = new AvlTree<int, int>();
                 TestOrderPreservationOnDeleteStructs(input, tree);
             }
         }
 
         [Test]
-        public void BinaryTreeAVLDelete7()
+        public void BinaryTreeAvlDelete7()
         {
             var input = new List<int>() { 19, 10, 20, 14, 16, 5, 2, 23, 9, 1, 8, 4, 15, 11, 24, 7, 21, 13, 6, 3, 22, 18, 12, 17, 25 };
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             foreach (var i in input)
             {
                 tree.Add(i, i);
@@ -866,10 +866,10 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLDelete8()
+        public void BinaryTreeAvlDelete8()
         {
             var input = new List<int>() { 25, 14, 5, 8, 22, 17, 9, 12, 4, 1, 3, 23, 2, 7, 19, 20, 10, 24, 16, 6, 21, 13, 18, 11, 15 };
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             foreach (var i in input)
             {
                 tree.Add(i, i);
@@ -888,9 +888,9 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLIndexAccess1()
+        public void BinaryTreeAvlIndexAccess1()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             var inputs = Enumerable.Range(1, 10).ToList();
             TestOrderPreservationOnInsertStructs(inputs, tree);
 
@@ -915,9 +915,9 @@ namespace VDS.Common.Trees
         }
 
         [Test]
-        public void BinaryTreeAVLIndexAccess2()
+        public void BinaryTreeAvlIndexAccess2()
         {
-            var tree = new AVLTree<int, int>();
+            var tree = new AvlTree<int, int>();
             var inputs = Enumerable.Range(1, 10).ToList();
             TestOrderPreservationOnInsertStructs(inputs, tree);
 

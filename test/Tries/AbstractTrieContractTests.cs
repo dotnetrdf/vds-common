@@ -259,14 +259,12 @@ namespace VDS.Common.Tries
         {
             var trie = GetInstance();
 
-            var values = trie.Values;
-
-            Assert.IsFalse(values.Any());
+            Assert.IsFalse(trie.Values.Any());
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(1, values.Count());
+            Assert.IsTrue(trie.Values.Any());
+            Assert.AreEqual(1, trie.Values.Count());
         }
 
         [Test]
@@ -292,19 +290,17 @@ namespace VDS.Common.Tries
         {
             var trie = GetInstance();
 
-            var values = trie.Values;
-
-            Assert.IsFalse(values.Any());
+            Assert.IsFalse(trie.Values.Any());
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(1, values.Count());
+            Assert.IsTrue(trie.Values.Any());
+            Assert.AreEqual(1, trie.Values.Count());
 
             trie.Add("testing", "b");
 
-            Assert.IsTrue(values.Any());
-            Assert.AreEqual(2, values.Count());
+            Assert.IsTrue(trie.Values.Any());
+            Assert.AreEqual(2, trie.Values.Count());
         }
 
         [Test]
@@ -333,14 +329,12 @@ namespace VDS.Common.Tries
         {
             var trie = GetInstance();
 
-            var descendants = trie.Root.Descendants;
-
-            Assert.IsFalse(descendants.Any());
+            Assert.IsFalse(trie.Root.Descendants.Any());
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(descendants.Any());
-            Assert.AreEqual(4, descendants.Count());
+            Assert.IsTrue(trie.Root.Descendants.Any());
+            Assert.AreEqual(4, trie.Root.Descendants.Count());
         }
 
         [Test]
@@ -366,19 +360,17 @@ namespace VDS.Common.Tries
         {
             var trie = GetInstance();
 
-            var descendants = trie.Root.Descendants;
-
-            Assert.IsFalse(descendants.Any());
+            Assert.IsFalse(trie.Root.Descendants.Any());
 
             trie.Add("test", "a");
 
-            Assert.IsTrue(descendants.Any());
-            Assert.AreEqual(4, descendants.Count());
+            Assert.IsTrue(trie.Root.Descendants.Any());
+            Assert.AreEqual(4, trie.Root.Descendants.Count());
 
             trie.Add("testing", "b");
 
-            Assert.IsTrue(descendants.Any());
-            Assert.AreEqual(7, descendants.Count());
+            Assert.IsTrue(trie.Root.Descendants.Any());
+            Assert.AreEqual(7, trie.Root.Descendants.Count());
         }
 
         [Test]
@@ -556,7 +548,7 @@ namespace VDS.Common.Tries
     {
         protected override ITrie<string, char, string> GetInstance()
         {
-            return new Trie<string, char, string>(StringTrie<string>.KeyMapper);
+            return new Trie<string, char, string>(StringTrie<string>.KeyMapperFunction);
         }
     }
 
@@ -576,7 +568,7 @@ namespace VDS.Common.Tries
     {
         protected override ITrie<string, char, string> GetInstance()
         {
-            return new SparseCharacterTrie<string, string>(StringTrie<string>.KeyMapper);
+            return new SparseCharacterTrie<string, string>(StringTrie<string>.KeyMapperFunction);
         }
     }
 
@@ -586,7 +578,7 @@ namespace VDS.Common.Tries
     {
         protected override ITrie<string, char, string> GetInstance()
         {
-            return new SparseValueTrie<string, char, string>(StringTrie<string>.KeyMapper);
+            return new SparseValueTrie<string, char, string>(StringTrie<string>.KeyMapperFunction);
         }
     }
 }

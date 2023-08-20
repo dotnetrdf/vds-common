@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 */
 
 using System;
-using System.Linq;
 using System.Text;
 
 namespace VDS.Common.Trees
@@ -49,7 +48,7 @@ namespace VDS.Common.Trees
             builder.AppendLine("  Key: " + node.Key);
             builder.AppendLine("  Value: " + node.Value);
             var lhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.LeftChild);
-            if (lhs.Contains('\n'))
+            if (lhs.Contains("\n"))
             {
                 builder.Append("  Left Child: ");
                 builder.AppendLine(AddIndent(lhs));
@@ -59,7 +58,7 @@ namespace VDS.Common.Trees
                 builder.AppendLine("  Left Child: " + lhs);
             }
             var rhs = PrintBinaryTreeNodeStructs<TNode, TKey>((TNode)node.RightChild);
-            if (rhs.Contains('\n'))
+            if (rhs.Contains("\n"))
             {
                 builder.Append("  Right Child: ");
                 builder.AppendLine(AddIndent(rhs));

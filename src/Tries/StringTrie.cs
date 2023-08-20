@@ -36,14 +36,14 @@ namespace VDS.Common.Tries
         /// Creates a new String Trie
         /// </summary>
         public StringTrie()
-            : base(KeyMapper) { }
+            : base(KeyMapperFunction) { }
 
         /// <summary>
         /// Key Mapper function for String Trie
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Array of characters</returns>
-        public static IEnumerable<char> KeyMapper(string key)
+        public static IEnumerable<char> KeyMapperFunction(string key)
         {
             return key.ToCharArray();
         }
@@ -64,6 +64,6 @@ namespace VDS.Common.Tries
         /// Creates a new sparse String Trie
         /// </summary>
         public SparseStringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
+            : base(StringTrie<T>.KeyMapperFunction) { }
     }
 }

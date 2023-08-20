@@ -100,14 +100,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(_refs);
                     var id = Thread.CurrentThread.ManagedThreadId;
-                    if (_refs.ContainsKey(id))
-                    {
-                        _refs[id] = value;
-                    }
-                    else
-                    {
-                        _refs.Add(id, value);
-                    }
+                    _refs[id] = value;
                 }
                 finally
                 {
@@ -195,14 +188,7 @@ namespace VDS.Common.References
                 {
                     Monitor.Enter(_refs);
                     var id = Thread.CurrentThread.ManagedThreadId;
-                    if (_refs.ContainsKey(id))
-                    {
-                        _refs[id] = value;
-                    }
-                    else
-                    {
-                        _refs.Add(id, value);
-                    }
+                    _refs[id] = value;
                 }
                 finally
                 {

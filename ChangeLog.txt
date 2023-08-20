@@ -9,6 +9,16 @@ Upcoming
 - BREAKING: Change to supported platforms. As of the 2.0 release, VDS.Common will target only .NET Standard 1.3 and .NET Standard 2.0 (and by extension 2.x)
 - The TryGetKey method on the MultiDictionary class is no longer deprecated.
 - The Cake build scripts have been removed as we no longer use this process to build on our CI platform.
+- BREAKING: A number of APIs have been renamed for conformance with common .NET naming guidelines:
+  - A number of protected members have been renamed from _foo to Foo:
+    - AbstractListBackedBoundedList._list => .List
+    - ImmutableView<T>._items => .Items (this property has also been made read-only)
+    - MultiDictionaryMode.AVL => .Avl
+    - BinaryTree<TKey, TValue._comparer => .Comparer
+    - AbstractTrie<TKey, TValue, TBit>._keyMapper => .KeyMapper
+    - AbstractTrie<TKey, TValue, TBit>._root => .Root
+  - The class AVLTree has been renamed to AvlTree
+  - Calling MultiDictionary.Add/Remove/Contains(<KeyValuePair<TKey, TValue>>item) with an item with a a null key now throws an ArgumentException rather than an ArgumentNullException
 
 1.10.0
 ------

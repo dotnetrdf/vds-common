@@ -72,11 +72,11 @@ namespace VDS.Common.Tries
         protected internal abstract ITrieNode<TKeyBit, TValue> SingletonChild
         {
             get;
-            set;
+            protected set;
         }
 
         /// <summary>
-        /// Clears the singelton
+        /// Clears the singleton
         /// </summary>
         protected abstract void ClearSingleton();
 
@@ -243,9 +243,9 @@ namespace VDS.Common.Tries
         /// <returns>If given key already exists then return the existing child node, else return the new child node.</returns>
         public ITrieNode<TKeyBit, TValue> MoveToChild(TKeyBit key)
         {
-            ITrieNode<TKeyBit, TValue> child;
             lock (this)
             {
+                ITrieNode<TKeyBit, TValue> child;
                 if (_children != null)
                 {
                     // Get from existing children adding new child if necessary
@@ -268,8 +268,7 @@ namespace VDS.Common.Tries
                 else if (SingletonChild != null)
                 {
                     // Make non-singleton
-                    _children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>>();
-                    _children.Add(SingletonChild.KeyBit, SingletonChild);
+                    _children = new Dictionary<TKeyBit, ITrieNode<TKeyBit, TValue>> { { SingletonChild.KeyBit, SingletonChild } };
                     child = CreateNewChild(key);
                     _children.Add(key, child);
                     return child;
@@ -338,7 +337,7 @@ namespace VDS.Common.Tries
             }
             else if (_node._children != null)
             {
-                //May be mutliple children present
+                //May be multiple children present
                 return _node._children.Values.GetEnumerator();
             }
             else 

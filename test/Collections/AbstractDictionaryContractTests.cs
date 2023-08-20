@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+// ReSharper disable AssignNullToNotNullAttribute
 
 namespace VDS.Common.Collections
 {
@@ -418,7 +419,7 @@ namespace VDS.Common.Collections
         {
             var dict = GetInstance();
 
-            Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
+            Assert.Throws<ArgumentNullException>(() => _ = dict.ContainsKey(null));
         }
 
         [Test]
@@ -445,7 +446,7 @@ namespace VDS.Common.Collections
         {
             var dict = GetInstance();
 
-            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out var value));
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
         }
     }
 

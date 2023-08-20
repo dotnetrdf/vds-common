@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using VDS.Common.Trees;
 
@@ -70,7 +71,7 @@ namespace VDS.Common.Collections
         public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items)
         {
             _comparer = comparer ?? Comparer<T>.Default;
-            _data = new AVLTree<T, int>(_comparer);
+            _data = new AvlTree<T, int>(_comparer);
             if (items == null) return;
             foreach (var item in items)
             {
@@ -199,6 +200,7 @@ namespace VDS.Common.Collections
             var currentNode = _data.Root;
             while (true)
             {
+                Debug.Assert(currentNode != null, nameof(currentNode) + " != null");
                 var currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
                 if (currentIndex == index) return currentNode;
                 if (currentNode.LeftChild != null && index > currentIndex && index < currentIndex + currentNode.LeftChild.Value) return currentNode;
@@ -231,10 +233,11 @@ namespace VDS.Common.Collections
         {
             if (_data.Root == null) return -1;
 
-            var enumerator = _data.Nodes.GetEnumerator();
+            using var enumerator = _data.Nodes.GetEnumerator();
             var index = 0;
             while (enumerator.MoveNext())
             {
+                Debug.Assert(enumerator.Current != null, "enumerator.Current != null");
                 if (_comparer.Compare(item, enumerator.Current.Key) == 0) return index;
                 index += enumerator.Current.Value;
             }

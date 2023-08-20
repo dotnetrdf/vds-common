@@ -153,7 +153,7 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(1, array[i]);
             }
 
-            var sparsEnumerator = array.GetEnumerator();
+            using var sparsEnumerator = array.GetEnumerator();
             var actualEnumerator = actualArray.GetEnumerator();
 
             var index = -1;
@@ -182,13 +182,13 @@ namespace VDS.Common.Collections
             var array = CreateInstance(length);
             Assert.AreEqual(length, array.Length);
 
-            for (var i = 0; i < array.Length; i++)
+            foreach (var t in array)
             {
                 // Should have default value
-                Assert.AreEqual(default(int), array[i]);
+                Assert.AreEqual(default(int), t);
             }
 
-            var enumerator = array.GetEnumerator();
+            using var enumerator = array.GetEnumerator();
 
             var index = -1;
             while (enumerator.MoveNext())
@@ -226,7 +226,7 @@ namespace VDS.Common.Collections
                 Assert.AreEqual(1, array[i]);
             }
 
-            var sparsEnumerator = array.GetEnumerator();
+            using var sparsEnumerator = array.GetEnumerator();
             var actualEnumerator = actualArray.GetEnumerator();
 
             var index = -1;

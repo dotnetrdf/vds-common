@@ -43,7 +43,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Use AVL trees, likely gives the best overall performance
         /// </summary>
-        AVL   
+        Avl   
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Default Mode for Multi-Dictionaries
         /// </summary>
-        public const MultiDictionaryMode DefaultMode = MultiDictionaryMode.AVL;
+        public const MultiDictionaryMode DefaultMode = MultiDictionaryMode.Avl;
 
         private readonly Dictionary<int, ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue>> _dict;
         private readonly IComparer<TKey> _comparer = Comparer<TKey>.Default;
@@ -164,17 +164,13 @@ namespace VDS.Common.Collections
         /// <returns>Tree to use as the bucket</returns>
         private ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> CreateTree()
         {
-            switch (_mode)
+            return _mode switch
             {
-                case MultiDictionaryMode.AVL:
-                    return new AVLTree<TKey, TValue>(_comparer);
-                case MultiDictionaryMode.Scapegoat:
-                    return new ScapegoatTree<TKey, TValue>(_comparer);
-                case MultiDictionaryMode.Unbalanced:
-                    return new UnbalancedBinaryTree<TKey, TValue>(_comparer);
-                default:
-                    return new AVLTree<TKey, TValue>(_comparer);
-            }
+                MultiDictionaryMode.Avl => new AvlTree<TKey, TValue>(_comparer),
+                MultiDictionaryMode.Scapegoat => new ScapegoatTree<TKey, TValue>(_comparer),
+                MultiDictionaryMode.Unbalanced => new UnbalancedBinaryTree<TKey, TValue>(_comparer),
+                _ => new AvlTree<TKey, TValue>(_comparer)
+            };
         }
 
         #region IDictionary<TKey,TValue> Members
@@ -369,6 +365,10 @@ namespace VDS.Common.Collections
         /// <param name="item">Key value pair</param>
         public void Add(KeyValuePair<TKey, TValue> item)
         {
+            if (!_allowNullKeys && item.Key == null)
+            {
+                throw new ArgumentException("Item key cannot be null", nameof(item));
+            }
             Add(item.Key, item.Value);
         }
 
@@ -387,7 +387,10 @@ namespace VDS.Common.Collections
         /// <returns>True if the given key value pair exists in the dictionary</returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (!_allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!_allowNullKeys && item.Key == null)
+            {
+                throw new ArgumentException("Item key cannot be null", nameof(item));
+            }
             if (TryGetValue(item.Key, out var value))
             {
                 if (value != null) return value.Equals(item.Value);
@@ -407,8 +410,8 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start copying at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("Cannot start copying at index < 0");
+            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
             if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
             var i = arrayIndex;
@@ -445,7 +448,10 @@ namespace VDS.Common.Collections
         /// <returns>True if the key value pair was removed from the dictionary</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            if (!_allowNullKeys && item.Key == null) throw new ArgumentNullException("key", "Key cannot be null");
+            if (!_allowNullKeys && item.Key == null)
+            {
+                throw new ArgumentException("Item key cannot be null", nameof(item));
+            }
             if (TryGetValue(item.Key, out var value))
             {
                 if (value != null && value.Equals(item.Value)) return Remove(item.Key);

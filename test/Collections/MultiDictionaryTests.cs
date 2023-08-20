@@ -23,6 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
+// ReSharper disable AssignNullToNotNullAttribute
+// ReSharper disable CollectionNeverQueried.Local
+// ReSharper disable CollectionNeverUpdated.Local
 
 namespace VDS.Common.Collections
 {
@@ -53,7 +56,7 @@ namespace VDS.Common.Collections
         public void MultiDictionaryNullKeyHandling3()
         {
             var dict = new MultiDictionary<object, int>();
-            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out var i));
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
         }
 
         [Test]
@@ -67,7 +70,7 @@ namespace VDS.Common.Collections
         public void MultiDictionaryNullKeyHandling5()
         {
             var dict = new MultiDictionary<object, int>();
-            Assert.Throws<ArgumentNullException>(() => { dict.Add(new KeyValuePair<object, int>(null, 1)); });
+            Assert.Throws<ArgumentException>(() => { dict.Add(new KeyValuePair<object, int>(null, 1)); });
         }
 
         [Test]
@@ -81,27 +84,27 @@ namespace VDS.Common.Collections
         public void MultiDictionaryNullKeyHandling7()
         {
             var dict = new MultiDictionary<object, int>();
-            Assert.Throws<ArgumentNullException>(() => dict.Remove(new KeyValuePair<object, int>(null, 1)));
+            Assert.Throws<ArgumentException>(() => dict.Remove(new KeyValuePair<object, int>(null, 1)));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling8()
         {
             var dict = new MultiDictionary<object, int>();
-            Assert.Throws<ArgumentNullException>(() => { dict.ContainsKey(null); });
+            Assert.Throws<ArgumentNullException>(() => { _ = dict.ContainsKey(null); });
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling10()
         {
             var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
-            dict.Contains(new KeyValuePair<object, int>(null, 1));
+            _ = dict.Contains(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling11()
         {
-            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true) { { null, 1 } };
+            _ = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true) { { null, 1 } };
         }
 
         [Test]
@@ -110,7 +113,7 @@ namespace VDS.Common.Collections
             var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
             Assert.Throws<KeyNotFoundException>(() =>
             {
-                var _ = dict[null];
+                _ = dict[null];
             });
         }
 
@@ -118,13 +121,13 @@ namespace VDS.Common.Collections
         public void MultiDictionaryNullKeyHandling13()
         {
             var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
-            dict.TryGetValue(null, out var i);
+            dict.TryGetValue(null, out _);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling14()
         {
-            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true)
+            _ = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true)
             {
                 [null] = 1
             };
@@ -133,7 +136,7 @@ namespace VDS.Common.Collections
         [Test]
         public void MultiDictionaryNullKeyHandling15()
         {
-            var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true) { new KeyValuePair<object, int>(null, 1) };
+            _ = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true) { new(null, 1) };
         }
 
         [Test]
@@ -154,14 +157,14 @@ namespace VDS.Common.Collections
         public void MultiDictionaryNullKeyHandling18()
         {
             var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
-            dict.ContainsKey(null);
+            _ = dict.ContainsKey(null);
         }
 
         [Test]
         public void MultiDictionaryNullKeyHandling19()
         {
             var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
-            dict.Contains(new KeyValuePair<object, int>(null, 1));
+            _ = dict.Contains(new KeyValuePair<object, int>(null, 1));
         }
 
         [Test]
@@ -243,7 +246,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                dict.ContainsKey(key);
+                _ = dict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -255,7 +258,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                mDict.ContainsKey(key);
+                _ = mDict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -288,7 +291,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                mDict.ContainsKey(key);
+                _ = mDict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -301,7 +304,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                dict.ContainsKey(key);
+                _ = dict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -422,7 +425,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                dict.ContainsKey(key);
+                _ = dict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -434,7 +437,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                mDict.ContainsKey(key);
+                _ = mDict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -467,7 +470,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                mDict.ContainsKey(key);
+                _ = mDict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -480,7 +483,7 @@ namespace VDS.Common.Collections
             timer.Start();
             foreach (var key in keys)
             {
-                dict.ContainsKey(key);
+                _ = dict.ContainsKey(key);
             }
             timer.Stop();
 
@@ -529,7 +532,7 @@ namespace VDS.Common.Collections
             timer.Stop();
 
             var mDictTime = timer.Elapsed;
-            Console.WriteLine("MutliDictionary took " + timer.Elapsed);
+            Console.WriteLine("MultiDictionary took " + timer.Elapsed);
             Assert.IsTrue(mDictTime - dictTime < new TimeSpan(0, 0, 0, 0, 100));
         }
     }

@@ -51,7 +51,7 @@ namespace VDS.Common.Collections
         public TreeSortedDictionary(IComparer<TKey> comparer)
         {
             if (comparer == null) throw new ArgumentNullException(nameof(comparer), "Comparer cannot be null");
-            _tree = new AVLTree<TKey, TValue>(comparer);
+            _tree = new AvlTree<TKey, TValue>(comparer);
         }
 
         #region IDictionary<TKey,TValue> Members

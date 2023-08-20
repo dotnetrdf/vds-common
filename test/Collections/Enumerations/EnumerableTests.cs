@@ -62,16 +62,17 @@ namespace VDS.Common.Collections.Enumerations
             {
                 var expectedItem = expectedEnumerator.Current;
                 i++;
-                if (!actualEnumerator.MoveNext()) Assert.Fail(string.Format("Actual enumerator was exhaused at Item {0} when next Item {1} was expected", i, expectedItem));
+                if (!actualEnumerator.MoveNext()) Assert.Fail(
+                    $"Actual enumerator was exhausted at Item {i} when next Item {expectedItem} was expected");
                 var actualItem = actualEnumerator.Current;
 
-                Assert.AreEqual(expectedItem, actualItem, string.Format("Enumerators mismatched at Item {0}", i));
+                Assert.AreEqual(expectedItem, actualItem, $"Enumerators mismatched at Item {i}");
             }
             if (actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator has additional unexpected items");
         }
 
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static void CheckStruct<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : struct
+        private static void CheckStruct<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : struct
         {
             Console.WriteLine("Expected:");
             TestTools.PrintEnumerableStruct(expected, ",");
@@ -102,10 +103,10 @@ namespace VDS.Common.Collections.Enumerations
             {
                 var expectedItem = expectedEnumerator.Current;
                 i++;
-                if (!actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator was exhaused at Item {0} when next Item {1} was expected", i, expectedItem);
+                if (!actualEnumerator.MoveNext()) Assert.Fail($"Actual enumerator was exhausted at Item {i} when next Item {expectedItem} was expected");
                 var actualItem = actualEnumerator.Current;
 
-                Assert.AreEqual(expectedItem, actualItem, string.Format("Enumerators mismatched at Item {0}", i));
+                Assert.AreEqual(expectedItem, actualItem, $"Enumerators mismatched at Item {i}");
             }
             if (actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator has additional unexpected items");
         }
@@ -122,7 +123,7 @@ namespace VDS.Common.Collections.Enumerations
             IEnumerator<int> enumerator = new LongTakeEnumerator<int>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var i = enumerator.Current;
+                _ = enumerator.Current;
             });
         }
 
@@ -133,7 +134,7 @@ namespace VDS.Common.Collections.Enumerations
             IEnumerator<string> enumerator = new LongTakeEnumerator<string>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var i = enumerator.Current;
+                _ = enumerator.Current;
             });
         }
 
@@ -144,7 +145,7 @@ namespace VDS.Common.Collections.Enumerations
             IEnumerator<int> enumerator = new LongSkipEnumerator<int>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var i = enumerator.Current;
+                _ = enumerator.Current;
             });
         }
 

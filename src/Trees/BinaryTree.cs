@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace VDS.Common.Trees
@@ -37,7 +38,7 @@ namespace VDS.Common.Trees
         /// <summary>
         /// Key Comparer
         /// </summary>
-        protected IComparer<TKey> _comparer = Comparer<TKey>.Default;
+        protected IComparer<TKey> Comparer = Comparer<TKey>.Default;
 
         /// <summary>
         /// Creates a new unbalanced Binary Tree
@@ -51,7 +52,7 @@ namespace VDS.Common.Trees
         /// <param name="comparer">Comparer for keys</param>
         protected BinaryTree(IComparer<TKey> comparer)
         {
-            _comparer = (comparer ?? _comparer);
+            Comparer = comparer ?? Comparer;
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace VDS.Common.Trees
             var current = Root;
             do
             {
-                var c = _comparer.Compare(key, current.Key);
+                var c = Comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
                     current = current.LeftChild;
@@ -139,11 +140,11 @@ namespace VDS.Common.Trees
             }
             //Iteratively binary search for the key
             var current = Root;
-            IBinaryTreeNode<TKey, TValue> parent = null;
+            IBinaryTreeNode<TKey, TValue> parent;
             int c;
             do
             {
-                c = _comparer.Compare(key, current.Key);
+                c = Comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
                     parent = current;
@@ -163,7 +164,7 @@ namespace VDS.Common.Trees
             } while (current != null);
 
             //Key doesn't exist so need to do an insert
-            current = CreateNode(parent, key, default(TValue));
+            current = CreateNode(parent, key, default);
             created = true;
             if (c < 0)
             {
@@ -209,7 +210,7 @@ namespace VDS.Common.Trees
             int c;
             do
             {
-                c = _comparer.Compare(key, current.Key);
+                c = Comparer.Compare(key, current.Key);
                 if (c < 0)
                 {
                     current = current.LeftChild;
@@ -223,7 +224,7 @@ namespace VDS.Common.Trees
                     //If we find a match on the key then stop searching
                     //Calculate the comparison with the parent key (if there is a parent) as we need this info
                     //for the deletion implementation
-                    c = (current.Parent != null ? _comparer.Compare(current.Key, current.Parent.Key) : c);
+                    c = (current.Parent != null ? Comparer.Compare(current.Key, current.Parent.Key) : c);
                     break;
                 }
             } while (current != null);
@@ -406,8 +407,7 @@ namespace VDS.Common.Trees
             }
             set
             {
-                var created = false;
-                var n = MoveToNode(key, out created);
+                var n = MoveToNode(key, out _);
                 if (n != null)
                 {
                     n.Value = value;
@@ -461,6 +461,7 @@ namespace VDS.Common.Trees
             var currentNode = Root;
             while (true)
             {
+                Debug.Assert(currentNode != null, nameof(currentNode) + " != null");
                 var currentIndex = baseIndex + currentNode.LeftChild?.Size ?? baseIndex;
                 if (currentIndex == index) return currentNode;
 
@@ -512,7 +513,7 @@ namespace VDS.Common.Trees
         public void RemoveAt(int index)
         {
             var node = MoveToIndex(index);
-            var c = node.Parent != null ? _comparer.Compare(node.Key, node.Parent.Key) : 0;
+            var c = node.Parent != null ? Comparer.Compare(node.Key, node.Parent.Key) : 0;
             RemoveNode(node, c);
         }
 

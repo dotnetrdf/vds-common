@@ -38,14 +38,14 @@ namespace VDS.Common.Collections
         /// <summary>
         /// The enumerable being wrapped
         /// </summary>
-        protected IEnumerable<T> _items;
+        protected readonly IEnumerable<T> Items;
         private readonly string _errMsg;
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
         /// </summary>
         public ImmutableView()
-            : this(Enumerable.Empty<T>(), DefaultErrorMessage) { }
+            : this(Enumerable.Empty<T>()) { }
 
         /// <summary>
         /// Creates a new immutable view over an empty collection
@@ -59,18 +59,11 @@ namespace VDS.Common.Collections
         /// </summary>
         /// <param name="items">Enumerable to provide view over</param>
         /// <param name="message">Error message to throw when mutation actions are attempted</param>
-        public ImmutableView(IEnumerable<T> items, string message)
+        public ImmutableView(IEnumerable<T> items, string message = DefaultErrorMessage)
         {
-            _items = items;
-            _errMsg = (!string.IsNullOrEmpty(message) ? message : DefaultErrorMessage);
+            Items = items;
+            _errMsg = !string.IsNullOrEmpty(message) ? message : DefaultErrorMessage;
         }
-
-        /// <summary>
-        /// Creates a new immutable view
-        /// </summary>
-        /// <param name="items">Enumerable to provide view over</param>
-        public ImmutableView(IEnumerable<T> items)
-            : this(items, DefaultErrorMessage) { }
 
         /// <summary>
         /// Throws an error as this collection is immutable
@@ -98,7 +91,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the item is contained in the collection, false otherwise</returns>
         public virtual bool Contains(T item)
         {
-            return _items.Contains(item);
+            return Items.Contains(item);
         }
 
         /// <summary>
@@ -113,7 +106,7 @@ namespace VDS.Common.Collections
             if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array", nameof(array));
 
             var i = arrayIndex;
-            foreach (var item in _items)
+            foreach (var item in Items)
             {
                 array[i] = item;
                 i++;
@@ -123,7 +116,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the count of items in the collection
         /// </summary>
-        public virtual int Count => _items.Count();
+        public virtual int Count => Items.Count();
 
         /// <summary>
         /// Returns that the collection is read-only
@@ -146,7 +139,7 @@ namespace VDS.Common.Collections
         /// <returns>Enumerator over the collection</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _items.GetEnumerator();
+            return Items.GetEnumerator();
         }
 
         /// <summary>
@@ -197,7 +190,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the count of items in the collection
         /// </summary>
-        public override int Count => ((IList<T>)_items).Count;
+        public override int Count => ((IList<T>)Items).Count;
 
         /// <summary>
         /// Checks whether the collection contains a given item
@@ -206,7 +199,7 @@ namespace VDS.Common.Collections
         /// <returns>True if the item is contained in the collection, false otherwise</returns>
         public override bool Contains(T item)
         {
-            return ((IList<T>) _items).Contains(item);
+            return ((IList<T>) Items).Contains(item);
         }
     }
 }
