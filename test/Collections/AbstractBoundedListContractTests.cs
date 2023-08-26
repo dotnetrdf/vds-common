@@ -738,7 +738,8 @@ namespace VDS.Common.Collections
 
         protected override IBoundedList<string> GetInstance(int capacity, IEnumerable<string> contents)
         {
-            return new CappedBoundedList<string>(capacity, contents);
+            var list = new CappedBoundedList<string>(capacity) { contents };
+            return list;
         }
     }
 

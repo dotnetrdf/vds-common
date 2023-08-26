@@ -45,12 +45,26 @@ namespace VDS.Common.Tries
         where TValue : class
     {
         /// <summary>
+        /// Create a trie initialized with the specified root node.
+        /// </summary>
+        /// <param name="keyMapper">The function that splits a key into its separate parts.</param>
+        /// <param name="root">The root node for the trie.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper, ITrieNode<TKeyBit, TValue> root)
+        {
+            KeyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function must not be null.");
+            Root = root ?? throw new ArgumentNullException(nameof(root), "Root node must not be null.");
+            KeyBitComparer = Comparer<TKeyBit>.Default;
+        }
+
+        /// <summary>
         /// Create an empty trie with an empty root node.
         /// </summary>
+        [Obsolete("Use the constructor AbstractTrie(Func<TKey, IEnumerable<TKeyBit>>, ITrieNode<TKeyBit, TValue>) instead")]
         protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
         {
             KeyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
-            Root = CreateRoot(default(TKeyBit));
+            Root = CreateRoot(default);
             KeyBitComparer = Comparer<TKeyBit>.Default;
         }
 
@@ -152,7 +166,7 @@ namespace VDS.Common.Tries
         {
             var node = Find(key);
             if (node == null) return false;
-            return (!requireValue || node.HasValue);
+            return !requireValue || node.HasValue;
         }
 
         /// <summary>
@@ -344,8 +358,7 @@ namespace VDS.Common.Tries
             get
             {
                 var node = Find(key);
-                if (node == null) throw new KeyNotFoundException();
-                return node.Value;
+                return node == null ? throw new KeyNotFoundException() : node.Value;
             }
             set => Add(key, value);
         }
@@ -362,23 +375,18 @@ namespace VDS.Common.Tries
 
             var node = Root;
             var bs = KeyMapper(key);
-            foreach (var b in bs)
-            {
-                //Bail out early if key does not exist
-                if (!node.TryGetChild(b, out node))
-                {
-                    return false;
-                }
-            }
-            if (node.HasValue)
-            {
-                value = node.Value;
-                return true;
-            }
-            else
+            if (bs.Any(b => !node.TryGetChild(b, out node)))
             {
                 return false;
             }
+
+            if (!node.HasValue)
+            {
+                return false;
+            }
+            value = node.Value;
+            return true;
+
         }
 
         /// <summary>

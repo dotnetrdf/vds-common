@@ -15,10 +15,13 @@ Upcoming
     - ImmutableView<T>._items => .Items (this property has also been made read-only)
     - MultiDictionaryMode.AVL => .Avl
     - BinaryTree<TKey, TValue._comparer => .Comparer
-    - AbstractTrie<TKey, TValue, TBit>._keyMapper => .KeyMapper
-    - AbstractTrie<TKey, TValue, TBit>._root => .Root
+    - AbstractSparseTrieNode<TKeyBit, TValue>._children 
   - The class AVLTree has been renamed to AvlTree
   - Calling MultiDictionary.Add/Remove/Contains(<KeyValuePair<TKey, TValue>>item) with an item with a a null key now throws an ArgumentException rather than an ArgumentNullException
+  - AbstractTrie<TKey, TValue, TBit>._keyMapper and ._root are no longer exposed in the API under these names. They can be accessed via the readonly properties .KeyMapper and .Root
+  - StringTrie.KeyMapper is renamed to .KeyMapperFunction
+  - The constructor AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper) is now deprecated in favour of protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper, ITrieNode<TKeyBit, TValue> root) to avoid a virtual member call in the abstract class constructor.
+  - The constructor CappedBoundedList(int capacity, IEnumerable<T> items) is now deprecated to avoid a virtual member call in the constructor. You should instead call the public CappedBoundedList(int capacity) constructor followed by the Add(IEnumerable<T> items).
 
 1.10.0
 ------

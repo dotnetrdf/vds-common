@@ -42,7 +42,7 @@ namespace VDS.Common.Tries
         /// Create an empty trie with an empty root node.
         /// </summary>
         public SparseValueTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
-            : base(keyMapper) { }
+            : base(keyMapper, new SparseValueTrieNode<TKeyBit, TValue>(null, default)) { }
 
         /// <summary>
         /// Method which creates a new child node
@@ -72,7 +72,7 @@ namespace VDS.Common.Tries
         /// Create an empty trie with an empty root node.
         /// </summary>
         public SparseReferenceTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
-            : base(keyMapper) { }
+            : base(keyMapper, new SparseReferenceTrieNode<TKeyBit, TValue>(null, default)) { }
 
         /// <summary>
         /// Method which creates a new child node
@@ -99,7 +99,7 @@ namespace VDS.Common.Tries
         /// </summary>
         /// <param name="keyMapper">Key Mapper</param>
         public SparseCharacterTrie(Func<TKey, IEnumerable<char>> keyMapper)
-            : base(keyMapper) { }
+            : base(keyMapper, new SparseCharacterTrieNode<TValue>(null, default)) { }
 
         /// <summary>
         /// Creates the root node of the trie

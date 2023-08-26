@@ -41,7 +41,7 @@ namespace VDS.Common.Tries
         /// Create an empty trie with an empty root node.
         /// </summary>
         public Trie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
-            : base(keyMapper) { }
+            : base(keyMapper, new TrieNode<TKeyBit, TValue>(null, default)) { }
 
         /// <summary>
         /// Method which creates a new child node
