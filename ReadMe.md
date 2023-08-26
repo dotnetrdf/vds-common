@@ -5,13 +5,8 @@ VDS.Common is a lightweight, dependency-free library of useful advanced data str
 
 It is based on code originally from in the [dotNetRDF Project][1] (see past code history [here][2] and [here][3]) but was split off into a separate library once it became sufficiently generic to be more broadly useful.
 
-VDS.Common is built for a variety of .Net versions and profiles, currently we have builds for the following:
-
-- .Net 3.5 Full/Client Profile
-- .Net 4.0 Full/Client Profile
-- Portable Class Library Profile 328
-- .NET Core netstandard1.0
-- .NET Core netstandard1.4
+VDS.Common is built to target the following:
+- .NET Core netstandard1.3
 - .NET Core netstandard2.0
 
 # License
