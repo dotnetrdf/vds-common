@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using VDS.Common.Trees;
 
@@ -40,7 +41,7 @@ namespace VDS.Common.Collections
     {
         private readonly IBinaryTree<T, int> _data;
         private readonly IComparer<T> _comparer; 
-        private int _total = 0;
+        private int _total;
 
         /// <summary>
         /// Creates a new list
@@ -69,12 +70,12 @@ namespace VDS.Common.Collections
         /// <param name="items">Items</param>
         public DuplicateSortedList(IComparer<T> comparer, IEnumerable<T> items)
         {
-            this._comparer = comparer ?? Comparer<T>.Default;
-            this._data = new AVLTree<T, int>(this._comparer);
+            _comparer = comparer ?? Comparer<T>.Default;
+            _data = new AvlTree<T, int>(_comparer);
             if (items == null) return;
-            foreach (T item in items)
+            foreach (var item in items)
             {
-                this.Add(item);
+                Add(item);
             }
         }
 
@@ -84,7 +85,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return this._data.Nodes.SelectMany(n => Enumerable.Repeat(n.Key, n.Value)).GetEnumerator();
+            return _data.Nodes.SelectMany(n => Enumerable.Repeat(n.Key, n.Value)).GetEnumerator();
         }
 
         /// <summary>
@@ -102,8 +103,7 @@ namespace VDS.Common.Collections
         /// <param name="item">Item to add</param>
         public void Add(T item)
         {
-            bool created;
-            IBinaryTreeNode<T, int> node = this._data.MoveToNode(item, out created);
+            var node = _data.MoveToNode(item, out var created);
             if (created)
             {
                 node.Value = 1;
@@ -112,7 +112,7 @@ namespace VDS.Common.Collections
             {
                 node.Value++;
             }
-            this._total++;
+            _total++;
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace VDS.Common.Collections
         /// </summary>
         public void Clear()
         {
-            this._data.Clear();
-            this._total = 0;
+            _data.Clear();
+            _total = 0;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace VDS.Common.Collections
         /// <returns>True if contained in the list, false otherwise</returns>
         public bool Contains(T item)
         {
-            return this._data.ContainsKey(item);
+            return _data.ContainsKey(item);
         }
 
         /// <summary>
@@ -141,12 +141,12 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Array Index to start the copy at</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
-            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
+            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
+            if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
-            int i = arrayIndex;
-            foreach (T item in this)
+            var i = arrayIndex;
+            foreach (var item in this)
             {
                 array[i] = item;
                 i++;
@@ -160,54 +160,48 @@ namespace VDS.Common.Collections
         /// <returns>True if item was removed, false otherwise</returns>
         public bool Remove(T item)
         {
-            int count;
-            if (!this._data.TryGetValue(item, out count)) return false;
+            if (!_data.TryGetValue(item, out var count)) return false;
             if (count == 1)
             {
-                this._data.Remove(item);
+                _data.Remove(item);
             }
             else
             {
-                this._data[item] = count - 1;
+                _data[item] = count - 1;
             }
-            this._total--;
+            _total--;
             return true;
         }
 
         /// <summary>
         /// Gets the number of items in the list
         /// </summary>
-        public int Count
-        {
-            get { return this._total; }
-        }
+        public int Count => _total;
 
         /// <summary>
         /// Gets whether the list is read only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         private IBinaryTreeNode<T, int> MoveToIndex(int index)
         {
-            if (this._data.Root == null) throw new IndexOutOfRangeException();
-            if (index < 0 || index >= this.Count) throw new IndexOutOfRangeException();
+            if (_data.Root == null) throw new IndexOutOfRangeException();
+            if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
             // Special cases
             // Index 0 and only one node, return the root
-            if (index == 0 && this.Count == 1) return this._data.Root;
+            if (index == 0 && Count == 1) return _data.Root;
             // Index 0, return the left most child
-            if (index == 0) return this._data.Root.FindLeftmostChild();
+            if (index == 0) return _data.Root.FindLeftmostChild();
             // Index == count - 1, return the right most child
-            if (index == this.Count - 1) return this._data.Root.FindRightmostChild();
+            if (index == Count - 1) return _data.Root.FindRightmostChild();
 
             long baseIndex = 0;
-            IBinaryTreeNode<T, int> currentNode = this._data.Root;
+            var currentNode = _data.Root;
             while (true)
             {
-                long currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
+                Debug.Assert(currentNode != null, nameof(currentNode) + " != null");
+                var currentIndex = currentNode.LeftChild != null ? baseIndex + currentNode.LeftChild.Size + currentNode.LeftChild.Value - 1 : baseIndex;
                 if (currentIndex == index) return currentNode;
                 if (currentNode.LeftChild != null && index > currentIndex && index < currentIndex + currentNode.LeftChild.Value) return currentNode;
 
@@ -237,13 +231,14 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public int IndexOf(T item)
         {
-            if (this._data.Root == null) return -1;
+            if (_data.Root == null) return -1;
 
-            IEnumerator<IBinaryTreeNode<T, int>> enumerator = this._data.Nodes.GetEnumerator();
-            int index = 0;
+            using var enumerator = _data.Nodes.GetEnumerator();
+            var index = 0;
             while (enumerator.MoveNext())
             {
-                if (this._comparer.Compare(item, enumerator.Current.Key) == 0) return index;
+                Debug.Assert(enumerator.Current != null, "enumerator.Current != null");
+                if (_comparer.Compare(item, enumerator.Current.Key) == 0) return index;
                 index += enumerator.Current.Value;
             }
             return -1;
@@ -265,15 +260,15 @@ namespace VDS.Common.Collections
         /// <param name="index">Index</param>
         public void RemoveAt(int index)
         {
-            IBinaryTreeNode<T, int> node = this.MoveToIndex(index);
+            var node = MoveToIndex(index);
             if (node.Value > 1)
             {
                 node.Value--;
-                this._total--;
+                _total--;
             }
             else
             {
-                this._data.Remove(node.Key);
+                _data.Remove(node.Key);
             }
         }
 
@@ -284,8 +279,8 @@ namespace VDS.Common.Collections
         /// <returns>Value</returns>
         public T this[int index]
         {
-            get { return this.MoveToIndex(index).Key; }
-            set { throw new NotSupportedException("Cannot set value at a specific index in a sorted list"); }
+            get => MoveToIndex(index).Key;
+            set => throw new NotSupportedException("Cannot set value at a specific index in a sorted list");
         }
     }
 }

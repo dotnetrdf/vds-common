@@ -45,7 +45,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new ReducedEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.EqualityComparer);
+            return new ReducedEnumerator<T>(InnerEnumerable.GetEnumerator(), EqualityComparer);
         }
     }
 }

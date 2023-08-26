@@ -62,16 +62,17 @@ namespace VDS.Common.Collections.Enumerations
             {
                 var expectedItem = expectedEnumerator.Current;
                 i++;
-                if (!actualEnumerator.MoveNext()) Assert.Fail(string.Format("Actual enumerator was exhaused at Item {0} when next Item {1} was expected", i, expectedItem));
+                if (!actualEnumerator.MoveNext()) Assert.Fail(
+                    $"Actual enumerator was exhausted at Item {i} when next Item {expectedItem} was expected");
                 var actualItem = actualEnumerator.Current;
 
-                Assert.AreEqual(expectedItem, actualItem, string.Format("Enumerators mismatched at Item {0}", i));
+                Assert.AreEqual(expectedItem, actualItem, $"Enumerators mismatched at Item {i}");
             }
             if (actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator has additional unexpected items");
         }
 
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static void CheckStruct<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : struct
+        private static void CheckStruct<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : struct
         {
             Console.WriteLine("Expected:");
             TestTools.PrintEnumerableStruct(expected, ",");
@@ -102,10 +103,10 @@ namespace VDS.Common.Collections.Enumerations
             {
                 var expectedItem = expectedEnumerator.Current;
                 i++;
-                if (!actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator was exhaused at Item {0} when next Item {1} was expected", i, expectedItem);
+                if (!actualEnumerator.MoveNext()) Assert.Fail($"Actual enumerator was exhausted at Item {i} when next Item {expectedItem} was expected");
                 var actualItem = actualEnumerator.Current;
 
-                Assert.AreEqual(expectedItem, actualItem, string.Format("Enumerators mismatched at Item {0}", i));
+                Assert.AreEqual(expectedItem, actualItem, $"Enumerators mismatched at Item {i}");
             }
             if (actualEnumerator.MoveNext()) Assert.Fail("Actual enumerator has additional unexpected items");
         }
@@ -122,18 +123,18 @@ namespace VDS.Common.Collections.Enumerations
             IEnumerator<int> enumerator = new LongTakeEnumerator<int>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var i = enumerator.Current;
+                _ = enumerator.Current;
             });
         }
 
         [Test]
         public void EnumeratorBeforeFirstElement2()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongTakeEnumerator<string>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var i = enumerator.Current;
+                _ = enumerator.Current;
             });
         }
 
@@ -144,14 +145,14 @@ namespace VDS.Common.Collections.Enumerations
             IEnumerator<int> enumerator = new LongSkipEnumerator<int>(data.GetEnumerator(), 1);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var i = enumerator.Current;
+                _ = enumerator.Current;
             });
         }
 
         [Test]
         public void EnumeratorBeforeFirstElement4()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongSkipEnumerator<string>(data.GetEnumerator(), 1);
             string i = null;
             Assert.Throws<InvalidOperationException>(() => { i = enumerator.Current; });
@@ -173,7 +174,7 @@ namespace VDS.Common.Collections.Enumerations
         [Test]
         public void EnumeratorAfterLastElement2()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongTakeEnumerator<string>(data.GetEnumerator(), 1);
             Exhaust(enumerator);
             string i = null;
@@ -196,7 +197,7 @@ namespace VDS.Common.Collections.Enumerations
         [Test]
         public void EnumeratorAfterLastElement4()
         {
-            IEnumerable<string> data = new string[] { "a", "b", "c" };
+            IEnumerable<string> data = new[] { "a", "b", "c" };
             IEnumerator<string> enumerator = new LongSkipEnumerator<string>(data.GetEnumerator(), 1);
             Exhaust(enumerator);
             string i = null;
@@ -277,15 +278,15 @@ namespace VDS.Common.Collections.Enumerations
 
         public static readonly object[] TopNData =
         {
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 1 },
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 3 },
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 5 },
-            new object[] { new int[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 100 }
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 1 },
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 3 },
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 5 },
+            new object[] { new[] { 1, 1, 7, 9, 9, 9, 3, 3, 1, 7, 5 }, 100 }
         };
 
         public static readonly object[] TopNStringData =
         {
-            new object[] { new string[] { "a", "b", "b", "a", "z", "m", "q", "m", "b", "c", "f" }, 1 }
+            new object[] { new[] { "a", "b", "b", "a", "z", "m", "q", "m", "b", "c", "f" }, 1 }
         };
 
         [TestCaseSource("TopNData")]

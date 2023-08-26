@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using VDS.Common.Trees;
 
 namespace VDS.Common.Collections
@@ -36,8 +35,8 @@ namespace VDS.Common.Collections
     public class TreeSortedDictionary<TKey, TValue>
         : IDictionary<TKey, TValue>, IEnumerable<TValue>
     {
-        private ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
-        private int _count = 0;
+        private readonly ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
+        private int _count;
 
         /// <summary>
         /// Creates a new dictionary using the default comparer for the key type
@@ -51,8 +50,8 @@ namespace VDS.Common.Collections
         /// <param name="comparer">Comparer</param>
         public TreeSortedDictionary(IComparer<TKey> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException("comparer", "Comparer cannot be null");
-            this._tree = new AVLTree<TKey, TValue>(comparer);
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer), "Comparer cannot be null");
+            _tree = new AvlTree<TKey, TValue>(comparer);
         }
 
         #region IDictionary<TKey,TValue> Members
@@ -64,9 +63,9 @@ namespace VDS.Common.Collections
         /// <param name="value">Value</param>
         public void Add(TKey key, TValue value)
         {
-            if (this._tree.Add(key, value))
+            if (_tree.Add(key, value))
             {
-                this._count++;
+                _count++;
             }
         }
 
@@ -77,19 +76,13 @@ namespace VDS.Common.Collections
         /// <returns>True if the dictionary contains the key, false otherwise</returns>
         public bool ContainsKey(TKey key)
         {
-            return this._tree.ContainsKey(key);
+            return _tree.ContainsKey(key);
         }
 
         /// <summary>
         /// Gets the collection of keys
         /// </summary>
-        public ICollection<TKey> Keys
-        {
-            get 
-            {
-                return new ImmutableView<TKey>(this._tree.Keys, "Modifying the Keys collection of a TreeSortedDictionary directly is not supported");
-            }
-        }
+        public ICollection<TKey> Keys => new ImmutableView<TKey>(_tree.Keys, "Modifying the Keys collection of a TreeSortedDictionary directly is not supported");
 
         /// <summary>
         /// Removes a key from the dictionary
@@ -98,9 +91,9 @@ namespace VDS.Common.Collections
         /// <returns>True if a key was removed, false otherwise</returns>
         public bool Remove(TKey key)
         {
-            if (this._tree.Remove(key))
+            if (_tree.Remove(key))
             {
-                this._count--;
+                _count--;
                 return true;
             }
             else
@@ -117,19 +110,13 @@ namespace VDS.Common.Collections
         /// <returns>True if a value has been returned</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            return this._tree.TryGetValue(key, out value);
+            return _tree.TryGetValue(key, out value);
         }
 
         /// <summary>
         /// Gets the collection of values in the dictionary
         /// </summary>
-        public ICollection<TValue> Values
-        {
-            get
-            {
-                return new ImmutableView<TValue>(this._tree.Values); 
-            }
-        }
+        public ICollection<TValue> Values => new ImmutableView<TValue>(_tree.Values);
 
         /// <summary>
         /// Gets/Sets the value associated with a key
@@ -139,14 +126,8 @@ namespace VDS.Common.Collections
         /// <exception cref="KeyNotFoundException">Thrown if the given key does not exist in the dictionary</exception>
         public TValue this[TKey key]
         {
-            get
-            {
-                return this._tree[key];
-            }
-            set
-            {
-                this._tree[key] = value;
-            }
+            get => _tree[key];
+            set => _tree[key] = value;
         }
 
         #endregion
@@ -159,7 +140,7 @@ namespace VDS.Common.Collections
         /// <param name="item">Key Value pair</param>
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            this.Add(item.Key, item.Value);
+            Add(item.Key, item.Value);
         }
 
         /// <summary>
@@ -167,8 +148,8 @@ namespace VDS.Common.Collections
         /// </summary>
         public void Clear()
         {
-            this._tree.Clear();
-            this._count = 0;
+            _tree.Clear();
+            _count = 0;
         }
 
         /// <summary>
@@ -178,9 +159,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-
-            if (this.TryGetValue(item.Key, out value))
+            if (TryGetValue(item.Key, out var value))
             {
                 if (value != null) return value.Equals(item.Value);
                 if (item.Value == null) return true; //Both null so equal
@@ -199,12 +178,12 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Index to start copying elements at</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array", "Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex", "Cannot start copying at index < 0");
-            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
+            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
+            if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
-            int i = arrayIndex;
-            foreach (ITreeNode<TKey, TValue> node in this._tree.Nodes)
+            var i = arrayIndex;
+            foreach (ITreeNode<TKey, TValue> node in _tree.Nodes)
             {
                 array[i] = new KeyValuePair<TKey, TValue>(node.Key, node.Value);
                 i++;
@@ -214,24 +193,12 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the number of key value pairs in the dictionary
         /// </summary>
-        public int Count
-        {
-            get 
-            {
-                return this._count;
-            }
-        }
+        public int Count => _count;
 
         /// <summary>
         /// Gets whether the dictionary is read-only
         /// </summary>
-        public bool IsReadOnly
-        {
-            get 
-            {
-                return false;
-            }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Removes a key value pair from the dictionary
@@ -240,11 +207,10 @@ namespace VDS.Common.Collections
         /// <returns>True if a key value pair was removed, false otherwise</returns>
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-            if (this.TryGetValue(item.Key, out value))
+            if (TryGetValue(item.Key, out var value))
             {
-                if (value != null && value.Equals(item.Value)) return this.Remove(item.Key);
-                if (item.Value == null) return this.Remove(item.Key);
+                if (value != null && value.Equals(item.Value)) return Remove(item.Key);
+                if (item.Value == null) return Remove(item.Key);
                 return false;
             }
             else
@@ -263,7 +229,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return (from node in this._tree.Nodes
+            return (from node in _tree.Nodes
                     select new KeyValuePair<TKey, TValue>(node.Key, node.Value)).GetEnumerator();
         }
 
@@ -277,7 +243,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion
@@ -288,7 +254,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
         {
-            return this._tree.Values.GetEnumerator();
+            return _tree.Values.GetEnumerator();
         }
     }
 }

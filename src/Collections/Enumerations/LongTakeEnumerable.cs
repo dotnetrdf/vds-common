@@ -40,8 +40,8 @@ namespace VDS.Common.Collections.Enumerations
         public LongTakeEnumerable(IEnumerable<T> enumerable, long toTake)
             : base(enumerable)
         {
-            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", "toTake");
-            this.ToTake = toTake;
+            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
+            ToTake = toTake;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new LongTakeEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToTake);
+            return new LongTakeEnumerator<T>(InnerEnumerable.GetEnumerator(), ToTake);
         }
     }
 }

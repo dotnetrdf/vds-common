@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.References
 {
@@ -34,8 +32,8 @@ namespace VDS.Common.References
     public class NestedReference<T> 
         where T : class
     {
-        private Dictionary<int, T> _values = new Dictionary<int, T>();
-        private int _currLevel = 0;
+        private readonly Dictionary<int, T> _values = new();
+        private int _currLevel;
         private T _currRef;
 
         /// <summary>
@@ -43,7 +41,7 @@ namespace VDS.Common.References
         /// </summary>
         public NestedReference()
         {
-            this._currLevel++;
+            _currLevel++;
         }
 
         /// <summary>
@@ -52,9 +50,9 @@ namespace VDS.Common.References
         /// <param name="initValue">Initial Value</param>
         public NestedReference(T initValue)
         {
-            this._values.Add(this._currLevel, initValue);
-            this._currRef = initValue;
-            this._currLevel++;
+            _values.Add(_currLevel, initValue);
+            _currRef = initValue;
+            _currLevel++;
         }
 
         /// <summary>
@@ -62,21 +60,11 @@ namespace VDS.Common.References
         /// </summary>
         public T Value
         {
-            get
-            {
-                return this._currRef;
-            }
+            get => _currRef;
             set
             {
-                if (this._values.ContainsKey(this._currLevel))
-                {
-                    this._values[this._currLevel] = value;
-                }
-                else
-                {
-                    this._values.Add(this._currLevel, value);
-                }
-                this._currRef = value;
+                _values[_currLevel] = value;
+                _currRef = value;
             }
         }
 
@@ -85,7 +73,7 @@ namespace VDS.Common.References
         /// </summary>
         public void IncrementNesting()
         {
-            this._currLevel++;
+            _currLevel++;
         }
 
         /// <summary>
@@ -93,29 +81,29 @@ namespace VDS.Common.References
         /// </summary>
         public void DecrementNesting()
         {
-            if (this._currLevel == 0) throw new InvalidOperationException("Cannot decrement nesting when current nesting level is 0");
+            if (_currLevel == 0) throw new InvalidOperationException("Cannot decrement nesting when current nesting level is 0");
 
             //Revert to the most recent reference
-            if (this._values.ContainsKey(this._currLevel))
+            if (_values.ContainsKey(_currLevel))
             {
-                this._values.Remove(this._currLevel);
-                int i = this._currLevel;
+                _values.Remove(_currLevel);
+                var i = _currLevel;
                 while (i > 1)
                 {
                     i--;
-                    if (this._values.ContainsKey(i))
+                    if (_values.TryGetValue(i, out var value))
                     {
-                        this._currRef = this._values[i];
+                        _currRef = value;
                         break;
                     }
                     else
                     {
-                        this._currRef = null;
+                        _currRef = null;
                     }
                 }
             }
             //Finally decrement the level
-            this._currLevel--;
+            _currLevel--;
         }
     }
 }

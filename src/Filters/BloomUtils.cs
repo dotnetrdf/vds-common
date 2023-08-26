@@ -51,8 +51,8 @@ namespace VDS.Common.Filters
         /// <returns>Bloom Filter parameters</returns>
         public static IBloomFilterParameters CalculateBloomParameters(long expectedItems, long errorRate)
         {
-            if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", "expectedItems");
-            if (errorRate < 1) throw new ArgumentException("errorRate must be >= 1", "errorRate");
+            if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", nameof(expectedItems));
+            if (errorRate < 1) throw new ArgumentException("errorRate must be >= 1", nameof(errorRate));
             return CalculateBloomParameters(expectedItems, 1d/errorRate);
         }
 
@@ -64,11 +64,11 @@ namespace VDS.Common.Filters
         /// <returns>Bloom Filter parameters</returns>
         public static IBloomFilterParameters CalculateBloomParameters(long expectedItems, double errorRate)
         {
-            if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", "expectedItems");
-            if (errorRate < 0d || errorRate > 1d) throw new ArgumentException("errorRate must be in the range 0-1", "errorRate");
+            if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", nameof(expectedItems));
+            if (errorRate < 0d || errorRate > 1d) throw new ArgumentException("errorRate must be in the range 0-1", nameof(errorRate));
 
-            double numBits = Math.Ceiling((expectedItems*Math.Log(errorRate))/Math.Log(1d/Math.Pow(2d, Math.Log(2))));
-            double numHashFunctions = Math.Round(Math.Log(2d)*(numBits/expectedItems));
+            var numBits = Math.Ceiling((expectedItems*Math.Log(errorRate))/Math.Log(1d/Math.Pow(2d, Math.Log(2))));
+            var numHashFunctions = Math.Round(Math.Log(2d)*(numBits/expectedItems));
 
             try
             {
@@ -76,7 +76,7 @@ namespace VDS.Common.Filters
             }
             catch (OverflowException)
             {
-                throw new ArgumentException(String.Format("The given parameters would result in a Bloom filter that required more than {0} bits/hash functions", Int32.MaxValue));
+                throw new ArgumentException(string.Format("The given parameters would result in a Bloom filter that required more than {0} bits/hash functions", int.MaxValue));
             }
         }
 
@@ -92,10 +92,10 @@ namespace VDS.Common.Filters
         /// <returns>Error Rate as a value between 0 and 1.0</returns>
         public static double CalculateErrorRate(long expectedItems, IBloomFilterParameters parameters)
         {
-            if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", "expectedItems");
-            if (parameters == null) throw new ArgumentNullException("parameters");
+            if (expectedItems < 1) throw new ArgumentException("expectedItems must be >= 1", nameof(expectedItems));
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            double lnP = (-1d*((double) parameters.NumberOfBits / expectedItems))*Math.Pow(Math.Log(2), 2d);
+            var lnP = (-1d*((double) parameters.NumberOfBits / expectedItems))*Math.Pow(Math.Log(2), 2d);
             return Math.Pow(Math.E, lnP);
         }
     }

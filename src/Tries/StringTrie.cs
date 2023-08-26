@@ -20,7 +20,6 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace VDS.Common.Tries
@@ -30,21 +29,21 @@ namespace VDS.Common.Tries
     /// </summary>
     /// <typeparam name="T">Type of values to be stored</typeparam>
     public class StringTrie<T>
-        : Trie<String, char, T>
+        : Trie<string, char, T>
         where T : class
     {
         /// <summary>
         /// Creates a new String Trie
         /// </summary>
         public StringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
+            : base(KeyMapperFunction) { }
 
         /// <summary>
         /// Key Mapper function for String Trie
         /// </summary>
         /// <param name="key">Key</param>
         /// <returns>Array of characters</returns>
-        public static IEnumerable<char> KeyMapper(String key)
+        public static IEnumerable<char> KeyMapperFunction(string key)
         {
             return key.ToCharArray();
         }
@@ -58,13 +57,13 @@ namespace VDS.Common.Tries
     /// This is a sparse implementation so should be more memory efficient than the <see cref="StringTrie{T}"/> for many use cases
     /// </remarks>
     public class SparseStringTrie<T>
-        : SparseCharacterTrie<String, T>
+        : SparseCharacterTrie<string, T>
         where T : class
     {
         /// <summary>
         /// Creates a new sparse String Trie
         /// </summary>
         public SparseStringTrie()
-            : base(StringTrie<T>.KeyMapper) { }
+            : base(StringTrie<T>.KeyMapperFunction) { }
     }
 }

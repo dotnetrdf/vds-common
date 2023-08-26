@@ -52,7 +52,7 @@ namespace VDS.Common.Tries
         /// <returns>True if it matches, false otherwise</returns>
         protected override bool MatchesSingleton(TKeyBit key)
         {
-            return this._singleton.HasValue && this._singleton.Value.Equals(key);
+            return _singleton.HasValue && _singleton.Value.Equals(key);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace VDS.Common.Tries
         /// </summary>
         protected override void ClearSingleton()
         {
-            this._singleton = null;
-            this._singletonNode = null;
+            _singleton = null;
+            _singletonNode = null;
         }
 
         /// <summary>
@@ -77,16 +77,13 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child node
         /// </summary>
-        protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
+        protected override ITrieNode<TKeyBit, TValue> SingletonChild
         {
-            get
-            {
-                return this._singletonNode;
-            }
+            get => _singletonNode;
             set
             {
-                this._singleton = value.KeyBit;
-                this._singletonNode = value;
+                _singleton = value.KeyBit;
+                _singletonNode = value;
             }
         }
 
@@ -120,7 +117,7 @@ namespace VDS.Common.Tries
         /// <returns>True if it matches, false otherwise</returns>
         protected override bool MatchesSingleton(TKeyBit key)
         {
-            return this._singleton != null && this._singleton.Equals(key);
+            return _singleton != null && _singleton.Equals(key);
         }
 
         /// <summary>
@@ -128,8 +125,8 @@ namespace VDS.Common.Tries
         /// </summary>
         protected override void ClearSingleton()
         {
-            this._singleton = null;
-            this._singletonNode = null;
+            _singleton = null;
+            _singletonNode = null;
         }
 
         /// <summary>
@@ -145,16 +142,13 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child
         /// </summary>
-        protected internal override ITrieNode<TKeyBit, TValue> SingletonChild
+        protected override ITrieNode<TKeyBit, TValue> SingletonChild
         {
-            get
-            {
-                return this._singletonNode;
-            }
+            get => _singletonNode;
             set
             {
-                this._singleton = value.KeyBit;
-                this._singletonNode = value;
+                _singleton = value.KeyBit;
+                _singletonNode = value;
             }
         }
 
@@ -186,7 +180,7 @@ namespace VDS.Common.Tries
         /// <returns>True if it matches, false otherwise</returns>
         protected override bool MatchesSingleton(char key)
         {
-            return key == this._singleton;
+            return key == _singleton;
         }
 
         /// <summary>
@@ -194,8 +188,8 @@ namespace VDS.Common.Tries
         /// </summary>
         protected override void ClearSingleton()
         {
-            this._singleton = '\0';
-            this._singletonNode = null;
+            _singleton = '\0';
+            _singletonNode = null;
         }
 
         /// <summary>
@@ -211,16 +205,13 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Gets/Sets the singleton child
         /// </summary>
-        protected internal override ITrieNode<char, TValue> SingletonChild
+        protected override ITrieNode<char, TValue> SingletonChild
         {
-            get
-            {
-                return this._singletonNode;
-            }
+            get => _singletonNode;
             set
             {
-                this._singleton = value.KeyBit;
-                this._singletonNode = value;
+                _singleton = value.KeyBit;
+                _singletonNode = value;
             }
         }
     }

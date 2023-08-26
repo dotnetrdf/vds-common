@@ -45,8 +45,8 @@ namespace VDS.Common.References
         : IDisposable
         where T : class
     {
-        private Dictionary<int, T> _refs = new Dictionary<int, T>();
-        private Func<T> _init;
+        private readonly Dictionary<int, T> _refs = new Dictionary<int, T>();
+        private readonly Func<T> _init;
 
         /// <summary>
         /// Creates a new ThreadSafeReference where the initial value of the reference on each thread is null
@@ -60,19 +60,13 @@ namespace VDS.Common.References
         /// <param name="init">Initialiser Function</param>
         public ThreadIsolatedReference(Func<T> init)
         {
-            this._init = init;
+            _init = init;
         }
 
         /// <summary>
         /// Gets the initialiser function
         /// </summary>
-        public Func<T> Initialiser
-        {
-            get
-            {
-                return this._init;
-            }
-        }
+        public Func<T> Initialiser => _init;
 
         /// <summary>
         /// Gets/Sets the value for the current thread
@@ -83,41 +77,34 @@ namespace VDS.Common.References
             {
                 try
                 {
-                    Monitor.Enter(this._refs);
-                    int id = Thread.CurrentThread.ManagedThreadId;
-                    if (!this._refs.ContainsKey(id))
+                    Monitor.Enter(_refs);
+                    var id = Thread.CurrentThread.ManagedThreadId;
+                    if (!_refs.ContainsKey(id))
                     {
-                        this._refs.Add(id, null);
-                        if (this._init != null)
+                        _refs.Add(id, null);
+                        if (_init != null)
                         {
-                            this._refs[id] = this._init();
+                            _refs[id] = _init();
                         }
                     }
-                    return this._refs[id];
+                    return _refs[id];
                 }
                 finally
                 {
-                    Monitor.Exit(this._refs);
+                    Monitor.Exit(_refs);
                 }
             }
             set
             {
                 try
                 {
-                    Monitor.Enter(this._refs);
-                    int id = Thread.CurrentThread.ManagedThreadId;
-                    if (this._refs.ContainsKey(id))
-                    {
-                        this._refs[id] = value;
-                    }
-                    else
-                    {
-                        this._refs.Add(id, value);
-                    }
+                    Monitor.Enter(_refs);
+                    var id = Thread.CurrentThread.ManagedThreadId;
+                    _refs[id] = value;
                 }
                 finally
                 {
-                    Monitor.Exit(this._refs);
+                    Monitor.Exit(_refs);
                 }
             }
         }
@@ -132,12 +119,12 @@ namespace VDS.Common.References
         {
             try
             {
-                Monitor.Enter(this._refs);
-                this._refs.Clear();
+                Monitor.Enter(_refs);
+                _refs.Clear();
             }
             finally
             {
-                Monitor.Exit(this._refs);
+                Monitor.Exit(_refs);
             }
         }
     }
@@ -150,8 +137,8 @@ namespace VDS.Common.References
         : IDisposable
         where T : struct
     {
-        private Dictionary<int, T> _refs = new Dictionary<int, T>();
-        private Func<T> _init;
+        private readonly Dictionary<int, T> _refs = new Dictionary<int, T>();
+        private readonly Func<T> _init;
 
         /// <summary>
         /// Creates a new ThreadSafeValue where the initial value of the struct on each thread is default
@@ -164,19 +151,13 @@ namespace VDS.Common.References
         /// <param name="init">Initialiser Function</param>
         public ThreadIsolatedValue(Func<T> init)
         {
-            this._init = init;
+            _init = init;
         }
 
         /// <summary>
         /// Gets the initialiser function
         /// </summary>
-        public Func<T> Initialiser
-        {
-            get
-            {
-                return this._init;
-            }
-        }
+        public Func<T> Initialiser => _init;
 
         /// <summary>
         /// Gets/Sets the value for the current thread
@@ -187,38 +168,31 @@ namespace VDS.Common.References
             {
                 try
                 {
-                    Monitor.Enter(this._refs);
-                    int id = Thread.CurrentThread.ManagedThreadId;
-                    if (!this._refs.ContainsKey(id))
+                    Monitor.Enter(_refs);
+                    var id = Thread.CurrentThread.ManagedThreadId;
+                    if (!_refs.ContainsKey(id))
                     {
-                        T value = (this._init != null) ? this._init() : default(T);
-                        this._refs.Add(id, value);
+                        var value = _init?.Invoke() ?? default(T);
+                        _refs.Add(id, value);
                     }
-                    return this._refs[id];
+                    return _refs[id];
                 }
                 finally
                 {
-                    Monitor.Exit(this._refs);
+                    Monitor.Exit(_refs);
                 }
             }
             set
             {
                 try
                 {
-                    Monitor.Enter(this._refs);
-                    int id = Thread.CurrentThread.ManagedThreadId;
-                    if (this._refs.ContainsKey(id))
-                    {
-                        this._refs[id] = value;
-                    }
-                    else
-                    {
-                        this._refs.Add(id, value);
-                    }
+                    Monitor.Enter(_refs);
+                    var id = Thread.CurrentThread.ManagedThreadId;
+                    _refs[id] = value;
                 }
                 finally
                 {
-                    Monitor.Exit(this._refs);
+                    Monitor.Exit(_refs);
                 }
             }
         }
@@ -230,12 +204,12 @@ namespace VDS.Common.References
         {
             try
             {
-                Monitor.Enter(this._refs);
-                this._refs.Clear();
+                Monitor.Enter(_refs);
+                _refs.Clear();
             }
             finally
             {
-                Monitor.Exit(this._refs);
+                Monitor.Exit(_refs);
             }
         }
     }

@@ -21,18 +21,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading;
 
 namespace VDS.Common
 {
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public static class TestTools
     {
         public static void PrintEnumerable<T>(IEnumerable<T> items, string sep)
             where T : class
         {
-            bool first = true;
-            foreach (T item in items)
+            var first = true;
+            foreach (var item in items)
             {
                 if (!first)
                 {
@@ -49,8 +50,8 @@ namespace VDS.Common
         public static void PrintEnumerableStruct<T>(IEnumerable<T> items, string sep)
             where T : struct
         {
-            bool first = true;
-            foreach (T item in items)
+            var first = true;
+            foreach (var item in items)
             {
                 if (!first)
                 {
@@ -88,7 +89,7 @@ namespace VDS.Common
 
         public static IEnumerable<T> AsEnumerable<T>(this T item)
         {
-            return new T[] { item };
+            return new[] { item };
         }
     }
 }

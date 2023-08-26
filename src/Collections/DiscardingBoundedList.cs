@@ -39,8 +39,8 @@ namespace VDS.Common.Collections
         public DiscardingBoundedList(int capacity)
             : base(new List<T>(SelectInitialCapacity(capacity)))
         {
-            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", "capacity");
-            this.MaxCapacity = capacity;
+            if (capacity < 0) throw new ArgumentException("MaxCapacity must be >= 0", nameof(capacity));
+            MaxCapacity = capacity;
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace VDS.Common.Collections
         public DiscardingBoundedList(int capacity, IEnumerable<T> items)
             : this(capacity)
         {
-            foreach (T item in items)
+            foreach (var item in items)
             {
-                this.Add(item);
+                Add(item);
             }
         }
 
@@ -67,11 +67,11 @@ namespace VDS.Common.Collections
         /// <param name="item">Item</param>
         public override void Insert(int index, T item)
         {
-            if (this._list.Count == this.MaxCapacity && index == this._list.Count) return;
-            this._list.Insert(index, item);
-            while (this._list.Count > this.MaxCapacity)
+            if (List.Count == MaxCapacity && index == List.Count) return;
+            List.Insert(index, item);
+            while (List.Count > MaxCapacity)
             {
-                this._list.RemoveAt(this.MaxCapacity);
+                List.RemoveAt(MaxCapacity);
             }
         }
 
@@ -81,17 +81,14 @@ namespace VDS.Common.Collections
         /// <param name="item">Item</param>
         public override sealed void Add(T item)
         {
-            if (this._list.Count == this.MaxCapacity) return;
-            this._list.Add(item);
+            if (List.Count == MaxCapacity) return;
+            List.Add(item);
         }
 
         /// <summary>
         /// Gets the overflow policy for this bounded list which is <see cref="BoundedListOverflowPolicy.Discard"/>
         /// </summary>
-        public override BoundedListOverflowPolicy OverflowPolicy
-        {
-            get { return BoundedListOverflowPolicy.Discard; }
-        }
+        public override BoundedListOverflowPolicy OverflowPolicy => BoundedListOverflowPolicy.Discard;
 
         /// <summary>
         /// Gets the maximum capacity of the list

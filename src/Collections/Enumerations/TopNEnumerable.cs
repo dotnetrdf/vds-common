@@ -46,7 +46,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new TopNEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.Comparer, this.N);
+            return new TopNEnumerator<T>(InnerEnumerable.GetEnumerator(), Comparer, N);
         }
     }
 }

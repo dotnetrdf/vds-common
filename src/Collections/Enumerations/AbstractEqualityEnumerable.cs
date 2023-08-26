@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Collections.Enumerations
 {
@@ -42,8 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         protected AbstractEqualityEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
             : base(enumerable)
         {
-            if (equalityComparer == null) throw new ArgumentNullException("equalityComparer");
-            this.EqualityComparer = equalityComparer;
+            EqualityComparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Underlying list
         /// </summary>
-        protected readonly IList<T> _list;
+        protected readonly IList<T> List;
 
         /// <summary>
         /// Creates a new list backed bounded list using the given list
@@ -43,8 +43,7 @@ namespace VDS.Common.Collections
         /// <param name="list">List</param>
         protected AbstractListBackedBoundedList(IList<T> list)
         {
-            if (list == null) throw new ArgumentNullException("list");
-            this._list = list;
+            List = list ?? throw new ArgumentNullException(nameof(list));
         }
 
         /// <summary>
@@ -60,18 +59,12 @@ namespace VDS.Common.Collections
         /// <summary>
         /// Gets the size of the list
         /// </summary>
-        public virtual int Count
-        {
-            get { return this._list.Count; }
-        }
+        public virtual int Count => List.Count;
 
         /// <summary>
         /// Gets whether the list is ready only
         /// </summary>
-        public virtual bool IsReadOnly
-        {
-            get { return this._list.IsReadOnly; }
-        }
+        public virtual bool IsReadOnly => List.IsReadOnly;
 
         /// <summary>
         /// Gets the index of the given item
@@ -80,7 +73,7 @@ namespace VDS.Common.Collections
         /// <returns>Index or -1 if not in list</returns>
         public virtual int IndexOf(T item)
         {
-            return this._list.IndexOf(item);
+            return List.IndexOf(item);
         }
 
         /// <summary>
@@ -97,8 +90,8 @@ namespace VDS.Common.Collections
         /// <returns>Value</returns>
         public virtual T this[int index]
         {
-            get { return this._list[index]; }
-            set { this._list[index] = value; }
+            get => List[index];
+            set => List[index] = value;
         }
 
         /// <summary>
@@ -112,7 +105,7 @@ namespace VDS.Common.Collections
         /// </summary>
         public virtual void Clear()
         {
-            this._list.Clear();
+            List.Clear();
         }
 
         /// <summary>
@@ -122,7 +115,7 @@ namespace VDS.Common.Collections
         /// <returns>True if contained in the list, false otherwise</returns>
         public virtual bool Contains(T item)
         {
-            return this._list.Contains(item);
+            return List.Contains(item);
         }
 
         /// <summary>
@@ -132,7 +125,7 @@ namespace VDS.Common.Collections
         /// <param name="arrayIndex">Array Index to start the copy at</param>
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
-            this._list.CopyTo(array, arrayIndex);
+            List.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -142,7 +135,7 @@ namespace VDS.Common.Collections
         /// <returns>True if item was removed, false otherwise</returns>
         public virtual bool Remove(T item)
         {
-            return this._list.Remove(item);
+            return List.Remove(item);
         }
 
         /// <summary>
@@ -151,7 +144,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return this._list.GetEnumerator();
+            return List.GetEnumerator();
         }
 
         /// <summary>
@@ -160,7 +153,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this._list.GetEnumerator();
+            return List.GetEnumerator();
         }
 
         /// <summary>
@@ -179,7 +172,7 @@ namespace VDS.Common.Collections
         /// <param name="index">Index</param>
         public virtual void RemoveAt(int index)
         {
-            this._list.RemoveAt(index);
+            List.RemoveAt(index);
         }
     }
 }

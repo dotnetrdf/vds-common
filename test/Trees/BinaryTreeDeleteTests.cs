@@ -34,11 +34,11 @@ namespace VDS.Common.Trees
             //Tree with just a root
             //
             //     (1)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 1, 1);
+            var root = new BinaryTreeNode<int, int>(null, 1, 1);
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int,int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree2(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -48,13 +48,13 @@ namespace VDS.Common.Trees
             //     (2)
             //    /
             //  (1)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 2, 2);
-            BinaryTreeNode<int, int> leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
+            var root = new BinaryTreeNode<int, int>(null, 2, 2);
+            var leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
             root.LeftChild = leftChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree3(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -64,13 +64,13 @@ namespace VDS.Common.Trees
             //     (2)
             //    /
             //  (1)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var root = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightChild = new BinaryTreeNode<int, int>(null, 2, 2);
             root.RightChild = rightChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree4(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -80,15 +80,15 @@ namespace VDS.Common.Trees
             //     (2)
             //    /   \
             //  (1)    (3)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 2, 2);
-            BinaryTreeNode<int, int> leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightChild = new BinaryTreeNode<int, int>(null, 3, 3);
+            var root = new BinaryTreeNode<int, int>(null, 2, 2);
+            var leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightChild = new BinaryTreeNode<int, int>(null, 3, 3);
             root.LeftChild = leftChild;
             root.RightChild = rightChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree5(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -100,15 +100,15 @@ namespace VDS.Common.Trees
             //  (2)
             //  /
             //(1)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 3, 3);
-            BinaryTreeNode<int, int> leftInnerChild = new BinaryTreeNode<int, int>(null, 2, 2);
-            BinaryTreeNode<int, int> leftLeafChild = new BinaryTreeNode<int, int>(null, 1, 1);
+            var root = new BinaryTreeNode<int, int>(null, 3, 3);
+            var leftInnerChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var leftLeafChild = new BinaryTreeNode<int, int>(null, 1, 1);
             leftInnerChild.LeftChild = leftLeafChild;
             root.LeftChild = leftInnerChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree6(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -120,15 +120,15 @@ namespace VDS.Common.Trees
             //  (1)
             //     \
             //     (2)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 3, 3);
-            BinaryTreeNode<int, int> leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var root = new BinaryTreeNode<int, int>(null, 3, 3);
+            var leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightChild = new BinaryTreeNode<int, int>(null, 2, 2);
             leftChild.RightChild = rightChild;
             root.LeftChild = leftChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree7(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -140,15 +140,15 @@ namespace VDS.Common.Trees
             //       (2)
             //         \
             //         (3)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightInnerChild = new BinaryTreeNode<int, int>(null, 2, 2);
-            BinaryTreeNode<int, int> rightLeafChild = new BinaryTreeNode<int, int>(null, 3, 3);
+            var root = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightInnerChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var rightLeafChild = new BinaryTreeNode<int, int>(null, 3, 3);
             rightInnerChild.RightChild = rightLeafChild;
             root.RightChild = rightInnerChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree8(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -160,15 +160,15 @@ namespace VDS.Common.Trees
             //       (3)
             //       /
             //     (2)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightChild = new BinaryTreeNode<int, int>(null, 3, 3);
-            BinaryTreeNode<int, int> leftChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var root = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightChild = new BinaryTreeNode<int, int>(null, 3, 3);
+            var leftChild = new BinaryTreeNode<int, int>(null, 2, 2);
             rightChild.LeftChild = leftChild;
             root.RightChild = rightChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree9(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -180,17 +180,17 @@ namespace VDS.Common.Trees
             //  (2)    (4)
             //  /
             //(1)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 3, 3);
-            BinaryTreeNode<int, int> leftChild = new BinaryTreeNode<int, int>(null, 2, 2);
-            BinaryTreeNode<int, int> leftLeafChild = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightChild = new BinaryTreeNode<int, int>(null, 4, 4);
+            var root = new BinaryTreeNode<int, int>(null, 3, 3);
+            var leftChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var leftLeafChild = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightChild = new BinaryTreeNode<int, int>(null, 4, 4);
             leftChild.LeftChild = leftLeafChild;
             root.LeftChild = leftChild;
             root.RightChild = rightChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         private void PrepareTree10(ITree<IBinaryTreeNode<int, int>, int, int> tree)
@@ -202,17 +202,17 @@ namespace VDS.Common.Trees
             //  (1)    (4)
             //    \
             //    (2)
-            BinaryTreeNode<int, int> root = new BinaryTreeNode<int, int>(null, 3, 3);
-            BinaryTreeNode<int, int> leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
-            BinaryTreeNode<int, int> rightLeafChild = new BinaryTreeNode<int, int>(null, 2, 2);
-            BinaryTreeNode<int, int> rightChild = new BinaryTreeNode<int, int>(null, 4, 4);
+            var root = new BinaryTreeNode<int, int>(null, 3, 3);
+            var leftChild = new BinaryTreeNode<int, int>(null, 1, 1);
+            var rightLeafChild = new BinaryTreeNode<int, int>(null, 2, 2);
+            var rightChild = new BinaryTreeNode<int, int>(null, 4, 4);
             leftChild.RightChild = rightLeafChild;
             root.LeftChild = leftChild;
             root.RightChild = rightChild;
 
             tree.Root = root;
 
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
         }
 
         #endregion
@@ -221,24 +221,24 @@ namespace VDS.Common.Trees
 
         private void TestTree1(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree1(tree);
+            PrepareTree1(tree);
 
             //Remove Root
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int,int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should lead to empty tree
             Assert.AreEqual(0, tree.Nodes.Count());
             Assert.IsNull(tree.Root);
         }
 
-        private void TestTree2a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree2A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree2(tree);
+            PrepareTree2(tree);
 
             //Remove Root
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should lead to Left Child as Root
             Assert.AreEqual(1, tree.Nodes.Count());
@@ -246,13 +246,13 @@ namespace VDS.Common.Trees
             Assert.IsNull(tree.Root.LeftChild);
         }
 
-        private void TestTree2b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree2B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree2(tree);
+            PrepareTree2(tree);
 
             //Remove Left Child
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should just leave Root
             Assert.AreEqual(1, tree.Nodes.Count());
@@ -260,13 +260,13 @@ namespace VDS.Common.Trees
             Assert.IsNull(tree.Root.LeftChild);
         }
 
-        private void TestTree3a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree3A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree3(tree);
+            PrepareTree3(tree);
 
             //Remove Root
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should lead to Right Child as Root
             Assert.AreEqual(1, tree.Nodes.Count());
@@ -274,13 +274,13 @@ namespace VDS.Common.Trees
             Assert.IsNull(tree.Root.RightChild);
         }
 
-        private void TestTree3b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree3B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree3(tree);
+            PrepareTree3(tree);
 
             //Remove Right Child
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should just leave Root
             Assert.AreEqual(1, tree.Nodes.Count());
@@ -288,13 +288,13 @@ namespace VDS.Common.Trees
             Assert.IsNull(tree.Root.RightChild);
         }
 
-        private void TestTree4a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree4A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree4(tree);
+            PrepareTree4(tree);
 
             //Remove Root
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should lead to Left Child to Root with Right Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -303,13 +303,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(3, tree.Root.RightChild.Value);
         }
 
-        private void TestTree4b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree4B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree4(tree);
+            PrepareTree4(tree);
 
             //Remove Left Child
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Right Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -318,13 +318,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(3, tree.Root.RightChild.Value);
         }
 
-        private void TestTree4c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree4C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree4(tree);
+            PrepareTree4(tree);
 
             //Remove Right Child
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Left Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -333,13 +333,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(1, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree5a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree5A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree5(tree);
+            PrepareTree5(tree);
 
             //Remove Root
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Left Child to Root
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -348,13 +348,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(1, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree5b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree5B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree5(tree);
+            PrepareTree5(tree);
 
             //Remove Left Inner Child
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Leaf as Left Child of Root
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -363,13 +363,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(1, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree5c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree5C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree5(tree);
+            PrepareTree5(tree);
 
             //Remove Left Leaf Child
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Left Inner Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -378,13 +378,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(2, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree6a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree6A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree6(tree);
+            PrepareTree6(tree);
 
             //Remove Root
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should move right child of Left child to Root
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -393,13 +393,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(1, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree6b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree6B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree6(tree);
+            PrepareTree6(tree);
 
             //Remove Left Child
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should move right child of left child to left child
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -408,13 +408,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(2, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree6c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree6C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree6(tree);
+            PrepareTree6(tree);
 
             //Remove Right Child
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Left Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -423,13 +423,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(1, tree.Root.LeftChild.Value);
         }
 
-        private void TestTree7a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree7A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree7(tree);
+            PrepareTree7(tree);
 
             //Remove Root
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should move Right Child to Root
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -438,13 +438,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(3, tree.Root.RightChild.Value);
         }
 
-        private void TestTree7b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree7B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree7(tree);
+            PrepareTree7(tree);
 
             //Remove Right Inner Child
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Leaf as Right Child of Root
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -453,13 +453,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(3, tree.Root.RightChild.Value);
         }
 
-        private void TestTree7c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree7C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree7(tree);
+            PrepareTree7(tree);
 
             //Remove Right Leaf Child
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Left Inner Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -468,13 +468,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(2, tree.Root.RightChild.Value);
         }
 
-        private void TestTree8a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree8A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree8(tree);
+            PrepareTree8(tree);
 
             //Remove Root
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should move left child of right child to Root
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -483,13 +483,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(3, tree.Root.RightChild.Value);
         }
 
-        private void TestTree8b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree8B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree8(tree);
+            PrepareTree8(tree);
 
             //Remove Right Child
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should move left child of right child to right child
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -498,13 +498,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(2, tree.Root.RightChild.Value);
         }
 
-        private void TestTree8c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree8C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree8(tree);
+            PrepareTree8(tree);
 
             //Remove Left Child
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Right Child as-is
             Assert.AreEqual(2, tree.Nodes.Count());
@@ -513,13 +513,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(3, tree.Root.RightChild.Value);
         }
 
-        private void TestTree9a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree9A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree9(tree);
+            PrepareTree9(tree);
 
             //Remove Root
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should lead to Left Child to Root with Right Child as-is
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -530,13 +530,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(4, tree.Root.RightChild.Value);
         }
 
-        private void TestTree9b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree9B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree9(tree);
+            PrepareTree9(tree);
 
             //Remove Left Inner Child
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Right Child as-is, Left Leaf child should move up
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -547,13 +547,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(4, tree.Root.RightChild.Value);
         }
 
-        private void TestTree9c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree9C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree9(tree);
+            PrepareTree9(tree);
 
             //Remove Left Leaf Child
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and immediate children as-is
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -566,11 +566,11 @@ namespace VDS.Common.Trees
 
         private void TestTree9d(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree9(tree);
+            PrepareTree9(tree);
 
             //Remove Right Child
             tree.Remove(4);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and left sub-tree as-is
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -581,13 +581,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(1, tree.Root.LeftChild.LeftChild.Value);
         }
 
-        private void TestTree10a(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree10A(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree10(tree);
+            PrepareTree10(tree);
 
             //Remove Root
             tree.Remove(3);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should lead to Rightmost Child of Left subtree to Root with Right Child as-is
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -598,13 +598,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(4, tree.Root.RightChild.Value);
         }
 
-        private void TestTree10b(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree10B(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree10(tree);
+            PrepareTree10(tree);
 
             //Remove Left Inner Child
             tree.Remove(1);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and Right Child as-is, Right Leaf of left subtree should move up
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -615,13 +615,13 @@ namespace VDS.Common.Trees
             Assert.AreEqual(4, tree.Root.RightChild.Value);
         }
 
-        private void TestTree10c(ITree<IBinaryTreeNode<int, int>, int, int> tree)
+        private void TestTree10C(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree10(tree);
+            PrepareTree10(tree);
 
             //Remove Right Left of left subtree should leave root and immediate children as=is
             tree.Remove(2);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and immediate children as-is
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -634,11 +634,11 @@ namespace VDS.Common.Trees
 
         private void TestTree10d(ITree<IBinaryTreeNode<int, int>, int, int> tree)
         {
-            this.PrepareTree10(tree);
+            PrepareTree10(tree);
 
             //Remove Right Child
             tree.Remove(4);
-            BinaryTreeTools.PrintBinaryTreeStructs<IBinaryTreeNode<int, int>, int>(tree);
+            BinaryTreeTools.PrintBinaryTreeStructs(tree);
 
             //Should leave Root and left sub-tree as-is
             Assert.AreEqual(3, tree.Nodes.Count());
@@ -652,330 +652,150 @@ namespace VDS.Common.Trees
         #endregion
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation1()
+        public void BinaryTreeAvlDeleteValidation1()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree1(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree1(tree);
         }
 
         [Test]
         public void BinaryTreeUnbalancedDeleteValidation1()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree1(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree1(tree);
         }
 
         [Test]
         public void BinaryTreeScapegoatDeleteValidation1()
         {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree1(tree);
+            var tree = new ScapegoatTree<int, int>();
+            TestTree1(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation2a()
+        public void BinaryTreeAvlDeleteValidation2A()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree2a(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree2A(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation2b()
+        public void BinaryTreeAvlDeleteValidation2B()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree2b(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree2B(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation2a()
+        public void BinaryTreeUnbalancedDeleteValidation2A()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree2a(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree2A(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation2b()
+        public void BinaryTreeUnbalancedDeleteValidation2B()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree2b(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree2B(tree);
         }
 
         [Test]
-        public void BinaryTreeScapegoatDeleteValidation2a()
+        public void BinaryTreeScapegoatDeleteValidation2A()
         {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree2a(tree);
+            var tree = new ScapegoatTree<int, int>();
+            TestTree2A(tree);
         }
 
         [Test]
-        public void BinaryTreeScapegoatDeleteValidation2b()
+        public void BinaryTreeScapegoatDeleteValidation2B()
         {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree2b(tree);
+            var tree = new ScapegoatTree<int, int>();
+            TestTree2B(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation3a()
+        public void BinaryTreeAvlDeleteValidation3A()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree3a(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree3A(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation3b()
+        public void BinaryTreeAvlDeleteValidation3B()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree3b(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree3B(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation3a()
+        public void BinaryTreeUnbalancedDeleteValidation3A()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree3a(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree3A(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation3b()
+        public void BinaryTreeUnbalancedDeleteValidation3B()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree3b(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree3B(tree);
         }
 
         [Test]
-        public void BinaryTreeScapegoatDeleteValidation3a()
+        public void BinaryTreeScapegoatDeleteValidation3A()
         {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree3a(tree);
+            var tree = new ScapegoatTree<int, int>();
+            TestTree3A(tree);
         }
 
         [Test]
-        public void BinaryTreeScapegoatDeleteValidation3b()
+        public void BinaryTreeScapegoatDeleteValidation3B()
         {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree3b(tree);
+            var tree = new ScapegoatTree<int, int>();
+            TestTree3B(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation4a()
+        public void BinaryTreeAvlDeleteValidation4A()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree4a(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree4A(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation4b()
+        public void BinaryTreeAvlDeleteValidation4B()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree4b(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree4B(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation4c()
+        public void BinaryTreeAvlDeleteValidation4C()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree4c(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree4C(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation4a()
+        public void BinaryTreeUnbalancedDeleteValidation4A()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree4a(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree4A(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation4b()
+        public void BinaryTreeUnbalancedDeleteValidation4B()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree4b(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree4B(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation4c()
+        public void BinaryTreeUnbalancedDeleteValidation4C()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree4c(tree);
-        }
-
-        //Tree 7 tests are not run for Scapegoat Tree because they trigger a rebalance which
-        //means the tree will not be as we expect
-        //NB - Tree 4c, 5 and 6 tests also trigger the rebalance but they always leave the tree in the state
-        //we expect so they can be safely run
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation4c()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree4c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation5a()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree5a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation5b()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree5b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation5c()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree5c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation5a()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree5a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation5b()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree5b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation5c()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree5c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation5a()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree5a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation5b()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree5b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation5c()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree5c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation6a()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree6a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation6b()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree6b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation6c()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree6c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation6a()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree6a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation6b()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree6b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation6c()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree6c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation6a()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree6a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation6b()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree6b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeScapegoatDeleteValidation6c()
-        {
-            ScapegoatTree<int, int> tree = new ScapegoatTree<int, int>();
-            this.TestTree6c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation7a()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree7a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation7b()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree7b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeAVLDeleteValidation7c()
-        {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree7c(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation7a()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree7a(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation7b()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree7b(tree);
-        }
-
-        [Test]
-        public void BinaryTreeUnbalancedDeleteValidation7c()
-        {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree7c(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree4C(tree);
         }
 
         //Tree 7 tests are not run for Scapegoat Tree because they trigger a rebalance which
@@ -984,45 +804,225 @@ namespace VDS.Common.Trees
         //we expect so they can be safely run
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation8a()
+        public void BinaryTreeScapegoatDeleteValidation4C()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree8a(tree);
+            var tree = new ScapegoatTree<int, int>();
+            TestTree4C(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation8b()
+        public void BinaryTreeAvlDeleteValidation5A()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree8b(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree5A(tree);
         }
 
         [Test]
-        public void BinaryTreeAVLDeleteValidation8c()
+        public void BinaryTreeAvlDeleteValidation5B()
         {
-            AVLTree<int, int> tree = new AVLTree<int, int>();
-            this.TestTree8c(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree5B(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation8a()
+        public void BinaryTreeAvlDeleteValidation5C()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree8a(tree);
+            var tree = new AvlTree<int, int>();
+            TestTree5C(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation8b()
+        public void BinaryTreeUnbalancedDeleteValidation5A()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree8b(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree5A(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation8c()
+        public void BinaryTreeUnbalancedDeleteValidation5B()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree8c(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree5B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation5C()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree5C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatDeleteValidation5A()
+        {
+            var tree = new ScapegoatTree<int, int>();
+            TestTree5A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatDeleteValidation5B()
+        {
+            var tree = new ScapegoatTree<int, int>();
+            TestTree5B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatDeleteValidation5C()
+        {
+            var tree = new ScapegoatTree<int, int>();
+            TestTree5C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation6A()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree6A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation6B()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree6B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation6C()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree6C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation6A()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree6A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation6B()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree6B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation6C()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree6C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatDeleteValidation6A()
+        {
+            var tree = new ScapegoatTree<int, int>();
+            TestTree6A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatDeleteValidation6B()
+        {
+            var tree = new ScapegoatTree<int, int>();
+            TestTree6B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeScapegoatDeleteValidation6C()
+        {
+            var tree = new ScapegoatTree<int, int>();
+            TestTree6C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation7A()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree7A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation7B()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree7B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation7C()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree7C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation7A()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree7A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation7B()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree7B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation7C()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree7C(tree);
+        }
+
+        //Tree 7 tests are not run for Scapegoat Tree because they trigger a rebalance which
+        //means the tree will not be as we expect
+        //NB - Tree 4c, 5 and 6 tests also trigger the rebalance but they always leave the tree in the state
+        //we expect so they can be safely run
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation8A()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree8A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation8B()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree8B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeAvlDeleteValidation8C()
+        {
+            var tree = new AvlTree<int, int>();
+            TestTree8C(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation8A()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree8A(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation8B()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree8B(tree);
+        }
+
+        [Test]
+        public void BinaryTreeUnbalancedDeleteValidation8C()
+        {
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree8C(tree);
         }
 
         //Tree 8 tests are not run for Scapegoat Tree because they trigger a rebalance which
@@ -1031,59 +1031,59 @@ namespace VDS.Common.Trees
         //we expect so they can be safely run
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation9a()
+        public void BinaryTreeUnbalancedDeleteValidation9A()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree9a(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree9A(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation9b()
+        public void BinaryTreeUnbalancedDeleteValidation9B()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree9b(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree9B(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation9c()
+        public void BinaryTreeUnbalancedDeleteValidation9C()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree9c(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree9C(tree);
         }
 
         [Test]
         public void BinaryTreeUnbalancedDeleteValidation9d()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree9d(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree9d(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation10a()
+        public void BinaryTreeUnbalancedDeleteValidation10A()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree10a(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree10A(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation10b()
+        public void BinaryTreeUnbalancedDeleteValidation10B()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree10b(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree10B(tree);
         }
 
         [Test]
-        public void BinaryTreeUnbalancedDeleteValidation10c()
+        public void BinaryTreeUnbalancedDeleteValidation10C()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree10c(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree10C(tree);
         }
 
         [Test]
         public void BinaryTreeUnbalancedDeleteValidation10d()
         {
-            UnbalancedBinaryTree<int, int> tree = new UnbalancedBinaryTree<int, int>();
-            this.TestTree10d(tree);
+            var tree = new UnbalancedBinaryTree<int, int>();
+            TestTree10d(tree);
         }
     }
 }

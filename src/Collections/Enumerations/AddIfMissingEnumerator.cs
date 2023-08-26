@@ -40,8 +40,8 @@ namespace VDS.Common.Collections.Enumerations
         public AddIfMissingEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer, T item)
             : base(enumerator, equalityComparer)
         {
-            this.AdditionalItem = item;
-            this.AdditionalItemSeen = false;
+            AdditionalItem = item;
+            AdditionalItemSeen = false;
         }
 
         /// <summary>
@@ -67,17 +67,17 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             item = default(T);
-            if (this.InnerEnumerator.MoveNext())
+            if (InnerEnumerator.MoveNext())
             {
-                item = this.InnerEnumerator.Current;
-                if (this.EqualityComparer.Equals(item, this.AdditionalItem)) this.AdditionalItemSeen = true;
+                item = InnerEnumerator.Current;
+                if (EqualityComparer.Equals(item, AdditionalItem)) AdditionalItemSeen = true;
                 return true;
             }
-            if (this.AdditionalItemSeen) return false;
-            if (this.IsCurrentAdditionalItem) return false;
+            if (AdditionalItemSeen) return false;
+            if (IsCurrentAdditionalItem) return false;
 
-            item = this.AdditionalItem;
-            this.IsCurrentAdditionalItem = true;
+            item = AdditionalItem;
+            IsCurrentAdditionalItem = true;
             return true;
         }
 
@@ -86,8 +86,8 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            this.AdditionalItemSeen = false;
-            this.IsCurrentAdditionalItem = false;
+            AdditionalItemSeen = false;
+            IsCurrentAdditionalItem = false;
         }
     }
 }

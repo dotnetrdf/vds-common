@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace VDS.Common.Tries
 {
@@ -36,7 +35,7 @@ namespace VDS.Common.Tries
         : IEnumerable<ITrieNode<TKeyBit, TValue>>
         where TValue : class
     {
-        private ITrieNode<TKeyBit, TValue> _node;
+        private readonly ITrieNode<TKeyBit, TValue> _node;
 
         /// <summary>
         /// Creates a descendant nodes enumable
@@ -44,8 +43,7 @@ namespace VDS.Common.Tries
         /// <param name="node">Node</param>
         public DescendantNodesEnumerable(ITrieNode<TKeyBit, TValue> node)
         {
-            if (node == null) throw new ArgumentNullException("node");
-            this._node = node;
+            _node = node ?? throw new ArgumentNullException(nameof(node));
         }
 
         /// <summary>
@@ -54,13 +52,13 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
         {
-            if (this._node.IsLeaf)
+            if (_node.IsLeaf)
             {
                 return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
             }
             else
             {
-                return this._node.Children.Concat(this._node.Children.SelectMany(c => c.Descendants)).GetEnumerator();
+                return _node.Children.Concat(_node.Children.SelectMany(c => c.Descendants)).GetEnumerator();
             }
         }
 
@@ -70,7 +68,7 @@ namespace VDS.Common.Tries
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

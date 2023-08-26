@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+// ReSharper disable AssignNullToNotNullAttribute
 
 namespace VDS.Common.Collections
 {
@@ -38,7 +39,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractAdd1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.Throws<ArgumentException>(() => dict.Add("key", 2));
@@ -47,7 +48,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractAdd2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add(new KeyValuePair<string, int>("key", 1));
             Assert.Throws<ArgumentException>(() => dict.Add(new KeyValuePair<string, int>("key", 2)));
@@ -56,7 +57,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemove1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Remove("key"));
@@ -65,7 +66,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemove2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.Remove("key"));
         }
@@ -73,7 +74,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemove3()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Remove(new KeyValuePair<string, int>("key", 1)));
@@ -82,7 +83,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemove4()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsFalse(dict.Remove(new KeyValuePair<string, int>("key", 2)));
@@ -91,7 +92,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContains1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.ContainsKey("key"));
         }
@@ -99,7 +100,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContains2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.ContainsKey("key"));
@@ -108,7 +109,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContains3()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Contains(new KeyValuePair<string, int>("key", 1)));
@@ -117,7 +118,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContains4()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsFalse(dict.Contains(new KeyValuePair<string, int>("key", 2)));
@@ -126,7 +127,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemGet1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.Throws<KeyNotFoundException>(() =>
             {
@@ -137,7 +138,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemGet2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.AreEqual(1, dict["key"]);
@@ -146,7 +147,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemGet3()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             dict.Remove("key");
@@ -159,7 +160,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemSet1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict["key"] = 1;
             Assert.AreEqual(1, dict["key"]);
@@ -168,7 +169,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemSet2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             dict["key"] = 2;
@@ -178,7 +179,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemSet3()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict["key"] = 1;
             dict.Remove("key");
@@ -189,7 +190,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractTryGetValue1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.TryGetValue("key", out _));
         }
@@ -197,7 +198,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractTryGetValue2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.TryGetValue("key", out var value));
@@ -207,7 +208,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractKeys1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.Keys.Any());
         }
@@ -215,7 +216,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractKeys2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Keys.Any());
@@ -226,7 +227,7 @@ namespace VDS.Common.Collections
         // ,ExpectedException(typeof(NotSupportedException))
         public void DictionaryContractKeys3()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.Keys.Any());
             Assert.Throws<NotSupportedException>(() => dict.Keys.Add("key"));
@@ -236,9 +237,9 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractKeys4()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
-            ICollection<string> keys = dict.Keys;
+            var keys = dict.Keys;
             Assert.AreEqual(0, keys.Count);
             dict.Add("key", 1);
             Assert.AreEqual(1, keys.Count);
@@ -248,7 +249,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractValues1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.Values.Any());
         }
@@ -256,7 +257,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractValues2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("key", 1);
             Assert.IsTrue(dict.Values.Any());
@@ -266,7 +267,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractValues3()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.Values.Any());
             Assert.Throws<NotSupportedException>(() => dict.Values.Add(1));
@@ -276,9 +277,9 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractValues4()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
-            ICollection<int> values = dict.Values;
+            var values = dict.Values;
             Assert.AreEqual(0, values.Count);
             dict.Add("key", 1);
             Assert.AreEqual(1, values.Count);
@@ -293,7 +294,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractAddNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add(null, 1);
             Assert.AreEqual(1, dict[null]);
@@ -302,7 +303,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemoveNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.Remove(null));
         }
@@ -310,7 +311,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemoveNullKey2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add(null, 1);
             Assert.IsTrue(dict.Remove(null));
@@ -319,7 +320,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContainsNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.ContainsKey(null));
         }
@@ -327,7 +328,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContainsNullKey2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add(null, 1);
             Assert.IsTrue(dict.ContainsKey(null));
@@ -336,7 +337,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemGetNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.Throws<KeyNotFoundException>(() =>
             {
@@ -347,17 +348,17 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemGetNullKey2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add(null, 1);
-            int value = dict[null];
+            var value = dict[null];
             Assert.AreEqual(1, value);
         }
 
         [Test]
         public void DictionaryContractItemSetNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict[null] = 1;
             Assert.AreEqual(1, dict[null]);
@@ -366,7 +367,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemSetNullKey2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict[null] = 1;
             Assert.AreEqual(1, dict[null]);
@@ -377,7 +378,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractTryGetValueNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.IsFalse(dict.TryGetValue(null, out _));
         }
@@ -385,7 +386,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractTryGetValueNullKey2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add(null, 1);
             Assert.IsTrue(dict.TryGetValue(null, out var value));
@@ -400,7 +401,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractAddNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.Throws<ArgumentNullException>(() => dict.Add(null, 1));
         }
@@ -408,7 +409,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractRemoveNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.Throws<ArgumentNullException>(() =>dict.Remove(null));
         }
@@ -416,15 +417,15 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractContainsNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
-            Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
+            Assert.Throws<ArgumentNullException>(() => _ = dict.ContainsKey(null));
         }
 
         [Test]
         public void DictionaryContractItemGetNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -435,7 +436,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractItemSetNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             Assert.Throws<ArgumentNullException>(() => dict[null] = 1);
         }
@@ -443,9 +444,9 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractTryGetValueNullKey1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
-            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out var value));
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
         }
     }
 
@@ -475,7 +476,7 @@ namespace VDS.Common.Collections
     {
         protected override IDictionary<string, int> GetInstance()
         {
-            return new MultiDictionary<string, int>(s => s != null ? s.GetHashCode() : 0, true);
+            return new MultiDictionary<string, int>(s => s?.GetHashCode() ?? 0, true);
         }
     }
 

@@ -39,7 +39,7 @@ namespace VDS.Common.Collections.Enumerations
         public ReducedEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer)
             : base(enumerator, equalityComparer)
         {
-            this.First = true;
+            First = true;
         }
 
         /// <summary>
@@ -60,27 +60,27 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             item = default(T);
-            if (this.InnerEnumerator.MoveNext()) return false;
-            item = this.InnerEnumerator.Current;
+            if (InnerEnumerator.MoveNext()) return false;
+            item = InnerEnumerator.Current;
 
-            if (this.First)
+            if (First)
             {
-                this.First = false;
-                this.LastItem = item;
+                First = false;
+                LastItem = item;
                 return true;
             }
 
             while (true)
             {
                 // Provided the next item is not the same as the previous return it
-                if (!this.EqualityComparer.Equals(this.LastItem, item))
+                if (!EqualityComparer.Equals(LastItem, item))
                 {
-                    this.LastItem = item;
+                    LastItem = item;
                     return true;
                 }
 
-                if (!this.InnerEnumerator.MoveNext()) return false;
-                item = this.InnerEnumerator.Current;
+                if (!InnerEnumerator.MoveNext()) return false;
+                item = InnerEnumerator.Current;
             }
         }
 
@@ -89,8 +89,8 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            this.First = true;
-            this.LastItem = default(T);
+            First = true;
+            LastItem = default(T);
         }
     }
 }

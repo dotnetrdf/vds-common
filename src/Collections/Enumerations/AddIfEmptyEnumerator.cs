@@ -39,7 +39,7 @@ namespace VDS.Common.Collections.Enumerations
         public AddIfEmptyEnumerator(IEnumerator<T> enumerator, T item)
             : base(enumerator)
         {
-            this.AdditionalItem = item;
+            AdditionalItem = item;
         }
 
         /// <summary>
@@ -65,17 +65,17 @@ namespace VDS.Common.Collections.Enumerations
         protected override bool TryMoveNext(out T item)
         {
             item = default(T);
-            if (this.InnerEnumerator.MoveNext())
+            if (InnerEnumerator.MoveNext())
             {
-                this.AnyItemsSeen = true;
-                item = this.InnerEnumerator.Current;
+                AnyItemsSeen = true;
+                item = InnerEnumerator.Current;
                 return true;
             }
-            if (this.AnyItemsSeen) return false;
-            if (this.IsCurrentAdditionalItem) return false;
+            if (AnyItemsSeen) return false;
+            if (IsCurrentAdditionalItem) return false;
 
-            this.IsCurrentAdditionalItem = true;
-            item = this.AdditionalItem;
+            IsCurrentAdditionalItem = true;
+            item = AdditionalItem;
             return true;
         }
 
@@ -84,8 +84,8 @@ namespace VDS.Common.Collections.Enumerations
         /// </summary>
         protected override void ResetInternal()
         {
-            this.AnyItemsSeen = false;
-            this.IsCurrentAdditionalItem = false;
+            AnyItemsSeen = false;
+            IsCurrentAdditionalItem = false;
         }
     }
 }

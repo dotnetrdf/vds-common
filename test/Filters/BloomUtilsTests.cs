@@ -31,7 +31,7 @@ namespace VDS.Common.Filters
 
         private void CheckErrorRate(long expectedItems, long expectedErrorRate, IBloomFilterParameters parameters)
         {
-            long actualErrorRate = CalculateErrorRate(expectedItems, parameters);
+            var actualErrorRate = CalculateErrorRate(expectedItems, parameters);
             Console.WriteLine("n = {0}, p = 1 in {1}", expectedItems, actualErrorRate);
             Assert.AreEqual(expectedErrorRate, actualErrorRate);
 
@@ -50,7 +50,7 @@ namespace VDS.Common.Filters
 
         private static long CalculateErrorRate(long expectedItems, IBloomFilterParameters parameters)
         {
-            double calcErrorRate = BloomUtils.CalculateErrorRate(expectedItems, parameters);
+            var calcErrorRate = BloomUtils.CalculateErrorRate(expectedItems, parameters);
             return Convert.ToInt64(1/calcErrorRate);
         }
 
@@ -59,7 +59,7 @@ namespace VDS.Common.Filters
         [TestCase(100000, 1000, 1437759, 10)]
         public void CheckParameterCalculation(long expectedItems, long errorRate, int expectedNumBits, int expectedNumHashFunctions)
         {
-            IBloomFilterParameters parameters = BloomUtils.CalculateBloomParameters(expectedItems, errorRate);
+            var parameters = BloomUtils.CalculateBloomParameters(expectedItems, errorRate);
             Assert.AreEqual(expectedNumBits, parameters.NumberOfBits);
             Assert.AreEqual(expectedNumHashFunctions, parameters.NumberOfHashFunctions);
 

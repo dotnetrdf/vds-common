@@ -9,6 +9,7 @@
         <AssemblyOriginatorKeyFile>../VDS.Common.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup>

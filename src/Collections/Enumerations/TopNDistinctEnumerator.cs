@@ -41,7 +41,7 @@ namespace VDS.Common.Collections.Enumerations
         public TopNDistinctEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
             : base(enumerator, comparer, n)
         {
-            this.TopItems = new AVLTree<T, bool>(comparer);
+            TopItems = new AvlTree<T, bool>(comparer);
         }
 
         /// <summary>
@@ -55,17 +55,17 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         protected override IEnumerator<T> BuildTopItems()
         {
-            this.TopItems.Clear();
-            while (this.InnerEnumerator.MoveNext())
+            TopItems.Clear();
+            while (InnerEnumerator.MoveNext())
             {
-                T item = this.InnerEnumerator.Current;
-                if (this.TopItems.ContainsKey(item)) continue;
+                var item = InnerEnumerator.Current;
+                if (TopItems.ContainsKey(item)) continue;
 
-                this.TopItems.Add(this.InnerEnumerator.Current, true);
-                int count = this.TopItems.Root != null ? this.TopItems.Root.Size : 0;
-                if (count > this.N) this.TopItems.RemoveAt(count - 1);
+                TopItems.Add(InnerEnumerator.Current, true);
+                var count = TopItems.Root?.Size ?? 0;
+                if (count > N) TopItems.RemoveAt(count - 1);
             }
-            return this.TopItems.Keys.GetEnumerator();
+            return TopItems.Keys.GetEnumerator();
         }
     }
 }

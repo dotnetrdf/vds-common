@@ -40,8 +40,8 @@ namespace VDS.Common.Collections.Enumerations
         public LongSkipEnumerable(IEnumerable<T> enumerable, long toSkip)
             : base(enumerable)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", "toSkip");
-            this.ToSkip = toSkip;
+            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", nameof(toSkip));
+            ToSkip = toSkip;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new LongSkipEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.ToSkip);
+            return new LongSkipEnumerator<T>(InnerEnumerable.GetEnumerator(), ToSkip);
         }
     }
 }

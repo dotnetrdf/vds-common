@@ -45,9 +45,9 @@ namespace VDS.Common.Collections
         /// <param name="length">Length</param>
         public BinarySparseArray(int length)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
-            this._tree = new AVLTree<int, T>(Comparer<Int32>.Default);
-            this.Length = length;
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
+            _tree = new AvlTree<int, T>(Comparer<int>.Default);
+            Length = length;
         }
 
 
@@ -57,7 +57,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return new BinarySparseArrayEnumerator<T>(this.Length, this._tree.Nodes.GetEnumerator());
+            return new BinarySparseArrayEnumerator<T>(Length, _tree.Nodes.GetEnumerator());
         }
 
         /// <summary>
@@ -78,14 +78,13 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
-                T value;
-                return this._tree.TryGetValue(index, out value) ? value : default(T);
+                if (index < 0 || index >= Length) throw new IndexOutOfRangeException(string.Format("Index must be in the range 0 to {0}", Length - 1));
+                return _tree.TryGetValue(index, out var value) ? value : default(T);
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in the range 0 to {0}", this.Length - 1));
-                this._tree.Add(index, value);
+                if (index < 0 || index >= Length) throw new IndexOutOfRangeException(string.Format("Index must be in the range 0 to {0}", Length - 1));
+                _tree.Add(index, value);
             }
         }
 
@@ -99,7 +98,7 @@ namespace VDS.Common.Collections
         /// </summary>
         public void Clear()
         {
-            this._tree.Clear();
+            _tree.Clear();
         }
     }
 
@@ -108,9 +107,9 @@ namespace VDS.Common.Collections
     {
         public BinarySparseArrayEnumerator(int length, IEnumerator<IBinaryTreeNode<int, T>> nodesEnumerator)
         {
-            this.Length = length;
-            this.Nodes = nodesEnumerator;
-            this.Index = -1;
+            Length = length;
+            Nodes = nodesEnumerator;
+            Index = -1;
         }
 
         private IEnumerator<IBinaryTreeNode<int, T>> Nodes { get; set; }
@@ -128,45 +127,42 @@ namespace VDS.Common.Collections
 
         public bool MoveNext()
         {
-            if (this.Index == -1)
+            if (Index == -1)
             {
-                if (this.Nodes.MoveNext()) this.CurrentNode = this.Nodes.Current;
+                if (Nodes.MoveNext()) CurrentNode = Nodes.Current;
             }
-            if (this.CurrentNode != null)
+            if (CurrentNode != null)
             {
-                if (this.CurrentNode.Key == this.Index)
+                if (CurrentNode.Key == Index)
                 {
-                    this.CurrentNode = this.Nodes.MoveNext() ? this.Nodes.Current : null;
+                    CurrentNode = Nodes.MoveNext() ? Nodes.Current : null;
                 }
             }
-            this.Index++;
-            return this.Index < this.Length;
+            Index++;
+            return Index < Length;
         }
 
         public void Reset()
         {
-            this.Index = -1;
-            this.CurrentNode = null;
-            this.Nodes.Reset();
+            Index = -1;
+            CurrentNode = null;
+            Nodes.Reset();
         }
 
         public T Current
         {
             get
             {
-                if (this.Index == -1) throw new InvalidOperationException("Currently before the start of the enumerator, please call MoveNext() before accessing this property");
-                if (this.Index >= this.Length) throw new InvalidOperationException("Past the end of the enumerator");
+                if (Index == -1) throw new InvalidOperationException("Currently before the start of the enumerator, please call MoveNext() before accessing this property");
+                if (Index >= Length) throw new InvalidOperationException("Past the end of the enumerator");
 
                 // If no node either the linked list is empty or we've reached the end of it in which case simply return the default value
-                if (this.CurrentNode == null) return default(T);
+                if (CurrentNode == null) return default(T);
                 // If we reached the index of the current node then return the value otherwise we have not reached it yet and we return the default value
-                return this.CurrentNode.Key == this.Index ? this.CurrentNode.Value : default(T);
+                return CurrentNode.Key == Index ? CurrentNode.Value : default(T);
             }
         }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

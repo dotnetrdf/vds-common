@@ -40,7 +40,7 @@ namespace VDS.Common.Collections.Enumerations
         public AddIfMissingEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer, T item)
             : base(enumerable, equalityComparer)
         {
-            this.AdditionalItem = item;
+            AdditionalItem = item;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace VDS.Common.Collections.Enumerations
         /// <returns></returns>
         public override IEnumerator<T> GetEnumerator()
         {
-            return new AddIfMissingEnumerator<T>(this.InnerEnumerable.GetEnumerator(), this.EqualityComparer, this.AdditionalItem);
+            return new AddIfMissingEnumerator<T>(InnerEnumerable.GetEnumerator(), EqualityComparer, AdditionalItem);
         }
     }
 }

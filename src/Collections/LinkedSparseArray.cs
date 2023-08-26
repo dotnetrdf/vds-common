@@ -49,8 +49,8 @@ namespace VDS.Common.Collections
         /// <param name="length">Length</param>
         public LinkedSparseArray(int length)
         {
-            if (length < 0) throw new ArgumentException("Length must be >= 0", "length");
-            this.Length = length;
+            if (length < 0) throw new ArgumentException("Length must be >= 0", nameof(length));
+            Length = length;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace VDS.Common.Collections
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return new LinkedSparseArrayEnumerator<T>(this._list, this.Length);
+            return new LinkedSparseArrayEnumerator<T>(_list, Length);
         }
 
         /// <summary>
@@ -80,21 +80,21 @@ namespace VDS.Common.Collections
         {
             get
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in range 0 to {0}", this.Length - 1));
-                LinkedListNode<SparseArrayEntry<T>> node = this.MoveToNode(index, false);
+                if (index < 0 || index >= Length) throw new IndexOutOfRangeException(string.Format("Index must be in range 0 to {0}", Length - 1));
+                var node = MoveToNode(index, false);
                 return node == null ? default(T) : node.Value.Value;
             }
             set
             {
-                if (index < 0 || index >= this.Length) throw new IndexOutOfRangeException(String.Format("Index must be in range 0 to {0}", this.Length - 1));
-                LinkedListNode<SparseArrayEntry<T>> node = this.MoveToNode(index, true);
+                if (index < 0 || index >= Length) throw new IndexOutOfRangeException(string.Format("Index must be in range 0 to {0}", Length - 1));
+                var node = MoveToNode(index, true);
                 node.Value.Value = value;
             }
         }
 
         private LinkedListNode<SparseArrayEntry<T>> MoveToNode(int index, bool createIfNotExists)
         {
-            LinkedListNode<SparseArrayEntry<T>> node = this._list.First;
+            var node = _list.First;
 
             // Try to move to the appropriate point in the list
             while (node != null)
@@ -106,7 +106,7 @@ namespace VDS.Common.Collections
                 {
                     // We have moved past the required index
                     // Insert a new node if permitted to do so
-                    return createIfNotExists ? this._list.AddBefore(node, new SparseArrayEntry<T>(index)) : null;
+                    return createIfNotExists ? _list.AddBefore(node, new SparseArrayEntry<T>(index)) : null;
                 }
 
                 // Otherwise we have not yet reached the required index so move to the next node
@@ -115,7 +115,7 @@ namespace VDS.Common.Collections
 
             // Reached the end of list without finding the required index
             // Insert a new node if permitted to do so
-            return createIfNotExists ? this._list.AddLast(new SparseArrayEntry<T>(index)) : null;
+            return createIfNotExists ? _list.AddLast(new SparseArrayEntry<T>(index)) : null;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace VDS.Common.Collections
         /// </summary>
         public void Clear()
         {
-            this._list.Clear();
+            _list.Clear();
         }
     }
 
@@ -139,8 +139,8 @@ namespace VDS.Common.Collections
 
         public SparseArrayEntry(int index, T value)
         {
-            this.Index = index;
-            this.Value = value;
+            Index = index;
+            Value = value;
         }
 
         public int Index { get; private set; }
@@ -153,9 +153,9 @@ namespace VDS.Common.Collections
     {
         public LinkedSparseArrayEnumerator(LinkedList<SparseArrayEntry<T>> linkedList, int length)
         {
-            this.LinkedList = linkedList;
-            this.Length = length;
-            this.Index = -1;
+            LinkedList = linkedList;
+            Length = length;
+            Index = -1;
         }
 
         private int Index { get; set; }
@@ -173,44 +173,41 @@ namespace VDS.Common.Collections
 
         public bool MoveNext()
         {
-            if (this.Index == -1)
+            if (Index == -1)
             {
                 // First time we've been called so get the first node of the list
-                this.CurrentNode = this.LinkedList.First;
+                CurrentNode = LinkedList.First;
             }
-            if (this.CurrentNode != null)
+            if (CurrentNode != null)
             {
                 // If we're at the index of the current node we are about to move past it and so should move to the next node
-                if (this.CurrentNode.Value.Index == this.Index) this.CurrentNode = this.CurrentNode.Next;
+                if (CurrentNode.Value.Index == Index) CurrentNode = CurrentNode.Next;
             }
-            this.Index++;
+            Index++;
             // There are still values available if the index is less than the length
-            return this.Index < this.Length;
+            return Index < Length;
         }
 
         public void Reset()
         {
-            this.Index = -1;
-            this.CurrentNode = null;
+            Index = -1;
+            CurrentNode = null;
         }
 
         public T Current
         {
             get
             {
-                if (this.Index == -1) throw new InvalidOperationException("Currently before the start of the enumerator, please call MoveNext() before accessing this property");
-                if (this.Index >= this.Length) throw new InvalidOperationException("Past the end of the enumerator");
+                if (Index == -1) throw new InvalidOperationException("Currently before the start of the enumerator, please call MoveNext() before accessing this property");
+                if (Index >= Length) throw new InvalidOperationException("Past the end of the enumerator");
 
                 // If no node either the linked list is empty or we've reached the end of it in which case simply return the default value
-                if (this.CurrentNode == null) return default(T);
+                if (CurrentNode == null) return default(T);
                 // If we reached the index of the current node then return the value otherwise we have not reached it yet and we return the default value
-                return this.CurrentNode.Value.Index == this.Index ? this.CurrentNode.Value.Value : default(T);
+                return CurrentNode.Value.Index == Index ? CurrentNode.Value.Value : default(T);
             }
         }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

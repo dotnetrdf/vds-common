@@ -19,7 +19,6 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -35,7 +34,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractSortedKeys1()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("a", 1);
             dict.Add("b", 2);
@@ -43,7 +42,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(dict["a"], 1);
             Assert.AreEqual(dict["b"], 2);
 
-            ICollection<string> keys = dict.Keys;
+            var keys = dict.Keys;
             Assert.AreEqual("a", keys.First());
             Assert.AreEqual("b", keys.Last());
         }
@@ -51,7 +50,7 @@ namespace VDS.Common.Collections
         [Test]
         public void DictionaryContractSortedKeys2()
         {
-            IDictionary<string, int> dict = this.GetInstance();
+            var dict = GetInstance();
 
             dict.Add("b", 1);
             dict.Add("a", 2);
@@ -59,7 +58,7 @@ namespace VDS.Common.Collections
             Assert.AreEqual(dict["b"], 1);
             Assert.AreEqual(dict["a"], 2);
 
-            ICollection<string> keys = dict.Keys;
+            var keys = dict.Keys;
             Assert.AreEqual("a", keys.First());
             Assert.AreEqual("b", keys.Last());
         }

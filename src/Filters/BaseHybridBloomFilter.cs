@@ -47,24 +47,21 @@ namespace VDS.Common.Filters
         protected BaseHybridBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
             : base(storage)
         {
-            if (parameters.NumberOfBits < 1) throw new ArgumentException("Number of bits must be >= 1", "parameters");
-            if (hashFunctions == null) throw new ArgumentNullException("hashFunctions");
-            this._hashFunctions = new List<Func<T, int>>(hashFunctions);
-            this._hashFunctions.RemoveAll(f => f == null);
-            if (this._hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", "hashFunctions");
-            if (parameters.NumberOfBits <= this._hashFunctions.Count) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", "parameters");
+            if (parameters.NumberOfBits < 1) throw new ArgumentException("Number of bits must be >= 1", nameof(parameters));
+            if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
+            _hashFunctions = new List<Func<T, int>>(hashFunctions);
+            _hashFunctions.RemoveAll(f => f == null);
+            if (_hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
+            if (parameters.NumberOfBits <= _hashFunctions.Count) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
 
-            this.NumberOfBits = parameters.NumberOfBits;
-            this._parameters = parameters;
+            NumberOfBits = parameters.NumberOfBits;
+            _parameters = parameters;
         }
 
         /// <summary>
         /// Gets the number of hash functions
         /// </summary>
-        public override int NumberOfHashFunctions
-        {
-            get { return this._parameters.NumberOfHashFunctions; }
-        }
+        public override int NumberOfHashFunctions => _parameters.NumberOfHashFunctions;
 
         /// <summary>
         /// Converts an item into a number of bit indexes
@@ -73,30 +70,30 @@ namespace VDS.Common.Filters
         /// <returns>Bit Indices</returns>
         protected override IEnumerable<int> GetBitIndices(T item)
         {
-            int[] indices = new int[this._parameters.NumberOfHashFunctions];
+            var indices = new int[_parameters.NumberOfHashFunctions];
             int a = 0, b = 0;
-            for (int i = 0; i < indices.Length; i++)
+            for (var i = 0; i < indices.Length; i++)
             {
                 switch (i)
                 {
                     case 0:
-                        a = this._hashFunctions[i](item);
-                        indices[i] = Math.Abs(a)%this.NumberOfBits;
+                        a = _hashFunctions[i](item);
+                        indices[i] = Math.Abs(a)%NumberOfBits;
                         break;
                     case 1:
-                        b = this._hashFunctions[i](item);
-                        indices[i] = Math.Abs(b) % this.NumberOfBits;
+                        b = _hashFunctions[i](item);
+                        indices[i] = Math.Abs(b) % NumberOfBits;
                         break;
                     default:
-                        if (i < this._hashFunctions.Count)
+                        if (i < _hashFunctions.Count)
                         {
                             // Use user defined hash functions while available
-                            indices[i] = Math.Abs(this._hashFunctions[i](item))%this.NumberOfBits;
+                            indices[i] = Math.Abs(_hashFunctions[i](item))%NumberOfBits;
                         }
                         else
                         {
                             // Use arithmetic combination of the first two hash functions
-                            indices[i] = Math.Abs(a + (i*b))%this.NumberOfBits;
+                            indices[i] = Math.Abs(a + (i*b))%NumberOfBits;
                         }
                         break;
                 }
