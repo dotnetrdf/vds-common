@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>VDS.Common</AssemblyName>
         <AssemblyTitle>VDS.Common</AssemblyTitle>
@@ -23,7 +23,12 @@
         <RepositoryUrl>https://github.com/dotnetrdf/vds-common</RepositoryUrl>
         <Authors>RobVesse;kal_ahmed</Authors>
         <PackageTags>Data Structures;Tree;Trie;Binary AVL;Scapegoat Dictionary;Collections;Sparse Arrays;Bloom Filters;Enumerations;Comparers</PackageTags>
+        <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
     </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../ReadMe.md" Pack="true" PackagePath="/"/>
+  </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
