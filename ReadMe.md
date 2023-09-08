@@ -19,7 +19,7 @@ Releases can be found [here on GitHub](https://github.com/dotnetrdf/vds-common/r
 
 To use VDS.Common simply add a reference to the DLL for the appropriate .Net version to your project.  If you are using NuGet simply search for VDS.Common and install it that way.
 
-[![NuGet](https://img.shields.io/nuget/v/VDS.Common.svg?maxAge=2592000)](https://www.nuget.org/packages/VDS.Common)
+[![NuGet](https://img.shields.io/nuget/v/VDS.Common.svg)](https://www.nuget.org/packages/VDS.Common)
 
 For documentation on the features this library provides please see the [Wiki][4].
 
