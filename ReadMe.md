@@ -25,7 +25,7 @@ For documentation on the features this library provides please see the [Wiki][4]
 
 # Build Status
 
-[![Build status](https://ci.appveyor.com/api/projects/status/2818kcvj12mv1j9d/branch/master?svg=true)](https://ci.appveyor.com/project/dotNetRDFadmin/vds-common/branch/master)
+[![Unit Tests](https://github.com/dotnetrdf/vds-common/actions/workflows/build.yaml/badge.svg)](https://github.com/dotnetrdf/vds-common/actions/workflows/build.yaml)
 
 # Acknowledgements
 
