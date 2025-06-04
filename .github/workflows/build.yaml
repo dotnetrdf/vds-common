@@ -11,13 +11,13 @@ jobs:
         framework: ["net8.0", "net472"]
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: Run Tests
       run: dotnet test -c Release --filter "Category!=Timing" --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" test
     - name: Upload Code Coverage
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: code-coverage-windows test ${{matrix.framework}}
         path: test\TestResults\**\coverage.cobertura.xml
@@ -28,13 +28,13 @@ jobs:
         framework: ["net8.0"]
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: Run Tests
       run: dotnet test -c Release --filter "Category!=Timing" --framework ${{ matrix.framework }} --collect:"XPlat Code Coverage" test
     - name: Upload Code Coverage
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: code-coverage-linux test ${{matrix.framework}}
         path: test/TestResults/**/coverage.cobertura.xml
@@ -43,11 +43,11 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: Download coverage artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
     - name: Generate coverage report
       uses: danielpalme/ReportGenerator-GitHub-Action@5.1.24
       with:
@@ -56,7 +56,7 @@ jobs:
         reporttypes: 'HtmlInline;Cobertura;Badges'
         tag: '${{ github.run_number }}_${{ github.run_id }}'
     - name: Upload Coverage Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: coveragereport\*
