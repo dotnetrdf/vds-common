@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Local.testsettings = Local.testsettings
 		ReadMe.md = ReadMe.md
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-		Build\NuGet\VDS.Common.nuspec = Build\NuGet\VDS.Common.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{6FDC4E37-E2D2-4029-A187-633B5F4AFFA0}"
