@@ -2,6 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -22,98 +23,97 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections;
+
+/// <summary>
+/// A key type for testing, allows hash code to be controlled explicitly to force collisions as desired
+/// </summary>
+public class TestKey<T>
+    where T : IComparable<T>
 {
+    private readonly int _hashCode;
+
     /// <summary>
-    /// A key type for testing, allows hash code to be controlled explicitly to force collisions as desired
+    /// Creates a test key
     /// </summary>
-    public class TestKey<T>
-        where T : IComparable<T>
+    /// <param name="hashCode">Hash Code</param>
+    /// <param name="value">Value</param>
+    public TestKey(int hashCode, T value)
     {
-        private readonly int _hashCode;
+        if (value == null) throw new ArgumentNullException(nameof(value));
+        _hashCode = hashCode;
+        Value = value;
+    }
 
-        /// <summary>
-        /// Creates a test key
-        /// </summary>
-        /// <param name="hashCode">Hash Code</param>
-        /// <param name="value">Value</param>
-        public TestKey(int hashCode, T value)
+    /// <summary>
+    /// Gets the value associated with the key
+    /// </summary>
+    public T Value
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// Gets the hash code
+    /// </summary>
+    /// <returns>Hash Code</returns>
+    public override int GetHashCode()
+    {
+        return _hashCode;
+    }
+
+    /// <summary>
+    /// Gets string representation of the key
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        return _hashCode.ToString();
+    }
+
+    /// <summary>
+    /// Checks whether the key is equal to another key
+    /// </summary>
+    /// <param name="obj">Object</param>
+    /// <returns></returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return _hashCode.Equals(obj.GetHashCode());
+    }
+}
+
+public class TestKeyComparer<T>
+    : IComparer<TestKey<T>>, IEqualityComparer<TestKey<T>>
+    where T : IComparable<T>
+{
+
+    public int Compare(TestKey<T> x, TestKey<T> y)
+    {
+        if (x == null)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _hashCode = hashCode;
-            Value = value;
+            if (y == null) return 0;
+            return -1;
         }
-
-        /// <summary>
-        /// Gets the value associated with the key
-        /// </summary>
-        public T Value
+        else if (y == null)
         {
-            get;
-            private set;
+            return 1;
         }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>Hash Code</returns>
-        public override int GetHashCode()
+        else
         {
-            return _hashCode;
-        }
-
-        /// <summary>
-        /// Gets string representation of the key
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return _hashCode.ToString();
-        }
-
-        /// <summary>
-        /// Checks whether the key is equal to another key
-        /// </summary>
-        /// <param name="obj">Object</param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return _hashCode.Equals(obj.GetHashCode());
+            return x.Value.CompareTo(y.Value);
         }
     }
 
-    public class TestKeyComparer<T>
-        : IComparer<TestKey<T>>, IEqualityComparer<TestKey<T>>
-        where T : IComparable<T>
+    public bool Equals(TestKey<T> x, TestKey<T> y)
     {
+        return Compare(x, y) == 0;
+    }
 
-        public int Compare(TestKey<T> x, TestKey<T> y)
-        {
-            if (x == null)
-            {
-                if (y == null) return 0;
-                return -1;
-            }
-            else if (y == null)
-            {
-                return 1;
-            }
-            else
-            {
-                return x.Value.CompareTo(y.Value);
-            }
-        }
-
-        public bool Equals(TestKey<T> x, TestKey<T> y)
-        {
-            return Compare(x, y) == 0;
-        }
-
-        public int GetHashCode(TestKey<T> obj)
-        {
-            return obj.GetHashCode();
-        }
+    public int GetHashCode(TestKey<T> obj)
+    {
+        return obj.GetHashCode();
     }
 }

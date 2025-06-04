@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -25,236 +25,235 @@ using System.Collections.Generic;
 using System.Linq;
 using VDS.Common.Trees;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections;
+
+/// <summary>
+/// An implementation of a dictionary where the sort order of keys is preserved using a binary tree behind the scenes.  This makes all operations on the dictionary O(log n)
+/// </summary>
+/// <typeparam name="TKey">Key Type</typeparam>
+/// <typeparam name="TValue">Value Type</typeparam>
+public class TreeSortedDictionary<TKey, TValue>
+    : IDictionary<TKey, TValue>, IEnumerable<TValue>
 {
+    private readonly ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
+    private int _count;
+
     /// <summary>
-    /// An implementation of a dictionary where the sort order of keys is preserved using a binary tree behind the scenes.  This makes all operations on the dictionary O(log n)
+    /// Creates a new dictionary using the default comparer for the key type
     /// </summary>
-    /// <typeparam name="TKey">Key Type</typeparam>
-    /// <typeparam name="TValue">Value Type</typeparam>
-    public class TreeSortedDictionary<TKey, TValue>
-        : IDictionary<TKey, TValue>, IEnumerable<TValue>
+    public TreeSortedDictionary()
+        : this(Comparer<TKey>.Default) { }
+
+    /// <summary>
+    /// Creates a new dictionary using the given comparer for the keys
+    /// </summary>
+    /// <param name="comparer">Comparer</param>
+    public TreeSortedDictionary(IComparer<TKey> comparer)
     {
-        private readonly ITree<IBinaryTreeNode<TKey, TValue>, TKey, TValue> _tree;
-        private int _count;
+        if (comparer == null) throw new ArgumentNullException(nameof(comparer), "Comparer cannot be null");
+        _tree = new AvlTree<TKey, TValue>(comparer);
+    }
 
-        /// <summary>
-        /// Creates a new dictionary using the default comparer for the key type
-        /// </summary>
-        public TreeSortedDictionary()
-            : this(Comparer<TKey>.Default) { }
+    #region IDictionary<TKey,TValue> Members
 
-        /// <summary>
-        /// Creates a new dictionary using the given comparer for the keys
-        /// </summary>
-        /// <param name="comparer">Comparer</param>
-        public TreeSortedDictionary(IComparer<TKey> comparer)
+    /// <summary>
+    /// Adds a key value pair to the dictionary
+    /// </summary>
+    /// <param name="key">Key</param>
+    /// <param name="value">Value</param>
+    public void Add(TKey key, TValue value)
+    {
+        if (_tree.Add(key, value))
         {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer), "Comparer cannot be null");
-            _tree = new AvlTree<TKey, TValue>(comparer);
+            _count++;
         }
+    }
 
-        #region IDictionary<TKey,TValue> Members
+    /// <summary>
+    /// Checks whether the dictionary contains the given key
+    /// </summary>
+    /// <param name="key">Key</param>
+    /// <returns>True if the dictionary contains the key, false otherwise</returns>
+    public bool ContainsKey(TKey key)
+    {
+        return _tree.ContainsKey(key);
+    }
 
-        /// <summary>
-        /// Adds a key value pair to the dictionary
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <param name="value">Value</param>
-        public void Add(TKey key, TValue value)
+    /// <summary>
+    /// Gets the collection of keys
+    /// </summary>
+    public ICollection<TKey> Keys => new ImmutableView<TKey>(_tree.Keys, "Modifying the Keys collection of a TreeSortedDictionary directly is not supported");
+
+    /// <summary>
+    /// Removes a key from the dictionary
+    /// </summary>
+    /// <param name="key">Key to remove</param>
+    /// <returns>True if a key was removed, false otherwise</returns>
+    public bool Remove(TKey key)
+    {
+        if (_tree.Remove(key))
         {
-            if (_tree.Add(key, value))
-            {
-                _count++;
-            }
+            _count--;
+            return true;
         }
-
-        /// <summary>
-        /// Checks whether the dictionary contains the given key
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>True if the dictionary contains the key, false otherwise</returns>
-        public bool ContainsKey(TKey key)
+        else
         {
-            return _tree.ContainsKey(key);
+            return false;
         }
+    }
 
-        /// <summary>
-        /// Gets the collection of keys
-        /// </summary>
-        public ICollection<TKey> Keys => new ImmutableView<TKey>(_tree.Keys, "Modifying the Keys collection of a TreeSortedDictionary directly is not supported");
+    /// <summary>
+    /// Tries to get the value associated with the given key
+    /// </summary>
+    /// <param name="key">Key</param>
+    /// <param name="value">Value</param>
+    /// <returns>True if a value has been returned</returns>
+    public bool TryGetValue(TKey key, out TValue value)
+    {
+        return _tree.TryGetValue(key, out value);
+    }
 
-        /// <summary>
-        /// Removes a key from the dictionary
-        /// </summary>
-        /// <param name="key">Key to remove</param>
-        /// <returns>True if a key was removed, false otherwise</returns>
-        public bool Remove(TKey key)
+    /// <summary>
+    /// Gets the collection of values in the dictionary
+    /// </summary>
+    public ICollection<TValue> Values => new ImmutableView<TValue>(_tree.Values);
+
+    /// <summary>
+    /// Gets/Sets the value associated with a key
+    /// </summary>
+    /// <param name="key">Key</param>
+    /// <returns>Value</returns>
+    /// <exception cref="KeyNotFoundException">Thrown if the given key does not exist in the dictionary</exception>
+    public TValue this[TKey key]
+    {
+        get => _tree[key];
+        set => _tree[key] = value;
+    }
+
+    #endregion
+
+    #region ICollection<KeyValuePair<TKey,TValue>> Members
+
+    /// <summary>
+    /// Adds a key value pair to the dictionary
+    /// </summary>
+    /// <param name="item">Key Value pair</param>
+    public void Add(KeyValuePair<TKey, TValue> item)
+    {
+        Add(item.Key, item.Value);
+    }
+
+    /// <summary>
+    /// Clears the dictionary
+    /// </summary>
+    public void Clear()
+    {
+        _tree.Clear();
+        _count = 0;
+    }
+
+    /// <summary>
+    /// Checks whether the dictionary contains the given key value pair
+    /// </summary>
+    /// <param name="item">Key Value pair</param>
+    /// <returns></returns>
+    public bool Contains(KeyValuePair<TKey, TValue> item)
+    {
+        if (TryGetValue(item.Key, out var value))
         {
-            if (_tree.Remove(key))
-            {
-                _count--;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if (value != null) return value.Equals(item.Value);
+            if (item.Value == null) return true; //Both null so equal
+            return false; //One is null so not equal
         }
-
-        /// <summary>
-        /// Tries to get the value associated with the given key
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <param name="value">Value</param>
-        /// <returns>True if a value has been returned</returns>
-        public bool TryGetValue(TKey key, out TValue value)
+        else
         {
-            return _tree.TryGetValue(key, out value);
+            return false;
         }
+    }
 
-        /// <summary>
-        /// Gets the collection of values in the dictionary
-        /// </summary>
-        public ICollection<TValue> Values => new ImmutableView<TValue>(_tree.Values);
+    /// <summary>
+    /// Copies the contents of the dictionary to an array
+    /// </summary>
+    /// <param name="array">Array</param>
+    /// <param name="arrayIndex">Index to start copying elements at</param>
+    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+    {
+        if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
+        if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
+        if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
 
-        /// <summary>
-        /// Gets/Sets the value associated with a key
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Value</returns>
-        /// <exception cref="KeyNotFoundException">Thrown if the given key does not exist in the dictionary</exception>
-        public TValue this[TKey key]
+        var i = arrayIndex;
+        foreach (ITreeNode<TKey, TValue> node in _tree.Nodes)
         {
-            get => _tree[key];
-            set => _tree[key] = value;
+            array[i] = new KeyValuePair<TKey, TValue>(node.Key, node.Value);
+            i++;
         }
+    }
 
-        #endregion
+    /// <summary>
+    /// Gets the number of key value pairs in the dictionary
+    /// </summary>
+    public int Count => _count;
 
-        #region ICollection<KeyValuePair<TKey,TValue>> Members
+    /// <summary>
+    /// Gets whether the dictionary is read-only
+    /// </summary>
+    public bool IsReadOnly => false;
 
-        /// <summary>
-        /// Adds a key value pair to the dictionary
-        /// </summary>
-        /// <param name="item">Key Value pair</param>
-        public void Add(KeyValuePair<TKey, TValue> item)
+    /// <summary>
+    /// Removes a key value pair from the dictionary
+    /// </summary>
+    /// <param name="item">Key Value pair</param>
+    /// <returns>True if a key value pair was removed, false otherwise</returns>
+    public bool Remove(KeyValuePair<TKey, TValue> item)
+    {
+        if (TryGetValue(item.Key, out var value))
         {
-            Add(item.Key, item.Value);
+            if (value != null && value.Equals(item.Value)) return Remove(item.Key);
+            if (item.Value == null) return Remove(item.Key);
+            return false;
         }
-
-        /// <summary>
-        /// Clears the dictionary
-        /// </summary>
-        public void Clear()
+        else
         {
-            _tree.Clear();
-            _count = 0;
+            return false;
         }
+    }
 
-        /// <summary>
-        /// Checks whether the dictionary contains the given key value pair
-        /// </summary>
-        /// <param name="item">Key Value pair</param>
-        /// <returns></returns>
-        public bool Contains(KeyValuePair<TKey, TValue> item)
-        {
-            if (TryGetValue(item.Key, out var value))
-            {
-                if (value != null) return value.Equals(item.Value);
-                if (item.Value == null) return true; //Both null so equal
-                return false; //One is null so not equal
-            }
-            else
-            {
-                return false;
-            }
-        }
+    #endregion
 
-        /// <summary>
-        /// Copies the contents of the dictionary to an array
-        /// </summary>
-        /// <param name="array">Array</param>
-        /// <param name="arrayIndex">Index to start copying elements at</param>
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
-        {
-            if (array == null) throw new ArgumentNullException(nameof(array), "Cannot copy to a null array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Cannot start copying at index < 0");
-            if (Count > array.Length - arrayIndex) throw new ArgumentException("Insufficient space in array");
+    #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 
-            var i = arrayIndex;
-            foreach (ITreeNode<TKey, TValue> node in _tree.Nodes)
-            {
-                array[i] = new KeyValuePair<TKey, TValue>(node.Key, node.Value);
-                i++;
-            }
-        }
+    /// <summary>
+    /// Gets the enumerator of key value pairs
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    {
+        return (from node in _tree.Nodes
+            select new KeyValuePair<TKey, TValue>(node.Key, node.Value)).GetEnumerator();
+    }
 
-        /// <summary>
-        /// Gets the number of key value pairs in the dictionary
-        /// </summary>
-        public int Count => _count;
+    #endregion
 
-        /// <summary>
-        /// Gets whether the dictionary is read-only
-        /// </summary>
-        public bool IsReadOnly => false;
+    #region IEnumerable Members
 
-        /// <summary>
-        /// Removes a key value pair from the dictionary
-        /// </summary>
-        /// <param name="item">Key Value pair</param>
-        /// <returns>True if a key value pair was removed, false otherwise</returns>
-        public bool Remove(KeyValuePair<TKey, TValue> item)
-        {
-            if (TryGetValue(item.Key, out var value))
-            {
-                if (value != null && value.Equals(item.Value)) return Remove(item.Key);
-                if (item.Value == null) return Remove(item.Key);
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
+    /// <summary>
+    /// Gets the enumerator of values
+    /// </summary>
+    /// <returns></returns>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-        #endregion
+    #endregion
 
-        #region IEnumerable<KeyValuePair<TKey,TValue>> Members
-
-        /// <summary>
-        /// Gets the enumerator of key value pairs
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return (from node in _tree.Nodes
-                    select new KeyValuePair<TKey, TValue>(node.Key, node.Value)).GetEnumerator();
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        /// <summary>
-        /// Gets the enumerator of values
-        /// </summary>
-        /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Gets the enumerator of values
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
-        {
-            return _tree.Values.GetEnumerator();
-        }
+    /// <summary>
+    /// Gets the enumerator of values
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
+    {
+        return _tree.Values.GetEnumerator();
     }
 }

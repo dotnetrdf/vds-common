@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,62 +23,61 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using VDS.Common.Collections;
 
-namespace VDS.Common.Filters.Storage
+namespace VDS.Common.Filters.Storage;
+
+/// <summary>
+/// A sparse array storage implementation for bloom filters
+/// </summary>
+public class SparseArrayStorage
+    : IBloomFilterStorage
 {
+    private readonly ISparseArray<bool> _bits;
+
     /// <summary>
-    /// A sparse array storage implementation for bloom filters
+    /// Creates new storage
     /// </summary>
-    public class SparseArrayStorage
-        : IBloomFilterStorage
+    /// <param name="parameters">Parameters</param>
+    public SparseArrayStorage(IBloomFilterParameters parameters)
     {
-        private readonly ISparseArray<bool> _bits;
-
-        /// <summary>
-        /// Creates new storage
-        /// </summary>
-        /// <param name="parameters">Parameters</param>
-        public SparseArrayStorage(IBloomFilterParameters parameters)
-        {
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
-            if (parameters.NumberOfBits <= 0) throw new ArgumentException("Number of bits must be > 0", nameof(parameters));
-            _bits = new BlockSparseArray<bool>(parameters.NumberOfBits);
-        }
+        if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+        if (parameters.NumberOfBits <= 0) throw new ArgumentException("Number of bits must be > 0", nameof(parameters));
+        _bits = new BlockSparseArray<bool>(parameters.NumberOfBits);
+    }
         
-        /// <summary>
-        /// Creates new storage
-        /// </summary>
-        /// <param name="bits">Sparse array to use as storage</param>
-        public SparseArrayStorage(ISparseArray<bool> bits)
-        {
-            if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", nameof(bits));
-            _bits = bits;
-        }
+    /// <summary>
+    /// Creates new storage
+    /// </summary>
+    /// <param name="bits">Sparse array to use as storage</param>
+    public SparseArrayStorage(ISparseArray<bool> bits)
+    {
+        if (bits.Length <= 0) throw new ArgumentException("Sparse array must have length > 0", nameof(bits));
+        _bits = bits;
+    }
 
-        /// <summary>
-        /// Gets whether a given bit is set
-        /// </summary>
-        /// <param name="index">Index</param>
-        /// <returns>True if set, false otherwise</returns>
-        public bool IsSet(int index)
-        {
-            return _bits[index];
-        }
+    /// <summary>
+    /// Gets whether a given bit is set
+    /// </summary>
+    /// <param name="index">Index</param>
+    /// <returns>True if set, false otherwise</returns>
+    public bool IsSet(int index)
+    {
+        return _bits[index];
+    }
 
-        /// <summary>
-        /// Sets a given bit
-        /// </summary>
-        /// <param name="index">Index</param>
-        public void Set(int index)
-        {
-            _bits[index] = true;
-        }
+    /// <summary>
+    /// Sets a given bit
+    /// </summary>
+    /// <param name="index">Index</param>
+    public void Set(int index)
+    {
+        _bits[index] = true;
+    }
 
-        /// <summary>
-        /// Clears the storage
-        /// </summary>
-        public void Clear()
-        {
-            _bits.Clear();
-        }
+    /// <summary>
+    /// Clears the storage
+    /// </summary>
+    public void Clear()
+    {
+        _bits.Clear();
     }
 }

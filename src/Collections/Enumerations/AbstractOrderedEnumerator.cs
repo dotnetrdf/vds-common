@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,29 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// Abstract implementation of a wrapper enumerator that uses item ordering
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public abstract class AbstractOrderedEnumerator<T>
+    : AbstractWrapperEnumerator<T>
 {
     /// <summary>
-    /// Abstract implementation of a wrapper enumerator that uses item ordering
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractOrderedEnumerator<T>
-        : AbstractWrapperEnumerator<T>
+    /// <param name="enumerator">Enumerator to wrap</param>
+    /// <param name="comparer">Comparer to use</param>
+    protected AbstractOrderedEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer)
+        : base(enumerator)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to wrap</param>
-        /// <param name="comparer">Comparer to use</param>
-        protected AbstractOrderedEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer)
-            : base(enumerator)
-        {
-            Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-        }
-
-        /// <summary>
-        /// Gets the comparer to use for ordering
-        /// </summary>
-        protected IComparer<T> Comparer { get; private set; } 
+        Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
     }
+
+    /// <summary>
+    /// Gets the comparer to use for ordering
+    /// </summary>
+    protected IComparer<T> Comparer { get; private set; } 
 }

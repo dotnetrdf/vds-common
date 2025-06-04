@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -22,39 +22,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Trees
+namespace VDS.Common.Trees;
+
+/// <summary>
+/// An unbalanced binary tree
+/// </summary>
+/// <typeparam name="TKey">Key Type</typeparam>
+/// <typeparam name="TValue">Value Type</typeparam>
+public sealed class UnbalancedBinaryTree<TKey, TValue>
+    : BinaryTree<TKey, TValue>
 {
     /// <summary>
-    /// An unbalanced binary tree
+    /// Creates a new unbalanced tree
     /// </summary>
-    /// <typeparam name="TKey">Key Type</typeparam>
-    /// <typeparam name="TValue">Value Type</typeparam>
-    public sealed class UnbalancedBinaryTree<TKey, TValue>
-        : BinaryTree<TKey, TValue>
+    public UnbalancedBinaryTree()
+    { }
+
+    /// <summary>
+    /// Creates a new unbalanced tree
+    /// </summary>
+    /// <param name="comparer">Key Comparer</param>
+    public UnbalancedBinaryTree(IComparer<TKey> comparer)
+        : base(comparer) { }
+
+    /// <summary>
+    /// Creates a new node
+    /// </summary>
+    /// <param name="parent">Parent</param>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    protected override IBinaryTreeNode<TKey, TValue> CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value)
     {
-        /// <summary>
-        /// Creates a new unbalanced tree
-        /// </summary>
-        public UnbalancedBinaryTree()
-        { }
-
-        /// <summary>
-        /// Creates a new unbalanced tree
-        /// </summary>
-        /// <param name="comparer">Key Comparer</param>
-        public UnbalancedBinaryTree(IComparer<TKey> comparer)
-            : base(comparer) { }
-
-        /// <summary>
-        /// Creates a new node
-        /// </summary>
-        /// <param name="parent">Parent</param>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected override IBinaryTreeNode<TKey, TValue> CreateNode(IBinaryTreeNode<TKey, TValue> parent, TKey key, TValue value)
-        {
-            return new BinaryTreeNode<TKey, TValue>(parent, key, value);
-        }
+        return new BinaryTreeNode<TKey, TValue>(parent, key, value);
     }
 }

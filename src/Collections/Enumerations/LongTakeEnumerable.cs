@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,39 +23,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerable that takes some number of items
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class LongTakeEnumerable<T>
+    : AbstractWrapperEnumerable<T>
 {
     /// <summary>
-    /// An enumerable that takes some number of items
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class LongTakeEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    /// <param name="enumerable">Enumerable to operate over</param>
+    /// <param name="toTake">Number of items to take</param>
+    public LongTakeEnumerable(IEnumerable<T> enumerable, long toTake)
+        : base(enumerable)
     {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="toTake">Number of items to take</param>
-        public LongTakeEnumerable(IEnumerable<T> enumerable, long toTake)
-            : base(enumerable)
-        {
-            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
-            ToTake = toTake;
-        }
+        if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
+        ToTake = toTake;
+    }
 
-        /// <summary>
-        /// Gets/Sets the number of items to take
-        /// </summary>
-        private long ToTake { get; set; }
+    /// <summary>
+    /// Gets/Sets the number of items to take
+    /// </summary>
+    private long ToTake { get; set; }
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
-        {
-            return new LongTakeEnumerator<T>(InnerEnumerable.GetEnumerator(), ToTake);
-        }
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator<T> GetEnumerator()
+    {
+        return new LongTakeEnumerator<T>(InnerEnumerable.GetEnumerator(), ToTake);
     }
 }

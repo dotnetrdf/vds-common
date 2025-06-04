@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,57 +23,56 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Filters;
+
+/// <summary>
+/// Abstract implementation of a bloom filter
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <remarks>
+/// This implementation is considered naive because it gives full control over the hash functions and number of bits to the end user
+/// </remarks>
+public abstract class BaseNaiveBloomFilter<T>
+    : BaseBloomFilter<T>
 {
+    private readonly List<Func<T, int>> _hashFunctions;
+
     /// <summary>
-    /// Abstract implementation of a bloom filter
+    /// Creates a new filter
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <remarks>
-    /// This implementation is considered naive because it gives full control over the hash functions and number of bits to the end user
-    /// </remarks>
-    public abstract class BaseNaiveBloomFilter<T>
-        : BaseBloomFilter<T>
+    /// <param name="storage">Bloom Filter storage</param>
+    /// <param name="bits">Number of Bits</param>
+    /// <param name="hashFunctions">Hash Functions</param>
+    protected BaseNaiveBloomFilter(IBloomFilterStorage storage, int bits, IEnumerable<Func<T, int>> hashFunctions)
+        : base(storage)
     {
-        private readonly List<Func<T, int>> _hashFunctions;
+        if (bits <= 0) throw new ArgumentException("Bits must be a positive value", nameof(bits));
+        if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
+        _hashFunctions = new List<Func<T, int>>(hashFunctions);
+        _hashFunctions.RemoveAll(f => f == null);
+        if (_hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
+        if (bits <= _hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", nameof(bits));
 
-        /// <summary>
-        /// Creates a new filter
-        /// </summary>
-        /// <param name="storage">Bloom Filter storage</param>
-        /// <param name="bits">Number of Bits</param>
-        /// <param name="hashFunctions">Hash Functions</param>
-        protected BaseNaiveBloomFilter(IBloomFilterStorage storage, int bits, IEnumerable<Func<T, int>> hashFunctions)
-            : base(storage)
+        NumberOfBits = bits;
+    }
+
+    /// <summary>
+    /// Gets the number of hash functions
+    /// </summary>
+    public override int NumberOfHashFunctions => _hashFunctions.Count;
+
+    /// <summary>
+    /// Converts an item into a number of bit indexes
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns>Bit Indices</returns>
+    protected override IEnumerable<int> GetBitIndices(T item)
+    {
+        var indices = new int[_hashFunctions.Count];
+        for (var i = 0; i < indices.Length; i++)
         {
-            if (bits <= 0) throw new ArgumentException("Bits must be a positive value", nameof(bits));
-            if (hashFunctions == null) throw new ArgumentNullException(nameof(hashFunctions));
-            _hashFunctions = new List<Func<T, int>>(hashFunctions);
-            _hashFunctions.RemoveAll(f => f == null);
-            if (_hashFunctions.Count <= 1) throw new ArgumentException("A bloom filter requires at least 2 hash functions", nameof(hashFunctions));
-            if (bits <= _hashFunctions.Count) throw new ArgumentException("Bits must be bigger than the number of hash functions", nameof(bits));
-
-            NumberOfBits = bits;
+            indices[i] = Math.Abs(_hashFunctions[i](item)) % NumberOfBits;
         }
-
-        /// <summary>
-        /// Gets the number of hash functions
-        /// </summary>
-        public override int NumberOfHashFunctions => _hashFunctions.Count;
-
-        /// <summary>
-        /// Converts an item into a number of bit indexes
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>Bit Indices</returns>
-        protected override IEnumerable<int> GetBitIndices(T item)
-        {
-            var indices = new int[_hashFunctions.Count];
-            for (var i = 0; i < indices.Length; i++)
-            {
-                indices[i] = Math.Abs(_hashFunctions[i](item)) % NumberOfBits;
-            }
-            return indices;
-        }
+        return indices;
     }
 }

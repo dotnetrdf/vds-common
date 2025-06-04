@@ -34,7 +34,7 @@ Other contributions were aslo received from the following GitHub users:
 
 - @amardeepsingh
 
-[1]: http://dotnetrdf.org/
+[1]: https://dotnetrdf.org/
 [2]: https://bitbucket.org/dotnetrdf/dotnetrdf/src/4365cd7d087158b72c2e4053879bede2e194cdec/Libraries/core/net40/Common?at=default
 [3]: https://bitbucket.org/dotnetrdf/dotnetrdf/src/3378cdd89cc59dedb294657085da648946d76bb4/Libraries/core/Common?at=default
 [4]: https://github.com/dotnetrdf/vds-common/wiki/Home

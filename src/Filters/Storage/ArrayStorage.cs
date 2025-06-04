@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -22,51 +22,50 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 
-namespace VDS.Common.Filters.Storage
+namespace VDS.Common.Filters.Storage;
+
+/// <summary>
+/// Array based storage for Bloom Filters
+/// </summary>
+public class ArrayStorage
+    : IBloomFilterStorage
 {
+    private readonly bool[] _bits;
+
     /// <summary>
-    /// Array based storage for Bloom Filters
+    /// Creates new array storage
     /// </summary>
-    public class ArrayStorage
-        : IBloomFilterStorage
+    /// <param name="size">Size in bits of the storage</param>
+    public ArrayStorage(int size)
     {
-        private readonly bool[] _bits;
+        if (size <= 0) throw new ArgumentException("Size must be > 0", nameof(size));
+        _bits = new bool[size];
+    }
 
-        /// <summary>
-        /// Creates new array storage
-        /// </summary>
-        /// <param name="size">Size in bits of the storage</param>
-        public ArrayStorage(int size)
-        {
-            if (size <= 0) throw new ArgumentException("Size must be > 0", nameof(size));
-            _bits = new bool[size];
-        }
+    /// <summary>
+    /// Gets whether a given bit is set
+    /// </summary>
+    /// <param name="index">Index</param>
+    /// <returns>True if set, false otherwise</returns>
+    public bool IsSet(int index)
+    {
+        return _bits[index];
+    }
 
-        /// <summary>
-        /// Gets whether a given bit is set
-        /// </summary>
-        /// <param name="index">Index</param>
-        /// <returns>True if set, false otherwise</returns>
-        public bool IsSet(int index)
-        {
-            return _bits[index];
-        }
+    /// <summary>
+    /// Sets a given bit
+    /// </summary>
+    /// <param name="index">Index</param>
+    public void Set(int index)
+    {
+        _bits[index] = true;
+    }
 
-        /// <summary>
-        /// Sets a given bit
-        /// </summary>
-        /// <param name="index">Index</param>
-        public void Set(int index)
-        {
-            _bits[index] = true;
-        }
-
-        /// <summary>
-        /// Clears the storage
-        /// </summary>
-        public void Clear()
-        {
-            Array.Clear(_bits, 0, _bits.Length);
-        }
+    /// <summary>
+    /// Clears the storage
+    /// </summary>
+    public void Clear()
+    {
+        Array.Clear(_bits, 0, _bits.Length);
     }
 }

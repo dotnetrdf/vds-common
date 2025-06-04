@@ -6,7 +6,7 @@ This is the Change Log for VDS.Common
 Upcoming
 --------
 
-- BREAKING: Change to supported platforms. As of the 2.0 release, VDS.Common will target only .NET Standard 1.3 and .NET Standard 2.0 (and by extension 2.x)
+- BREAKING: Change to supported platforms. As of the 2.0 release, VDS.Common will target only .NET Standard 2.0 (and by extension 2.x)
 - The TryGetKey method on the MultiDictionary class is no longer deprecated.
 - The Cake build scripts have been removed as we no longer use this process to build on our CI platform.
 - BREAKING: A number of APIs have been renamed for conformance with common .NET naming guidelines:

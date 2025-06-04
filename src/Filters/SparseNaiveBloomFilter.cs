@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -25,21 +25,20 @@ using System.Collections.Generic;
 using VDS.Common.Collections;
 using VDS.Common.Filters.Storage;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Filters;
+
+/// <summary>
+/// Bloom filter implementation backed by a <see cref="ISparseArray{T}"/>
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class SparseNaiveBloomFilter<T>
+    : BaseNaiveBloomFilter<T>
 {
     /// <summary>
-    /// Bloom filter implementation backed by a <see cref="ISparseArray{T}"/>
+    /// Creates a new filter
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class SparseNaiveBloomFilter<T>
-        : BaseNaiveBloomFilter<T>
-    {
-        /// <summary>
-        /// Creates a new filter
-        /// </summary>
-        /// <param name="bits">Number of bits</param>
-        /// <param name="hashFunctions">Hash functions</param>
-        public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
-            : base(new SparseArrayStorage(new BlockSparseArray<bool>(bits)), bits, hashFunctions) { }
-    }
+    /// <param name="bits">Number of bits</param>
+    /// <param name="hashFunctions">Hash functions</param>
+    public SparseNaiveBloomFilter(int bits, IEnumerable<Func<T, int>> hashFunctions)
+        : base(new SparseArrayStorage(new BlockSparseArray<bool>(bits)), bits, hashFunctions) { }
 }

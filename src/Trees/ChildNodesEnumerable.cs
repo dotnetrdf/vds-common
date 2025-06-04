@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -24,98 +24,55 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VDS.Common.Trees
+namespace VDS.Common.Trees;
+
+/// <summary>
+/// An enumerable over a binary tree nodes children which ensures that each time it is enumerated the latest state of the tree is enumerated
+/// </summary>
+/// <typeparam name="TKey">Key type</typeparam>
+/// <typeparam name="TValue">Value type</typeparam>
+internal abstract class ChildNodesEnumerable<TKey, TValue>
+    : IEnumerable<IBinaryTreeNode<TKey,TValue>>
 {
     /// <summary>
-    /// An enumerable over a binary tree nodes children which ensures that each time it is enumerated the latest state of the tree is enumerated
+    /// Parent node
     /// </summary>
-    /// <typeparam name="TKey">Key type</typeparam>
-    /// <typeparam name="TValue">Value type</typeparam>
-    internal abstract class ChildNodesEnumerable<TKey, TValue>
-        : IEnumerable<IBinaryTreeNode<TKey,TValue>>
+    protected readonly IBinaryTreeNode<TKey, TValue> Parent;
+
+    /// <summary>
+    /// Creates a new enumerable
+    /// </summary>
+    /// <param name="parent">Parent node</param>
+    protected ChildNodesEnumerable(IBinaryTreeNode<TKey, TValue> parent)
     {
-        /// <summary>
-        /// Parent node
-        /// </summary>
-        protected readonly IBinaryTreeNode<TKey, TValue> Parent;
-
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="parent">Parent node</param>
-        protected ChildNodesEnumerable(IBinaryTreeNode<TKey, TValue> parent)
-        {
-            Parent = parent ?? throw new ArgumentNullException(nameof(parent), "Parent cannot be null");
-        }
-
-        /// <summary>
-        /// Get the child whose nodes we want to enumerate
-        /// </summary>
-        protected abstract IBinaryTreeNode<TKey, TValue> Child
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets an enumerator over the current state of one of the nodes children
-        /// </summary>
-        /// <returns>Enumerator over nodes</returns>
-        public IEnumerator<IBinaryTreeNode<TKey, TValue>> GetEnumerator()
-        {
-            var child = Child;
-            if (child == null) return Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator();
-            return child.Nodes.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets an enumerator over the current state of one of the nodes children
-        /// </summary>
-        /// <returns>Enumerator over nodes</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        Parent = parent ?? throw new ArgumentNullException(nameof(parent), "Parent cannot be null");
     }
 
     /// <summary>
-    /// An enumerable over the left child of a binary tree node which ensures that each time it is enumerated the latest state of the tree is enumerated
+    /// Get the child whose nodes we want to enumerate
     /// </summary>
-    /// <typeparam name="TKey">Key type</typeparam>
-    /// <typeparam name="TValue">Value type</typeparam>
-    internal class LeftChildNodeEnumerable<TKey, TValue>
-        : ChildNodesEnumerable<TKey, TValue>
+    protected abstract IBinaryTreeNode<TKey, TValue> Child
     {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="parent">Parent node</param>
-        public LeftChildNodeEnumerable(IBinaryTreeNode<TKey, TValue> parent)
-            : base(parent) { }
-
-        /// <summary>
-        /// Gets the left child
-        /// </summary>
-        protected override IBinaryTreeNode<TKey, TValue> Child => Parent.LeftChild;
+        get;
     }
 
     /// <summary>
-    /// An enumerable over the right child of a binary tree node which ensures that each time it is enumerated the latest state of the tree is enumerated
+    /// Gets an enumerator over the current state of one of the nodes children
     /// </summary>
-    /// <typeparam name="TKey">Key type</typeparam>
-    /// <typeparam name="TValue">Value type</typeparam>
-    internal class RightChildNodeEnumerable<TKey, TValue>
-    : ChildNodesEnumerable<TKey, TValue>
+    /// <returns>Enumerator over nodes</returns>
+    public IEnumerator<IBinaryTreeNode<TKey, TValue>> GetEnumerator()
     {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="parent">Parent node</param>
-        public RightChildNodeEnumerable(IBinaryTreeNode<TKey, TValue> parent)
-            : base(parent) { }
+        var child = Child;
+        if (child == null) return Enumerable.Empty<IBinaryTreeNode<TKey, TValue>>().GetEnumerator();
+        return child.Nodes.GetEnumerator();
+    }
 
-        /// <summary>
-        /// Gets the right child
-        /// </summary>
-        protected override IBinaryTreeNode<TKey, TValue> Child => Parent.RightChild;
+    /// <summary>
+    /// Gets an enumerator over the current state of one of the nodes children
+    /// </summary>
+    /// <returns>Enumerator over nodes</returns>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

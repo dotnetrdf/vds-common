@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -24,21 +24,20 @@ using System;
 using System.Collections.Generic;
 using VDS.Common.Filters.Storage;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Filters;
+
+/// <summary>
+/// A hybrid bloom filter backed by an array
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class HybridBloomFilter<T>
+    : BaseHybridBloomFilter<T>
 {
     /// <summary>
-    /// A hybrid bloom filter backed by an array
+    /// Creates a new filter
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class HybridBloomFilter<T>
-        : BaseHybridBloomFilter<T>
-    {
-        /// <summary>
-        /// Creates a new filter
-        /// </summary>
-        /// <param name="parameters">Parameters</param>
-        /// <param name="hashFunctions">Hash functions</param>
-        public HybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
-            : base(new ArrayStorage(parameters.NumberOfBits), parameters, hashFunctions) { }
-    }
+    /// <param name="parameters">Parameters</param>
+    /// <param name="hashFunctions">Hash functions</param>
+    public HybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
+        : base(new ArrayStorage(parameters.NumberOfBits), parameters, hashFunctions) { }
 }

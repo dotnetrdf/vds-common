@@ -2,7 +2,7 @@
 VDS.Common is licensed under the MIT License
 
 Copyright (c) 2012-2015 Robert Vesse
-Copyright (c) 2016-2018 dotNetRDF Project (http://dotnetrdf.org/)
+Copyright (c) 2016-2025 dotNetRDF Project (https://dotnetrdf.org/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,87 +23,86 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.References
+namespace VDS.Common.References;
+
+/// <summary>
+/// Represents a reference whose value may change based on nesting level
+/// </summary>
+/// <typeparam name="T">Reference Type</typeparam>
+public class NestedReference<T> 
+    where T : class
 {
+    private readonly Dictionary<int, T> _values = new();
+    private int _currLevel;
+    private T _currRef;
+
     /// <summary>
-    /// Represents a reference whose value may change based on nesting level
+    /// Creates a new Nested Reference with an initial null value
     /// </summary>
-    /// <typeparam name="T">Reference Type</typeparam>
-    public class NestedReference<T> 
-        where T : class
+    public NestedReference()
     {
-        private readonly Dictionary<int, T> _values = new();
-        private int _currLevel;
-        private T _currRef;
+        _currLevel++;
+    }
 
-        /// <summary>
-        /// Creates a new Nested Reference with an initial null value
-        /// </summary>
-        public NestedReference()
+    /// <summary>
+    /// Creates a new nested reference with an initial value
+    /// </summary>
+    /// <param name="initValue">Initial Value</param>
+    public NestedReference(T initValue)
+    {
+        _values.Add(_currLevel, initValue);
+        _currRef = initValue;
+        _currLevel++;
+    }
+
+    /// <summary>
+    /// Gets/Sets the value based on the current nesting level
+    /// </summary>
+    public T Value
+    {
+        get => _currRef;
+        set
         {
-            _currLevel++;
+            _values[_currLevel] = value;
+            _currRef = value;
         }
+    }
 
-        /// <summary>
-        /// Creates a new nested reference with an initial value
-        /// </summary>
-        /// <param name="initValue">Initial Value</param>
-        public NestedReference(T initValue)
-        {
-            _values.Add(_currLevel, initValue);
-            _currRef = initValue;
-            _currLevel++;
-        }
+    /// <summary>
+    /// Increments the nesting level
+    /// </summary>
+    public void IncrementNesting()
+    {
+        _currLevel++;
+    }
 
-        /// <summary>
-        /// Gets/Sets the value based on the current nesting level
-        /// </summary>
-        public T Value
+    /// <summary>
+    /// Decrements the nesting level
+    /// </summary>
+    public void DecrementNesting()
+    {
+        if (_currLevel == 0) throw new InvalidOperationException("Cannot decrement nesting when current nesting level is 0");
+
+        //Revert to the most recent reference
+        if (_values.ContainsKey(_currLevel))
         {
-            get => _currRef;
-            set
+            _values.Remove(_currLevel);
+            var i = _currLevel;
+            while (i > 1)
             {
-                _values[_currLevel] = value;
-                _currRef = value;
-            }
-        }
-
-        /// <summary>
-        /// Increments the nesting level
-        /// </summary>
-        public void IncrementNesting()
-        {
-            _currLevel++;
-        }
-
-        /// <summary>
-        /// Decrements the nesting level
-        /// </summary>
-        public void DecrementNesting()
-        {
-            if (_currLevel == 0) throw new InvalidOperationException("Cannot decrement nesting when current nesting level is 0");
-
-            //Revert to the most recent reference
-            if (_values.ContainsKey(_currLevel))
-            {
-                _values.Remove(_currLevel);
-                var i = _currLevel;
-                while (i > 1)
+                i--;
+                if (_values.TryGetValue(i, out var value))
                 {
-                    i--;
-                    if (_values.TryGetValue(i, out var value))
-                    {
-                        _currRef = value;
-                        break;
-                    }
-                    else
-                    {
-                        _currRef = null;
-                    }
+                    _currRef = value;
+                    break;
+                }
+                else
+                {
+                    _currRef = null;
                 }
             }
-            //Finally decrement the level
-            _currLevel--;
         }
+        //Finally decrement the level
+        _currLevel--;
     }
 }
