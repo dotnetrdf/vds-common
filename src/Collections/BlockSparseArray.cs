@@ -31,10 +31,16 @@ namespace VDS.Common.Collections;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This sparse array is implemented as a series of potentially empty blocks such that only blocks which contain values have any memory allocated to them.  This means it is extremely memory efficient for sparsely populated arrays.  The block size may be tweaked to limit the amount of memory that might be newly allocated by setting a value since setting a value in an as yet unpopulated block requires allocating the memory for that block.  Since at minimum the sequence of blocks must be maintained this implementation can be less memory efficient than the <see cref="LinkedSparseArray{T}"/> for some usages.
+/// This sparse array is implemented as a series of potentially empty blocks such that only blocks which contain values
+/// have any memory allocated to them.  This means it is extremely memory efficient for sparsely populated arrays.
+/// The block size may be tweaked to limit the amount of memory that might be newly allocated by setting a value since
+/// setting a value in an as yet unpopulated block requires allocating the memory for that block.  Since at minimum the
+/// sequence of blocks must be maintained this implementation can be less memory efficient than the
+/// <see cref="LinkedSparseArray{T}"/> for some usages.
 /// </para>
 /// <para>
-/// Since the sequence of blocks and the contents of each block are implemented using standard arrays an element may be accessed by index in linear time regardless of how empty/full the sparse array is.
+/// Since the sequence of blocks and the contents of each block are implemented using standard arrays,
+/// element access is O(1) regardless of how empty/full the sparse array is.
 /// </para>
 /// </remarks>
 /// <typeparam name="T">Value type</typeparam>
