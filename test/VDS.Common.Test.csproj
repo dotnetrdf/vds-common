@@ -3,7 +3,7 @@
     <AssemblyTitle>VDS.Common.Test</AssemblyTitle>
     <AssemblyName>VDS.Common.Test</AssemblyName>
     <RootNamespace>VDS.Common</RootNamespace>
-    <TargetFrameworks>net6.0;net7.0;net472</TargetFrameworks>
+    <TargetFrameworks>net8.0;net472</TargetFrameworks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
