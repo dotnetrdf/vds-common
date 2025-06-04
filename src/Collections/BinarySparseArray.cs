@@ -31,7 +31,7 @@ namespace VDS.Common.Collections;
 /// A sparse array implementation backed by a binary tree
 /// </summary>
 /// <remarks>
-/// This implementation provides a trade off between look up time and memory usage and so provides a compromise between the <see cref="BlockSparseArray{T}"/> and <see cref="LinkedSparseArray{T}"/>
+/// This implementation provides a trade-off between look-up time and memory usage and so provides a compromise between the <see cref="BlockSparseArray{T}"/> and <see cref="LinkedSparseArray{T}"/>
 /// </remarks>
 /// <typeparam name="T"></typeparam>
 public class BinarySparseArray<T>
