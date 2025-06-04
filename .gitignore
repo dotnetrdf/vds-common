@@ -24,3 +24,6 @@ tools/
 .vs/
 TestResult.xml
 UpgradeLog.htm
+
+# Rider
+.idea/
