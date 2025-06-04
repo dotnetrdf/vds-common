@@ -22,21 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections;
+
+/// <summary>
+/// Possible overflow policies for bounded lists
+/// </summary>
+public enum BoundedListOverflowPolicy
 {
     /// <summary>
-    /// Possible overflow policies for bounded lists
+    /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in an <see cref="InvalidOperationException"/>
     /// </summary>
-    public enum BoundedListOverflowPolicy
-    {
-        /// <summary>
-        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in an <see cref="InvalidOperationException"/>
-        /// </summary>
-        Error,
+    Error,
 
-        /// <summary>
-        /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items being silenty discarded.  When attempting to insert items then the behaviour will depend on where you are inserting. If inserting prior to the end of the list then inserting should cause items at the end of the list to be discarded if the capacity would be exceeded.  If inserting at the end of a list that is at capacity then the item to be inserted is itself discarded.
-        /// </summary>
-        Discard
-    }
+    /// <summary>
+    /// When this policy is used attempting to add more items to a bounded list than there is capacity for <strong>must</strong> result in the excess items being silenty discarded.  When attempting to insert items then the behaviour will depend on where you are inserting. If inserting prior to the end of the list then inserting should cause items at the end of the list to be discarded if the capacity would be exceeded.  If inserting at the end of a list that is at capacity then the item to be inserted is itself discarded.
+    /// </summary>
+    Discard
 }

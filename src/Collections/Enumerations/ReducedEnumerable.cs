@@ -22,30 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerable that reduces the items returns by omitting adjacent duplicates
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class ReducedEnumerable<T>
+    : AbstractEqualityEnumerable<T>
 {
     /// <summary>
-    /// An enumerable that reduces the items returns by omitting adjacent duplicates
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class ReducedEnumerable<T>
-        : AbstractEqualityEnumerable<T>
-    {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="equalityComparer">Equality comparer to use</param>
-        public ReducedEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
-            : base(enumerable, equalityComparer) { }
+    /// <param name="enumerable">Enumerable to operate over</param>
+    /// <param name="equalityComparer">Equality comparer to use</param>
+    public ReducedEnumerable(IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        : base(enumerable, equalityComparer) { }
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
-        {
-            return new ReducedEnumerator<T>(InnerEnumerable.GetEnumerator(), EqualityComparer);
-        }
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator<T> GetEnumerator()
+    {
+        return new ReducedEnumerator<T>(InnerEnumerable.GetEnumerator(), EqualityComparer);
     }
 }

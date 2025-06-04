@@ -22,38 +22,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerable that adds an additional item if the enumerable it operates over is empty
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class AddIfEmptyEnumerable<T>
+    : AbstractWrapperEnumerable<T>
 {
     /// <summary>
-    /// An enumerable that adds an additional item if the enumerable it operates over is empty
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class AddIfEmptyEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    /// <param name="enumerable">Enumerable to operate over</param>
+    /// <param name="item">Item to add if enumerable is empty</param>
+    public AddIfEmptyEnumerable(IEnumerable<T> enumerable, T item)
+        : base(enumerable)
     {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="item">Item to add if enumerable is empty</param>
-        public AddIfEmptyEnumerable(IEnumerable<T> enumerable, T item)
-            : base(enumerable)
-        {
-            AdditionalItem = item;
-        }
+        AdditionalItem = item;
+    }
 
-        /// <summary>
-        /// Gets the item to be added if the enumerable is empty
-        /// </summary>
-        private T AdditionalItem { get; set; }
+    /// <summary>
+    /// Gets the item to be added if the enumerable is empty
+    /// </summary>
+    private T AdditionalItem { get; set; }
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
-        {
-            return new AddIfEmptyEnumerator<T>(InnerEnumerable.GetEnumerator(), AdditionalItem);
-        }
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator<T> GetEnumerator()
+    {
+        return new AddIfEmptyEnumerator<T>(InnerEnumerable.GetEnumerator(), AdditionalItem);
     }
 }

@@ -22,34 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerable that returns only the top N distinct items according to an ordering
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+/// <remarks>
+/// This is a memory efficient implementation that only needs to store at most N items at any one time
+/// </remarks>
+public class TopNDistinctEnumerable<T>
+    : AbstractTopNEnumerable<T>
 {
     /// <summary>
-    /// An enumerable that returns only the top N distinct items according to an ordering
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    /// <remarks>
-    /// This is a memory efficient implementation that only needs to store at most N items at any one time
-    /// </remarks>
-    public class TopNDistinctEnumerable<T>
-        : AbstractTopNEnumerable<T>
-    {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable</param>
-        /// <param name="comparer">Comparer to use</param>
-        /// <param name="n">Number of items to return</param>
-        public TopNDistinctEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
-            : base(enumerable, comparer, n) { }
+    /// <param name="enumerable">Enumerable</param>
+    /// <param name="comparer">Comparer to use</param>
+    /// <param name="n">Number of items to return</param>
+    public TopNDistinctEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
+        : base(enumerable, comparer, n) { }
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
-        {
-            return new TopNDistinctEnumerator<T>(InnerEnumerable.GetEnumerator(), Comparer, N);
-        }
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator<T> GetEnumerator()
+    {
+        return new TopNDistinctEnumerator<T>(InnerEnumerable.GetEnumerator(), Comparer, N);
     }
 }

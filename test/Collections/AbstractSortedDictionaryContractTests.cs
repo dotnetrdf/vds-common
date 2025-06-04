@@ -24,74 +24,73 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections;
+
+[TestFixture, Category("Dictionaries")]
+public abstract class AbstractSortedDictionaryContractTests
+    : AbstractDictionaryContractTests
 {
-    [TestFixture, Category("Dictionaries")]
-    public abstract class AbstractSortedDictionaryContractTests
-        : AbstractDictionaryContractTests
+    protected abstract IDictionary<string, int> GetInstance(IComparer<string> comparer);
+
+    [Test]
+    public void DictionaryContractSortedKeys1()
     {
-        protected abstract IDictionary<string, int> GetInstance(IComparer<string> comparer);
+        var dict = GetInstance();
 
-        [Test]
-        public void DictionaryContractSortedKeys1()
-        {
-            var dict = GetInstance();
+        dict.Add("a", 1);
+        dict.Add("b", 2);
 
-            dict.Add("a", 1);
-            dict.Add("b", 2);
+        Assert.AreEqual(dict["a"], 1);
+        Assert.AreEqual(dict["b"], 2);
 
-            Assert.AreEqual(dict["a"], 1);
-            Assert.AreEqual(dict["b"], 2);
-
-            var keys = dict.Keys;
-            Assert.AreEqual("a", keys.First());
-            Assert.AreEqual("b", keys.Last());
-        }
-
-        [Test]
-        public void DictionaryContractSortedKeys2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("b", 1);
-            dict.Add("a", 2);
-
-            Assert.AreEqual(dict["b"], 1);
-            Assert.AreEqual(dict["a"], 2);
-
-            var keys = dict.Keys;
-            Assert.AreEqual("a", keys.First());
-            Assert.AreEqual("b", keys.Last());
-        }
+        var keys = dict.Keys;
+        Assert.AreEqual("a", keys.First());
+        Assert.AreEqual("b", keys.Last());
     }
 
-    [TestFixture, Category("Dictionaries")]
-    public class SortedDictionaryContractTests
-        : AbstractSortedDictionaryContractTests
+    [Test]
+    public void DictionaryContractSortedKeys2()
     {
-        protected override IDictionary<string, int> GetInstance()
-        {
-            return new SortedDictionary<string, int>();
-        }
+        var dict = GetInstance();
 
-        protected override IDictionary<string, int> GetInstance(IComparer<string> comparer)
-        {
-            return new SortedDictionary<string, int>(comparer);
-        }
+        dict.Add("b", 1);
+        dict.Add("a", 2);
+
+        Assert.AreEqual(dict["b"], 1);
+        Assert.AreEqual(dict["a"], 2);
+
+        var keys = dict.Keys;
+        Assert.AreEqual("a", keys.First());
+        Assert.AreEqual("b", keys.Last());
+    }
+}
+
+[TestFixture, Category("Dictionaries")]
+public class SortedDictionaryContractTests
+    : AbstractSortedDictionaryContractTests
+{
+    protected override IDictionary<string, int> GetInstance()
+    {
+        return new SortedDictionary<string, int>();
     }
 
-    [TestFixture, Category("Dictionaries")]
-    public class TreeSortedDictionaryContractTests2
-        : AbstractSortedDictionaryContractTests
+    protected override IDictionary<string, int> GetInstance(IComparer<string> comparer)
     {
-        protected override IDictionary<string, int> GetInstance()
-        {
-            return new TreeSortedDictionary<string, int>();
-        }
+        return new SortedDictionary<string, int>(comparer);
+    }
+}
 
-        protected override IDictionary<string, int> GetInstance(IComparer<string> comparer)
-        {
-            return new TreeSortedDictionary<string, int>(comparer);
-        }
+[TestFixture, Category("Dictionaries")]
+public class TreeSortedDictionaryContractTests2
+    : AbstractSortedDictionaryContractTests
+{
+    protected override IDictionary<string, int> GetInstance()
+    {
+        return new TreeSortedDictionary<string, int>();
+    }
+
+    protected override IDictionary<string, int> GetInstance(IComparer<string> comparer)
+    {
+        return new TreeSortedDictionary<string, int>(comparer);
     }
 }

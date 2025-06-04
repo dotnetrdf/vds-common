@@ -22,75 +22,74 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// Gets an enumerator that reduces another enumerator by eliminating adjacent duplicates
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class ReducedEnumerator<T>
+    : AbstractEqualityEnumerator<T>
 {
     /// <summary>
-    /// Gets an enumerator that reduces another enumerator by eliminating adjacent duplicates
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class ReducedEnumerator<T>
-        : AbstractEqualityEnumerator<T>
+    /// <param name="enumerator">Enumerator to operate over</param>
+    /// <param name="equalityComparer">Equality comparer to use</param>
+    public ReducedEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer)
+        : base(enumerator, equalityComparer)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to operate over</param>
-        /// <param name="equalityComparer">Equality comparer to use</param>
-        public ReducedEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer)
-            : base(enumerator, equalityComparer)
+        First = true;
+    }
+
+    /// <summary>
+    /// Gets/Sets whether we are at the first item
+    /// </summary>
+    private bool First { get; set; }
+
+    /// <summary>
+    /// Gets the last item seen
+    /// </summary>
+    private T LastItem { get; set; }
+
+    /// <summary>
+    /// Tries to move next
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns></returns>
+    protected override bool TryMoveNext(out T item)
+    {
+        item = default(T);
+        if (InnerEnumerator.MoveNext()) return false;
+        item = InnerEnumerator.Current;
+
+        if (First)
         {
-            First = true;
+            First = false;
+            LastItem = item;
+            return true;
         }
 
-        /// <summary>
-        /// Gets/Sets whether we are at the first item
-        /// </summary>
-        private bool First { get; set; }
-
-        /// <summary>
-        /// Gets the last item seen
-        /// </summary>
-        private T LastItem { get; set; }
-
-        /// <summary>
-        /// Tries to move next
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns></returns>
-        protected override bool TryMoveNext(out T item)
+        while (true)
         {
-            item = default(T);
-            if (InnerEnumerator.MoveNext()) return false;
-            item = InnerEnumerator.Current;
-
-            if (First)
+            // Provided the next item is not the same as the previous return it
+            if (!EqualityComparer.Equals(LastItem, item))
             {
-                First = false;
                 LastItem = item;
                 return true;
             }
 
-            while (true)
-            {
-                // Provided the next item is not the same as the previous return it
-                if (!EqualityComparer.Equals(LastItem, item))
-                {
-                    LastItem = item;
-                    return true;
-                }
-
-                if (!InnerEnumerator.MoveNext()) return false;
-                item = InnerEnumerator.Current;
-            }
+            if (!InnerEnumerator.MoveNext()) return false;
+            item = InnerEnumerator.Current;
         }
+    }
 
-        /// <summary>
-        /// Resets the 
-        /// </summary>
-        protected override void ResetInternal()
-        {
-            First = true;
-            LastItem = default(T);
-        }
+    /// <summary>
+    /// Resets the 
+    /// </summary>
+    protected override void ResetInternal()
+    {
+        First = true;
+        LastItem = default(T);
     }
 }

@@ -24,21 +24,20 @@ using System;
 using System.Collections.Generic;
 using VDS.Common.Filters.Storage;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Filters;
+
+/// <summary>
+/// A hybrid bloom filter backed by an array
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class SparseHybridBloomFilter<T>
+    : BaseHybridBloomFilter<T>
 {
     /// <summary>
-    /// A hybrid bloom filter backed by an array
+    /// Creates a new filter
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class SparseHybridBloomFilter<T>
-        : BaseHybridBloomFilter<T>
-    {
-        /// <summary>
-        /// Creates a new filter
-        /// </summary>
-        /// <param name="parameters">Parameters</param>
-        /// <param name="hashFunctions">Hash functions</param>
-        public SparseHybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
-            : base(new SparseArrayStorage(parameters), parameters, hashFunctions) { }
-    }
+    /// <param name="parameters">Parameters</param>
+    /// <param name="hashFunctions">Hash functions</param>
+    public SparseHybridBloomFilter(IBloomFilterParameters parameters, IEnumerable<Func<T, int>> hashFunctions)
+        : base(new SparseArrayStorage(parameters), parameters, hashFunctions) { }
 }

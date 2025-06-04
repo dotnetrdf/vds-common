@@ -22,70 +22,69 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerator that adds an item if the inner enumerator is empty
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class AddIfEmptyEnumerator<T>
+    : AbstractWrapperEnumerator<T>
 {
     /// <summary>
-    /// An enumerator that adds an item if the inner enumerator is empty
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class AddIfEmptyEnumerator<T>
-        : AbstractWrapperEnumerator<T>
+    /// <param name="enumerator">Enumerator</param>
+    /// <param name="item">Item to add</param>
+    public AddIfEmptyEnumerator(IEnumerator<T> enumerator, T item)
+        : base(enumerator)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator</param>
-        /// <param name="item">Item to add</param>
-        public AddIfEmptyEnumerator(IEnumerator<T> enumerator, T item)
-            : base(enumerator)
+        AdditionalItem = item;
+    }
+
+    /// <summary>
+    /// Gets the item to be added
+    /// </summary>
+    private T AdditionalItem { get; set; }
+
+    /// <summary>
+    /// Gets/Sets whether any items were seen
+    /// </summary>
+    private bool AnyItemsSeen { get; set; }
+
+    /// <summary>
+    /// Gets whether we are currently returning the additional item
+    /// </summary>
+    private bool IsCurrentAdditionalItem { get; set; }
+
+    /// <summary>
+    /// Tries to move next
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns>True if an item is available, false otherwise</returns>
+    protected override bool TryMoveNext(out T item)
+    {
+        item = default(T);
+        if (InnerEnumerator.MoveNext())
         {
-            AdditionalItem = item;
-        }
-
-        /// <summary>
-        /// Gets the item to be added
-        /// </summary>
-        private T AdditionalItem { get; set; }
-
-        /// <summary>
-        /// Gets/Sets whether any items were seen
-        /// </summary>
-        private bool AnyItemsSeen { get; set; }
-
-        /// <summary>
-        /// Gets whether we are currently returning the additional item
-        /// </summary>
-        private bool IsCurrentAdditionalItem { get; set; }
-
-        /// <summary>
-        /// Tries to move next
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>True if an item is available, false otherwise</returns>
-        protected override bool TryMoveNext(out T item)
-        {
-            item = default(T);
-            if (InnerEnumerator.MoveNext())
-            {
-                AnyItemsSeen = true;
-                item = InnerEnumerator.Current;
-                return true;
-            }
-            if (AnyItemsSeen) return false;
-            if (IsCurrentAdditionalItem) return false;
-
-            IsCurrentAdditionalItem = true;
-            item = AdditionalItem;
+            AnyItemsSeen = true;
+            item = InnerEnumerator.Current;
             return true;
         }
+        if (AnyItemsSeen) return false;
+        if (IsCurrentAdditionalItem) return false;
 
-        /// <summary>
-        /// Resets the enumerator
-        /// </summary>
-        protected override void ResetInternal()
-        {
-            AnyItemsSeen = false;
-            IsCurrentAdditionalItem = false;
-        }
+        IsCurrentAdditionalItem = true;
+        item = AdditionalItem;
+        return true;
+    }
+
+    /// <summary>
+    /// Resets the enumerator
+    /// </summary>
+    protected override void ResetInternal()
+    {
+        AnyItemsSeen = false;
+        IsCurrentAdditionalItem = false;
     }
 }

@@ -22,130 +22,129 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Linq;
 
-namespace VDS.Common.Trees
+namespace VDS.Common.Trees;
+
+/// <summary>
+/// Useful extensions for working with Trees
+/// </summary>
+public static class TreeExtensions
 {
     /// <summary>
-    /// Useful extensions for working with Trees
+    /// Gets the depth of the given node in the Tree
     /// </summary>
-    public static class TreeExtensions
+    /// <typeparam name="TKey">Key Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
+    /// <param name="node">Node</param>
+    /// <returns></returns>
+    public static long GetDepth<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
     {
-        /// <summary>
-        /// Gets the depth of the given node in the Tree
-        /// </summary>
-        /// <typeparam name="TKey">Key Type</typeparam>
-        /// <typeparam name="TValue">Value Type</typeparam>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        public static long GetDepth<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+        long depth = 0;
+        while (node.Parent != null)
         {
-            long depth = 0;
-            while (node.Parent != null)
-            {
-                depth++;
-                node = node.Parent;
-            }
-            return depth;
+            depth++;
+            node = node.Parent;
         }
+        return depth;
+    }
 
-        /// <summary>
-        /// Gets the Height of the given node in the Tree
-        /// </summary>
-        /// <typeparam name="TKey">Key</typeparam>
-        /// <typeparam name="TValue">Value</typeparam>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        public static long GetHeight<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
-        {
-            if (node == null) return 0;
-            return node.Height;
-            //return 1 + Math.Max(node.LeftChild.GetHeight(), node.RightChild.GetHeight());
-        }
+    /// <summary>
+    /// Gets the Height of the given node in the Tree
+    /// </summary>
+    /// <typeparam name="TKey">Key</typeparam>
+    /// <typeparam name="TValue">Value</typeparam>
+    /// <param name="node">Node</param>
+    /// <returns></returns>
+    public static long GetHeight<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        if (node == null) return 0;
+        return node.Height;
+        //return 1 + Math.Max(node.LeftChild.GetHeight(), node.RightChild.GetHeight());
+    }
 
-        /// <summary>
-        /// Gets the balance of the given node in the Tree
-        /// </summary>
-        /// <typeparam name="TKey">Key Type</typeparam>
-        /// <typeparam name="TValue">Value Type</typeparam>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        public static long GetBalance<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
-        {
-            if (node == null) return 0;
-            var left = node.LeftChild.GetHeight();
-            var right = node.RightChild.GetHeight();
-            return right - left;
-        }
+    /// <summary>
+    /// Gets the balance of the given node in the Tree
+    /// </summary>
+    /// <typeparam name="TKey">Key Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
+    /// <param name="node">Node</param>
+    /// <returns></returns>
+    public static long GetBalance<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        if (node == null) return 0;
+        var left = node.LeftChild.GetHeight();
+        var right = node.RightChild.GetHeight();
+        return right - left;
+    }
 
-        /// <summary>
-        /// Gets the sibling of a binary tree node (if any)
-        /// </summary>
-        /// <typeparam name="TKey">Key Type</typeparam>
-        /// <typeparam name="TValue">Value Type</typeparam>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        public static IBinaryTreeNode<TKey, TValue> GetSibling<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
-        {
-            if (node.Parent == null) return null;
-            var parent = node.Parent;
-            return (ReferenceEquals(node, parent.LeftChild) ? parent.RightChild : parent.LeftChild);
-        }
+    /// <summary>
+    /// Gets the sibling of a binary tree node (if any)
+    /// </summary>
+    /// <typeparam name="TKey">Key Type</typeparam>
+    /// <typeparam name="TValue">Value Type</typeparam>
+    /// <param name="node">Node</param>
+    /// <returns></returns>
+    public static IBinaryTreeNode<TKey, TValue> GetSibling<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        if (node.Parent == null) return null;
+        var parent = node.Parent;
+        return (ReferenceEquals(node, parent.LeftChild) ? parent.RightChild : parent.LeftChild);
+    }
 
-        /// <summary>
-        /// Gets the size of the subtree rooted at the given node
-        /// </summary>
-        /// <typeparam name="TKey">Key</typeparam>
-        /// <typeparam name="TValue">Valye</typeparam>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        public static long GetSize<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
-        {
-            if (node == null) return 0;
-            return node.Nodes.LongCount();
-        }
+    /// <summary>
+    /// Gets the size of the subtree rooted at the given node
+    /// </summary>
+    /// <typeparam name="TKey">Key</typeparam>
+    /// <typeparam name="TValue">Valye</typeparam>
+    /// <param name="node">Node</param>
+    /// <returns></returns>
+    public static long GetSize<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        if (node == null) return 0;
+        return node.Nodes.LongCount();
+    }
 
-        /// <summary>
-        /// Isolates a Node from the tree by setting its parent and child links to be null
-        /// </summary>
-        /// <typeparam name="TKey">Key Type</typeparam>
-        /// <typeparam name="TValue">Valye Type</typeparam>
-        /// <param name="node">Node</param>
-        /// <returns></returns>
-        internal static IBinaryTreeNode<TKey, TValue> Isolate<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
-        {
-            node.Parent = null;
-            node.LeftChild = null;
-            node.RightChild = null;
-            return node;
-        }
+    /// <summary>
+    /// Isolates a Node from the tree by setting its parent and child links to be null
+    /// </summary>
+    /// <typeparam name="TKey">Key Type</typeparam>
+    /// <typeparam name="TValue">Valye Type</typeparam>
+    /// <param name="node">Node</param>
+    /// <returns></returns>
+    internal static IBinaryTreeNode<TKey, TValue> Isolate<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        node.Parent = null;
+        node.LeftChild = null;
+        node.RightChild = null;
+        return node;
+    }
 
-        /// <summary>
-        /// Finds the leftmost child of the given node
-        /// </summary>
-        /// <param name="node">Node</param>
-        /// <returns>Leftmost child or self if no left children</returns>
-        public static IBinaryTreeNode<TKey, TValue> FindLeftmostChild<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    /// <summary>
+    /// Finds the leftmost child of the given node
+    /// </summary>
+    /// <param name="node">Node</param>
+    /// <returns>Leftmost child or self if no left children</returns>
+    public static IBinaryTreeNode<TKey, TValue> FindLeftmostChild<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        if (node == null) return null;
+        while (node.LeftChild != null)
         {
-            if (node == null) return null;
-            while (node.LeftChild != null)
-            {
-                node = node.LeftChild;
-            }
-            return node;
+            node = node.LeftChild;
         }
+        return node;
+    }
 
-        /// <summary>
-        /// Finds the rightmost child of the given node
-        /// </summary>
-        /// <param name="node">Node</param>
-        /// <returns>Rightmost child of self if no right children</returns>
-        public static IBinaryTreeNode<TKey, TValue> FindRightmostChild<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    /// <summary>
+    /// Finds the rightmost child of the given node
+    /// </summary>
+    /// <param name="node">Node</param>
+    /// <returns>Rightmost child of self if no right children</returns>
+    public static IBinaryTreeNode<TKey, TValue> FindRightmostChild<TKey, TValue>(this IBinaryTreeNode<TKey, TValue> node)
+    {
+        if (node == null) return null;
+        while (node.RightChild != null)
         {
-            if (node == null) return null;
-            while (node.RightChild != null)
-            {
-                node = node.RightChild;
-            }
-            return node;
+            node = node.RightChild;
         }
+        return node;
     }
 }

@@ -24,74 +24,73 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Filters;
+
+/// <summary>
+/// Abstract implementation of a bloom filter
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public abstract class BaseBloomFilter<T>
+    : BaseBloomFilterParameters, IBloomFilter<T>
 {
     /// <summary>
-    /// Abstract implementation of a bloom filter
+    /// Creates a new filter
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public abstract class BaseBloomFilter<T>
-        : BaseBloomFilterParameters, IBloomFilter<T>
+    /// <param name="storage">Storage to use</param>
+    protected BaseBloomFilter(IBloomFilterStorage storage)
     {
-        /// <summary>
-        /// Creates a new filter
-        /// </summary>
-        /// <param name="storage">Storage to use</param>
-        protected BaseBloomFilter(IBloomFilterStorage storage)
+        Storage = storage ?? throw new ArgumentNullException(nameof(storage), "Storage cannot be null");
+    }
+
+    /// <summary>
+    /// Gets the storage in use
+    /// </summary>
+    private IBloomFilterStorage Storage { get; set; }
+
+    /// <summary>
+    /// Converts an item into a number of bit indexes
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns>Bit Indices</returns>
+    protected abstract IEnumerable<int> GetBitIndices(T item);
+
+    /// <summary>
+    /// Gets whether the filter may have already seen the given item
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns>True if the item may have been seen, false otherwise</returns>
+    /// <remarks>
+    /// Bloom filters may return false positives hence why this method is named <strong>MayContain</strong> but they are guaranteed to never return false negatives
+    /// </remarks>
+    public bool MayContain(T item)
+    {
+        var indices = GetBitIndices(item);
+        return indices.All(index => Storage.IsSet(index));
+    }
+
+    /// <summary>
+    /// Clears the filter
+    /// </summary>
+    public void Clear()
+    {
+        Storage.Clear();
+    }
+
+    /// <summary>
+    /// Adds an item to the filter
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns>True if the item was added to the filter, false if item may already have been present and was not added</returns>
+    public bool Add(T item)
+    {
+        var indices = GetBitIndices(item);
+        var alreadySeen = true;
+        foreach (var index in indices)
         {
-            Storage = storage ?? throw new ArgumentNullException(nameof(storage), "Storage cannot be null");
+            if (Storage.IsSet(index)) continue;
+            alreadySeen = false;
+            Storage.Set(index);
         }
-
-        /// <summary>
-        /// Gets the storage in use
-        /// </summary>
-        private IBloomFilterStorage Storage { get; set; }
-
-        /// <summary>
-        /// Converts an item into a number of bit indexes
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>Bit Indices</returns>
-        protected abstract IEnumerable<int> GetBitIndices(T item);
-
-        /// <summary>
-        /// Gets whether the filter may have already seen the given item
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>True if the item may have been seen, false otherwise</returns>
-        /// <remarks>
-        /// Bloom filters may return false positives hence why this method is named <strong>MayContain</strong> but they are guaranteed to never return false negatives
-        /// </remarks>
-        public bool MayContain(T item)
-        {
-            var indices = GetBitIndices(item);
-            return indices.All(index => Storage.IsSet(index));
-        }
-
-        /// <summary>
-        /// Clears the filter
-        /// </summary>
-        public void Clear()
-        {
-            Storage.Clear();
-        }
-
-        /// <summary>
-        /// Adds an item to the filter
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>True if the item was added to the filter, false if item may already have been present and was not added</returns>
-        public bool Add(T item)
-        {
-            var indices = GetBitIndices(item);
-            var alreadySeen = true;
-            foreach (var index in indices)
-            {
-                if (Storage.IsSet(index)) continue;
-                alreadySeen = false;
-                Storage.Set(index);
-            }
-            return !alreadySeen;
-        }
+        return !alreadySeen;
     }
 }

@@ -23,29 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// Abstract implementation of a wrapper enumerator that needs item equality
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public abstract class AbstractEqualityEnumerator<T>
+    : AbstractWrapperEnumerator<T>
 {
     /// <summary>
-    /// Abstract implementation of a wrapper enumerator that needs item equality
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractEqualityEnumerator<T>
-        : AbstractWrapperEnumerator<T>
+    /// <param name="enumerator">Enumerator to wrap</param>
+    /// <param name="equalityComparer">Equality comparer to use</param>
+    protected AbstractEqualityEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer) 
+        : base(enumerator)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to wrap</param>
-        /// <param name="equalityComparer">Equality comparer to use</param>
-        protected AbstractEqualityEnumerator(IEnumerator<T> enumerator, IEqualityComparer<T> equalityComparer) 
-            : base(enumerator)
-        {
-            EqualityComparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
-        }
-
-        /// <summary>
-        /// Gets the equality comparer to use
-        /// </summary>
-        protected IEqualityComparer<T> EqualityComparer { get; private set; } 
+        EqualityComparer = equalityComparer ?? throw new ArgumentNullException(nameof(equalityComparer));
     }
+
+    /// <summary>
+    /// Gets the equality comparer to use
+    /// </summary>
+    protected IEqualityComparer<T> EqualityComparer { get; private set; } 
 }

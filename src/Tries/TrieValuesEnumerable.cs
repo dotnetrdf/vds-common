@@ -24,51 +24,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VDS.Common.Tries
+namespace VDS.Common.Tries;
+
+/// <summary>
+/// An enumerable over the values of a Trie which ensures that the latest state of the Trie is always enumerated
+/// </summary>
+/// <typeparam name="TKeyBit">Key Bit Type</typeparam>
+/// <typeparam name="TValue">Value Type</typeparam>
+public class TrieValuesEnumerable<TKeyBit, TValue>
+    : IEnumerable<TValue>
+    where TValue : class
 {
+    private readonly ITrieNode<TKeyBit, TValue> _node;
+
     /// <summary>
-    /// An enumerable over the values of a Trie which ensures that the latest state of the Trie is always enumerated
+    /// Creates a new values enumerator
     /// </summary>
-    /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
-    /// <typeparam name="TValue">Value Type</typeparam>
-    public class TrieValuesEnumerable<TKeyBit, TValue>
-        : IEnumerable<TValue>
-        where TValue : class
+    /// <param name="node">Node to start enumeration from</param>
+    public TrieValuesEnumerable(ITrieNode<TKeyBit, TValue> node)
     {
-        private readonly ITrieNode<TKeyBit, TValue> _node;
+        _node = node ?? throw new ArgumentNullException(nameof(node));
+    }
 
-        /// <summary>
-        /// Creates a new values enumerator
-        /// </summary>
-        /// <param name="node">Node to start enumeration from</param>
-        public TrieValuesEnumerable(ITrieNode<TKeyBit, TValue> node)
+    /// <summary>
+    /// Gets an enumerator over the values in the Trie
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<TValue> GetEnumerator()
+    {
+        if (_node.HasValue)
         {
-            _node = node ?? throw new ArgumentNullException(nameof(node));
+            return _node.Value.AsEnumerable().Concat(_node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator();
         }
+        else
+        {
+            return _node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator();
+        }
+    }
 
-        /// <summary>
-        /// Gets an enumerator over the values in the Trie
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<TValue> GetEnumerator()
-        {
-            if (_node.HasValue)
-            {
-                return _node.Value.AsEnumerable().Concat(_node.Descendants.Where(n => n.HasValue).Select(n => n.Value)).GetEnumerator();
-            }
-            else
-            {
-                return _node.Descendants.Where(n => n.HasValue).Select(n => n.Value).GetEnumerator();
-            }
-        }
-
-        /// <summary>
-        /// Gets an enumerator over the values in the Trie
-        /// </summary>
-        /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    /// <summary>
+    /// Gets an enumerator over the values in the Trie
+    /// </summary>
+    /// <returns></returns>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

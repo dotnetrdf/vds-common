@@ -22,72 +22,71 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Trees
+namespace VDS.Common.Trees;
+
+/// <summary>
+/// Interface for Binary Tree Nodes
+/// </summary>
+/// <typeparam name="TKey">Key Type</typeparam>
+/// <typeparam name="TValue">Value Type</typeparam>
+public interface IBinaryTreeNode<TKey, TValue>
+    : ITreeNode<TKey, TValue>
 {
     /// <summary>
-    /// Interface for Binary Tree Nodes
+    /// Gets the left child of this node
     /// </summary>
-    /// <typeparam name="TKey">Key Type</typeparam>
-    /// <typeparam name="TValue">Value Type</typeparam>
-    public interface IBinaryTreeNode<TKey, TValue>
-        : ITreeNode<TKey, TValue>
+    IBinaryTreeNode<TKey, TValue> LeftChild
     {
-        /// <summary>
-        /// Gets the left child of this node
-        /// </summary>
-        IBinaryTreeNode<TKey, TValue> LeftChild
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the right child of this node
-        /// </summary>
-        IBinaryTreeNode<TKey, TValue> RightChild
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the parent of the node
-        /// </summary>
-        IBinaryTreeNode<TKey, TValue> Parent
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the nodes present for the entire subtree (including this node)
-        /// </summary>
-        IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the Height of the subtree this node represents
-        /// </summary>
-        long Height
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Indicates that the node should recalculate the height of the subtree it represents
-        /// </summary>
-        void RecalculateHeight();
-
-        /// <summary>
-        /// Gets the size of the subtree this node represents i.e. number of nodes including this node
-        /// </summary>
-        int Size { get; }
-
-        /// <summary>
-        /// Indicates that the node should recalculate the size of the subtree it represents
-        /// </summary>
-        void RecalculateSize();
+        get;
+        set;
     }
+
+    /// <summary>
+    /// Gets the right child of this node
+    /// </summary>
+    IBinaryTreeNode<TKey, TValue> RightChild
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// Gets the parent of the node
+    /// </summary>
+    IBinaryTreeNode<TKey, TValue> Parent
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// Gets the nodes present for the entire subtree (including this node)
+    /// </summary>
+    IEnumerable<IBinaryTreeNode<TKey, TValue>> Nodes
+    {
+        get;
+    }
+
+    /// <summary>
+    /// Gets the Height of the subtree this node represents
+    /// </summary>
+    long Height
+    {
+        get;
+    }
+
+    /// <summary>
+    /// Indicates that the node should recalculate the height of the subtree it represents
+    /// </summary>
+    void RecalculateHeight();
+
+    /// <summary>
+    /// Gets the size of the subtree this node represents i.e. number of nodes including this node
+    /// </summary>
+    int Size { get; }
+
+    /// <summary>
+    /// Indicates that the node should recalculate the size of the subtree it represents
+    /// </summary>
+    void RecalculateSize();
 }

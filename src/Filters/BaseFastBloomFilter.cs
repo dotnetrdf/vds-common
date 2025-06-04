@@ -23,61 +23,60 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Filters
+namespace VDS.Common.Filters;
+
+/// <summary>
+/// Abstract implementation of a fast bloom filter using the methodology outlined in <a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&amp;rep=rep1&amp;type=pdf">Less Hashing, Same Performance: Building a Better Bloom Filter</a>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <remarks>
+/// This implementation works on a technique described in the literature which shows that given two hash functions it is possible to simulate any number of hash functions by performing simple arithmetic combinations of the two hash functions outputs.  In practise this means that the hashing used by the bloom filter is significantly faster because it needs only calculate two hash functions for any given item and then can compute the necessary number of hash values by simple arithmetic operations.
+/// </remarks>
+public abstract class BaseFastBloomFilter<T>
+    : BaseBloomFilter<T>
 {
+    private readonly Func<T, int> _h1, _h2;
+    private readonly IBloomFilterParameters _parameters;
+
     /// <summary>
-    /// Abstract implementation of a fast bloom filter using the methodology outlined in <a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&amp;rep=rep1&amp;type=pdf">Less Hashing, Same Performance: Building a Better Bloom Filter</a>
+    /// Creates a new 
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <remarks>
-    /// This implementation works on a technique described in the literature which shows that given two hash functions it is possible to simulate any number of hash functions by performing simple arithmetic combinations of the two hash functions outputs.  In practise this means that the hashing used by the bloom filter is significantly faster because it needs only calculate two hash functions for any given item and then can compute the necessary number of hash values by simple arithmetic operations.
-    /// </remarks>
-    public abstract class BaseFastBloomFilter<T>
-        : BaseBloomFilter<T>
+    /// <param name="storage">Bloom Filter Storage</param>
+    /// <param name="parameters">Parameters</param>
+    /// <param name="h1">First hash function</param>
+    /// <param name="h2">Second hash function</param>
+    protected BaseFastBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
+        : base(storage)
     {
-        private readonly Func<T, int> _h1, _h2;
-        private readonly IBloomFilterParameters _parameters;
+        if (parameters == null) throw new ArgumentNullException(nameof(parameters), "Paramaeters cannot be null");
+        if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
 
-        /// <summary>
-        /// Creates a new 
-        /// </summary>
-        /// <param name="storage">Bloom Filter Storage</param>
-        /// <param name="parameters">Parameters</param>
-        /// <param name="h1">First hash function</param>
-        /// <param name="h2">Second hash function</param>
-        protected BaseFastBloomFilter(IBloomFilterStorage storage, IBloomFilterParameters parameters, Func<T, int> h1, Func<T, int> h2)
-            : base(storage)
+        _parameters = parameters;
+        NumberOfBits = parameters.NumberOfBits;
+        _h1 = h1 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h1));
+        _h2 = h2 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h2));
+    }
+
+    /// <summary>
+    /// Gets the number of hash functions
+    /// </summary>
+    public override int NumberOfHashFunctions => _parameters.NumberOfHashFunctions;
+
+    /// <summary>
+    /// Converts the item into a number of bit indices
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns>Bit Indices</returns>
+    protected override IEnumerable<int> GetBitIndices(T item)
+    {
+        var a = _h1(item);
+        var b = _h2(item);
+
+        var bits = new int[_parameters.NumberOfHashFunctions];
+        for (var i = 0; i < bits.Length; i++)
         {
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters), "Paramaeters cannot be null");
-            if (parameters.NumberOfBits <= parameters.NumberOfHashFunctions) throw new ArgumentException("Number of bits must be bigger than the number of hash functions", nameof(parameters));
-
-            _parameters = parameters;
-            NumberOfBits = parameters.NumberOfBits;
-            _h1 = h1 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h1));
-            _h2 = h2 ?? throw new ArgumentException("Hash functions cannot be null", nameof(h2));
+            bits[i] = Math.Abs(a + (i*b)) % NumberOfBits;
         }
-
-        /// <summary>
-        /// Gets the number of hash functions
-        /// </summary>
-        public override int NumberOfHashFunctions => _parameters.NumberOfHashFunctions;
-
-        /// <summary>
-        /// Converts the item into a number of bit indices
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns>Bit Indices</returns>
-        protected override IEnumerable<int> GetBitIndices(T item)
-        {
-            var a = _h1(item);
-            var b = _h2(item);
-
-            var bits = new int[_parameters.NumberOfHashFunctions];
-            for (var i = 0; i < bits.Length; i++)
-            {
-                bits[i] = Math.Abs(a + (i*b)) % NumberOfBits;
-            }
-            return bits;
-        }
+        return bits;
     }
 }

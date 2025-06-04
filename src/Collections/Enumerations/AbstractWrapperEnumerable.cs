@@ -24,42 +24,41 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// Abstract implementation of an enumerable that wraps another enumerable
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public abstract class AbstractWrapperEnumerable<T> 
+    : IEnumerable<T>
 {
     /// <summary>
-    /// Abstract implementation of an enumerable that wraps another enumerable
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractWrapperEnumerable<T> 
-        : IEnumerable<T>
+    /// <param name="enumerable">Enumerable to wrap</param>
+    protected AbstractWrapperEnumerable(IEnumerable<T> enumerable)
     {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable to wrap</param>
-        protected AbstractWrapperEnumerable(IEnumerable<T> enumerable)
-        {
-            InnerEnumerable = enumerable ?? throw new ArgumentNullException(nameof(enumerable));
-        }
+        InnerEnumerable = enumerable ?? throw new ArgumentNullException(nameof(enumerable));
+    }
         
-        /// <summary>
-        /// Gets the wrapped enumerable
-        /// </summary>
-        protected IEnumerable<T> InnerEnumerable { get; private set; }
+    /// <summary>
+    /// Gets the wrapped enumerable
+    /// </summary>
+    protected IEnumerable<T> InnerEnumerable { get; private set; }
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        public abstract IEnumerator<T> GetEnumerator();
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    public abstract IEnumerator<T> GetEnumerator();
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -23,44 +23,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Comparers
+namespace VDS.Common.Comparers;
+
+/// <summary>
+/// A comparer that reverses the ordering provided by another comparer
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class ReversedComparer<T>
+    : IComparer<T>
 {
     /// <summary>
-    /// A comparer that reverses the ordering provided by another comparer
+    /// Creates a new comparer that reverses the default ordering
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class ReversedComparer<T>
-        : IComparer<T>
+    public ReversedComparer()
+        : this(Comparer<T>.Default) { }
+
+    /// <summary>
+    /// Creates a new comparer that reverses the given ordering
+    /// </summary>
+    /// <param name="comparer">Comparer</param>
+    public ReversedComparer(IComparer<T> comparer)
     {
-        /// <summary>
-        /// Creates a new comparer that reverses the default ordering
-        /// </summary>
-        public ReversedComparer()
-            : this(Comparer<T>.Default) { }
+        InnerComparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    }
 
-        /// <summary>
-        /// Creates a new comparer that reverses the given ordering
-        /// </summary>
-        /// <param name="comparer">Comparer</param>
-        public ReversedComparer(IComparer<T> comparer)
-        {
-            InnerComparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-        }
+    /// <summary>
+    /// Gets the inner comparer
+    /// </summary>
+    public IComparer<T> InnerComparer { get; private set; }
 
-        /// <summary>
-        /// Gets the inner comparer
-        /// </summary>
-        public IComparer<T> InnerComparer { get; private set; }
-
-        /// <summary>
-        /// Compares two items
-        /// </summary>
-        /// <param name="x">Item</param>
-        /// <param name="y">Other item</param>
-        /// <returns></returns>
-        public int Compare(T x, T y)
-        {
-            return InnerComparer.Compare(y, x);
-        }
+    /// <summary>
+    /// Compares two items
+    /// </summary>
+    /// <param name="x">Item</param>
+    /// <param name="y">Other item</param>
+    /// <returns></returns>
+    public int Compare(T x, T y)
+    {
+        return InnerComparer.Compare(y, x);
     }
 }

@@ -23,37 +23,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace VDS.Common.Comparers
+namespace VDS.Common.Comparers;
+
+/// <summary>
+/// An equality comparer based purely on Object reference
+/// </summary>
+/// <typeparam name="T">Type</typeparam>
+public sealed class ReferenceEqualityComparer<T>
+    : IEqualityComparer<T>
 {
     /// <summary>
-    /// An equality comparer based purely on Object reference
+    /// Gets whether two items are reference equals
     /// </summary>
-    /// <typeparam name="T">Type</typeparam>
-    public sealed class ReferenceEqualityComparer<T>
-        : IEqualityComparer<T>
+    /// <param name="x">Item</param>
+    /// <param name="y">Other item</param>
+    /// <returns>True if items are reference equals, false otherwise</returns>
+    public bool Equals(T x, T y)
     {
-        /// <summary>
-        /// Gets whether two items are reference equals
-        /// </summary>
-        /// <param name="x">Item</param>
-        /// <param name="y">Other item</param>
-        /// <returns>True if items are reference equals, false otherwise</returns>
-        public bool Equals(T x, T y)
-        {
-            return ReferenceEquals(x, y);
-        }
+        return ReferenceEquals(x, y);
+    }
 
-        /// <summary>
-        /// Gets a hash code for an item
-        /// </summary>
-        /// <param name="obj">Item</param>
-        /// <returns>Hash code</returns>
-        /// <remarks>
-        /// Defers to <see cref="RuntimeHelpers.GetHashCode(object)"/>
-        /// </remarks>
-        public int GetHashCode(T obj)
-        {
-            return RuntimeHelpers.GetHashCode(obj);
-        }
+    /// <summary>
+    /// Gets a hash code for an item
+    /// </summary>
+    /// <param name="obj">Item</param>
+    /// <returns>Hash code</returns>
+    /// <remarks>
+    /// Defers to <see cref="RuntimeHelpers.GetHashCode(object)"/>
+    /// </remarks>
+    public int GetHashCode(T obj)
+    {
+        return RuntimeHelpers.GetHashCode(obj);
     }
 }

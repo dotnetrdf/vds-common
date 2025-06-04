@@ -23,29 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// Abstract implementation of a wrapper enumerable that uses item ordering
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public abstract class AbstractOrderedEnumerable<T>
+    : AbstractWrapperEnumerable<T>
 {
     /// <summary>
-    /// Abstract implementation of a wrapper enumerable that uses item ordering
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractOrderedEnumerable<T>
-        : AbstractWrapperEnumerable<T>
+    /// <param name="enumerable">Enumerable to wrap</param>
+    /// <param name="comparer">Comparer to use</param>
+    protected AbstractOrderedEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer)
+        : base(enumerable)
     {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable to wrap</param>
-        /// <param name="comparer">Comparer to use</param>
-        protected AbstractOrderedEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer)
-            : base(enumerable)
-        {
-            Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-        }
-
-        /// <summary>
-        /// Gets the comparer to use for ordering
-        /// </summary>
-        protected IComparer<T> Comparer { get; private set; } 
+        Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
     }
+
+    /// <summary>
+    /// Gets the comparer to use for ordering
+    /// </summary>
+    protected IComparer<T> Comparer { get; private set; } 
 }

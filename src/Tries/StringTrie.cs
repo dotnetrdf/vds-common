@@ -22,48 +22,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Tries
+namespace VDS.Common.Tries;
+
+/// <summary>
+/// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
+/// </summary>
+/// <typeparam name="T">Type of values to be stored</typeparam>
+public class StringTrie<T>
+    : Trie<string, char, T>
+    where T : class
 {
     /// <summary>
-    /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
+    /// Creates a new String Trie
     /// </summary>
-    /// <typeparam name="T">Type of values to be stored</typeparam>
-    public class StringTrie<T>
-        : Trie<string, char, T>
-        where T : class
-    {
-        /// <summary>
-        /// Creates a new String Trie
-        /// </summary>
-        public StringTrie()
-            : base(KeyMapperFunction) { }
-
-        /// <summary>
-        /// Key Mapper function for String Trie
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Array of characters</returns>
-        public static IEnumerable<char> KeyMapperFunction(string key)
-        {
-            return key.ToCharArray();
-        }
-    }
+    public StringTrie()
+        : base(KeyMapperFunction) { }
 
     /// <summary>
-    /// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
+    /// Key Mapper function for String Trie
     /// </summary>
-    /// <typeparam name="T">Type of values to be stored</typeparam>
-    /// <remarks>
-    /// This is a sparse implementation so should be more memory efficient than the <see cref="StringTrie{T}"/> for many use cases
-    /// </remarks>
-    public class SparseStringTrie<T>
-        : SparseCharacterTrie<string, T>
-        where T : class
+    /// <param name="key">Key</param>
+    /// <returns>Array of characters</returns>
+    public static IEnumerable<char> KeyMapperFunction(string key)
     {
-        /// <summary>
-        /// Creates a new sparse String Trie
-        /// </summary>
-        public SparseStringTrie()
-            : base(StringTrie<T>.KeyMapperFunction) { }
+        return key.ToCharArray();
     }
+}
+
+/// <summary>
+/// Represents the classic use case of a Trie data structure, keys are strings with a character stored at each Node
+/// </summary>
+/// <typeparam name="T">Type of values to be stored</typeparam>
+/// <remarks>
+/// This is a sparse implementation so should be more memory efficient than the <see cref="StringTrie{T}"/> for many use cases
+/// </remarks>
+public class SparseStringTrie<T>
+    : SparseCharacterTrie<string, T>
+    where T : class
+{
+    /// <summary>
+    /// Creates a new sparse String Trie
+    /// </summary>
+    public SparseStringTrie()
+        : base(StringTrie<T>.KeyMapperFunction) { }
 }

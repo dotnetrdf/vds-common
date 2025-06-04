@@ -24,51 +24,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VDS.Common.Tries
+namespace VDS.Common.Tries;
+
+/// <summary>
+/// An enumerable over a Trie which ensures every time it is enumerated the latest state of the Trie is seen
+/// </summary>
+/// <typeparam name="TKeyBit">Key Bit Type</typeparam>
+/// <typeparam name="TValue">Valye Type</typeparam>
+public class DescendantNodesEnumerable<TKeyBit, TValue>
+    : IEnumerable<ITrieNode<TKeyBit, TValue>>
+    where TValue : class
 {
+    private readonly ITrieNode<TKeyBit, TValue> _node;
+
     /// <summary>
-    /// An enumerable over a Trie which ensures every time it is enumerated the latest state of the Trie is seen
+    /// Creates a descendant nodes enumable
     /// </summary>
-    /// <typeparam name="TKeyBit">Key Bit Type</typeparam>
-    /// <typeparam name="TValue">Valye Type</typeparam>
-    public class DescendantNodesEnumerable<TKeyBit, TValue>
-        : IEnumerable<ITrieNode<TKeyBit, TValue>>
-        where TValue : class
+    /// <param name="node">Node</param>
+    public DescendantNodesEnumerable(ITrieNode<TKeyBit, TValue> node)
     {
-        private readonly ITrieNode<TKeyBit, TValue> _node;
+        _node = node ?? throw new ArgumentNullException(nameof(node));
+    }
 
-        /// <summary>
-        /// Creates a descendant nodes enumable
-        /// </summary>
-        /// <param name="node">Node</param>
-        public DescendantNodesEnumerable(ITrieNode<TKeyBit, TValue> node)
+    /// <summary>
+    /// Gets the enumerator over the descendants
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
+    {
+        if (_node.IsLeaf)
         {
-            _node = node ?? throw new ArgumentNullException(nameof(node));
+            return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
         }
+        else
+        {
+            return _node.Children.Concat(_node.Children.SelectMany(c => c.Descendants)).GetEnumerator();
+        }
+    }
 
-        /// <summary>
-        /// Gets the enumerator over the descendants
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<ITrieNode<TKeyBit, TValue>> GetEnumerator()
-        {
-            if (_node.IsLeaf)
-            {
-                return Enumerable.Empty<ITrieNode<TKeyBit, TValue>>().GetEnumerator();
-            }
-            else
-            {
-                return _node.Children.Concat(_node.Children.SelectMany(c => c.Descendants)).GetEnumerator();
-            }
-        }
-
-        /// <summary>
-        /// Gets the enumerator over the descendants
-        /// </summary>
-        /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    /// <summary>
+    /// Gets the enumerator over the descendants
+    /// </summary>
+    /// <returns></returns>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

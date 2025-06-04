@@ -23,63 +23,62 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerator that takes some number of items
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class LongTakeEnumerator<T>
+    : AbstractWrapperEnumerator<T>
 {
     /// <summary>
-    /// An enumerator that takes some number of items
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class LongTakeEnumerator<T>
-        : AbstractWrapperEnumerator<T>
+    /// <param name="enumerator">Enumerator to operate over</param>
+    /// <param name="toTake">Number of items to take</param>
+    public LongTakeEnumerator(IEnumerator<T> enumerator, long toTake)
+        : base(enumerator)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to operate over</param>
-        /// <param name="toTake">Number of items to take</param>
-        public LongTakeEnumerator(IEnumerator<T> enumerator, long toTake)
-            : base(enumerator)
-        {
-            if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
-            ToTake = toTake;
-            Taken = 0;
-        }
+        if (toTake <= 0) throw new ArgumentException("toTake must be > 0", nameof(toTake));
+        ToTake = toTake;
+        Taken = 0;
+    }
 
-        /// <summary>
-        /// Gets/Sets the number of items to take
-        /// </summary>
-        private long ToTake { get; set; }
+    /// <summary>
+    /// Gets/Sets the number of items to take
+    /// </summary>
+    private long ToTake { get; set; }
 
-        /// <summary>
-        /// Gets/Sets the number of items taken
-        /// </summary>
-        private long Taken { get; set; }
+    /// <summary>
+    /// Gets/Sets the number of items taken
+    /// </summary>
+    private long Taken { get; set; }
 
-        /// <summary>
-        /// Tries to move next
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// While the number of items seen is less than the desired number of items the inner enumerator is accessed normally, once that is reached no further items are returned
-        /// </remarks>
-        protected override bool TryMoveNext(out T item)
-        {
-            item = default(T);
-            if (Taken >= ToTake) return false;
-            if (!InnerEnumerator.MoveNext()) return false;
+    /// <summary>
+    /// Tries to move next
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns></returns>
+    /// <remarks>
+    /// While the number of items seen is less than the desired number of items the inner enumerator is accessed normally, once that is reached no further items are returned
+    /// </remarks>
+    protected override bool TryMoveNext(out T item)
+    {
+        item = default(T);
+        if (Taken >= ToTake) return false;
+        if (!InnerEnumerator.MoveNext()) return false;
 
-            Taken++;
-            item = InnerEnumerator.Current;
-            return true;
-        }
+        Taken++;
+        item = InnerEnumerator.Current;
+        return true;
+    }
 
-        /// <summary>
-        /// Resets the enumerator
-        /// </summary>
-        protected override void ResetInternal()
-        {
-            Taken = 0;
-        }
+    /// <summary>
+    /// Resets the enumerator
+    /// </summary>
+    protected override void ResetInternal()
+    {
+        Taken = 0;
     }
 }

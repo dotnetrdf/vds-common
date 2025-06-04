@@ -25,72 +25,71 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace VDS.Common
+namespace VDS.Common;
+
+[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+public static class TestTools
 {
-    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-    public static class TestTools
+    public static void PrintEnumerable<T>(IEnumerable<T> items, string sep)
+        where T : class
     {
-        public static void PrintEnumerable<T>(IEnumerable<T> items, string sep)
-            where T : class
+        var first = true;
+        foreach (var item in items)
         {
-            var first = true;
-            foreach (var item in items)
+            if (!first)
             {
-                if (!first)
-                {
-                    Console.Write(sep);
-                }
-                else
-                {
-                    first = false;
-                }
-                Console.Write((item != null ? item.ToString() : string.Empty));
+                Console.Write(sep);
             }
-        }
-
-        public static void PrintEnumerableStruct<T>(IEnumerable<T> items, string sep)
-            where T : struct
-        {
-            var first = true;
-            foreach (var item in items)
+            else
             {
-                if (!first)
-                {
-                    Console.Write(sep);
-                }
-                else
-                {
-                    first = false;
-                }
-                Console.Write(item.ToString());
+                first = false;
             }
+            Console.Write((item != null ? item.ToString() : string.Empty));
         }
+    }
 
-        public static void PrintOrderingComparisonEnumerable<T>(IEnumerable<T> enumerable)
-            where T : class
+    public static void PrintEnumerableStruct<T>(IEnumerable<T> items, string sep)
+        where T : struct
+    {
+        var first = true;
+        foreach (var item in items)
         {
-            Console.WriteLine("Ascending Order:");
-            PrintEnumerable(enumerable.OrderBy(i => i), ",");
-            Console.WriteLine();
-            Console.WriteLine("Descending Order:");
-            PrintEnumerable(enumerable.OrderByDescending(i => i), ",");
-            Console.WriteLine();
+            if (!first)
+            {
+                Console.Write(sep);
+            }
+            else
+            {
+                first = false;
+            }
+            Console.Write(item.ToString());
         }
+    }
 
-        public static void PrintOrderingComparisonEnumerableStruct<T>(IEnumerable<T> enumerable)
-            where T : struct
-        {
-            Console.WriteLine("Ascending Order:");
-            PrintEnumerableStruct(enumerable.OrderBy(i => i), ",");
-            Console.WriteLine();
-            Console.WriteLine("Descending Order:");
-            PrintEnumerableStruct(enumerable.OrderByDescending(i => i), ",");
-            Console.WriteLine();
-        }
+    public static void PrintOrderingComparisonEnumerable<T>(IEnumerable<T> enumerable)
+        where T : class
+    {
+        Console.WriteLine("Ascending Order:");
+        PrintEnumerable(enumerable.OrderBy(i => i), ",");
+        Console.WriteLine();
+        Console.WriteLine("Descending Order:");
+        PrintEnumerable(enumerable.OrderByDescending(i => i), ",");
+        Console.WriteLine();
+    }
 
-        public static IEnumerable<T> AsEnumerable<T>(this T item)
-        {
-            return new[] { item };
-        }
+    public static void PrintOrderingComparisonEnumerableStruct<T>(IEnumerable<T> enumerable)
+        where T : struct
+    {
+        Console.WriteLine("Ascending Order:");
+        PrintEnumerableStruct(enumerable.OrderBy(i => i), ",");
+        Console.WriteLine();
+        Console.WriteLine("Descending Order:");
+        PrintEnumerableStruct(enumerable.OrderByDescending(i => i), ",");
+        Console.WriteLine();
+    }
+
+    public static IEnumerable<T> AsEnumerable<T>(this T item)
+    {
+        return new[] { item };
     }
 }

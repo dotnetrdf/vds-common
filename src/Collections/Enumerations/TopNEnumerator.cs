@@ -22,45 +22,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerator that returns the top N items based on a given ordering
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class TopNEnumerator<T>
+    : AbstractTopNEnumerator<T>
 {
     /// <summary>
-    /// An enumerator that returns the top N items based on a given ordering
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class TopNEnumerator<T>
-        : AbstractTopNEnumerator<T>
+    /// <param name="enumerator">Enumerator to operate over</param>
+    /// <param name="comparer">Comparer to use</param>
+    /// <param name="n">Number of items to return</param>
+    public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
+        : base(enumerator, comparer, n)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to operate over</param>
-        /// <param name="comparer">Comparer to use</param>
-        /// <param name="n">Number of items to return</param>
-        public TopNEnumerator(IEnumerator<T> enumerator, IComparer<T> comparer, long n)
-            : base(enumerator, comparer, n)
-        {
-            TopItems = new DuplicateSortedList<T>(comparer);
-        }
+        TopItems = new DuplicateSortedList<T>(comparer);
+    }
 
-        /// <summary>
-        /// Stores the top N items
-        /// </summary>
-        private DuplicateSortedList<T> TopItems { get; set; }
+    /// <summary>
+    /// Stores the top N items
+    /// </summary>
+    private DuplicateSortedList<T> TopItems { get; set; }
 
-        /// <summary>
-        /// Builds the top items
-        /// </summary>
-        /// <returns></returns>
-        protected override IEnumerator<T> BuildTopItems()
+    /// <summary>
+    /// Builds the top items
+    /// </summary>
+    /// <returns></returns>
+    protected override IEnumerator<T> BuildTopItems()
+    {
+        TopItems.Clear();
+        while (InnerEnumerator.MoveNext())
         {
-            TopItems.Clear();
-            while (InnerEnumerator.MoveNext())
-            {
-                TopItems.Add(InnerEnumerator.Current);
-                if (TopItems.Count > N) TopItems.RemoveAt(TopItems.Count - 1);
-            }
-            return TopItems.GetEnumerator();
+            TopItems.Add(InnerEnumerator.Current);
+            if (TopItems.Count > N) TopItems.RemoveAt(TopItems.Count - 1);
         }
+        return TopItems.GetEnumerator();
     }
 }

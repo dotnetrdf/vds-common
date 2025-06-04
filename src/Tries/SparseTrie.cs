@@ -23,92 +23,91 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Tries
+namespace VDS.Common.Tries;
+
+/// <summary>
+/// Sparse implementation of a Trie data structure
+/// </summary>
+/// <typeparam name="TKey">Type of keys</typeparam>
+/// <typeparam name="TKeyBit">Type of key bits</typeparam>
+/// <typeparam name="TValue">Type of values</typeparam>
+/// <remarks>
+/// </remarks>
+public class SparseValueTrie<TKey, TKeyBit, TValue>
+    : AbstractTrie<TKey, TKeyBit, TValue>
+    where TKeyBit : struct, IEquatable<TKeyBit>
+    where TValue : class
+{   
+    /// <summary>
+    /// Create an empty trie with an empty root node.
+    /// </summary>
+    public SparseValueTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        : base(keyMapper, new SparseValueTrieNode<TKeyBit, TValue>(null, default)) { }
+
+    /// <summary>
+    /// Method which creates a new child node
+    /// </summary>
+    /// <param name="key">Key Bit</param>
+    /// <returns></returns>
+    protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
+    {
+        return new SparseValueTrieNode<TKeyBit, TValue>(null, key);
+    }
+}
+
+/// <summary>
+/// Sparse implementation of a Trie data structure
+/// </summary>
+/// <typeparam name="TKey">Type of keys</typeparam>
+/// <typeparam name="TKeyBit">Type of key bits</typeparam>
+/// <typeparam name="TValue">Type of values</typeparam>
+/// <remarks>
+/// </remarks>
+public class SparseReferenceTrie<TKey, TKeyBit, TValue>
+    : AbstractTrie<TKey, TKeyBit, TValue>
+    where TKeyBit : class, IEquatable<TKeyBit>
+    where TValue : class
 {
     /// <summary>
-    /// Sparse implementation of a Trie data structure
+    /// Create an empty trie with an empty root node.
     /// </summary>
-    /// <typeparam name="TKey">Type of keys</typeparam>
-    /// <typeparam name="TKeyBit">Type of key bits</typeparam>
-    /// <typeparam name="TValue">Type of values</typeparam>
-    /// <remarks>
-    /// </remarks>
-    public class SparseValueTrie<TKey, TKeyBit, TValue>
-        : AbstractTrie<TKey, TKeyBit, TValue>
-        where TKeyBit : struct, IEquatable<TKeyBit>
-        where TValue : class
-    {   
-        /// <summary>
-        /// Create an empty trie with an empty root node.
-        /// </summary>
-        public SparseValueTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
-            : base(keyMapper, new SparseValueTrieNode<TKeyBit, TValue>(null, default)) { }
-
-        /// <summary>
-        /// Method which creates a new child node
-        /// </summary>
-        /// <param name="key">Key Bit</param>
-        /// <returns></returns>
-        protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
-        {
-            return new SparseValueTrieNode<TKeyBit, TValue>(null, key);
-        }
-    }
+    public SparseReferenceTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
+        : base(keyMapper, new SparseReferenceTrieNode<TKeyBit, TValue>(null, default)) { }
 
     /// <summary>
-    /// Sparse implementation of a Trie data structure
+    /// Method which creates a new child node
     /// </summary>
-    /// <typeparam name="TKey">Type of keys</typeparam>
-    /// <typeparam name="TKeyBit">Type of key bits</typeparam>
-    /// <typeparam name="TValue">Type of values</typeparam>
-    /// <remarks>
-    /// </remarks>
-    public class SparseReferenceTrie<TKey, TKeyBit, TValue>
-        : AbstractTrie<TKey, TKeyBit, TValue>
-        where TKeyBit : class, IEquatable<TKeyBit>
-        where TValue : class
+    /// <param name="key">Key Bit</param>
+    /// <returns></returns>
+    protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
     {
-        /// <summary>
-        /// Create an empty trie with an empty root node.
-        /// </summary>
-        public SparseReferenceTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
-            : base(keyMapper, new SparseReferenceTrieNode<TKeyBit, TValue>(null, default)) { }
-
-        /// <summary>
-        /// Method which creates a new child node
-        /// </summary>
-        /// <param name="key">Key Bit</param>
-        /// <returns></returns>
-        protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)
-        {
-            return new SparseReferenceTrieNode<TKeyBit, TValue>(null, key);
-        }
+        return new SparseReferenceTrieNode<TKeyBit, TValue>(null, key);
     }
+}
+
+/// <summary>
+/// Sparse Implementation of a Trie data structure optimized for the common case of the key bits being characters
+/// </summary>
+/// <typeparam name="TKey">Type of keys</typeparam>
+/// <typeparam name="TValue">Type of values</typeparam>
+public class SparseCharacterTrie<TKey, TValue>
+    : AbstractTrie<TKey, char, TValue>
+    where TValue : class
+{
+    /// <summary>
+    /// Creates a new sparse character trie
+    /// </summary>
+    /// <param name="keyMapper">Key Mapper</param>
+    public SparseCharacterTrie(Func<TKey, IEnumerable<char>> keyMapper)
+        : base(keyMapper, new SparseCharacterTrieNode<TValue>(null, default)) { }
 
     /// <summary>
-    /// Sparse Implementation of a Trie data structure optimized for the common case of the key bits being characters
+    /// Creates the root node of the trie
     /// </summary>
-    /// <typeparam name="TKey">Type of keys</typeparam>
-    /// <typeparam name="TValue">Type of values</typeparam>
-    public class SparseCharacterTrie<TKey, TValue>
-        : AbstractTrie<TKey, char, TValue>
-        where TValue : class
+    /// <param name="key">Key</param>
+    /// <returns>Root Node</returns>
+    protected override ITrieNode<char, TValue> CreateRoot(char key)
     {
-        /// <summary>
-        /// Creates a new sparse character trie
-        /// </summary>
-        /// <param name="keyMapper">Key Mapper</param>
-        public SparseCharacterTrie(Func<TKey, IEnumerable<char>> keyMapper)
-            : base(keyMapper, new SparseCharacterTrieNode<TValue>(null, default)) { }
-
-        /// <summary>
-        /// Creates the root node of the trie
-        /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Root Node</returns>
-        protected override ITrieNode<char, TValue> CreateRoot(char key)
-        {
-            return new SparseCharacterTrieNode<TValue>(null, key);
-        }
+        return new SparseCharacterTrieNode<TValue>(null, key);
     }
 }

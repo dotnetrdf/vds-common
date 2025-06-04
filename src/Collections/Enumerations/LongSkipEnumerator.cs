@@ -23,82 +23,81 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 using System;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerator that skips items
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class LongSkipEnumerator<T>
+    : AbstractWrapperEnumerator<T>
 {
     /// <summary>
-    /// An enumerator that skips items
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class LongSkipEnumerator<T>
-        : AbstractWrapperEnumerator<T>
+    /// <param name="enumerator">Enumerator to operate over</param>
+    /// <param name="toSkip">Number of items to skip</param>
+    public LongSkipEnumerator(IEnumerator<T> enumerator, long toSkip)
+        : base(enumerator)
     {
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to operate over</param>
-        /// <param name="toSkip">Number of items to skip</param>
-        public LongSkipEnumerator(IEnumerator<T> enumerator, long toSkip)
-            : base(enumerator)
+        if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", nameof(toSkip));
+        ToSkip = toSkip;
+        Skipped = 0;
+    }
+
+    /// <summary>
+    /// Gets/Sets the number of items to skip
+    /// </summary>
+    private long ToSkip { get; set; }
+
+    /// <summary>
+    /// Gets/Sets the number of items skipped
+    /// </summary>
+    private long Skipped { get; set; }
+
+    /// <summary>
+    /// Tries to skip the desired number of items
+    /// </summary>
+    /// <returns></returns>
+    private bool TrySkip()
+    {
+        while (Skipped < ToSkip)
         {
-            if (toSkip <= 0) throw new ArgumentException("toSkip must be > 0", nameof(toSkip));
-            ToSkip = toSkip;
-            Skipped = 0;
+            if (!InnerEnumerator.MoveNext()) return false;
+            Skipped++;
+        }
+        return Skipped == ToSkip;
+    }
+
+    /// <summary>
+    /// Tries to move next
+    /// </summary>
+    /// <param name="item">Item</param>
+    /// <returns></returns>
+    /// <remarks>
+    /// The first time this is called it will try to skip the requisite number of items from the inner enumerator, if that succeeds it will then start returning items from the inner enumerator.
+    /// </remarks>
+    protected override bool TryMoveNext(out T item)
+    {
+        item = default(T);
+
+        // If we've previously done the skipping so can just defer to inner enumerator
+        if (Skipped == ToSkip)
+        {
+            if (!InnerEnumerator.MoveNext()) return false;
+            item = InnerEnumerator.Current;
+            return true;
         }
 
-        /// <summary>
-        /// Gets/Sets the number of items to skip
-        /// </summary>
-        private long ToSkip { get; set; }
+        // First time being accessed so attempt to skip if possible
+        return TrySkip() && TryMoveNext(out item);
+    }
 
-        /// <summary>
-        /// Gets/Sets the number of items skipped
-        /// </summary>
-        private long Skipped { get; set; }
-
-        /// <summary>
-        /// Tries to skip the desired number of items
-        /// </summary>
-        /// <returns></returns>
-        private bool TrySkip()
-        {
-            while (Skipped < ToSkip)
-            {
-                if (!InnerEnumerator.MoveNext()) return false;
-                Skipped++;
-            }
-            return Skipped == ToSkip;
-        }
-
-        /// <summary>
-        /// Tries to move next
-        /// </summary>
-        /// <param name="item">Item</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// The first time this is called it will try to skip the requisite number of items from the inner enumerator, if that succeeds it will then start returning items from the inner enumerator.
-        /// </remarks>
-        protected override bool TryMoveNext(out T item)
-        {
-            item = default(T);
-
-            // If we've previously done the skipping so can just defer to inner enumerator
-            if (Skipped == ToSkip)
-            {
-                if (!InnerEnumerator.MoveNext()) return false;
-                item = InnerEnumerator.Current;
-                return true;
-            }
-
-            // First time being accessed so attempt to skip if possible
-            return TrySkip() && TryMoveNext(out item);
-        }
-
-        /// <summary>
-        /// Resets the enumerator
-        /// </summary>
-        protected override void ResetInternal()
-        {
-            Skipped = 0;
-        }
+    /// <summary>
+    /// Resets the enumerator
+    /// </summary>
+    protected override void ResetInternal()
+    {
+        Skipped = 0;
     }
 }

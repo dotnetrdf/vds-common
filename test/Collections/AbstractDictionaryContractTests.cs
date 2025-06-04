@@ -26,468 +26,467 @@ using System.Linq;
 using NUnit.Framework;
 // ReSharper disable AssignNullToNotNullAttribute
 
-namespace VDS.Common.Collections
+namespace VDS.Common.Collections;
+
+[TestFixture, Category("Dictionaries")]
+public abstract class AbstractDictionaryContractTests
 {
-    [TestFixture, Category("Dictionaries")]
-    public abstract class AbstractDictionaryContractTests
+    /// <summary>
+    /// Gets the instance of a dictionary for use in a test
+    /// </summary>
+    /// <returns></returns>
+    protected abstract IDictionary<string, int> GetInstance();
+
+    [Test]
+    public void DictionaryContractAdd1()
     {
-        /// <summary>
-        /// Gets the instance of a dictionary for use in a test
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IDictionary<string, int> GetInstance();
+        var dict = GetInstance();
 
-        [Test]
-        public void DictionaryContractAdd1()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.Throws<ArgumentException>(() => dict.Add("key", 2));
-        }
+        dict.Add("key", 1);
+        Assert.Throws<ArgumentException>(() => dict.Add("key", 2));
+    }
         
-        [Test]
-        public void DictionaryContractAdd2()
-        {
-            var dict = GetInstance();
+    [Test]
+    public void DictionaryContractAdd2()
+    {
+        var dict = GetInstance();
 
-            dict.Add(new KeyValuePair<string, int>("key", 1));
-            Assert.Throws<ArgumentException>(() => dict.Add(new KeyValuePair<string, int>("key", 2)));
-        }
-
-        [Test]
-        public void DictionaryContractRemove1()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.Remove("key"));
-        }
-
-        [Test]
-        public void DictionaryContractRemove2()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.Remove("key"));
-        }
-
-        [Test]
-        public void DictionaryContractRemove3()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.Remove(new KeyValuePair<string, int>("key", 1)));
-        }
-
-        [Test]
-        public void DictionaryContractRemove4()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsFalse(dict.Remove(new KeyValuePair<string, int>("key", 2)));
-        }
-
-        [Test]
-        public void DictionaryContractContains1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.ContainsKey("key"));
-        }
-
-        [Test]
-        public void DictionaryContractContains2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.ContainsKey("key"));
-        }
-
-        [Test]
-        public void DictionaryContractContains3()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.Contains(new KeyValuePair<string, int>("key", 1)));
-        }
-
-        [Test]
-        public void DictionaryContractContains4()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsFalse(dict.Contains(new KeyValuePair<string, int>("key", 2)));
-        }
-
-        [Test]
-        public void DictionaryContractItemGet1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<KeyNotFoundException>(() =>
-            {
-                var _ = dict["key"];
-            });
-        }
-
-        [Test]
-        public void DictionaryContractItemGet2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.AreEqual(1, dict["key"]);
-        }
-
-        [Test]
-        public void DictionaryContractItemGet3()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            dict.Remove("key");
-            Assert.Throws<KeyNotFoundException>(() =>
-            {
-                var _ = dict["key"];
-            });
-        }
-
-        [Test]
-        public void DictionaryContractItemSet1()
-        {
-            var dict = GetInstance();
-
-            dict["key"] = 1;
-            Assert.AreEqual(1, dict["key"]);
-        }
-
-        [Test]
-        public void DictionaryContractItemSet2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            dict["key"] = 2;
-            Assert.AreEqual(2, dict["key"]);
-        }
-
-        [Test]
-        public void DictionaryContractItemSet3()
-        {
-            var dict = GetInstance();
-
-            dict["key"] = 1;
-            dict.Remove("key");
-            dict["key"] = 2;
-            Assert.AreEqual(2, dict["key"]);
-        }
-
-        [Test]
-        public void DictionaryContractTryGetValue1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.TryGetValue("key", out _));
-        }
-
-        [Test]
-        public void DictionaryContractTryGetValue2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.TryGetValue("key", out var value));
-            Assert.AreEqual(1, value);
-        }
-
-        [Test]
-        public void DictionaryContractKeys1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.Keys.Any());
-        }
-
-        [Test]
-        public void DictionaryContractKeys2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.Keys.Any());
-            Assert.IsTrue(dict.Keys.Contains("key"));
-        }
-
-        [Test]
-        // ,ExpectedException(typeof(NotSupportedException))
-        public void DictionaryContractKeys3()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.Keys.Any());
-            Assert.Throws<NotSupportedException>(() => dict.Keys.Add("key"));
-            Assert.IsFalse(dict.ContainsKey("key"));
-        }
-
-        [Test]
-        public void DictionaryContractKeys4()
-        {
-            var dict = GetInstance();
-
-            var keys = dict.Keys;
-            Assert.AreEqual(0, keys.Count);
-            dict.Add("key", 1);
-            Assert.AreEqual(1, keys.Count);
-            Assert.AreEqual(1, dict.Count);
-        }
-
-        [Test]
-        public void DictionaryContractValues1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.Values.Any());
-        }
-
-        [Test]
-        public void DictionaryContractValues2()
-        {
-            var dict = GetInstance();
-
-            dict.Add("key", 1);
-            Assert.IsTrue(dict.Values.Any());
-            Assert.IsTrue(dict.Values.Contains(1));
-        }
-
-        [Test]
-        public void DictionaryContractValues3()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.Values.Any());
-            Assert.Throws<NotSupportedException>(() => dict.Values.Add(1));
-            Assert.IsFalse(dict.Values.Contains(1));
-        }
-
-        [Test]
-        public void DictionaryContractValues4()
-        {
-            var dict = GetInstance();
-
-            var values = dict.Values;
-            Assert.AreEqual(0, values.Count);
-            dict.Add("key", 1);
-            Assert.AreEqual(1, values.Count);
-            Assert.AreEqual(1, dict.Count);
-        }
+        dict.Add(new KeyValuePair<string, int>("key", 1));
+        Assert.Throws<ArgumentException>(() => dict.Add(new KeyValuePair<string, int>("key", 2)));
     }
 
-    [TestFixture,Category("Dictionaries")]
-    public abstract class AbstractDictionaryWithNullKeysAllowedContractTests
-        : AbstractDictionaryContractTests
+    [Test]
+    public void DictionaryContractRemove1()
     {
-        [Test]
-        public void DictionaryContractAddNullKey1()
-        {
-            var dict = GetInstance();
+        var dict = GetInstance();
 
-            dict.Add(null, 1);
-            Assert.AreEqual(1, dict[null]);
-        }
-
-        [Test]
-        public void DictionaryContractRemoveNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.Remove(null));
-        }
-
-        [Test]
-        public void DictionaryContractRemoveNullKey2()
-        {
-            var dict = GetInstance();
-
-            dict.Add(null, 1);
-            Assert.IsTrue(dict.Remove(null));
-        }
-
-        [Test]
-        public void DictionaryContractContainsNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.ContainsKey(null));
-        }
-
-        [Test]
-        public void DictionaryContractContainsNullKey2()
-        {
-            var dict = GetInstance();
-
-            dict.Add(null, 1);
-            Assert.IsTrue(dict.ContainsKey(null));
-        }
-
-        [Test]
-        public void DictionaryContractItemGetNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<KeyNotFoundException>(() =>
-            {
-                var _= dict[null];
-            });
-        }
-
-        [Test]
-        public void DictionaryContractItemGetNullKey2()
-        {
-            var dict = GetInstance();
-
-            dict.Add(null, 1);
-            var value = dict[null];
-            Assert.AreEqual(1, value);
-        }
-
-        [Test]
-        public void DictionaryContractItemSetNullKey1()
-        {
-            var dict = GetInstance();
-
-            dict[null] = 1;
-            Assert.AreEqual(1, dict[null]);
-        }
-
-        [Test]
-        public void DictionaryContractItemSetNullKey2()
-        {
-            var dict = GetInstance();
-
-            dict[null] = 1;
-            Assert.AreEqual(1, dict[null]);
-            dict[null] = 2;
-            Assert.AreEqual(2, dict[null]);
-        }
-
-        [Test]
-        public void DictionaryContractTryGetValueNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.IsFalse(dict.TryGetValue(null, out _));
-        }
-
-        [Test]
-        public void DictionaryContractTryGetValueNullKey2()
-        {
-            var dict = GetInstance();
-
-            dict.Add(null, 1);
-            Assert.IsTrue(dict.TryGetValue(null, out var value));
-            Assert.AreEqual(1, value);
-        }
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.Remove("key"));
     }
 
-    [TestFixture,Category("Dictionaries")]
-    public abstract class AbstractDictionaryWithNullKeysForbiddenContractTests
-        : AbstractDictionaryContractTests
+    [Test]
+    public void DictionaryContractRemove2()
     {
-        [Test]
-        public void DictionaryContractAddNullKey1()
-        {
-            var dict = GetInstance();
+        var dict = GetInstance();
 
-            Assert.Throws<ArgumentNullException>(() => dict.Add(null, 1));
-        }
-
-        [Test]
-        public void DictionaryContractRemoveNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<ArgumentNullException>(() =>dict.Remove(null));
-        }
-
-        [Test]
-        public void DictionaryContractContainsNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<ArgumentNullException>(() => _ = dict.ContainsKey(null));
-        }
-
-        [Test]
-        public void DictionaryContractItemGetNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var _= dict[null];
-            });
-        }
-
-        [Test]
-        public void DictionaryContractItemSetNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<ArgumentNullException>(() => dict[null] = 1);
-        }
-
-        [Test]
-        public void DictionaryContractTryGetValueNullKey1()
-        {
-            var dict = GetInstance();
-
-            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
-        }
+        Assert.IsFalse(dict.Remove("key"));
     }
 
-    [TestFixture, Category("Dictionaries")]
-    public class DictionaryContractTests
-        : AbstractDictionaryWithNullKeysForbiddenContractTests
+    [Test]
+    public void DictionaryContractRemove3()
     {
-        protected override IDictionary<string, int> GetInstance()
-        {
-            return new Dictionary<string, int>();
-        }
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.Remove(new KeyValuePair<string, int>("key", 1)));
     }
 
-    [TestFixture, Category("Dictionaries")]
-    public class MultiDictionaryContractTests
-        : AbstractDictionaryWithNullKeysForbiddenContractTests
+    [Test]
+    public void DictionaryContractRemove4()
     {
-        protected override IDictionary<string, int> GetInstance()
-        {
-            return new MultiDictionary<string, int>();
-        }
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsFalse(dict.Remove(new KeyValuePair<string, int>("key", 2)));
     }
 
-    [TestFixture, Category("Dictionaries")]
-    public class MultiDictionaryWithNullableKeysContractTests
-        : AbstractDictionaryWithNullKeysAllowedContractTests
+    [Test]
+    public void DictionaryContractContains1()
     {
-        protected override IDictionary<string, int> GetInstance()
-        {
-            return new MultiDictionary<string, int>(s => s?.GetHashCode() ?? 0, true);
-        }
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.ContainsKey("key"));
     }
 
-    [TestFixture, Category("Dictionaries")]
-    public class TreeSortedDictionaryContractTests
-        : AbstractDictionaryWithNullKeysAllowedContractTests
+    [Test]
+    public void DictionaryContractContains2()
     {
-        protected override IDictionary<string, int> GetInstance()
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.ContainsKey("key"));
+    }
+
+    [Test]
+    public void DictionaryContractContains3()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.Contains(new KeyValuePair<string, int>("key", 1)));
+    }
+
+    [Test]
+    public void DictionaryContractContains4()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsFalse(dict.Contains(new KeyValuePair<string, int>("key", 2)));
+    }
+
+    [Test]
+    public void DictionaryContractItemGet1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<KeyNotFoundException>(() =>
         {
-            return new TreeSortedDictionary<string, int>();
-        }
+            var _ = dict["key"];
+        });
+    }
+
+    [Test]
+    public void DictionaryContractItemGet2()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.AreEqual(1, dict["key"]);
+    }
+
+    [Test]
+    public void DictionaryContractItemGet3()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        dict.Remove("key");
+        Assert.Throws<KeyNotFoundException>(() =>
+        {
+            var _ = dict["key"];
+        });
+    }
+
+    [Test]
+    public void DictionaryContractItemSet1()
+    {
+        var dict = GetInstance();
+
+        dict["key"] = 1;
+        Assert.AreEqual(1, dict["key"]);
+    }
+
+    [Test]
+    public void DictionaryContractItemSet2()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        dict["key"] = 2;
+        Assert.AreEqual(2, dict["key"]);
+    }
+
+    [Test]
+    public void DictionaryContractItemSet3()
+    {
+        var dict = GetInstance();
+
+        dict["key"] = 1;
+        dict.Remove("key");
+        dict["key"] = 2;
+        Assert.AreEqual(2, dict["key"]);
+    }
+
+    [Test]
+    public void DictionaryContractTryGetValue1()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.TryGetValue("key", out _));
+    }
+
+    [Test]
+    public void DictionaryContractTryGetValue2()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.TryGetValue("key", out var value));
+        Assert.AreEqual(1, value);
+    }
+
+    [Test]
+    public void DictionaryContractKeys1()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.Keys.Any());
+    }
+
+    [Test]
+    public void DictionaryContractKeys2()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.Keys.Any());
+        Assert.IsTrue(dict.Keys.Contains("key"));
+    }
+
+    [Test]
+    // ,ExpectedException(typeof(NotSupportedException))
+    public void DictionaryContractKeys3()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.Keys.Any());
+        Assert.Throws<NotSupportedException>(() => dict.Keys.Add("key"));
+        Assert.IsFalse(dict.ContainsKey("key"));
+    }
+
+    [Test]
+    public void DictionaryContractKeys4()
+    {
+        var dict = GetInstance();
+
+        var keys = dict.Keys;
+        Assert.AreEqual(0, keys.Count);
+        dict.Add("key", 1);
+        Assert.AreEqual(1, keys.Count);
+        Assert.AreEqual(1, dict.Count);
+    }
+
+    [Test]
+    public void DictionaryContractValues1()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.Values.Any());
+    }
+
+    [Test]
+    public void DictionaryContractValues2()
+    {
+        var dict = GetInstance();
+
+        dict.Add("key", 1);
+        Assert.IsTrue(dict.Values.Any());
+        Assert.IsTrue(dict.Values.Contains(1));
+    }
+
+    [Test]
+    public void DictionaryContractValues3()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.Values.Any());
+        Assert.Throws<NotSupportedException>(() => dict.Values.Add(1));
+        Assert.IsFalse(dict.Values.Contains(1));
+    }
+
+    [Test]
+    public void DictionaryContractValues4()
+    {
+        var dict = GetInstance();
+
+        var values = dict.Values;
+        Assert.AreEqual(0, values.Count);
+        dict.Add("key", 1);
+        Assert.AreEqual(1, values.Count);
+        Assert.AreEqual(1, dict.Count);
+    }
+}
+
+[TestFixture,Category("Dictionaries")]
+public abstract class AbstractDictionaryWithNullKeysAllowedContractTests
+    : AbstractDictionaryContractTests
+{
+    [Test]
+    public void DictionaryContractAddNullKey1()
+    {
+        var dict = GetInstance();
+
+        dict.Add(null, 1);
+        Assert.AreEqual(1, dict[null]);
+    }
+
+    [Test]
+    public void DictionaryContractRemoveNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.Remove(null));
+    }
+
+    [Test]
+    public void DictionaryContractRemoveNullKey2()
+    {
+        var dict = GetInstance();
+
+        dict.Add(null, 1);
+        Assert.IsTrue(dict.Remove(null));
+    }
+
+    [Test]
+    public void DictionaryContractContainsNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.ContainsKey(null));
+    }
+
+    [Test]
+    public void DictionaryContractContainsNullKey2()
+    {
+        var dict = GetInstance();
+
+        dict.Add(null, 1);
+        Assert.IsTrue(dict.ContainsKey(null));
+    }
+
+    [Test]
+    public void DictionaryContractItemGetNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<KeyNotFoundException>(() =>
+        {
+            var _= dict[null];
+        });
+    }
+
+    [Test]
+    public void DictionaryContractItemGetNullKey2()
+    {
+        var dict = GetInstance();
+
+        dict.Add(null, 1);
+        var value = dict[null];
+        Assert.AreEqual(1, value);
+    }
+
+    [Test]
+    public void DictionaryContractItemSetNullKey1()
+    {
+        var dict = GetInstance();
+
+        dict[null] = 1;
+        Assert.AreEqual(1, dict[null]);
+    }
+
+    [Test]
+    public void DictionaryContractItemSetNullKey2()
+    {
+        var dict = GetInstance();
+
+        dict[null] = 1;
+        Assert.AreEqual(1, dict[null]);
+        dict[null] = 2;
+        Assert.AreEqual(2, dict[null]);
+    }
+
+    [Test]
+    public void DictionaryContractTryGetValueNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.IsFalse(dict.TryGetValue(null, out _));
+    }
+
+    [Test]
+    public void DictionaryContractTryGetValueNullKey2()
+    {
+        var dict = GetInstance();
+
+        dict.Add(null, 1);
+        Assert.IsTrue(dict.TryGetValue(null, out var value));
+        Assert.AreEqual(1, value);
+    }
+}
+
+[TestFixture,Category("Dictionaries")]
+public abstract class AbstractDictionaryWithNullKeysForbiddenContractTests
+    : AbstractDictionaryContractTests
+{
+    [Test]
+    public void DictionaryContractAddNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<ArgumentNullException>(() => dict.Add(null, 1));
+    }
+
+    [Test]
+    public void DictionaryContractRemoveNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<ArgumentNullException>(() =>dict.Remove(null));
+    }
+
+    [Test]
+    public void DictionaryContractContainsNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<ArgumentNullException>(() => _ = dict.ContainsKey(null));
+    }
+
+    [Test]
+    public void DictionaryContractItemGetNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            var _= dict[null];
+        });
+    }
+
+    [Test]
+    public void DictionaryContractItemSetNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<ArgumentNullException>(() => dict[null] = 1);
+    }
+
+    [Test]
+    public void DictionaryContractTryGetValueNullKey1()
+    {
+        var dict = GetInstance();
+
+        Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
+    }
+}
+
+[TestFixture, Category("Dictionaries")]
+public class DictionaryContractTests
+    : AbstractDictionaryWithNullKeysForbiddenContractTests
+{
+    protected override IDictionary<string, int> GetInstance()
+    {
+        return new Dictionary<string, int>();
+    }
+}
+
+[TestFixture, Category("Dictionaries")]
+public class MultiDictionaryContractTests
+    : AbstractDictionaryWithNullKeysForbiddenContractTests
+{
+    protected override IDictionary<string, int> GetInstance()
+    {
+        return new MultiDictionary<string, int>();
+    }
+}
+
+[TestFixture, Category("Dictionaries")]
+public class MultiDictionaryWithNullableKeysContractTests
+    : AbstractDictionaryWithNullKeysAllowedContractTests
+{
+    protected override IDictionary<string, int> GetInstance()
+    {
+        return new MultiDictionary<string, int>(s => s?.GetHashCode() ?? 0, true);
+    }
+}
+
+[TestFixture, Category("Dictionaries")]
+public class TreeSortedDictionaryContractTests
+    : AbstractDictionaryWithNullKeysAllowedContractTests
+{
+    protected override IDictionary<string, int> GetInstance()
+    {
+        return new TreeSortedDictionary<string, int>();
     }
 }

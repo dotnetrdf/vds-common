@@ -24,109 +24,108 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// Abstract implementation of an enumerator that wraps another enumerator
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public abstract class AbstractWrapperEnumerator<T>
+    : IEnumerator<T>
 {
+    private T _current;
+
     /// <summary>
-    /// Abstract implementation of an enumerator that wraps another enumerator
+    /// Creates a new enumerator
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public abstract class AbstractWrapperEnumerator<T>
-        : IEnumerator<T>
+    /// <param name="enumerator">Enumerator to wrap</param>
+    protected AbstractWrapperEnumerator(IEnumerator<T> enumerator)
     {
-        private T _current;
-
-        /// <summary>
-        /// Creates a new enumerator
-        /// </summary>
-        /// <param name="enumerator">Enumerator to wrap</param>
-        protected AbstractWrapperEnumerator(IEnumerator<T> enumerator)
-        {
-            InnerEnumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-        }
-
-        /// <summary>
-        /// Gets the wrapped enumerator
-        /// </summary>
-        protected IEnumerator<T> InnerEnumerator { get; private set; }
-
-        /// <summary>
-        /// Disposes of this enumerator
-        /// </summary>
-        public virtual void Dispose()
-        {
-            InnerEnumerator.Dispose();
-        }
-
-        /// <summary>
-        /// Gets/Sets whether the enumeration has started
-        /// </summary>
-        private bool Started { get; set; }
-
-        /// <summary>
-        /// Gets/Sets whether the enumeration has finished
-        /// </summary>
-        private bool Finished { get; set; }
-
-        /// <summary>
-        /// Gets whether the enumerator can move to the next item
-        /// </summary>
-        /// <returns>True if another item is available, false otherwise</returns>
-        /// <remarks>
-        /// This differs to the abstract method <see cref="TryMoveNext"/> which derived classes must implement to determine if it can move next and what the next item is
-        /// </remarks>
-        public bool MoveNext()
-        {
-            Started = true;
-            if (Finished) return false;
-            if (TryMoveNext(out var item))
-            {
-                Current = item;
-                return true;
-            }
-            Finished = true;
-            return false;
-        }
-
-        /// <summary>
-        /// Tries to move next
-        /// </summary>
-        /// <param name="item">Next item (if available)</param>
-        /// <returns>True if another item is available, false otherwise</returns>
-        protected abstract bool TryMoveNext(out T item);
-
-        /// <summary>
-        /// Resets the enumerator
-        /// </summary>
-        public void Reset()
-        {
-            Started = false;
-            Finished = false;
-            InnerEnumerator.Reset();
-            ResetInternal();
-        }
-
-        /// <summary>
-        /// Takes any implementation specific reset actions, should be overridden by derived classes that need to reset internal state
-        /// </summary>
-        protected virtual void ResetInternal() {}
-
-        /// <summary>
-        /// Gets/Sets the current item
-        /// </summary>
-        public T Current
-        {
-            get
-            {
-                if (!Started) throw new InvalidOperationException("Currently before the start of the enumerator, call MoveNext() before accessing Current");
-                if (Finished) throw new InvalidOperationException("Currently after end of the enumerator");
-                return _current;
-            }
-            private set => _current = value;
-        }
-
-        /// <summary>
-        /// Gets the current item
-        /// </summary>
-        object IEnumerator.Current => Current;
+        InnerEnumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
     }
+
+    /// <summary>
+    /// Gets the wrapped enumerator
+    /// </summary>
+    protected IEnumerator<T> InnerEnumerator { get; private set; }
+
+    /// <summary>
+    /// Disposes of this enumerator
+    /// </summary>
+    public virtual void Dispose()
+    {
+        InnerEnumerator.Dispose();
+    }
+
+    /// <summary>
+    /// Gets/Sets whether the enumeration has started
+    /// </summary>
+    private bool Started { get; set; }
+
+    /// <summary>
+    /// Gets/Sets whether the enumeration has finished
+    /// </summary>
+    private bool Finished { get; set; }
+
+    /// <summary>
+    /// Gets whether the enumerator can move to the next item
+    /// </summary>
+    /// <returns>True if another item is available, false otherwise</returns>
+    /// <remarks>
+    /// This differs to the abstract method <see cref="TryMoveNext"/> which derived classes must implement to determine if it can move next and what the next item is
+    /// </remarks>
+    public bool MoveNext()
+    {
+        Started = true;
+        if (Finished) return false;
+        if (TryMoveNext(out var item))
+        {
+            Current = item;
+            return true;
+        }
+        Finished = true;
+        return false;
+    }
+
+    /// <summary>
+    /// Tries to move next
+    /// </summary>
+    /// <param name="item">Next item (if available)</param>
+    /// <returns>True if another item is available, false otherwise</returns>
+    protected abstract bool TryMoveNext(out T item);
+
+    /// <summary>
+    /// Resets the enumerator
+    /// </summary>
+    public void Reset()
+    {
+        Started = false;
+        Finished = false;
+        InnerEnumerator.Reset();
+        ResetInternal();
+    }
+
+    /// <summary>
+    /// Takes any implementation specific reset actions, should be overridden by derived classes that need to reset internal state
+    /// </summary>
+    protected virtual void ResetInternal() {}
+
+    /// <summary>
+    /// Gets/Sets the current item
+    /// </summary>
+    public T Current
+    {
+        get
+        {
+            if (!Started) throw new InvalidOperationException("Currently before the start of the enumerator, call MoveNext() before accessing Current");
+            if (Finished) throw new InvalidOperationException("Currently after end of the enumerator");
+            return _current;
+        }
+        private set => _current = value;
+    }
+
+    /// <summary>
+    /// Gets the current item
+    /// </summary>
+    object IEnumerator.Current => Current;
 }

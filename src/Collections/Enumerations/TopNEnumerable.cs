@@ -22,31 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 using System.Collections.Generic;
 
-namespace VDS.Common.Collections.Enumerations
+namespace VDS.Common.Collections.Enumerations;
+
+/// <summary>
+/// An enumerable that returns the top N items according to some ordering
+/// </summary>
+/// <typeparam name="T">Item type</typeparam>
+public class TopNEnumerable<T>
+    : AbstractTopNEnumerable<T>
 {
     /// <summary>
-    /// An enumerable that returns the top N items according to some ordering
+    /// Creates a new enumerable
     /// </summary>
-    /// <typeparam name="T">Item type</typeparam>
-    public class TopNEnumerable<T>
-        : AbstractTopNEnumerable<T>
-    {
-        /// <summary>
-        /// Creates a new enumerable
-        /// </summary>
-        /// <param name="enumerable">Enumerable to operate over</param>
-        /// <param name="comparer">Comparer to use</param>
-        /// <param name="n">Number of items to return</param>
-        public TopNEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
-            : base(enumerable, comparer, n) { }
+    /// <param name="enumerable">Enumerable to operate over</param>
+    /// <param name="comparer">Comparer to use</param>
+    /// <param name="n">Number of items to return</param>
+    public TopNEnumerable(IEnumerable<T> enumerable, IComparer<T> comparer, long n)
+        : base(enumerable, comparer, n) { }
 
-        /// <summary>
-        /// Gets an enumerator
-        /// </summary>
-        /// <returns></returns>
-        public override IEnumerator<T> GetEnumerator()
-        {
-            return new TopNEnumerator<T>(InnerEnumerable.GetEnumerator(), Comparer, N);
-        }
+    /// <summary>
+    /// Gets an enumerator
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator<T> GetEnumerator()
+    {
+        return new TopNEnumerator<T>(InnerEnumerable.GetEnumerator(), Comparer, N);
     }
 }
