@@ -58,17 +58,6 @@ public abstract class AbstractTrie<TKey, TKeyBit, TValue>
     }
 
     /// <summary>
-    /// Create an empty trie with an empty root node.
-    /// </summary>
-    [Obsolete("Use the constructor AbstractTrie(Func<TKey, IEnumerable<TKeyBit>>, ITrieNode<TKeyBit, TValue>) instead")]
-    protected AbstractTrie(Func<TKey, IEnumerable<TKeyBit>> keyMapper)
-    {
-        KeyMapper = keyMapper ?? throw new ArgumentNullException(nameof(keyMapper), "Key Mapper function cannot be null");
-        Root = CreateRoot(default);
-        KeyBitComparer = Comparer<TKeyBit>.Default;
-    }
-
-    /// <summary>
     /// Method which creates a new child node
     /// </summary>
     /// <param name="key">Key Bit</param>

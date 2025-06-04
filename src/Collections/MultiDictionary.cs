@@ -78,14 +78,6 @@ public class MultiDictionary<TKey, TValue>
     /// Creates a new multi-dictionary
     /// </summary>
     /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
-    [Obsolete("You must use the two argument form of the constructor and explicitly state whether your hash function supports null keys", true)]
-    public MultiDictionary(Func<TKey, int> hashFunction)
-        : this(hashFunction, false, null, DefaultMode) { }
-
-    /// <summary>
-    /// Creates a new multi-dictionary
-    /// </summary>
-    /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
     /// <param name="allowNullKeys">Whether to allow null keys</param>
     public MultiDictionary(Func<TKey, int> hashFunction, bool allowNullKeys)
         : this(hashFunction, allowNullKeys, null, DefaultMode) { }
@@ -96,15 +88,6 @@ public class MultiDictionary<TKey, TValue>
     /// <param name="comparer">Comparer used for keys within the binary search trees</param>
     public MultiDictionary(IComparer<TKey> comparer)
         : this(null, false, comparer, DefaultMode) { }
-
-    /// <summary>
-    /// Creates a new multi-dictionary
-    /// </summary>
-    /// <param name="hashFunction">Hash Function to split the keys into the buckets</param>
-    /// <param name="mode">Mode to use for the buckets</param>
-    [Obsolete("You must use the three argument form of the constructor and explicitly state whether your hash function supports null keys", true)]
-    public MultiDictionary(Func<TKey, int> hashFunction, MultiDictionaryMode mode)
-        : this(hashFunction, false, null, mode) { }
 
     /// <summary>
     /// Creates a new multi-dictionary
