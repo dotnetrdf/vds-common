@@ -447,7 +447,10 @@ public abstract class AbstractDictionaryWithNullKeysForbiddenContractTests
     {
         var dict = GetInstance();
 
-        Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            _ = dict.TryGetValue(null, out _);
+        });
     }
 }
 

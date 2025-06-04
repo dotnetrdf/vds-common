@@ -57,7 +57,7 @@ public class MultiDictionaryTests
     public void MultiDictionaryNullKeyHandling3()
     {
         var dict = new MultiDictionary<object, int>();
-        Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out _));
+        Assert.Throws<ArgumentNullException>(() => _ = dict.TryGetValue(null, out _));
     }
 
     [Test]
@@ -122,7 +122,7 @@ public class MultiDictionaryTests
     public void MultiDictionaryNullKeyHandling13()
     {
         var dict = new MultiDictionary<object, int>(x => x?.GetHashCode() ?? 0, true);
-        dict.TryGetValue(null, out _);
+        _ = dict.TryGetValue(null, out _);
     }
 
     [Test]
