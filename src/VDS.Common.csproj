@@ -16,7 +16,7 @@
         <PackageId>VDS.Common</PackageId>
         <Title>VDS.Common</Title>
         <Description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</Description>
-        <PackageProjectUrl>http://www.dotnetrdf.org</PackageProjectUrl>
+        <PackageProjectUrl>https://www.dotnetrdf.org</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RequiresLicenseAcceptance>false</RequiresLicenseAcceptance>
         <RepositoryType>git</RepositoryType>
