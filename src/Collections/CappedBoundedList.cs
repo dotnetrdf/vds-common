@@ -46,24 +46,6 @@ public class CappedBoundedList<T>
     }
 
     /// <summary>
-    /// Creates a new bounded list with the given capacity and items
-    /// </summary>
-    /// <param name="capacity">MaxCapacity</param>
-    /// <param name="items">Items</param>
-    /// <remarks>
-    /// If the number of items provided exceeds the declared capacity then an error will be thrown from the constructor
-    /// </remarks>
-    [Obsolete("This form of initialization will be removed in a future release. Use the CappedBoundedList(int) constructor and then call the Add(IEnumerable<T>) method instead.")]
-    public CappedBoundedList(int capacity, IEnumerable<T> items)
-        : this(capacity)
-    {
-        foreach (var item in items)
-        {
-            Add(item);
-        }
-    }
-
-    /// <summary>
     /// Gets the overflow policy for this bounded list which is <see cref="BoundedListOverflowPolicy.Error"/>
     /// </summary>
     public override BoundedListOverflowPolicy OverflowPolicy => BoundedListOverflowPolicy.Error;
