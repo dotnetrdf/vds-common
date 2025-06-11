@@ -3,7 +3,7 @@ Change Log
 
 This is the Change Log for VDS.Common
 
-3.0.0 (Upcoming)
+3.0.0
 -----
 
 - BREAKING: In line with best practice for NuGet packages, the DLL will no longer be signed.
