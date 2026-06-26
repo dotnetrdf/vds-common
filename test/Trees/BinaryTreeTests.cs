@@ -887,7 +887,38 @@ public class BinaryTreeTests
             Assert.AreEqual(count, tree.Nodes.Count(), "Removal of Key " + i + " did not reduce node count as expected");
         }
     }
+    
+    [Test]
+    public void BinaryTreeAvlDelete9()
+    {
+        var tree = new AvlTree<int, int>();
+        foreach (var k in new[] { 0, 1, 2, 3, 4 })
+        {
+            tree.Add(k, k);
+        }
 
+        tree.Remove(1);
+        Assert.DoesNotThrow(() =>
+        {
+            tree.Add(1, 1);
+        });
+    }
+    
+    [Test]
+    public void BinaryTreeAvlDelete10() {
+        var tree = new AvlTree<int, int>();
+        foreach (var k in new[] { 8, 6, 4, 1, 5, 7, 0, 3 })
+        {
+            tree.Add(k, k);
+        }
+
+        tree.Remove(6);
+        Assert.DoesNotThrow(() =>
+        {
+            tree.Add(2, 2);
+        });
+    }
+        
     [Test]
     public void BinaryTreeAvlIndexAccess1()
     {
