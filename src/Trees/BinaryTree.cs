@@ -267,7 +267,7 @@ public abstract class BinaryTree<TKey, TValue>
             current.Key = successor.Key;
             current.Value = successor.Value;
             successor.Parent.RightChild = successor.HasChildren ? successor.LeftChild : null;
-            AfterDelete(current);
+            AfterDelete(successor.Parent);
             return true;
         }
         if (current.HasChildren)

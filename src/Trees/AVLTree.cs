@@ -118,16 +118,17 @@ public sealed class AvlTree<TKey, TValue>
     /// <param name="node">Node at which the delete occurred</param>
     protected override void AfterDelete(IBinaryTreeNode<TKey, TValue> node)
     {
-        var current = node.Parent;
+        var current = node;
         while (current != null)
         {
+            var next = current.Parent;
             var balance = current.GetBalance();
             if (Math.Abs(balance) == 1) break; //Short circuit where possible
             if (Math.Abs(balance) == 2)
             {
                 Rebalance(current, balance);
             }
-            current = current.Parent;
+            current = next;
         }
     }
 
