@@ -3,6 +3,11 @@ Change Log
 
 This is the Change Log for VDS.Common
 
+3.0.1
+-----
+
+- FIX: Fixes for AVLTree balancing. Thanks to @bruluk5w for the bug report and fix (#28)
+
 3.0.0
 -----
 
