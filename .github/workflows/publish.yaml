@@ -7,6 +7,9 @@ on:
 jobs:
   nuget:
     runs-on: windows-latest
+    permissions:
+      id-token: write
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -29,8 +32,14 @@ jobs:
         name: nuget
         path: src\bin\Release\*.nupkg
 
+    - name: NuGet login
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
     - name: Publish NuGet Packages
-      run: nuget push src\bin\Release\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{ secrets.NUGET_API_KEY }}
+      run: nuget push src\bin\Release\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{steps.login.outputs.NUGET_API_KEY}}
 
   docs:
     runs-on: windows-latest
