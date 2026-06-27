@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
@@ -27,7 +27,7 @@ jobs:
       run: dotnet pack --configuration=Release -p:Version=${{ env.VERSION }}
       
     - name: Upload NuGet Packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nuget
         path: src\bin\Release\*.nupkg
@@ -45,7 +45,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
     
@@ -70,7 +70,7 @@ jobs:
       working-directory: doc
       
     - name: Upload Release zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: help
         path: doc\*.zip
@@ -83,12 +83,12 @@ jobs:
     steps:
     - name: Get Binaries
       id: get_binaries
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: nuget
     - name: Get Help
       id: get_help
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: help
     - name: List downloads
